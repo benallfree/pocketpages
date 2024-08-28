@@ -2,15 +2,18 @@
   "name": "makerlist",
   "type": "module",
   "scripts": {
-    "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/hooks --migrationsDir=app/migrations --dev serve",
+    "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/hooks --migrationsDir=app/migrations --publicDir=app/public --dev serve",
     "deploy": "bun ./deploy.ts"
   },
   "devDependencies": {
     "@samkirkland/ftp-deploy": "^1.2.4",
+    "@tailwindcss/typography": "^0.5.14",
     "@types/bun": "latest",
+    "daisyui": "^4.12.10",
     "dotenv": "^16.4.5",
     "gobot": "^1.0.0-alpha.41",
-    "serve": "^14.2.3"
+    "serve": "^14.2.3",
+    "tailwindcss": "^3.4.10"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

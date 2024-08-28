@@ -11,7 +11,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-
     <script
       defer
       src="https://cdnjs.cloudflare.com/ajax/libs/pocketbase/0.21.4/pocketbase.umd.js"
@@ -27,13 +26,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/app.css" rel="stylesheet" />
   </head>
   <body>
     <div class="drawer">
@@ -70,8 +63,7 @@
             </ul>
           </div>
         </div>
-        <!-- Page content here -->
-        <%- slot %>
+        <article class="prose max-w-none"><%- slot %></article>
       </div>
       <div class="drawer-side">
         <label

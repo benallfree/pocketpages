@@ -1,18 +1,11 @@
-<div class="drawer lg:drawer-open">
-  <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content flex flex-col items-center justify-center">
-    <%- slot %>
-  </div>
-  <div class="drawer-side">
-    <label
-      for="my-drawer-2"
-      aria-label="close sidebar"
-      class="drawer-overlay"
-    ></label>
-    <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-      <!-- Sidebar content here -->
-      <li><a>Sidebar Item 1</a></li>
-      <li><a>Sidebar Item 2</a></li>
+<div class="flex flex-row">
+  <div class="flex flex-col justify-top p-10">
+    <h2>Speed Runs</h2>
+    <ul>
+      <li><a href="/docs/speedrun-hello">Up in 30 Seconds</a></li>
     </ul>
+  </div>
+  <div class="flex flex-col justify-top p-10">
+    <article class="prose"><%- slot %></article>
   </div>
 </div>
