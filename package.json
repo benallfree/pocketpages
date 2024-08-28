@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/hooks --migrationsDir=app/migrations --publicDir=app/public --dev serve",
+    "dev:css": "tailwindcss -i ./app/app.css -o ./app/public/app.css --watch",
     "deploy": "bun ./deploy.ts"
   },
   "devDependencies": {
