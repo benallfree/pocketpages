@@ -1,0 +1,21 @@
+{
+  "name": "makerlist",
+  "type": "module",
+  "scripts": {
+    "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/hooks --migrationsDir=app/migrations --dev serve",
+    "deploy": "bun ./deploy.ts"
+  },
+  "devDependencies": {
+    "@samkirkland/ftp-deploy": "^1.2.4",
+    "@types/bun": "latest",
+    "dotenv": "^16.4.5",
+    "gobot": "^1.0.0-alpha.41",
+    "serve": "^14.2.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "convex": "^1.14.4"
+  }
+}
