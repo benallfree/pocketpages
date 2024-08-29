@@ -1,0 +1,2 @@
+- [Minimal](https://github.com/benallfree/pocketpages/main/starters/minimal) - Minimal starter with no dependencies.
+- [Clean](https://github.com/benallfree/pocketpages/main/starters/alpine-htmlx-daisyui) - Batteries-included kit with AlpineJS, HTMLx, Daisy UI.

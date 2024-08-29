@@ -1,0 +1,13 @@
+{
+  "name": "minimal",
+  "scripts": {
+    "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/hooks --migrationsDir=app/migrations --publicDir=app/public --dev serve"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "gobot": "^1.0.0-alpha.41"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
