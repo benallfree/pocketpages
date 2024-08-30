@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/pb_hooks --migrationsDir=app/pb_migrations --dev --http=0.0.0.0:8091 serve",
     "dev:css": "tailwindcss -i ./app/pb_hooks/pages/assets/app.src.css -o ./app/pb_hooks/pages/assets/app.css --watch",
-    "deploy": "bun ./deploy.ts"
+    "deploy": "bun ./deploy-pockethost.ts"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.8",

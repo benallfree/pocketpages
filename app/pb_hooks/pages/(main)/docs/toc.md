@@ -2,16 +2,17 @@
 
 - [Overview](/docs/overview)
 - [Installation](/docs/installation)
-- Local development
-- Deploying
-- [JS API](/docs/jsvm)
+- [Production](/docs/deploying)
 
 # Guides
 
+- [Upgrading PocketPages](/docs/upgrading)
+- [Starter Kits](/docs/starter-kits)
 - EJS
 - Markdown
 - Routing
 - Loading Data
+- [JS API](/docs/jsvm)
 
 # Speed Runs
 
@@ -21,12 +22,11 @@
 - DaisyUI
 - PocketHost.io
 - OTP
-
-* APIs
-* Database
-* Github Actions
-* JSVM
-* OpenGraph
-* SPA
-* SEO
-* VSCode
+- APIs
+- Database
+- Github Actions
+- JSVM
+- OpenGraph
+- SPA
+- SEO
+- VSCode
