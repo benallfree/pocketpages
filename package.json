@@ -8,6 +8,7 @@
     "deploy": "bun ./deploy.ts"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.8",
     "@samkirkland/ftp-deploy": "^1.2.4",
     "@tailwindcss/typography": "^0.5.14",
     "@types/bun": "latest",
