@@ -1,13 +1,15 @@
 {
-  "name": "alpine-htmlx-daisyui",
+  "name": "daisyui",
   "scripts": {
-    "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/hooks --migrationsDir=app/migrations --publicDir=app/public --dev serve",
-    "dev:css": "tailwindcss -i ./app/app.css -o ./app/app/app.css --watch",
+    "dev": "concurrently \"bun:dev:*\"",
+    "dev:pocketbase": "gobot pocketbase --dir=pb_data --hooksDir=app/pb_hooks --dev serve",
+    "dev:css": "tailwindcss -i ./app/app.css -o ./app/pb_hooks/pages/app.css --watch",
     "deploy": "bun ./deploy.ts"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.14",
     "@types/bun": "latest",
+    "concurrently": "^8.2.2",
     "daisyui": "^4.12.10",
     "gobot": "^1.0.0-alpha.41",
     "tailwindcss": "^3.4.10"

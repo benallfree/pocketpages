@@ -1,7 +1,7 @@
 # Getting Started
 
 - [Overview](/docs/overview)
-- Installation
+- [Installation](/docs/installation)
 - Local development
 - Deploying
 - [JS API](/docs/jsvm)

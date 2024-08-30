@@ -16,10 +16,16 @@ Write your web apps like old-school PHP:
 ## Getting Started
 
 ```bash
-bunx tiged benallfree/pocketpages/starters/minimal  my-first-app
-cd my-first-app
+bunx tiged benallfree/pocketpages/starters/minimal minimal
+cd minimal
 bun i
 bun dev
+```
+
+To start editing, find
+
+```
+/app/pb_hooks/pages/index.ejs
 ```
 
 ## Watch it cook

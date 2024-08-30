@@ -1,1 +1,1 @@
-# PocketPages Docs
+<%- include('overview.md') %>
