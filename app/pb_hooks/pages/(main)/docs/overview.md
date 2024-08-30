@@ -1,26 +1,38 @@
-# Make SSR Great Again
+# Overview
 
-Let's party like it's 1995 when PHP was just released and we learned how to make a web app in one file.
+PocketPages is an EJS preprocessor for PocketBase. It's like being able to run old-school PHP files, but using JS and PocketBase instead.
 
-With PocketPages, making apps is that easy again. PocketPages is based fundamentally in [EJS](https://ejs.co/). You can get started in just one file:
+PocketPages to create slim and modern web apps:
+
+- Start small and iterate
+- SEO-first principals
+- Zero dependencies
+- Fast server-side rendering
+
+## Hello world in just one file
+
+To get started, you need just one file:
 
 ```ejs
 // index.ejs
 <%%= `Hello, world!` %>
 ```
 
-Inside `<%` and `%>`, you have the full power of JavaScript plus PocketBase's [JSVM](https://pocketbase.io/jsvm/index.html) which defines all of PocketBase's built-in functions.
+<%- include(`../../_include/browser.ejs`, { content: `Hello, world!`}) %>
 
-> Note:
+With PocketPages, making apps is easy again. Inside `<%%` and `%>`, you have the full power of JavaScript plus PocketBase's [JSVM](https://pocketbase.io/jsvm/index.html) which defines all of PocketBase's built-in functions.
 
-#
+## Retro file-based routing
 
-```bash
-bunx pocketpages dev
+PocketPages borrows inspiration from SvelteKit's [file-based routing](https://kit.svelte.dev/docs/routing) architecture, so you can do this:
+
+```ejs
+// +layout.ejs
+<html>
+    <body style="background-color: #b5dcb5">
+        <%%- slot>
+    </body>
+</html>
 ```
 
-The first time you run `pocketpages`, it will ask a few questions and get you logged in.
-
-If `index.ejs` does not exist, PocketPages assumes this is a new project and will create one for you:
-
-Your files are automatically sync'd to your PocketPages project. Visit `https://<yourproject>.pocketpages.dev` to see it in action.
+<%- include(`../../_include/browser.ejs`, { bodyTags: `style="background-color: #b5dcb5"`, content: `Hello, world!`}) %>

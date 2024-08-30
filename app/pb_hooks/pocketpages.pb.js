@@ -57,7 +57,8 @@ function PocketPages(next) {
   const ejs = require(`${__hooks}/pocketpages/ejs`)
   const oldCompile = ejs.compile
   ejs.compile = (template, opts) => {
-    const fn = oldCompile(template, opts)
+    const fn = oldCompile(template, { ...opts })
+
     if ($filepath.ext(opts.filename) === '.md') {
       return (data) => {
         // dbg(`***compiling markdown ${opts.filename}`, { data, opts }, fn(data))
@@ -72,14 +73,14 @@ function PocketPages(next) {
     const params = {}
 
     const urlPath = url.path.slice(1)
-    dbg({ urlPath })
+    // dbg({ urlPath })
 
     /**
      * If the URL path is a file, serve it
      */
     const physicalFname = $filepath.join(pagesRoot, urlPath)
     if (existsSync(physicalFname)) {
-      dbg(`Found a file at ${physicalFname}`)
+      // dbg(`Found a file at ${physicalFname}`)
       return c.file(physicalFname)
     }
 
@@ -91,16 +92,16 @@ function PocketPages(next) {
         `${urlPath}/index.ejs`,
         `${urlPath}/index.md`,
       ]
-      dbg({ tryFnames })
+      // dbg({ tryFnames })
       for (const maybeFname of tryFnames) {
         const parts = maybeFname.split('/').filter((p) => p)
-        dbg({ parts })
+        // dbg({ parts })
 
-        dbg({ routes })
+        // dbg({ routes })
         const routeCandidates = routes.filter(
           (r) => r.segments.length === parts.length
         )
-        dbg({ routeCandidates })
+        // dbg({ routeCandidates })
         for (const route of routeCandidates) {
           const matched = route.segments.every((r, i) => {
             if (r.paramName) {
@@ -110,7 +111,7 @@ function PocketPages(next) {
             return r.nodeName === parts[i]
           })
           if (matched) {
-            dbg(`Matched route`, route)
+            // dbg(`Matched route`, route)
             return route
           }
         }
@@ -121,10 +122,10 @@ function PocketPages(next) {
     if (!matchedRoute) {
       return next(c)
     }
-    dbg(`Found a matching route`, { matchedRoute })
+    // dbg(`Found a matching route`, { matchedRoute })
 
     const fname = $filepath.join(pagesRoot, matchedRoute.relativePath)
-    dbg(`Entry point filename is`, { fname })
+    // dbg(`Entry point filename is`, { fname })
 
     const context = { ctx: c, params, dbg }
 
@@ -135,7 +136,7 @@ function PocketPages(next) {
       }
       const tryFile = $filepath.join($filepath.dir(fname), `+layout.ejs`)
       const layoutExists = existsSync(tryFile)
-      dbg({ tryFile, layoutExists })
+      // dbg({ tryFile, layoutExists })
       if (layoutExists) {
         // dbg(`layout found`, { tryFile })
         try {
@@ -152,7 +153,7 @@ function PocketPages(next) {
 
     try {
       var str = ejs.renderFile(fname, context)
-      dbg(`***rendering`, { fname, str })
+      // dbg(`***rendering`, { fname, str })
       if (fname.endsWith('.md')) {
         str = marked(str)
       }
@@ -163,7 +164,11 @@ function PocketPages(next) {
       str = renderInLayout(fname, str)
       return c.html(200, str)
     } catch (e) {
-      throw new BadRequestError(`${e}`)
+      const errStr = e.toString().replaceAll(pagesRoot, '')
+      return c.html(
+        500,
+        `<html><body><h1>PocketPages Error</h1>${marked(`\`\`\`\n${errStr}\n\`\`\``)}</body></html>`
+      )
     }
   }
 }
