@@ -1,12 +1,15 @@
 #!/bin/bash
 
+rm -rf app/pocketpages*
+cp -r lib/pocketpages* app/
+
 rm -rf starters/minimal/app/pocketpages*
-cp -r app/pb_hooks/pocketpages* starters/minimal/app/
+cp -r lib/pocketpages* starters/minimal/app/
 
 rm -rf starters/lib/lib/pocketpages*
-cp -r app/pb_hooks/pocketpages* starters/lib
+cp -r lib/pocketpages* starters/lib
 
-rm -rf starters/daisyui/app/pb_hooks/pocketpages*
-cp -r app/pb_hooks/pocketpages* starters/daisyui/app/pb_hooks
+rm -rf starters/daisyui/lib/pocketpages*
+cp -r lib/pocketpages* starters/daisyui/app/pb_hooks
 
 cp deploy.ts starters/deploy-pockethost
