@@ -60,8 +60,8 @@ bunx tiged benallfree/pocketpages/starters/lib .
 
 ## deploy-pockethost
 
-This kit helps you deploy to pockethost.io. See the [deployment guide](/deploying) for more details.
+This kit helps you deploy to pockethost.io. See the [deployment guide](/docs/deploying) for more details.
 
 ## deploy-fly
 
-This kit helps you deploy to fly.io. See the [deployment guide](/deploying) for more details.
+This kit helps you deploy to fly.io. See the [deployment guide](/docs/deploying) for more details.
