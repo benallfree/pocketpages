@@ -27,8 +27,16 @@
       referrerpolicy="no-referrer"
     ></script>
     <link href="/app.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   </head>
   <body>
     <%- slot%>
+    <script>
+      hljs.highlightAll()
+    </script>
   </body>
 </html>

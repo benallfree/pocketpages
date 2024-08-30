@@ -6,7 +6,7 @@ With PocketPages, making apps is that easy again. PocketPages is based fundament
 
 ```ejs
 // index.ejs
-<%= `Hello, world!` %>
+<%%= `Hello, world!` %>
 ```
 
 Inside `<%` and `%>`, you have the full power of JavaScript plus PocketBase's [JSVM](https://pocketbase.io/jsvm/index.html) which defines all of PocketBase's built-in functions.
