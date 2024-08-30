@@ -1,6 +1,10 @@
 # Speedrun: Hello, PocketPages!
 
-PocketPages makes it as easy to get up and running as the old days with PHP.
+Let's party like it's 1995. PHP was just released and we learned how to make a web app in one file.
+
+With PocketPages, it's that easy again.
+
+#
 
 ```bash
 bunx pocketpages dev

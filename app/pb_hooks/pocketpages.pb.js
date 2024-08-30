@@ -55,12 +55,16 @@ function PocketPages(next) {
   const { existsSync, readFileSync } = require(`${__hooks}/pocketpages/fs`)
   const { marked } = require(`${__hooks}/pocketpages/marked`)
   const ejs = require(`${__hooks}/pocketpages/ejs`)
-  const oldFileLoader = ejs.fileLoader
-  ejs.fileLoader = (path) => {
-    if ($filepath.ext(path) === '.md') {
-      return marked(readFileSync(path))
+  const oldCompile = ejs.compile
+  ejs.compile = (template, opts) => {
+    const fn = oldCompile(template, opts)
+    if ($filepath.ext(opts.filename) === '.md') {
+      return (data) => {
+        // dbg(`***compiling markdown ${opts.filename}`, { data, opts }, fn(data))
+        return marked(fn(data))
+      }
     }
-    return oldFileLoader(path)
+    return fn
   }
 
   return (/** @type {echo.Context} */ c) => {
@@ -147,20 +151,17 @@ function PocketPages(next) {
     }
 
     try {
-      var str = ''
+      var str = ejs.renderFile(fname, context)
+      dbg(`***rendering`, { fname, str })
       if (fname.endsWith('.md')) {
-        const md = readFileSync(fname)
-        str = marked(md)
+        str = marked(str)
       }
-      if (fname.endsWith('.ejs')) {
-        str = ejs.renderFile(fname, context)
-        try {
-          const parsed = JSON.parse(str)
-          return c.json(200, parsed)
-        } catch (e) {}
-      }
-      const finalOutput = renderInLayout(fname, str)
-      return c.html(200, finalOutput)
+      try {
+        const parsed = JSON.parse(str)
+        return c.json(200, parsed)
+      } catch (e) {}
+      str = renderInLayout(fname, str)
+      return c.html(200, str)
     } catch (e) {
       throw new BadRequestError(`${e}`)
     }
