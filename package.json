@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/hooks --migrationsDir=app/migrations --publicDir=app/public --dev serve",
-    "dev:css": "tailwindcss -i ./app/app.css -o ./app/public/app.css --watch",
+    "dev": "gobot pocketbase --dir=pb_data --hooksDir=app/pb_hooks --migrationsDir=app/pb_migrations --dev --http=0.0.0.0:8091 serve",
+    "dev:css": "tailwindcss -i ./app/app.css -o ./app/pb_hooks/pages/app.css --watch",
     "deploy": "bun ./deploy.ts"
   },
   "devDependencies": {

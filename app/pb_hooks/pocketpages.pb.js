@@ -1,70 +1,104 @@
 /// <reference path="../../pb_data/types.d.ts" />
 
-function PocketPages(next) {
-  const dbg = (...objs) => {
-    console.log(JSON.stringify(objs, null, 2))
-  }
+onAfterBootstrap((e) => {
+  const { dbg } = require(`${__hooks}/pocketpages/log`)
 
-  dbg(`pocketpages`)
+  dbg(`pocketpages startup`)
 
-  const routesRoot = $filepath.join(__hooks, `..`, `routes`)
+  const pagesRoot = $filepath.join(__hooks, `pages`)
 
-  dbg({ routesRoot })
-
-  const { marked } = require(`${__hooks}/pocketpages/marked`)
-  const ejs = require(`${__hooks}/pocketpages/ejs`)
-  const { existsSync, readFileSync } = require(`${__hooks}/pocketpages/fs`)
-
-  const files = [
-    ...$filepath.glob($filepath.join(routesRoot, `**/*.ejs`)),
-    ...$filepath.glob($filepath.join(routesRoot, `**/*.md`)),
-    ...$filepath.glob($filepath.join(routesRoot, `*.ejs`)),
-    ...$filepath.glob($filepath.join(routesRoot, `*.md`)),
-  ].map((f) => f.replace(routesRoot, '').slice(1))
-
-  dbg({ files })
-
-  const routes = files.map((f) => {
-    const parts = f.split('/')
-    // dbg({ parts })
-    return parts.map((part) => {
-      return {
-        nodeName: part,
-        paramName: part.match(/\[.*\]/)
-          ? part.replace(/\[(.*)\]/g, '$1')
-          : null,
-      }
-    })
+  const physicalFiles = []
+  $filepath.walkDir(pagesRoot, (path, d, err) => {
+    const isDir = d.isDir()
+    if (isDir) {
+      return
+    }
+    physicalFiles.push(path.slice(pagesRoot.length + 1))
   })
 
-  dbg({ routes })
+  const addressableFiles = physicalFiles.filter(
+    (f) => !$filepath.base(f).startsWith(`+`)
+  )
+
+  dbg({ addressableFiles })
+
+  const routes = addressableFiles
+    .map((f) => {
+      dbg(`Examining route`, f)
+      const parts = f.split('/').filter((p) => !p.startsWith(`(`))
+      // dbg({ parts })
+      return {
+        relativePath: f,
+        segments: parts.map((part) => {
+          return {
+            nodeName: part,
+            paramName: part.match(/\[.*\]/)
+              ? part.replace(/\[(.*)\]/g, '$1')
+              : undefined,
+          }
+        }),
+      }
+    })
+    .filter((r) => r.segments.length > 0)
+
+  const data = { pagesRoot, routes }
+  dbg({ data })
+  $app.cache().set(`pocketpages`, data)
+})
+
+function PocketPages(next) {
+  const { dbg } = require(`${__hooks}/pocketpages/log`)
+
+  const { pagesRoot, routes } = $app.cache().get(`pocketpages`)
+  dbg(`pocketpages handler`)
+
+  const { existsSync, readFileSync } = require(`${__hooks}/pocketpages/fs`)
+  const { marked } = require(`${__hooks}/pocketpages/marked`)
+  const ejs = require(`${__hooks}/pocketpages/ejs`)
+  const oldFileLoader = ejs.fileLoader
+  ejs.fileLoader = (path) => {
+    if ($filepath.ext(path) === '.md') {
+      return marked(readFileSync(path))
+    }
+    return oldFileLoader(path)
+  }
 
   return (/** @type {echo.Context} */ c) => {
     const { url } = c.request()
-    if (url?.path.startsWith('/_') || url?.path.startsWith(`/api`)) {
-      return next(c) // proceed with the request chain
-    }
-
     const params = {}
 
     const urlPath = url.path.slice(1)
     dbg({ urlPath })
 
+    /**
+     * If the URL path is a file, serve it
+     */
+    const physicalFname = $filepath.join(pagesRoot, urlPath)
+    if (existsSync(physicalFname)) {
+      dbg(`Found a file at ${physicalFname}`)
+      return c.file(physicalFname)
+    }
+
     const matchedRoute = (() => {
-      const exts = [
+      const tryFnames = [
+        `${urlPath}`,
         `${urlPath}.ejs`,
         `${urlPath}.md`,
         `${urlPath}/index.ejs`,
         `${urlPath}/index.md`,
       ]
-      for (const ext of exts) {
-        const parts = ext.split('/').filter((p) => p)
+      dbg({ tryFnames })
+      for (const maybeFname of tryFnames) {
+        const parts = maybeFname.split('/').filter((p) => p)
         dbg({ parts })
 
-        const routeCandidates = routes.filter((r) => r.length === parts.length)
-        // dbg({ routeCandidates })
+        dbg({ routes })
+        const routeCandidates = routes.filter(
+          (r) => r.segments.length === parts.length
+        )
+        dbg({ routeCandidates })
         for (const route of routeCandidates) {
-          const matched = route.every((r, i) => {
+          const matched = route.segments.every((r, i) => {
             if (r.paramName) {
               params[r.paramName] = parts[i]
               return true
@@ -72,7 +106,7 @@ function PocketPages(next) {
             return r.nodeName === parts[i]
           })
           if (matched) {
-            // dbg(`Matched route`, route)
+            dbg(`Matched route`, route)
             return route
           }
         }
@@ -85,22 +119,19 @@ function PocketPages(next) {
     }
     dbg(`Found a matching route`, { matchedRoute })
 
-    const fname = $filepath.join(
-      routesRoot,
-      ...matchedRoute.map((r) => r.nodeName)
-    )
+    const fname = $filepath.join(pagesRoot, matchedRoute.relativePath)
     dbg(`Entry point filename is`, { fname })
 
     const context = { ctx: c, params, dbg }
 
     const renderInLayout = (fname, slot) => {
       // dbg(`renderInLayout`, { fname, slot })
-      if (!fname.startsWith(routesRoot)) {
+      if (!fname.startsWith(pagesRoot)) {
         return slot
       }
       const tryFile = $filepath.join($filepath.dir(fname), `+layout.ejs`)
       const layoutExists = existsSync(tryFile)
-      // dbg({ tryFile, layoutExists })
+      dbg({ tryFile, layoutExists })
       if (layoutExists) {
         // dbg(`layout found`, { tryFile })
         try {
@@ -116,22 +147,18 @@ function PocketPages(next) {
     }
 
     try {
-      const str = (() => {
-        if (fname.endsWith('.md')) {
-          const md = readFileSync(fname)
-          return marked(md)
-        }
-        if (fname.endsWith('.ejs')) {
-          const str = ejs.renderFile(fname, context)
-          try {
-            const parsed = JSON.parse(str)
-            c.json(200, parsed)
-          } catch {
-            return str
-          }
-        }
-        return ''
-      })()
+      var str = ''
+      if (fname.endsWith('.md')) {
+        const md = readFileSync(fname)
+        str = marked(md)
+      }
+      if (fname.endsWith('.ejs')) {
+        str = ejs.renderFile(fname, context)
+        try {
+          const parsed = JSON.parse(str)
+          return c.json(200, parsed)
+        } catch (e) {}
+      }
       const finalOutput = renderInLayout(fname, str)
       return c.html(200, finalOutput)
     } catch (e) {
