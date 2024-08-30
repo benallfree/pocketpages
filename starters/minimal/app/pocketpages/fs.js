@@ -26,7 +26,7 @@ const existsSync = (path, fileType = `file`) => {
       return false
     }
   })()
-  console.log(JSON.stringify({ path, isDir, isFile }, null, 2))
+  // console.log(JSON.stringify({ path, isDir, isFile }, null, 2))
   return fileType === 'file'
     ? isFile
     : fileType === 'dir'

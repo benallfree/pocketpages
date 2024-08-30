@@ -20,11 +20,11 @@ onAfterBootstrap((e) => {
     (f) => !$filepath.base(f).startsWith(`+`)
   )
 
-  dbg({ addressableFiles })
+  // dbg({ addressableFiles })
 
   const routes = addressableFiles
     .map((f) => {
-      dbg(`Examining route`, f)
+      // dbg(`Examining route`, f)
       const parts = f.split('/').filter((p) => !p.startsWith(`(`))
       // dbg({ parts })
       return {
@@ -42,7 +42,7 @@ onAfterBootstrap((e) => {
     .filter((r) => r.segments.length > 0)
 
   const data = { pagesRoot, routes }
-  dbg({ data })
+  // dbg({ data })
   $app.cache().set(`pocketpages`, data)
 })
 
@@ -50,10 +50,26 @@ function PocketPages(next) {
   const { dbg } = require(`${__hooks}/pocketpages/log`)
 
   const { pagesRoot, routes } = $app.cache().get(`pocketpages`)
-  dbg(`pocketpages handler`)
+  // dbg(`pocketpages handler`)
 
   const { existsSync, readFileSync } = require(`${__hooks}/pocketpages/fs`)
   const { marked } = require(`${__hooks}/pocketpages/marked`)
+
+  marked.use({
+    useNewRenderer: true,
+    renderer: {
+      heading({ tokens, depth }) {
+        const id = tokens[0].text
+          .toLowerCase() // Convert to lowercase
+          .trim() // Remove leading/trailing spaces
+          .replace(/[^a-z0-9\-_ ]/g, '') // Remove invalid characters
+          .replace(/\s+/g, '-') // Replace spaces with hyphens
+          .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+        // dbg({ tokens, depth, id })
+        return `<h${depth} id="${id}">${this.parser.parseInline(tokens)}</h${depth}>\n`
+      },
+    },
+  })
   const ejs = require(`${__hooks}/pocketpages/ejs`)
   const oldCompile = ejs.compile
   ejs.compile = (template, opts) => {

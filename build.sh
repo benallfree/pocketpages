@@ -1,7 +1,7 @@
 #!/bin/bash
 
-rm -rf app/pocketpages*
-cp -r lib/pocketpages* app/
+rm -rf app/pb_hooks/pocketpages*
+cp -r lib/pocketpages* app/pb_hooks
 
 rm -rf starters/minimal/app/pocketpages*
 cp -r lib/pocketpages* starters/minimal/app/

@@ -70,16 +70,18 @@ const program = new Command()
 
 const ROOT = (...paths: string[]) => join(`.pocketpages`, ...paths)
 
+const build = () => {
+  copyAllFiles(join(__dirname, `..`, `lib`), ROOT(`pb_hooks`))
+  pathsToWatch.forEach(({ src, dest }) => {
+    copyAllFiles(src, dest)
+  })
+}
 program
   .version(version)
   .description('PocketPages CLI')
   .addCommand(
     new Command('dev').action(async () => {
-      copyAllFiles(join(__dirname, `..`, `lib`), ROOT(`pb_hooks`))
-
-      pathsToWatch.forEach(({ src, dest }) => {
-        copyAllFiles(src, dest)
-      })
+      build()
 
       // Start watching the source directories
       pathsToWatch.forEach(({ src, dest }) => watchFiles(src, dest))
@@ -94,5 +96,12 @@ program
         `--migrationsDir=app/pb_migrations`,
       ])
     })
+  )
+  .addCommand(
+    new Command('build')
+      .description('Build the PocketPages project for deployment')
+      .action(async () => {
+        build()
+      })
   )
   .parseAsync(process.argv)
