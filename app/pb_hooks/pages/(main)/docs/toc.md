@@ -1,11 +1,10 @@
 # Getting Started
 
-<%= "TOCx" %>
-
-- Overview
+- [Overview](/docs/overview)
 - Installation
 - Local development
 - Deploying
+- [JS API](/docs/jsvm)
 
 # Guides
 
