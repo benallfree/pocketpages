@@ -6,7 +6,7 @@
 
 # Guides
 
-- [Upgrading PocketPages](/docs/upgrading)
+- [Upgrading](/docs/upgrading)
 - [Starter Kits](/docs/starter-kits)
 - EJS
 - Markdown
