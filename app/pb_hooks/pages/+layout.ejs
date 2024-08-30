@@ -26,7 +26,8 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <link href="/app.css" rel="stylesheet" />
+    <link href="/assets/prism.css" rel="stylesheet" />
+    <link href="/assets/app.css" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
@@ -35,8 +36,6 @@
   </head>
   <body>
     <%- slot%>
-    <script>
-      hljs.highlightAll()
-    </script>
+    <script src="/assets/prism.js" defer></script>
   </body>
 </html>

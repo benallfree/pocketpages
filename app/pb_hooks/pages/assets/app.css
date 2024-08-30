@@ -2553,6 +2553,47 @@ pre {
   font-weight: 700;
 }
 
+div.code-toolbar > .toolbar {
+  opacity: initial;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a,
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+  --tw-bg-opacity: 1;
+  background-color: rgb(64 64 64 / var(--tw-bg-opacity));
+  padding: 0.125rem;
+  padding-bottom: 0.25rem;
+  text-transform: lowercase;
+  --tw-text-opacity: 1;
+  color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)));
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a:hover,
+div.code-toolbar > .toolbar > .toolbar-item > a:focus,
+div.code-toolbar > .toolbar > .toolbar-item > button:hover,
+div.code-toolbar > .toolbar > .toolbar-item > button:focus,
+div.code-toolbar > .toolbar > .toolbar-item > span:hover,
+div.code-toolbar > .toolbar > .toolbar-item > span:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(82 82 82 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)));
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a[data-copy-state='copy-success'],
+div.code-toolbar
+  > .toolbar
+  > .toolbar-item
+  > button[data-copy-state='copy-success'],
+div.code-toolbar
+  > .toolbar
+  > .toolbar-item
+  > span[data-copy-state='copy-success'] {
+  --tw-text-opacity: 1;
+  color: var(--fallback-su,oklch(var(--su)/var(--tw-text-opacity)));
+}
+
 @media (min-width: 1024px) {
   .lg\:block {
     display: block;
