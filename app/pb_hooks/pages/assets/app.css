@@ -2392,6 +2392,10 @@ pre {
   background-color: #282c34 !important;
 }
 
+.absolute {
+  position: absolute;
+}
+
 .sticky {
   position: sticky;
 }
