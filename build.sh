@@ -11,5 +11,3 @@ cp -r lib/pocketpages* starters/lib
 
 rm -rf starters/daisyui/lib/pocketpages*
 cp -r lib/pocketpages* starters/daisyui/app/pb_hooks
-
-cp deploy.ts starters/deploy-pockethost

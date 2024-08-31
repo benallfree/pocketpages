@@ -145,6 +145,26 @@ function PocketPages(next) {
 
     const context = { ctx: c, params, dbg }
 
+    {
+      const toVisit = $filepath.dir(matchedRoute.relativePath)
+      dbg({ toVisit })
+      const parts = toVisit.split('/').filter((p) => p)
+      dbg({ parts })
+      let current = []
+      while (parts.length > 0) {
+        current.push(parts.shift())
+        const tryFname = $filepath.join(pagesRoot, ...current, `+server.js`)
+        dbg({ tryFname })
+        if (existsSync(tryFname)) {
+          const mod = require(tryFname)
+          for (const k in mod) {
+            dbg(`***loaded`, { k })
+            context[k] = mod[k]
+          }
+        }
+      }
+    }
+    // dbg({ context })
     const renderInLayout = (fname, slot) => {
       // dbg(`renderInLayout`, { fname, slot })
       if (!fname.startsWith(pagesRoot)) {
