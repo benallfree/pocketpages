@@ -17,7 +17,7 @@ Once you have your instance URL (`something.pockethost.io`), you can choose eith
 Start by copying the PocketHost deployment utility script:
 
 ```bash
-bunx tiged benallfree/pocketpages/starters/deploy-pockethost .
+bunx tiged benallfree/pocketpages/starters/deploy-pockethost . --force
 bun add -D @samkirkland/ftp-deploy dotenv env-vars
 ```
 
@@ -50,7 +50,7 @@ bun run deploy
 You can also use a Github Actions configuration to deploy on every push.
 
 ```bash
-bunx tiged benallfree/pocketpages/starters/deploy-pockethost .
+bunx tiged benallfree/pocketpages/starters/deploy-pockethost . --force
 cp deploy-pockethost.yaml .github/workflows
 ```
 
