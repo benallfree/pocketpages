@@ -1,88 +1,98 @@
-# Loading Data
+# Loading Data in PocketPages
 
-When an `.ejs` page is parsed, it is passed contextual data:
+PocketPages provides a robust mechanism to load data dynamically before rendering your EJS templates using a special `+load.js` file. This file, when placed at any directory level, will be executed before any EJS template in that directory is rendered. Below, we'll explore how to use `+load.js`, demonstrate the module structure, and explain the execution flow with examples.
 
-- `ctx` - the [echo.HttpContext](https://pocketbase.io/jsvm/interfaces/echo.Context.html)
-- `params` - routing and querystring parameters - see [routing](/docs/routing)
-- `dbg` - a debug logging function
+## The `+load.js` File
 
-In addition to these standard functions, you may add to the context by defining a `+server.js`:
+### Purpose
 
-```js
-// +server.js
+The `+load.js` file is designed to load or compute data that your EJS templates might need. The data returned by the loader function in `+load.js` will be made available to your EJS templates through the `data` property in the request context.
 
-module.exports = (context) => {
-  const { dbg } = context
+### Structure of `+load.js`
 
-  const start = Date.now()
-  const logTime = () => {
-    const elapsed = Date.now() - start
-    dbg(`${elapsed}ms elapsed`)
-  }
+The `+load.js` file must use `module.exports` to export a loader function. This function will receive the request context as an argument and should return an object containing the data you wish to pass to the template.
 
+### Example `+load.js` File
+
+```javascript
+module.exports = function (context) {
+  // Perform data loading operations here
+  const productId = context.params.productId
+
+  // Example: Fetch product details from a database
+  const productDetails = getProductDetails(productId)
+
+  // Return an object containing the data
   return {
-    start,
-    logTime,
+    product: productDetails,
   }
 }
 ```
 
-When PocketPages encounters a `+server.js` file at the current route level or any higher level, it processes these files alongside the request, adding each loader's return value to the context scope of all `.ejs` files involved in the request.
+### How It Works
 
-The `+server.js` files are evaluated in a top-down order based on the directory structure. For example, given the following structure:
+- **Execution**: When a request matches a route level with a `+load.js` file, the loader function in that file is executed.
+- **Data Availability**: The returned object from the loader function is attached to the request context as `data`, making it accessible in the EJS templates.
 
-```
-/pages
-    +server.js
-    /foo
-        +server.js
-        /bar
-            +server.js
-            index.ejs
-```
+## Example Scenario with Multiple `+load.js` Files
 
-A request to `/foo/bar` will resolve to `/pages/foo/bar/index.ejs`. The `+server.js` files are evaluated from top to bottom, meaning that exports from deeper levels will override those from higher levels if they share the same name:
+Consider the following directory structure:
 
 ```
-/pages
-    +server.js          <-- evaluated first, returns { foo }
-    /foo
-        +server.js      <-- evaluated second, returns { foo, bar, baz }
-        /bar
-            +server.js  <-- evaluated third, returns { baz, zod }
-            index.ejs
+app/
+  pb_hooks/
+    pages/
+      +load.js
+      index.ejs
+      about/
+        +load.js
+        index.ejs
+      products/
+        +load.js
+        [productId]/
+          +load.js
+          index.ejs
+          details.ejs
+      contact.ejs
 ```
 
-In this case, `index.ejs` will access the `foo` value returned at the `/foo` level, not the root level, and it will see `baz` from `/bar`, overriding `baz` from `/foo`.
+### Loader Execution Scenarios
 
-Lower-level `+server.js` files can rely on the context provided by higher-level `+server.js` files. Data returned from deeper directories will override those from higher levels, and all `+server.js` data will take precedence over default context variables. This structure allows specific `+server.js` files to override general ones while still permitting general files to perform tasks like authorization and security checks.
+1. **Root Level Request (`/`)**:
 
-On the other hand, `+layout.ejs` files are processed in a bottom-up order, opposite to `+server.js` files. Given the following structure:
+   - **Files Involved**: `app/pb_hooks/pages/+load.js`, `app/pb_hooks/pages/index.ejs`
+   - **Loader Executed**: The loader in `pages/+load.js` will execute when accessing the root URL (`/`). The data returned by this loader will be available in `pages/index.ejs`.
 
-```
-/pages
-    +layout.ejs
-    +server.js
-    /foo
-        +layout.ejs
-        +server.js
-        /bar
-            +layout.ejs
-            index.ejs
-            +server.js
-```
+2. **About Page Request (`/about`)**:
 
-The `+layout.ejs` files are evaluated after all `+server.js` files have been processed, meaning that each `+layout.ejs` runs with the combined context available to `index.ejs`, not necessarily the context from its own level. This approach ensures that layouts adapt to the context defined in the most specific (deepest) route.
+   - **Files Involved**: `app/pb_hooks/pages/about/+load.js`, `app/pb_hooks/pages/about/index.ejs`
+   - **Loader Executed**: The loader in `pages/about/+load.js` will execute when accessing `/about`. The data returned will be available in `about/index.ejs`.
 
-```
-/pages
-    +layout.ejs        <-- evaluated third
-    +server.js         <-- evaluated first
-    /foo
-        +layout.ejs    <-- evaluated second
-        +server.js     <-- evaluated second
-        /bar
-            +layout.ejs <-- evaluated first
-            index.ejs
-            +server.js  <-- evaluated third
-```
+3. **Products Page Request (`/products`)**:
+
+   - **Files Involved**: `app/pb_hooks/pages/products/+load.js`, `app/pb_hooks/pages/products/index.ejs`
+   - **Loader Executed**: The loader in `pages/products/+load.js` will execute when accessing `/products`. The data returned will be available in `products/index.ejs`.
+
+4. **Product Details Request (`/products/123`)**:
+
+   - **Files Involved**: `app/pb_hooks/pages/products/[productId]/+load.js`, `app/pb_hooks/pages/products/[productId]/index.ejs`
+   - **Loader Executed**: The loader in `pages/products/[productId]/+load.js` will execute when accessing `/products/123`. The data returned will be available in `products/[productId]/index.ejs`.
+
+5. **Product Details Specific Page (`/products/123/details`)**:
+
+   - **Files Involved**: `app/pb_hooks/pages/products/[productId]/+load.js`, `app/pb_hooks/pages/products/[productId]/details.ejs`
+   - **Loader Executed**: The same loader in `pages/products/[productId]/+load.js` will execute for both `index.ejs` and `details.ejs` under `[productId]`. Therefore, when accessing `/products/123/details`, this loader will still be executed, and its data will be available in `details.ejs`.
+
+6. **Contact Page Request (`/contact`)**:
+   - **Files Involved**: `app/pb_hooks/pages/contact.ejs`
+   - **Loader Executed**: No loader is executed because there is no `+load.js` file in the `pages/` directory that directly corresponds to the `contact.ejs` file. The template will render without additional data loading.
+
+### Key Points to Remember
+
+- **Isolated Loaders**: Loaders in isolated directories (like `pages/about/+load.js`) only execute for requests that match the route corresponding to that directory (`/about` in this case).
+- **Multiple EJS Files**: If you have multiple EJS files at the same directory level (like `index.ejs` and `details.ejs` in `products/[productId]/`), the same loader (`+load.js`) will be executed for any request that matches that directory.
+- **No Loader Execution**: If there is no `+load.js` at the specific route level, no data loading will occur, and the EJS template will render as usual.
+
+## Summary
+
+PocketPages allows you to load data dynamically using `+load.js` files placed at any level within your directory structure. The `loader` function in each `+load.js` file is executed for any matching EJS file at the corresponding route level, with the data returned available in the request context as `data`. By structuring your `+load.js` files thoughtfully, you can control precisely when and where data is loaded in your application, making it easier to build dynamic, data-driven pages.

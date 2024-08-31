@@ -3,15 +3,27 @@
 - [Overview](/docs/overview)
 - [Installation](/docs/installation)
 
+# Basic Concepts
+
+- [Creating a Page](/docs/creating-a-page)
+- [Routing](/docs/routing)
+- [Accessing Parameters](/docs/parameters)
+- [Request Context](/docs/request-context)
+- [Loading Data](/docs/loading-data)
+- [JSON](/docs/json)
+- [Partials](/docs/partials)
+- [Layouts](/docs/layouts)
+- [Static content](/docs/static-content)
+- [Private files](/docs/private-files)
+- [Middleware](/docs/middleware)
+- Markdown
+- [Managing Secrets](/docs/secrets)
+- [Going Live](/docs/deploying)
+
 # Guides
 
 - [Upgrading](/docs/upgrading)
 - [Starter Kits](/docs/starter-kits)
-- [Production](/docs/deploying)
-- EJS
-- Markdown
-- Routing
-- [Loading Data](/docs/loading-data)
 - [JS API](/docs/jsvm)
 
 # Speed Runs
