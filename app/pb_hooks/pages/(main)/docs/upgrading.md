@@ -7,5 +7,5 @@ To update/upgrade PocketPages, use the `lib` starter kit:
 ```bash
 # Update the PocketPages lib
 cd pb_hooks
-bunx tiged benallfree/pocketpages/starters/lib .
+bunx tiged benallfree/pocketpages/starters/lib . --force
 ```
