@@ -89,7 +89,7 @@ function PocketPages(next) {
     const params = {}
 
     const urlPath = url.path.slice(1)
-    // dbg({ urlPath })
+    dbg({ urlPath })
 
     /**
      * If the URL path is a file, serve it
@@ -111,7 +111,7 @@ function PocketPages(next) {
       // dbg({ tryFnames })
       for (const maybeFname of tryFnames) {
         const parts = maybeFname.split('/').filter((p) => p)
-        // dbg({ parts })
+        dbg({ parts })
 
         // dbg({ routes })
         const routeCandidates = routes.filter(
@@ -138,10 +138,10 @@ function PocketPages(next) {
     if (!matchedRoute) {
       return next(c)
     }
-    // dbg(`Found a matching route`, { matchedRoute })
+    dbg(`Found a matching route`, { matchedRoute })
 
     const fname = $filepath.join(pagesRoot, matchedRoute.relativePath)
-    // dbg(`Entry point filename is`, { fname })
+    dbg(`Entry point filename is`, { fname })
 
     const context = { ctx: c, params, dbg }
 
@@ -156,15 +156,15 @@ function PocketPages(next) {
         const tryFname = $filepath.join(pagesRoot, ...current, `+server.js`)
         dbg({ tryFname })
         if (existsSync(tryFname)) {
-          const mod = require(tryFname)
+          const mod = require(tryFname)(context)
           for (const k in mod) {
-            dbg(`***loaded`, { k })
+            dbg({ k })
             context[k] = mod[k]
           }
         }
       }
     }
-    // dbg({ context })
+    dbg({ context })
     const renderInLayout = (fname, slot) => {
       // dbg(`renderInLayout`, { fname, slot })
       if (!fname.startsWith(pagesRoot)) {

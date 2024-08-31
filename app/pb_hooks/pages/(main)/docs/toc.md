@@ -17,16 +17,16 @@
 # Speed Runs
 
 - AlpineJS
-- HTMLx
-- Tailwind
-- DaisyUI
-- PocketHost.io
-- OTP
 - APIs
+- DaisyUI
 - Database
 - Github Actions
+- HTMLx
 - JSVM
 - OpenGraph
-- SPA
+- OTP
+- PocketHost.io
 - SEO
+- SPA
+- Tailwind
 - VSCode
