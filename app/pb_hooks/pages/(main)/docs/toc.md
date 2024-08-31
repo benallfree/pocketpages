@@ -16,7 +16,7 @@
 - [Static content](/docs/static-content)
 - [Private files](/docs/private-files)
 - [Middleware](/docs/middleware)
-- Markdown
+- [Markdown](/docs/markdown)
 - [Managing Secrets](/docs/secrets)
 - [Going Live](/docs/deploying)
 
@@ -28,6 +28,8 @@
 
 # Speed Runs
 
+- [Custom Domains on Fly+Cloudflare](/docs/speedruns/custom-domain-fly-cloudflare)
+- [Custom Domains on pockethost.io](/docs/speedruns/custom-domain-pockethost)
 - AlpineJS
 - APIs
 - DaisyUI
