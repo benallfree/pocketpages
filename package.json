@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
-    "dev:pocketpages": "gobot pocketbase --dir=pb_data --hooksDir=app/pb_hooks --dev serve",
+    "dev:pocketpages": "gobot pocketbase --dir=pb_data --hooksDir=app/pb_hooks --dev --http=0.0.0.0:8091 serve",
     "dev:css": "tailwindcss -i ./app/pb_hooks/pages/assets/app.src.css -o ./app/pb_hooks/pages/assets/app.css --watch",
     "deploy": "bun ./deploy-pockethost.ts"
   },

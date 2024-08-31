@@ -2,16 +2,16 @@
 
 - [Overview](/docs/overview)
 - [Installation](/docs/installation)
-- [Production](/docs/deploying)
 
 # Guides
 
 - [Upgrading](/docs/upgrading)
 - [Starter Kits](/docs/starter-kits)
+- [Production](/docs/deploying)
 - EJS
 - Markdown
 - Routing
-- Loading Data
+- [Loading Data](/docs/loading-data)
 - [JS API](/docs/jsvm)
 
 # Speed Runs
