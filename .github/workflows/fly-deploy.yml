@@ -3,6 +3,8 @@
 name: Fly Deploy
 on:
   push:
+    paths:
+      - 'docs/**'
     branches:
       - main
 jobs:
@@ -13,7 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: cd docs
-      - run: flyctl deploy --remote-only
+      - run: cd docs && flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
