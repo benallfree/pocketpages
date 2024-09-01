@@ -92,7 +92,10 @@ export const NewCommand = () =>
     .option('-t, --template <template>', 'Template to use')
     .action(async (name, { template }) => {
       const finalTemplate = await (async () => {
-        if (template) return template
+        if (template)
+          return template.includes('/')
+            ? template
+            : `benallfree/pocketpages/starters/${template}`
         const { templateName } = await inquirer.prompt([
           {
             type: 'list',
