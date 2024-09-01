@@ -21,8 +21,15 @@
   }
 }
 
-div.code-toolbar > .toolbar {
-  opacity: initial;
+@media (pointer: coarse) {
+  /* Styles for touch devices */
+  div.code-toolbar > .toolbar {
+    opacity: initial;
+  }
+}
+
+@media (pointer: fine) {
+  /* Styles for non-touch devices */
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
