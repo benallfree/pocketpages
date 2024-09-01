@@ -35,12 +35,12 @@ app/
 
 ### Example Routes
 
-- `app/pb_hooks/pages/products/[productId]/index.ejs`:
+- `app/products/[productId]/index.ejs`:
 
   - URL: `/products/123`
   - Accessible Parameter: `params.productId` = `123`
 
-- `app/pb_hooks/pages/products/[productId]/reviews/[reviewId].ejs`:
+- `app/products/[productId]/reviews/[reviewId].ejs`:
   - URL: `/products/123/reviews/456`
   - Accessible Parameters: `params.productId` = `123`, `params.reviewId` = `456`
 
@@ -108,7 +108,7 @@ Let's say you have a URL like this:
 /products/123/reviews/456?sort=latest&highlight=true
 ```
 
-In your EJS template located at `app/pb_hooks/pages/products/[productId]/reviews/[reviewId].ejs`, you can access and utilize all these parameters:
+In your EJS template located at `app/products/[productId]/reviews/[reviewId].ejs`, you can access and utilize all these parameters:
 
 ```ejs
 <h1>Product ID: <%%= params.productId %></h1>
