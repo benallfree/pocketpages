@@ -2,9 +2,8 @@
   "name": "daisyui",
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
-    "dev:pocketbase": "gobot pocketbase --dir=pb_data --hooksDir=app/pb_hooks --dev serve",
-    "dev:css": "tailwindcss -i ./app/app.css -o ./app/pb_hooks/pages/app.css --watch",
-    "deploy": "bun ./deploy.ts"
+    "dev:pocketbase": "gobot pocketbase --dir=pb_data --hooksDir=app --dev serve",
+    "dev:css": "tailwindcss -i ./app/app.tailwind.css -o ./app/app.css --watch"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.14",
@@ -16,5 +15,8 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "pocketpages": "^0.0.2"
   }
 }
