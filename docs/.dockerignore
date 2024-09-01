@@ -175,5 +175,4 @@ dist
 .DS_Store
 
 
-.ftp-deploy-sync-state.json
 pb_data
