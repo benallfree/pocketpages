@@ -1,33 +1,36 @@
 <div class="hero min-h-screen bg-base-200">
   <div class="hero-content text-center">
     <div class="w-full flex flex-col items-center">
-      <h1 class="text-5xl font-bold">PocketPages</h1>
-      <p class="">Like PHP, but JS + PocketBase</p>
+      <div class="w-full max-w-xl">
+        <h1 class="text-5xl font-bold">PocketPages</h1>
+        <p class="py-6">Like PHP, but JS + PocketBase</p>
+        <div class="text-left w-full">
+          <pre><code class="language-bash ">bunx pocketpages new mynextapp</code></pre>
+        </div>
 
-      <div class="text-left md:w-full">
-        <pre><code class="language-bash">bunx pocketpages new mynextapp</code></pre>
+        <a href="/docs/overview" class="btn btn-primary mt-4 w-full"
+          >Get Started</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content text-center">
+    <div class="w-full flex flex-col items-center">
+      <h1 class="text-5xl font-bold">Server-Side app in 1 file</h1>
+      <p class="py-6">I made PocketPages because I like to start small.</p>
+      <div class="text-left">
+        <pre><code class="language-ejs">// index.ejs
+<%%= `Hello, PocketPages!` %></code></pre>
       </div>
 
-      <a href="/docs/overview" class="btn btn-primary mt-4 w-full"
-        >Get Started</a
-      >
-
-      <div class="bg-secondary text-secondary-content p-4 mt-8 rounded-3xl">
-        <div class="text-3xl">Server-Side app in 1 file</div>
-        <div class="text-left">
-          <pre><code class="language-ejs">// index.ejs
-<%%= `Hello, PocketPages!` %>
-</code></pre>
+      <div class="mockup-browser bg-primary border w-80 md:w-full">
+        <div class="mockup-browser-toolbar">
+          <div class="input">http://localhost:8090</div>
         </div>
-
-        <div class="mockup-browser bg-primary border w-64 md:w-full">
-          <div class="mockup-browser-toolbar">
-            <div class="input">http://localhost:8090</div>
-          </div>
-          <div class="bg-base-100 text-left px-4 pb-32">
-            Hello, PocketPages!
-          </div>
-        </div>
+        <div class="bg-base-100 text-left px-4 pb-32">Hello, PocketPages!</div>
       </div>
     </div>
   </div>
