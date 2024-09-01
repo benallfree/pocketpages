@@ -135,7 +135,7 @@ function MiddlewareHandler(next) {
         // dbg({ tryFnames })
         for (const maybeFname of tryFnames) {
           const parts = maybeFname.split('/').filter((p) => p)
-          dbg({ parts })
+          // dbg({ parts })
 
           // dbg({ routes })
           const routeCandidates = routes.filter(
@@ -182,7 +182,7 @@ function MiddlewareHandler(next) {
           context.data = safeLoad(maybeLoad, () => require(maybeLoad)(context))
         }
       }
-      dbg({ context })
+      // dbg({ context })
       const renderInLayout = (fname, slot) => {
         // dbg(`renderInLayout`, { fname, slot })
         if (!fname.startsWith(pagesRoot)) {
