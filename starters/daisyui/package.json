@@ -2,7 +2,7 @@
   "name": "daisyui",
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
-    "dev:pocketbase": "gobot pocketbase --dir=pb_data --hooksDir=app --dev serve",
+    "dev:pocketpages": "pocketpages dev",
     "dev:css": "tailwindcss -i ./app/app.tailwind.css -o ./app/app.css --watch"
   },
   "devDependencies": {
@@ -10,7 +10,6 @@
     "@types/bun": "latest",
     "concurrently": "^8.2.2",
     "daisyui": "^4.12.10",
-    "gobot": "^1.0.0-alpha.41",
     "tailwindcss": "^3.4.10"
   },
   "peerDependencies": {

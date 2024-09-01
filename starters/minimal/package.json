@@ -1,7 +1,7 @@
 {
   "name": "minimal",
   "scripts": {
-    "dev": "gobot pocketbase --dir=pb_data --hooksDir=app --dev serve"
+    "dev": "pocketpages dev"
   },
   "devDependencies": {
     "@types/bun": "latest",
