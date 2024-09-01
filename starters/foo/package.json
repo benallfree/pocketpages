@@ -1,9 +1,0 @@
-{
-  "name": "foo",
-  "scripts": {
-    "dev": "pocketpages dev"
-  },
-  "dependencies": {
-    "pocketpages": "^0.0.2"
-  }
-}
