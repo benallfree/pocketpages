@@ -5,7 +5,7 @@
   "bin": {
     "pocketpages": "./cli/index.ts"
   },
-  "main": "./pocketpages/index.js",
+  "main": "./lib/index.js",
   "devDependencies": {
     "@types/bun": "latest",
     "@types/node": "^22.5.1"

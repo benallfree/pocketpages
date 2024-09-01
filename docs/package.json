@@ -1,40 +1,20 @@
 {
-  "name": "pocketpages",
-  "version": "0.0.2",
+  "name": "pocketpages-docs",
   "type": "module",
-  "bin": {
-    "pocketpages": "./cli/index.ts"
-  },
-  "main": "./pocketpages/index.js",
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
-    "dev:pocketpages": "gobot pocketbase --dir=pb_data --hooksDir=app --dev --http=0.0.0.0:8091 serve",
-    "dev:css": "tailwindcss -i ./app/assets/app.src.css -o ./app/assets/app.css --watch",
-    "deploy": "bun ./deploy-pockethost.ts"
+    "dev:pocketpages": "pocketpages dev",
+    "dev:css": "tailwindcss -i ./app/assets/app.src.css -o ./app/assets/app.css --watch"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.8",
-    "@samkirkland/ftp-deploy": "^1.2.4",
     "@tailwindcss/typography": "^0.5.14",
-    "@types/bun": "latest",
-    "@types/env-paths": "^2.1.0",
-    "@types/node": "^22.5.1",
     "concurrently": "^8.2.2",
     "daisyui": "^4.12.10",
-    "dotenv": "^16.4.5",
-    "env-var": "^7.5.0",
-    "gobot": "^1.0.0-alpha.41",
     "postcss-import": "^16.1.0",
     "tailwindcss": "^3.4.10"
   },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
   "dependencies": {
-    "commander": "^12.1.0",
-    "env-paths": "^3.0.0",
-    "pocketpages": "^0.0.2",
-    "tsx": "^4.19.0"
-  },
-  "module": "index.ts"
+    "pocketpages": "^0.0.2"
+  }
 }

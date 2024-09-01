@@ -95,12 +95,7 @@ program
   .description('PocketPages CLI')
   .addCommand(
     new Command('dev').action(async () => {
-      const sourcePath = path.join(
-        __dirname,
-        '..',
-        'pocketpages',
-        '+boot.pb.js'
-      )
+      const sourcePath = path.join(__dirname, '..', 'lib', '+boot.pb.js')
       const destinationPath = path.join('app', '+pocketpages.pb.js')
       copyFileSync(sourcePath, destinationPath)
       const bot = await gobot(`pocketbase`)
