@@ -1,7 +1,7 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 const AfterBootstrapHandler = (e) => {
-  const { dbg } = require(`./pocketpages/log`)
+  const { dbg } = require(`./lib/log`)
 
   dbg(`pocketpages startup`)
 
@@ -48,14 +48,14 @@ const AfterBootstrapHandler = (e) => {
 }
 
 function MiddlewareHandler(next) {
-  const { dbg } = require(`./pocketpages/log`)
-  const stringify = require(`./pocketpages/safe-stable-stringify`)
+  const { dbg } = require(`./lib/log`)
+  const stringify = require(`./lib/safe-stable-stringify`)
 
   const { pagesRoot, routes } = $app.cache().get(`pocketpages`)
   // dbg(`pocketpages handler`)
 
-  const { existsSync, readFileSync } = require(`./pocketpages/fs`)
-  const { marked } = require(`./pocketpages/marked`)
+  const { existsSync, readFileSync } = require(`./lib/fs`)
+  const { marked } = require(`./lib/marked`)
 
   marked.use({
     useNewRenderer: true,
@@ -72,7 +72,7 @@ function MiddlewareHandler(next) {
       },
     },
   })
-  const ejs = require(`./pocketpages/ejs`)
+  const ejs = require(`./lib/ejs`)
   const oldCompile = ejs.compile
   ejs.compile = (template, opts) => {
     const fn = oldCompile(template, { ...opts })

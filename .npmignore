@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+!lib/**/*
+!cli/**/*
+!package.json
+!README.md
