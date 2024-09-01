@@ -4,6 +4,6 @@
     "dev": "pocketpages dev"
   },
   "dependencies": {
-    "pocketpages": "^0.0.3"
+    "pocketpages": "^0.0.2"
   }
 }
