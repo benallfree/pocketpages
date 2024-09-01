@@ -28,13 +28,16 @@ RUN unzip /tmp/pb.zip -d /pb/
 RUN mv /pb/pocketbase .
 
 # Copy application code
-COPY --link app .
+COPY --link package.json .
+copy --link bun.lockb .
+RUN bun i --production
+COPY --link app pb_hooks
 
 # Final stage for app image
 FROM base
 
 # Copy built application
-COPY --from=build /app /app
+COPY --from=build /app .
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 8090
