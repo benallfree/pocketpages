@@ -2525,6 +2525,10 @@ pre {
   top: 4rem;
 }
 
+.m-8 {
+  margin: 2rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -2532,6 +2536,10 @@ pre {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
 }
 
 .inline-block {
@@ -2610,6 +2618,14 @@ pre {
   align-items: center;
 }
 
+.rounded-sm {
+  border-radius: 0.125rem;
+}
+
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -2637,6 +2653,11 @@ pre {
 .bg-primary {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
+}
+
+.bg-secondary {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-s,oklch(var(--s)/var(--tw-bg-opacity)));
 }
 
 .stroke-current {
@@ -2678,8 +2699,28 @@ pre {
   line-height: 1;
 }
 
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
 .font-bold {
   font-weight: 700;
+}
+
+.text-base-100 {
+  --tw-text-opacity: 1;
+  color: var(--fallback-b1,oklch(var(--b1)/var(--tw-text-opacity)));
+}
+
+.text-primary-content {
+  --tw-text-opacity: 1;
+  color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
+}
+
+.text-secondary-content {
+  --tw-text-opacity: 1;
+  color: var(--fallback-sc,oklch(var(--sc)/var(--tw-text-opacity)));
 }
 
 div.code-toolbar > .toolbar {

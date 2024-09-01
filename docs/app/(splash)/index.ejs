@@ -3,18 +3,31 @@
     <div class="w-full flex flex-col items-center">
       <h1 class="text-5xl font-bold">PocketPages</h1>
       <p class="">Like PHP, but JS + PocketBase</p>
-      <a href="/docs/overview" class="btn btn-primary mt-4">Get Started</a>
-      <div class="text-left">
-        <pre><code class="language-ejs">// index.ejs
-<%%= `Hello, PocketPages!` %>
-</code></pre>
+
+      <div class="text-left md:w-full">
+        <pre><code class="language-bash">bunx pocketpages new mynextapp</code></pre>
       </div>
 
-      <div class="mockup-browser bg-primary border w-64">
-        <div class="mockup-browser-toolbar">
-          <div class="input">https://mynextapp.pockethost.io</div>
+      <a href="/docs/overview" class="btn btn-primary mt-4 w-full"
+        >Get Started</a
+      >
+
+      <div class="bg-secondary text-secondary-content p-4 mt-8 rounded-3xl">
+        <div class="text-3xl">Server-Side app in 1 file</div>
+        <div class="text-left">
+          <pre><code class="language-ejs">// index.ejs
+<%%= `Hello, PocketPages!` %>
+</code></pre>
         </div>
-        <div class="bg-base-100 text-left px-4 pb-32">Hello, PocketPages!</div>
+
+        <div class="mockup-browser bg-primary border w-64 md:w-full">
+          <div class="mockup-browser-toolbar">
+            <div class="input">http://localhost:8090</div>
+          </div>
+          <div class="bg-base-100 text-left px-4 pb-32">
+            Hello, PocketPages!
+          </div>
+        </div>
       </div>
     </div>
   </div>
