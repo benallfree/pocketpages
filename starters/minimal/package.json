@@ -1,9 +1,10 @@
 {
   "name": "minimal",
   "scripts": {
+    "serve": "pocketpages serve",
     "dev": "pocketpages dev"
   },
   "dependencies": {
-    "pocketpages": "0.0.2"
+    "pocketpages": "^0.0.4"
   }
 }
