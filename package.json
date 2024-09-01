@@ -5,6 +5,7 @@
   "bin": {
     "pocketpages": "./cli/index.ts"
   },
+  "main": "./lib/pocketpages.js",
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
     "dev:pocketpages": "gobot pocketbase --dir=pb_data --hooksDir=app/pb_hooks --dev --http=0.0.0.0:8091 serve",
