@@ -14,8 +14,12 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "command-exists": "^1.2.9",
     "commander": "^12.1.0",
     "gobot": "^1.0.0-alpha.41",
+    "inquirer": "^10.1.8",
+    "ora": "^8.1.0",
+    "tiged": "^2.12.7",
     "tsx": "^4.19.0"
   },
   "module": "index.ts"

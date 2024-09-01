@@ -3,13 +3,6 @@
   "scripts": {
     "dev": "pocketpages dev"
   },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "gobot": "^1.0.0-alpha.41"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
   "dependencies": {
     "pocketpages": "^0.0.2"
   }
