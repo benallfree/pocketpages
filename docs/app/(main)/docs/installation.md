@@ -3,9 +3,8 @@
 PocketPages provides many [Starter Kits](/docs/starter-kits) to help you get up and running quickly. The easiest one is called Minimal:
 
 ```bash
-bunx tiged benallfree/pocketpages/starters/minimal minimal
-cd minimal
-bun i
+bunx pocketpages new myapp --template=minimal
+cd myapp
 bun dev
 ```
 
