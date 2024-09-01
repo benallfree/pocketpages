@@ -12,14 +12,12 @@ Any file or directory that begins with an underscore (`_`) is considered private
 
 ```plaintext
 app/
-  pb_hooks/
-    pages/
-      _private/
-        config.js
-      _helpers/
-        _authCheck.ejs
-      index.ejs
-      about.ejs
+  _private/
+    config.js
+  _helpers/
+    _authCheck.ejs
+  index.ejs
+  about.ejs
 ```
 
 In this example:

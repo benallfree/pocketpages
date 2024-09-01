@@ -10,19 +10,17 @@ PocketPages provides a flexible way to handle request processing and enhance the
 
 ```plaintext
 app/
-  pb_hooks/
-    pages/
+  +middleware.js
+  products/
+    +middleware.js
+    [productId]/
       +middleware.js
-      products/
-        +middleware.js
-        [productId]/
-          +middleware.js
-          index.ejs
+      index.ejs
 ```
 
 ### How Middleware Execution Works
 
-1. **Root Level Middleware**: The `+middleware.js` file at the root level (`pages/+middleware.js`) is executed first.
+1. **Root Level Middleware**: The `+middleware.js` file at the root level (`+middleware.js`) is executed first.
 2. **Nested Middleware**: The `+middleware.js` file in the `products/` directory is executed next, and its results are merged with those from the root level.
 3. **Deepest Level Middleware**: Finally, the `+middleware.js` file in the `[productId]/` directory is executed, with its results merging and potentially overriding earlier results.
 4. **Merged Data**: The final merged data from all middleware files is available in the `data` object within your EJS templates.

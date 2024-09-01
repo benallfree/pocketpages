@@ -40,51 +40,49 @@ Consider the following directory structure:
 
 ```
 app/
-  pb_hooks/
-    pages/
+   +load.js
+   index.ejs
+   about/
       +load.js
       index.ejs
-      about/
-        +load.js
-        index.ejs
-      products/
-        +load.js
-        [productId]/
-          +load.js
-          index.ejs
-          details.ejs
-      contact.ejs
+   products/
+      +load.js
+      [productId]/
+         +load.js
+         index.ejs
+         details.ejs
+   contact.ejs
 ```
 
 ### Loader Execution Scenarios
 
 1. **Root Level Request (`/`)**:
 
-   - **Files Involved**: `app/pb_hooks/pages/+load.js`, `app/pb_hooks/pages/index.ejs`
+   - **Files Involved**: `app/+load.js`, `app/index.ejs`
    - **Loader Executed**: The loader in `pages/+load.js` will execute when accessing the root URL (`/`). The data returned by this loader will be available in `pages/index.ejs`.
 
 2. **About Page Request (`/about`)**:
 
-   - **Files Involved**: `app/pb_hooks/pages/about/+load.js`, `app/pb_hooks/pages/about/index.ejs`
+   - **Files Involved**: `app/about/+load.js`, `app/about/index.ejs`
    - **Loader Executed**: The loader in `pages/about/+load.js` will execute when accessing `/about`. The data returned will be available in `about/index.ejs`.
 
 3. **Products Page Request (`/products`)**:
 
-   - **Files Involved**: `app/pb_hooks/pages/products/+load.js`, `app/pb_hooks/pages/products/index.ejs`
+   - **Files Involved**: `app/products/+load.js`, `app/products/index.ejs`
    - **Loader Executed**: The loader in `pages/products/+load.js` will execute when accessing `/products`. The data returned will be available in `products/index.ejs`.
 
 4. **Product Details Request (`/products/123`)**:
 
-   - **Files Involved**: `app/pb_hooks/pages/products/[productId]/+load.js`, `app/pb_hooks/pages/products/[productId]/index.ejs`
+   - **Files Involved**: `app/products/[productId]/+load.js`, `app/products/[productId]/index.ejs`
    - **Loader Executed**: The loader in `pages/products/[productId]/+load.js` will execute when accessing `/products/123`. The data returned will be available in `products/[productId]/index.ejs`.
 
 5. **Product Details Specific Page (`/products/123/details`)**:
 
-   - **Files Involved**: `app/pb_hooks/pages/products/[productId]/+load.js`, `app/pb_hooks/pages/products/[productId]/details.ejs`
+   - **Files Involved**: `app/products/[productId]/+load.js`, `app/products/[productId]/details.ejs`
    - **Loader Executed**: The same loader in `pages/products/[productId]/+load.js` will execute for both `index.ejs` and `details.ejs` under `[productId]`. Therefore, when accessing `/products/123/details`, this loader will still be executed, and its data will be available in `details.ejs`.
 
 6. **Contact Page Request (`/contact`)**:
-   - **Files Involved**: `app/pb_hooks/pages/contact.ejs`
+   - **Files Involved**: `app/contact.ejs`
    - **Loader Executed**: No loader is executed because there is no `+load.js` file in the `pages/` directory that directly corresponds to the `contact.ejs` file. The template will render without additional data loading.
 
 ### Key Points to Remember

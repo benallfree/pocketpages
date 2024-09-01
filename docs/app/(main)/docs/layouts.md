@@ -10,14 +10,12 @@ A layout in PocketPages is an EJS template file named `+layout.ejs`. Layouts are
 
 ```plaintext
 app/
-  pb_hooks/
-    pages/
-      +layout.ejs
-      products/
-        +layout.ejs
-        [productId]/
-          index.ejs
-          details.ejs
+  +layout.ejs
+  products/
+  +layout.ejs
+  [productId]/
+    index.ejs
+    details.ejs
 ```
 
 ### How Layouts are Applied

@@ -60,13 +60,11 @@ Any EJS file that begins with an underscore (`_`) is considered a private partia
 
 ```
 app/
-  pb_hooks/
-    pages/
-      _header.ejs
-      _footer.ejs
-      index.ejs
-      about/
-        index.ejs
+  _header.ejs
+  _footer.ejs
+  index.ejs
+  about/
+    index.ejs
 ```
 
 - `_header.ejs` and `_footer.ejs` are private partials that can be included in `index.ejs` and `about/index.ejs`.
