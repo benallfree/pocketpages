@@ -15,6 +15,6 @@
     "tailwindcss": "^3.4.10"
   },
   "dependencies": {
-    "pocketpages": "^0.0.2"
+    "pocketpages": "^0.0.4"
   }
 }
