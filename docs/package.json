@@ -16,7 +16,10 @@
     "tailwindcss": "^3.4.10"
   },
   "dependencies": {
-    "pocketpages": "^0.0.4"
+    "pocketpages": "pocketpages.tgz"
   },
-  "trustedDependencies": ["esbuild", "lzma-native"]
+  "trustedDependencies": [
+    "esbuild",
+    "lzma-native"
+  ]
 }
