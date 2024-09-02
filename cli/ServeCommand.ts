@@ -1,8 +1,6 @@
+import { spawnSync } from 'child_process'
 import { Command } from 'commander'
-import { copyFileSync } from 'fs'
-import { gobot } from 'gobot'
-import path from 'path'
-import { __dirname } from '.'
+import { ensureBootloader } from './util/ensureBootloader'
 
 export const ServeCommand = () =>
   new Command('serve')
@@ -25,11 +23,11 @@ export const ServeCommand = () =>
     .action(async (options) => {
       const { http, dir, hooksDir, migrationsDir, publicDir, port, dev } =
         options
-      const sourcePath = path.join(__dirname, '..', 'lib', '+boot.pb.js')
-      const destinationPath = path.join('app', '+pocketpages.pb.js')
-      copyFileSync(sourcePath, destinationPath)
-      const bot = await gobot(`pocketbase`)
-      await bot.run(
+
+      await ensureBootloader()
+
+      spawnSync(
+        `pocketbase`,
         [
           `serve`,
           dev ? `--dev` : '',
@@ -39,5 +37,6 @@ export const ServeCommand = () =>
           `--migrationsDir=${migrationsDir}`,
           `--publicDir=${publicDir}`,
         ].filter(Boolean),
+        { stdio: 'inherit' },
       )
     })

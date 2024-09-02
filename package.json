@@ -8,6 +8,8 @@
   "main": "./lib/index.js",
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/command-exists": "^1.2.3",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.5.2",
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.0.0"
@@ -18,9 +20,11 @@
   "dependencies": {
     "command-exists": "^1.2.9",
     "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
     "gobot": "^1.0.0-alpha.41",
     "inquirer": "^10.1.8",
     "ora": "^8.1.0",
+    "pocketbase-bin": "^0.22.20-4",
     "tiged": "^2.12.7",
     "tsx": "^4.19.0"
   },
@@ -32,5 +36,8 @@
     "plugins": [
       "prettier-plugin-organize-imports"
     ]
-  }
+  },
+  "trustedDependencies": [
+    "pocketbase-bin"
+  ]
 }

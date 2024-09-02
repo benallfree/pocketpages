@@ -1,10 +1,14 @@
 {
   "name": "minimal",
   "scripts": {
+    "pocketpages": "pocketpages",
     "serve": "pocketpages serve",
-    "dev": "pocketpages dev"
+    "dev": "pocketpages serve --hooksDir=app --dev"
   },
   "dependencies": {
     "pocketpages": "^0.0.4"
+  },
+  "pocketbase": {
+    "version": "0.22.20"
   }
 }

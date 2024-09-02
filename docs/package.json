@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
-    "dev:pocketpages": "pocketpages dev",
+    "serve": "pocketpages serve",
+    "dev:pocketpages": "pocketpages serve --hooksDir=app --dev",
     "dev:css": "tailwindcss -i ./app/assets/app.tailwind.css -o ./app/assets/app.css --watch"
   },
   "devDependencies": {
@@ -16,5 +17,11 @@
   },
   "dependencies": {
     "pocketpages": "^0.0.4"
-  }
+  },
+  "pocketbase": {
+    "version": "0.22.20"
+  },
+  "trustedDependencies": [
+    "pocketbase-bin"
+  ]
 }
