@@ -21,7 +21,7 @@
     "command-exists": "^1.2.9",
     "commander": "^12.1.0",
     "fs-extra": "^11.2.0",
-    "gobot-pocketbase": "^0.22.20-7",
+    "gobot-pocketbase": "^0.22.20-8",
     "inquirer": "^10.1.8",
     "ora": "^8.1.0",
     "tiged": "^2.12.7",

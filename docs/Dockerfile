@@ -27,6 +27,8 @@ FROM base
 
 COPY --link package.json .
 COPY --link bun.lockb .
+COPY --link pocketpages.tgz .
+RUN bun add pocketpages.tgz
 RUN bun i --production
 COPY --link app app
 
