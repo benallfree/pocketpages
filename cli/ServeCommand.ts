@@ -1,11 +1,12 @@
-import { spawnSync } from 'child_process'
+import { exec } from 'child_process'
 import { Command } from 'commander'
+import { binPath } from 'gobot-pocketbase'
 import { ensureBootloader } from './util/ensureBootloader'
 
 export const ServeCommand = () =>
   new Command('serve')
     .description(`Run PocketPages in production mode`)
-    .option(`--http <http>`, `HTTP address to listen on`, `0.0.0.0`)
+    .option(`--host <host>`, `Host address to listen on`, `0.0.0.0`)
     .option(`--port <port>`, `HTTP port to listen on`, `8090`)
     .option(`--dir <dir>`, `Directory for data storage`, `pb_data`)
     .option(`--hooksDir <hooksDir>`, `Directory for hooks`, `pb_hooks`)
@@ -20,23 +21,29 @@ export const ServeCommand = () =>
       `Directory for public files`,
       `pb_public`,
     )
+    .allowUnknownOption()
+    .helpOption(false)
     .action(async (options) => {
-      const { http, dir, hooksDir, migrationsDir, publicDir, port, dev } =
+      const { host, dir, hooksDir, migrationsDir, publicDir, port, dev } =
         options
 
       await ensureBootloader()
 
-      spawnSync(
-        `pocketbase`,
+      const proc = exec(
         [
+          binPath,
           `serve`,
           dev ? `--dev` : '',
-          `--http=${http}:${port}`,
+          `--http=${host}:${port}`,
           `--dir=${dir}`,
           `--hooksDir=${hooksDir}`,
           `--migrationsDir=${migrationsDir}`,
           `--publicDir=${publicDir}`,
-        ].filter(Boolean),
-        { stdio: 'inherit' },
+        ]
+          .filter(Boolean)
+          .join(' '),
+        // { stdio: 'inherit' },
       )
+      proc.stdout?.pipe(process.stdout)
+      proc.stderr?.pipe(process.stderr)
     })

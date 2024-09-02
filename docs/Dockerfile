@@ -20,25 +20,16 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential pkg-config python-is-python3 unzip ca-certificates
 
-ARG PB_VERSION=0.22.19
-
-# download and unzip PocketBase
-ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
-RUN unzip /tmp/pb.zip -d /pb/
-RUN mv /pb/pocketbase .
-
-# Copy application code
-COPY --link package.json .
-copy --link bun.lockb .
-RUN bun i --production
-COPY --link app pb_hooks
+# NOOP
 
 # Final stage for app image
 FROM base
 
-# Copy built application
-COPY --from=build /app .
+COPY --link package.json .
+COPY --link bun.lockb .
+RUN bun i --production
+COPY --link app app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 8090
-CMD [ "./pocketbase", "serve", "--dev", "--http=0.0.0.0:8090", "--dir=/pb_data", "--migrationsDir=pb_migrations", "--hooksDir=pb_hooks" ]
+CMD [ "bun", "serve", "--dev", "--dir=/pb_data", "--hooksDir=app" ]

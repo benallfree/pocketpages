@@ -25,8 +25,11 @@ export const init = async () => {
 }
 
 export const InitCommand = () =>
-  new Command('init').description(`Initialize PocketPages`).action(async () => {
-    await init()
+  new Command('init')
+    .description(`Initialize PocketPages`)
+    .helpOption(false)
+    .action(async () => {
+      await init()
 
-    console.log(`PocketPages initialized`)
-  })
+      console.log(`PocketPages initialized`)
+    })

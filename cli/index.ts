@@ -13,6 +13,7 @@ export const CLI_ROOT = (...paths: string[]) =>
 
 program
   .description('PocketPages CLI')
+  .helpOption(false)
   .addCommand(
     new Command(`version`).action(async () => {
       console.log(`PocketPages v${version}`)

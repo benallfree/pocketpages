@@ -17,11 +17,5 @@
   },
   "dependencies": {
     "pocketpages": "^0.0.4"
-  },
-  "pocketbase": {
-    "version": "0.22.20"
-  },
-  "trustedDependencies": [
-    "pocketbase-bin"
-  ]
+  }
 }
