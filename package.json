@@ -21,11 +21,9 @@
     "command-exists": "^1.2.9",
     "commander": "^12.1.0",
     "fs-extra": "^11.2.0",
-    "gobot": "^1.0.0-alpha.41",
     "gobot-pocketbase": "^0.22.20-7",
     "inquirer": "^10.1.8",
     "ora": "^8.1.0",
-    "pocketbase-bin": "^0.22.20-4",
     "tiged": "^2.12.7",
     "tsx": "^4.19.0"
   },

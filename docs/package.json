@@ -17,5 +17,6 @@
   },
   "dependencies": {
     "pocketpages": "^0.0.4"
-  }
+  },
+  "trustedDependencies": ["esbuild", "lzma-native"]
 }
