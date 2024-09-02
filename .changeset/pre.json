@@ -1,0 +1,18 @@
+{
+  "mode": "pre",
+  "tag": "rc",
+  "initialVersions": {
+    "pocketpages": "0.0.4"
+  },
+  "changesets": [
+    "big-planets-guess",
+    "early-keys-marry",
+    "light-rivers-melt",
+    "poor-buses-juggle",
+    "swift-rings-destroy",
+    "tame-hornets-lick",
+    "tidy-fans-breathe",
+    "warm-rats-develop",
+    "yellow-clocks-cry"
+  ]
+}
