@@ -1,5 +1,0 @@
----
-'pocketpages': patch
----
-
-Added logo

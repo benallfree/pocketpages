@@ -1,5 +1,13 @@
 # pocketpages
 
+## 0.3.1
+
+### Patch Changes
+
+- b840e84: Added logo
+- b840e84: Fix: root page redirect loop
+- b840e84: Updated homepage
+
 ## 0.3.0
 
 ### Minor Changes

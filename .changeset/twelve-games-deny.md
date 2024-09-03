@@ -1,5 +1,0 @@
----
-'pocketpages': patch
----
-
-Updated homepage
