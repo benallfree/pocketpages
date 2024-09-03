@@ -6,9 +6,13 @@
     "dev": "pocketpages serve --hooksDir=app --dev"
   },
   "dependencies": {
-    "pocketpages": "^0.0.4"
+    "pocketpages": "^0.1.0"
   },
   "pocketbase": {
     "version": "0.22.20"
-  }
+  },
+  "trustedDependencies": [
+    "esbuild",
+    "gobot-pocketbase"
+  ]
 }

@@ -3,7 +3,7 @@
   "scripts": {
     "serve": "pocketpages serve",
     "dev": "concurrently \"bun:dev:*\"",
-    "dev:pocketpages": "pocketpages dev",
+    "dev:pocketpages": "pocketpages serve --hooksDir=app --dev",
     "dev:css": "tailwindcss -i ./app/app.tailwind.css -o ./app/app.css --watch"
   },
   "devDependencies": {
@@ -13,6 +13,10 @@
     "tailwindcss": "^3.4.10"
   },
   "dependencies": {
-    "pocketpages": "^0.0.4"
-  }
+    "pocketpages": "^0.1.0"
+  },
+  "trustedDependencies": [
+    "esbuild",
+    "gobot-pocketbase"
+  ]
 }
