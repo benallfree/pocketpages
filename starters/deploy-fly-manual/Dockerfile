@@ -5,6 +5,8 @@ ARG BUN_VERSION=1.1.26
 ARG NODE_VERSION=20
 FROM imbios/bun-node:${BUN_VERSION}-${NODE_VERSION}-alpine 
 
+RUN apk add ca-certificates
+
 LABEL fly_launch_runtime="Bun"
 
 # Set production environment
