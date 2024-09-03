@@ -98,13 +98,13 @@ This routing priority ensures that your custom logic and dynamic content in Pock
 
 In PocketPages, any route endpoint that resolves to an `index.ejs` file will automatically be redirected to use a trailing slash (`/`). This redirection ensures that sibling files can be loaded using relative paths from the browser URL.
 
-## Example Scenario
+### Example Scenario
 
 - **Without Trailing Slash**: If you navigate to `/foo`, which corresponds to `/app/foo/index.ejs`, the browser might try to load sibling resources with absolute paths, like `/foo/bar.ejs`. This can cause issues if you're relying on relative paths in your EJS templates.
 
 - **With Trailing Slash**: When `/app/foo/index.ejs` is accessed, it will automatically redirect to `/foo/`. This allows you to load sibling files like `/app/foo/bar.ejs` or resources such as `/app/foo/image.png` using relative paths directly from `/foo/index.ejs`.
 
-## Why This Matters
+### Why This Matters
 
 This trailing slash behavior is crucial for maintaining consistent and predictable file loading. For example:
 
@@ -116,7 +116,7 @@ This trailing slash behavior is crucial for maintaining consistent and predictab
 
 - **Expected Behavior**: With the redirect to `/foo/`, this relative path correctly resolves to `/app/foo/image.png`, simplifying resource management.
 
-## Practical Example
+### Practical Example
 
 Consider the following files in your `app/` directory:
 
