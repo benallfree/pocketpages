@@ -17,7 +17,7 @@ Once you have your instance URL (`something.pockethost.io`), you can choose eith
 Start by copying the PocketHost deployment utility script:
 
 ```bash
-bunx tiged benallfree/pocketpages/starters/deploy-pockethost . --force
+bunx pocketpages degit . --template=deploy-pockethost-manual
 bun add -D @samkirkland/ftp-deploy dotenv env-vars
 ```
 
@@ -50,8 +50,7 @@ bun run deploy
 You can also use a Github Actions configuration to deploy on every push.
 
 ```bash
-bunx tiged benallfree/pocketpages/starters/deploy-pockethost . --force
-cp deploy-pockethost.yaml .github/workflows
+bunx pocketpages degit . --template=deploy-pockethost-ga
 ```
 
 You'll need to set a few Github secrets. Look in the YAML file for details.
@@ -61,7 +60,7 @@ You'll need to set a few Github secrets. Look in the YAML file for details.
 _Warning: Self-hosting is an advanced setup. I know Fly pretty well and it still took me an hour._
 
 ```bash
-bunx tiged benallfree/pocketpages/starters/deploy-fly .
+bunx pocketpages degit . --template=deploy-fly-ga .
 ```
 
 After this, you should see a `Dockerfile` and `fly.toml`.

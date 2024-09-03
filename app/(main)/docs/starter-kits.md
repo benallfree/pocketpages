@@ -34,6 +34,8 @@ To start editing, find
 
 Changes appear immediately on the next refresh.
 
+For more detail, see https://github.com/benallfree/pocketpages/blob/master/starters/minimal
+
 ## daisyui
 
 The `daisyui` starter kit incorporates Daisy UI and Tailwind.
@@ -44,10 +46,20 @@ cd myapp
 bun dev # or npm,yarn,pnpm...
 ```
 
-## deploy-pockethost
+For more detail, see https://github.com/benallfree/pocketpages/blob/master/starters/daisyui
 
-This kit helps you deploy to pockethost.io. See the [deployment guide](/docs/deploying) for more details.
+## deploy-pockethost-manual
 
-## deploy-fly
+This kit helps you deploy manually to pockethost.io. See the [deployment guide](/docs/deploying) for more details.
 
-This kit helps you deploy to fly.io. See the [deployment guide](/docs/deploying) for more details.
+## deploy-pockethost-ga
+
+This kit helps you deploy as a Github Action to pockethost.io. See the [deployment guide](/docs/deploying) for more details.
+
+## deploy-fly-manual
+
+This kit helps you deploy manually to fly.io. See the [deployment guide](/docs/deploying) for more details.
+
+## deploy-fly-ga
+
+This kit helps you deploy via Github Action to fly.io. It requires `deploy-fly-manual` as well. See the [deployment guide](/docs/deploying) for more details.

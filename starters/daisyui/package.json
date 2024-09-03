@@ -1,7 +1,9 @@
 {
   "name": "daisyui",
   "scripts": {
-    "serve": "pocketpages serve",
+    "pocketbase": "pocketbase",
+    "pocketpages": "pocketpages",
+    "serve": "pocketpages serve --hooksDir=app --dev",
     "dev": "concurrently \"bun:dev:*\"",
     "dev:pocketpages": "pocketpages serve --hooksDir=app --dev",
     "dev:css": "tailwindcss -i ./app/app.tailwind.css -o ./app/app.css --watch"

@@ -1,8 +1,9 @@
 {
   "name": "minimal",
   "scripts": {
+    "pocketbase": "pocketbase",
     "pocketpages": "pocketpages",
-    "serve": "pocketpages serve",
+    "serve": "pocketpages serve --hooksDir=app",
     "dev": "pocketpages serve --hooksDir=app --dev"
   },
   "dependencies": {
