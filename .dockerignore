@@ -1,0 +1,6 @@
+*
+!app/**
+!cli/**
+!lib/**
+!package.json
+!bun.lockb

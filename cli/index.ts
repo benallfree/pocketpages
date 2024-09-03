@@ -1,8 +1,8 @@
 #!/usr/bin/env tsx
 
 import { Command, program } from 'commander'
+import { version as pbVersion } from 'gobot-pocketbase'
 import { dirname, join } from 'path'
-import pbPkg from 'pocketbase-bin/package.json'
 import { version } from '../package.json'
 import { NewCommand } from './commands/NewCommand'
 import { InitCommand } from './InitCommand'
@@ -17,7 +17,7 @@ program
   .addCommand(
     new Command(`version`).action(async () => {
       console.log(`PocketPages v${version}`)
-      console.log(`PocketBase v${pbPkg.pocketbase.version}`)
+      console.log(`PocketBase v${pbVersion}`)
     }),
   )
   .addCommand(NewCommand())

@@ -174,3 +174,5 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 
+app/+pocketpages.pb.js
+pb_data

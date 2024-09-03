@@ -6,9 +6,6 @@ FROM oven/bun:${BUN_VERSION}-slim as base
 
 LABEL fly_launch_runtime="Bun"
 
-# Bun app lives here
-WORKDIR /app
-
 # Set production environment
 ENV NODE_ENV="production"
 
@@ -25,12 +22,12 @@ RUN apt-get update -qq && \
 # Final stage for app image
 FROM base
 
+
+WORKDIR /app-home
 COPY --link package.json .
 COPY --link bun.lockb .
-COPY --link pocketpages.tgz .
-RUN bun add pocketpages.tgz
-RUN bun i --production
-COPY --link app app
+RUN bun i --production --verbose
+COPY --link . .
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 8090
