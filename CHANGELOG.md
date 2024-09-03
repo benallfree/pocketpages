@@ -1,5 +1,24 @@
 # pocketpages
 
+## 0.3.0
+
+### Minor Changes
+
+- 6f82288: Added ability to only use the EJS preprocessor for specific file types (default .md and .ejs)
+
+### Patch Changes
+
+- 6f82288: Docs: Added Amazon SES SMTP speedrun
+- 6f82288: Imroved log formatting
+- 6f82288: Added support for +config.js in root
+- 6f82288: Docs: added +config.js section
+- 6f82288: Fix: redirect to / suffix if hitting index handler
+- b27b11a: Speedrun: One-Time Passwords
+- c9e2fb4: Added ca-certificates to Dockerfiles (needed for SMTP sending)
+- 6f82288: Fixed static file serving bugs
+- 6f82288: Enh: issue warning when loading from ./lib instead of npm package
+- b27b11a: Cosmetic fixes
+
 ## 0.2.0
 
 ### Minor Changes
