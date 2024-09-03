@@ -4,6 +4,7 @@ import { Command, program } from 'commander'
 import { version as pbVersion } from 'gobot-pocketbase'
 import { dirname, join } from 'path'
 import { version } from '../package.json'
+import { DegitCommand } from './commands/DegitCommand'
 import { NewCommand } from './commands/NewCommand'
 import { InitCommand } from './InitCommand'
 import { ServeCommand } from './ServeCommand'
@@ -23,5 +24,6 @@ program
   .addCommand(NewCommand())
   .addCommand(ServeCommand())
   .addCommand(InitCommand())
+  .addCommand(DegitCommand())
 
   .parseAsync(process.argv)
