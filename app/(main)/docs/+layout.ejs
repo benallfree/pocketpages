@@ -3,11 +3,12 @@
   <div class="drawer-content flex flex-col p-4">
     <label
       for="my-drawer-2"
-      class="btn btn-primary drawer-button lg:hidden m-8"
+      class="btn btn-primary drawer-button lg:hidden m-8 max-w-xs"
     >
       Table of Contents
     </label>
-    <%- slot %>
+    <article class="prose"><%- slot %></article>
+
     <!-- Page content here -->
   </div>
   <div class="drawer-side">
@@ -17,7 +18,7 @@
       class="drawer-overlay"
     ></label>
     <ul class="menu bg-base-200 text-base-content min-h-full w-64 p-4 m-0 toc">
-      <%- include(`toc.md`) %>
+      <article class="prose"><%- include(`toc.md`) %></article>
     </ul>
   </div>
 </div>

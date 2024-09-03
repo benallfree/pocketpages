@@ -2642,12 +2642,16 @@ pre {
   max-width: 100%;
 }
 
-.max-w-none {
-  max-width: none;
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .max-w-xl {
   max-width: 36rem;
+}
+
+.max-w-xs {
+  max-width: 20rem;
 }
 
 .flex-1 {

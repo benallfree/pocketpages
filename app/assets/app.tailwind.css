@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+  .code-toolbar {
+    @apply max-w-lg;
+  }
+
   .toc {
     h1 {
       @apply text-lg;

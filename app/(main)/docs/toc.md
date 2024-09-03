@@ -30,6 +30,7 @@
 
 - [Custom Domains on Fly+Cloudflare](/docs/speedruns/custom-domain-fly-cloudflare)
 - [Custom Domains on pockethost.io](/docs/speedruns/custom-domain-pockethost)
+- [One-Time Passwords](/docs/speedruns/otpbun d)
 - AlpineJS
 - APIs
 - DaisyUI
