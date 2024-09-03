@@ -19,6 +19,7 @@
 - [Markdown](/docs/markdown)
 - [Managing Secrets](/docs/secrets)
 - [Going Live](/docs/deploying)
+- [Runtime Configuration](/docs/config)
 
 # Guides
 
@@ -30,7 +31,8 @@
 
 - [Custom Domains on Fly+Cloudflare](/docs/speedruns/custom-domain-fly-cloudflare)
 - [Custom Domains on pockethost.io](/docs/speedruns/custom-domain-pockethost)
-- [One-Time Passwords](/docs/speedruns/otpbun d)
+- [One-Time Passwords](/docs/speedruns/otp)
+- [Outgoing Email with Amazon SES](/docs/speedruns/ses)
 - AlpineJS
 - APIs
 - DaisyUI
