@@ -1,5 +1,18 @@
 # pocketpages
 
+## 0.2.0
+
+### Minor Changes
+
+- 18450fb: Added `degit` command for better template support
+
+### Patch Changes
+
+- 18450fb: Doc fixes for starter kits
+- 18450fb: Fixed `new` command where manual names weren't properly parsed
+- 18450fb: Docs for custom domains
+- 18450fb: Refactored starter kits & docs
+
 ## 0.1.1
 
 ### Patch Changes
