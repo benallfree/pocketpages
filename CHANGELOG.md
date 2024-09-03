@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.1.1
+
+### Patch Changes
+
+- 323aaa3: Fixed bun compat in minimal and daisy starters and updated pocketpages dep
+
 ## 0.1.0
 
 ### Patch Changes

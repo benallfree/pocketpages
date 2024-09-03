@@ -1,6 +1,6 @@
 {
   "name": "pocketpages",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "bin": {
     "pocketpages": "./cli/index.ts"
