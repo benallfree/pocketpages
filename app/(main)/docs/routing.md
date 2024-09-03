@@ -94,9 +94,49 @@ When a request is made to `/about`, the PocketPages route (`index.ejs`) will be 
 
 This routing priority ensures that your custom logic and dynamic content in PocketPages are always prioritized, giving you full control over the routing and content delivery in your application.
 
-## Summary
+## Trailing Slash Redirects for `index.ejs`
 
-### Updated Summary
+In PocketPages, any route endpoint that resolves to an `index.ejs` file will automatically be redirected to use a trailing slash (`/`). This redirection ensures that sibling files can be loaded using relative paths from the browser URL.
+
+## Example Scenario
+
+- **Without Trailing Slash**: If you navigate to `/foo`, which corresponds to `/app/foo/index.ejs`, the browser might try to load sibling resources with absolute paths, like `/foo/bar.ejs`. This can cause issues if you're relying on relative paths in your EJS templates.
+
+- **With Trailing Slash**: When `/app/foo/index.ejs` is accessed, it will automatically redirect to `/foo/`. This allows you to load sibling files like `/app/foo/bar.ejs` or resources such as `/app/foo/image.png` using relative paths directly from `/foo/index.ejs`.
+
+## Why This Matters
+
+This trailing slash behavior is crucial for maintaining consistent and predictable file loading. For example:
+
+- **EJS Template**: If `/app/foo/index.ejs` includes an image file, you can reference it with a relative path:
+
+  ```html
+  <img src="image.png" />
+  ```
+
+- **Expected Behavior**: With the redirect to `/foo/`, this relative path correctly resolves to `/app/foo/image.png`, simplifying resource management.
+
+## Practical Example
+
+Consider the following files in your `app/` directory:
+
+```
+app/
+  foo/
+    index.ejs
+    bar.ejs
+    image.png
+```
+
+When you visit `/foo`, it will redirect to `/foo/`. As a result:
+
+- `/foo/` serves `index.ejs`
+- Relative paths like `<img src="image.png" />` within `index.ejs` resolve correctly to `/foo/image.png`.
+- Sibling files like `bar.ejs` can be accessed via `/foo/bar`.
+
+This behavior ensures that your URLs remain clean and logical while maintaining the ability to use relative paths within your EJS templates efficiently.
+
+## Summary
 
 File-based routing in PocketPages allows you to effortlessly create intuitive and well-structured URLs by organizing your EJS files and folders within the `app/` directory. By following the directory structure, your application’s routing will naturally align with your layout, making it easy to manage and scale.
 
