@@ -2,6 +2,25 @@
 
 PocketPages supports file-based routing, allowing you to create a clean and intuitive URL structure directly from your file and folder organization. This guide will discuss how to set up file-based routing using a nested directory structure, ensuring your application's URLs align with the layout of your EJS files.
 
+<!-- TOC -->
+
+- [Understanding File-Based Routing](#understanding-file-based-routing)
+  - [Basic Example](#basic-example)
+  - [How the Routing Works](#how-the-routing-works)
+  - [Special Cases - index.ejs](#special-cases---indexejs)
+  - [Example Directory and Routes](#example-directory-and-routes)
+- [Tips for Structuring Your Routes](#tips-for-structuring-your-routes)
+  - [PocketPages Routing Priority](#pocketpages-routing-priority)
+    - [Example Scenario](#example-scenario)
+  - [Key Points](#key-points)
+- [Trailing Slash Redirects for index Files](#trailing-slash-redirects-for-index-files)
+  - [Example Scenario](#example-scenario)
+  - [Why This Matters](#why-this-matters)
+  - [Practical Example](#practical-example)
+- [Summary](#summary)
+
+<!-- /TOC -->
+
 ## Understanding File-Based Routing
 
 File-based routing means that the URLs in your application are automatically determined by the file and folder structure within the `app/` directory. Each `.ejs` file corresponds to a unique route, and the nested folders reflect URL paths.
@@ -94,9 +113,9 @@ When a request is made to `/about`, the PocketPages route (`index.ejs`) will be 
 
 This routing priority ensures that your custom logic and dynamic content in PocketPages are always prioritized, giving you full control over the routing and content delivery in your application.
 
-## Trailing Slash Redirects for `index.ejs`
+## Trailing Slash Redirects for index Files
 
-In PocketPages, any route endpoint that resolves to an `index.ejs` file will automatically be redirected to use a trailing slash (`/`). This redirection ensures that sibling files can be loaded using relative paths from the browser URL.
+In PocketPages, any route endpoint that resolves to an `index` (of any extension) will automatically be redirected to use a trailing slash (`/`). This redirection ensures that sibling files can be loaded using relative paths from the browser URL.
 
 ### Example Scenario
 
@@ -138,8 +157,10 @@ This behavior ensures that your URLs remain clean and logical while maintaining 
 
 ## Summary
 
-File-based routing in PocketPages allows you to effortlessly create intuitive and well-structured URLs by organizing your EJS files and folders within the `app/` directory. By following the directory structure, your application’s routing will naturally align with your layout, making it easy to manage and scale.
+PocketPages provides a powerful and intuitive way to manage routing and content delivery in your application:
 
-In addition to providing a clear and organized routing system, PocketPages routes take precedence over any default PocketBase routes or static files in the `pb_public/` directory. This ensures that your custom logic, dynamic content, and EJS templates are always prioritized, giving you full control over the routing and content delivery in your application.
+- **File-Based Routing**: Automatically maps your directory structure to clean URLs.
+- **Custom Configuration**: Allows for flexible preprocessor setup with `+config.js`.
+- **Routing Prioritization**: Ensures your dynamic content and routes are always served over default static files.
 
-Whether you’re building a simple site with a few pages or a complex application with multiple nested sections, PocketPages' file-based routing offers a straightforward and efficient way to map your content to URLs, ensuring that your application's routing behaves exactly as you intend.
+By organizing your files and configuring your application correctly, you can build scalable and maintainable applications with PocketPages.
