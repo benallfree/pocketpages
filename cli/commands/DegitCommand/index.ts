@@ -10,7 +10,7 @@ import { selectPackageManager } from './selectPackageManager'
 export const DegitCommand = () =>
   new Command('degit')
     .description(`Clone a starter template`)
-    .argument('<name>', 'Name of the destination directory', '.')
+    .argument('<name>', 'Name of the destination directory')
     .option('-t, --template <template>', 'Template to use')
     .action(async (name, { template }) => {
       const finalTemplate = await (async () => {
