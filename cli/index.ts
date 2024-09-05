@@ -1,12 +1,14 @@
 #!/usr/bin/env tsx
 
 import { Command, program } from 'commander'
+import 'dotenv/config'
 import { version as pbVersion } from 'gobot-pocketbase'
 import { dirname, join } from 'path'
 import { version } from '../package.json'
 import { DegitCommand } from './commands/DegitCommand'
 import { NewCommand } from './commands/NewCommand'
 import { InitCommand } from './InitCommand'
+import { LoginCommand } from './LoginCommand'
 import { ServeCommand } from './ServeCommand'
 
 export const CLI_ROOT = (...paths: string[]) =>
@@ -25,5 +27,6 @@ program
   .addCommand(ServeCommand())
   .addCommand(InitCommand())
   .addCommand(DegitCommand())
+  .addCommand(LoginCommand())
 
   .parseAsync(process.argv)

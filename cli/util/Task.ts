@@ -13,8 +13,7 @@ export async function runTasks(tasks: Task[]): Promise<void> {
       spinner.succeed(`${task.name}`)
     } catch (error) {
       spinner.fail(`${task.name}`)
-      console.error('Error:', error)
-      process.exit(1) // Exit if any task fails
+      throw error
     }
   }
 }

@@ -1,6 +1,7 @@
 import { exec } from 'child_process'
 import { Command } from 'commander'
 import { binPath } from 'gobot-pocketbase'
+import { POCKETPAGES_MOTHERSHIP_URL } from './LoginCommand'
 import { ensureBootloader } from './util/ensureBootloader'
 
 export const ServeCommand = () =>
@@ -46,4 +47,5 @@ export const ServeCommand = () =>
       )
       proc.stdout?.pipe(process.stdout)
       proc.stderr?.pipe(process.stderr)
+      console.log(`Now serving on ${POCKETPAGES_MOTHERSHIP_URL()}`)
     })

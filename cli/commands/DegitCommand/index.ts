@@ -1,8 +1,8 @@
 #!/usr/bin/env tsx
 
+import { confirm, input, select } from '@inquirer/prompts'
 import { Command } from 'commander'
 import { existsSync } from 'fs'
-import inquirer from 'inquirer'
 import tiged from 'tiged'
 import { runTasks } from '../../util/Task'
 import { selectPackageManager } from './selectPackageManager'
@@ -10,7 +10,7 @@ import { selectPackageManager } from './selectPackageManager'
 export const DegitCommand = () =>
   new Command('degit')
     .description(`Clone a starter template`)
-    .argument('<name>', 'Name of the destination directory', '.')
+    .argument('<name>', 'Name of the destination directory')
     .option('-t, --template <template>', 'Template to use')
     .action(async (name, { template }) => {
       const finalTemplate = await (async () => {
@@ -20,32 +20,24 @@ export const DegitCommand = () =>
             : `benallfree/pocketpages/starters/${template}`
         }
         {
-          const { templateName } = await inquirer.prompt([
-            {
-              type: 'list',
-              name: 'templateName',
-              message: 'Choose your template:',
-              choices: [
-                `deploy-fly-manual`,
-                `deploy-fly-ga`,
-                `deploy-pockethost-ga`,
-                `deploy-pockethost-manual`,
-                'other (you specify)',
-              ],
-            },
-          ])
+          const templateName = await select({
+            message: 'Choose your template:',
+            choices: [
+              `deploy-fly-manual`,
+              `deploy-fly-ga`,
+              `deploy-pockethost-ga`,
+              `deploy-pockethost-manual`,
+              'other (you specify)',
+            ].map((name) => ({ name, value: name })),
+          })
           if (templateName !== 'other (you specify)') {
             return `benallfree/pocketpages/starters/${templateName}`
           }
         }
         {
-          const { templateName } = await inquirer.prompt([
-            {
-              type: 'input',
-              name: 'templateName',
-              message: 'Enter the template name:',
-            },
-          ])
+          const templateName = await input({
+            message: 'Enter the template name:',
+          })
           return templateName.includes('/')
             ? templateName
             : `benallfree/pocketpages/starters/${templateName}`
@@ -58,13 +50,9 @@ export const DegitCommand = () =>
 
       const force = await (async () => {
         if (name !== '.' && existsSync(name)) {
-          const { force } = await inquirer.prompt([
-            {
-              type: 'confirm',
-              name: 'force',
-              message: `Directory ${name} already exists. Overwrite?`,
-            },
-          ])
+          const force = await confirm({
+            message: `Directory ${name} already exists. Overwrite?`,
+          })
           return force
         }
       })()
@@ -78,9 +66,9 @@ export const DegitCommand = () =>
               force: force || name === '.',
             })
 
-            emitter.on('info', (info) => {
-              // console.log(info.message);
-            })
+            // emitter.on('info', (info) => {
+            //    console.log(info.message);
+            // })
 
             await emitter.clone(name)
           },

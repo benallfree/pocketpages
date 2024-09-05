@@ -1,8 +1,8 @@
 #!/usr/bin/env tsx
 
+import { confirm, input, select } from '@inquirer/prompts'
 import { Command } from 'commander'
 import { existsSync } from 'fs'
-import inquirer from 'inquirer'
 import { chdir } from 'process'
 import tiged from 'tiged'
 import { ensureBootloader } from '../../util/ensureBootloader'
@@ -26,26 +26,20 @@ export const NewCommand = () =>
             : `benallfree/pocketpages/starters/${template}`
         }
         {
-          const { templateName } = await inquirer.prompt([
-            {
-              type: 'list',
-              name: 'templateName',
-              message: 'Choose your template:',
-              choices: ['minimal', 'daisyui', 'other (you specify)'],
-            },
-          ])
+          const templateName = await select({
+            message: 'Choose your template:',
+            choices: ['minimal', 'daisyui', 'other (you specify)'].map(
+              (name) => ({ name, value: name }),
+            ),
+          })
           if (templateName !== 'other (you specify)') {
             return `benallfree/pocketpages/starters/${templateName}`
           }
         }
         {
-          const { templateName } = await inquirer.prompt([
-            {
-              type: 'input',
-              name: 'templateName',
-              message: 'Enter the template name:',
-            },
-          ])
+          const templateName = await input({
+            message: 'Enter the template name:',
+          })
           return templateName.includes('/')
             ? templateName
             : `benallfree/pocketpages/starters/${templateName}`
@@ -58,13 +52,9 @@ export const NewCommand = () =>
 
       const force = await (async () => {
         if (existsSync(name)) {
-          const { force } = await inquirer.prompt([
-            {
-              type: 'confirm',
-              name: 'force',
-              message: `Directory ${name} already exists. Overwrite?`,
-            },
-          ])
+          const force = await confirm({
+            message: `Directory ${name} already exists. Overwrite?`,
+          })
           return force
         }
       })()
@@ -78,9 +68,9 @@ export const NewCommand = () =>
               force,
             })
 
-            emitter.on('info', (info) => {
-              // console.log(info.message);
-            })
+            // emitter.on('info', (info) => {
+            //   console.log(info.message);
+            // })
 
             await emitter.clone(name)
           },

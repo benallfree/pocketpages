@@ -2,4 +2,4 @@
 'pocketpages': patch
 ---
 
-Fix: degit command missing :D
+Now using @inquirer/prompts

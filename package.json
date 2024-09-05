@@ -1,6 +1,6 @@
 {
   "name": "pocketpages",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "type": "module",
   "bin": {
     "pocketpages": "./cli/index.ts"
@@ -25,18 +25,25 @@
     "concurrently": "^8.2.2",
     "daisyui": "^4.12.10",
     "postcss-import": "^16.1.0",
-    "tailwindcss": "^3.4.10"
+    "tailwindcss": "^3.4.10",
+    "@types/env-paths": "^2.1.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@inquirer/prompts": "^5.4.0",
     "command-exists": "^1.2.9",
     "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "email-validator": "^2.0.4",
+    "env-paths": "^3.0.0",
+    "env-var": "^7.5.0",
     "fs-extra": "^11.2.0",
     "gobot-pocketbase": "^0.22.20-14",
-    "inquirer": "^10.1.8",
     "ora": "^8.1.0",
+    "pocketbase": "^0.21.5",
+    "pocketbase-otp": "^0.0.1",
     "tiged": "^2.12.7",
     "tsx": "^4.19.0"
   },

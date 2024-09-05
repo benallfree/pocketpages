@@ -1,6 +1,6 @@
+import { select } from '@inquirer/prompts'
 import { spawnSync } from 'child_process'
 import commandExists from 'command-exists'
-import inquirer from 'inquirer'
 
 export function runPackageManagerInstall(packageManager: string) {
   const result = spawnSync(`${packageManager}`, ['install'], {
@@ -43,17 +43,15 @@ export async function selectPackageManager(): Promise<string> {
     }
   }
 
-  const choices = managers.map((manager) => manager.name)
+  const choices = managers
+    .map((manager) => manager.name)
+    .map((name) => ({ name, value: name }))
 
-  const { chosenManager } = await inquirer.prompt<{ chosenManager: string }>([
-    {
-      type: 'list',
-      name: 'chosenManager',
-      message: 'Select your preferred package manager:',
-      choices,
-      default: defaultManager,
-    },
-  ])
+  const chosenManager = await select({
+    message: 'Select your preferred package manager:',
+    choices,
+    default: defaultManager,
+  })
 
   return chosenManager
 }

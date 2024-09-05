@@ -2582,10 +2582,6 @@ pre {
   margin-right: 0.5rem;
 }
 
-.mb-1 {
-  margin-bottom: 0.25rem;
-}
-
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -2644,10 +2640,6 @@ pre {
 
 .max-w-lg {
   max-width: 32rem;
-}
-
-.max-w-xl {
-  max-width: 36rem;
 }
 
 .max-w-xs {
@@ -2715,11 +2707,6 @@ pre {
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
-}
-
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
 }
 
 .pb-32 {

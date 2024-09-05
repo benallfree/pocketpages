@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.3.2
+
+### Patch Changes
+
+- c0b4178: Fix: degit command missing :D
+
 ## 0.3.1
 
 ### Patch Changes
