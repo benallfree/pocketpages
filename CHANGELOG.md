@@ -1,5 +1,17 @@
 # pocketpages
 
+## 0.4.0
+
+### Minor Changes
+
+- 0fb14db: Add one time password (OTP) support and CLI `login` command
+- 0fb14db: Added support for POCKETPAGES_HOME and POCKETPAGES_MOTHERSHIP_URL env vars
+- 0fb14db: Added support for local settings storage (such as auth token)
+
+### Patch Changes
+
+- 0fb14db: Now using @inquirer/prompts
+
 ## 0.3.2
 
 ### Patch Changes
