@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.4.1
+
+### Patch Changes
+
+- 1c7f643: Fix: fs-extra/esm import
+
 ## 0.4.0
 
 ### Minor Changes
