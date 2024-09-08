@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .code-toolbar {
+    @apply max-w-lg;
+  }
+
+  .toc {
+    h1 {
+      @apply text-lg;
+    }
+    ul {
+      @apply pl-0;
+      @apply list-none;
+      @apply mt-0;
+    }
+    li {
+      @apply m-0 p-0;
+    }
+  }
+  pre {
+    background-color: #282c34 !important;
+  }
+}
+
+@media (pointer: coarse) {
+  /* Styles for touch devices */
+  div.code-toolbar > .toolbar {
+    opacity: initial;
+  }
+}
+
+@media (pointer: fine) {
+  /* Styles for non-touch devices */
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a,
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+  @apply text-neutral-content bg-neutral-700 lowercase p-0.5 pb-1;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a:hover,
+div.code-toolbar > .toolbar > .toolbar-item > a:focus,
+div.code-toolbar > .toolbar > .toolbar-item > button:hover,
+div.code-toolbar > .toolbar > .toolbar-item > button:focus,
+div.code-toolbar > .toolbar > .toolbar-item > span:hover,
+div.code-toolbar > .toolbar > .toolbar-item > span:focus {
+  @apply bg-neutral-600 text-neutral-content;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a[data-copy-state='copy-success'],
+div.code-toolbar
+  > .toolbar
+  > .toolbar-item
+  > button[data-copy-state='copy-success'],
+div.code-toolbar
+  > .toolbar
+  > .toolbar-item
+  > span[data-copy-state='copy-success'] {
+  @apply text-success;
+}

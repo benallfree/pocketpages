@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.4.2
+
+### Patch Changes
+
+- Added daisyui-docs starter kit
+
 ## 0.4.1
 
 ### Patch Changes
