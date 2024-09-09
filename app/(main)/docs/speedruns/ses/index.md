@@ -1,51 +1,97 @@
-### Speedrun: Setting Up Email with Google Suite and AWS SES
+# Speedrun: Setting Up Email with Google Suite and AWS SES
 
-1. **Choose an Email Provider**:
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
-   - To receive emails, you'll need an email provider. I use Google Suite, but you can choose any provider you prefer. In Google Suite, you can set up an "alias domain," which involves a verification step where you need to update your DNS records.
+<!-- code_chunk_output -->
 
-2. **Domain Verification**:
+- [Prerequisite: Make sure you can receive emails first](#prerequisite-make-sure-you-can-receive-emails-first)
+- [Create an SES Identity](#create-an-ses-identity)
+- [Add DNS Records](#add-dns-records)
+- [Add a custom FROM domain](#add-a-custom-from-domain)
+- [Add DMARC settings](#add-dmarc-settings)
+- [Verifying the Setup](#verifying-the-setup)
+- [Submit for Approval](#submit-for-approval)
+- [Creating SMTP Credentials](#creating-smtp-credentials)
+- [Configure SMTP in PocketBase](#configure-smtp-in-pocketbase)
 
-   - If you're using Cloudflare as your DNS manager, Google will automatically recognize it and add the necessary DNS records. If you're using another DNS provider, you may need to add these records manually. After verifying the domain, you may need to go through additional activation steps, such as activating Gmail, which involves configuring MX records in Cloudflare. Again, you might need to do this manually depending on your setup.
+<!-- /code_chunk_output -->
 
-   ![Google DNS Setup](2024-09-03-07-00-59.png)
+## Prerequisite: Make sure you can receive emails first
 
-3. **Setting Up a Catch-All Email**:
+To receive emails, you'll need an email provider. I use Google Suite, but you can choose any provider you prefer.
 
-   - In Google Suite, I set up a catch-all email so that any email sent to `<anything>@pocketpages.dev` is routed to `ben@pocketpages.dev` if the specific email address doesn’t exist. This is optional, but you might want to consider what happens to unrecognized email addresses in your setup.
+[Setting up a new email domain in Google Suite](/docs/speedruns/gs-gmail).
 
-4. **Test Your Email Setup**:
+(Someone should write about how to do it using Proton.me)
 
-   - Send an email to yourself using the new domain to ensure that everything is working correctly. Once this is confirmed, you can proceed to link your setup with Amazon SES.
+## Create an SES Identity
 
-5. **Linking with Amazon SES**:
+Log in to your Amazon SES account and follow their getting started guide to create a FROM address and sending domain. Make sure you're in the region you prefer. This is important if you have existing domains because AWS frowns upon approving multiple sending regions.
 
-   - Log in to your Amazon SES account and follow their getting started guide to create a FROM address and sending domain.
-   - You'll need to add DNS records provided by SES to your DNS provider. If you’re using Cloudflare, make sure these records are not proxied.
+![](2024-09-08-20-29-10.png)
 
-   ![AWS SES DNS Setup](2024-09-03-06-20-55.png)
+Start by creating an Identity:
 
-6. **Verifying the Setup**:
+![](2024-09-08-20-30-52.png)
 
-   - After adding the DNS records, go back to AWS SES and send a verification email. You should receive it if everything is set up correctly.
-   - If verification takes too long, go to **Identities > DKIM** in SES, click **Edit**, then **Save** to trigger an immediate re-verification.
+![](2024-09-08-20-33-41.png)
 
-7. **Submit for Approval**:
+## Add DNS Records
 
-   - Before you can send emails to anyone, you must submit everything for approval in AWS SES. This step is crucial to avoid issues when sending emails outside your verified domain.
+You'll need to add DNS records provided by SES to your DNS provider. Unlike Google Suite, you'll need to enter these values manually. They do not provide integrations with any DNS providers.
 
-8. **Creating SMTP Credentials**:
+![AWS SES DNS Setup](2024-09-03-06-20-55.png)
 
-   - Create SMTP credentials in the AWS SES console. These credentials will be used in your PocketBase admin panel for sending emails.
+**Note for Cloudflare users: If you’re using Cloudflare, make sure these records are not proxied.**
 
-   ![AWS SES SMTP Setup](2024-09-03-08-25-24.png)
+![](2024-09-08-22-28-33.png)
 
-9. **Configure SMTP in PocketBase**:
+## Add a custom FROM domain
 
-   - Enter the SMTP credentials in PocketBase's admin panel, and ensure the **SENDER** address is correctly set. If SES hasn't verified your email yet, you can test it by sending an email to `test@<yourdomain>`, which should go through if the domain is the same.
+Deliverability is better if you add a custom FROM domain:
 
-10. **You're All Set!**:
+![](2024-09-08-22-38-12.png)
 
-- You've successfully set up outgoing SMTP with AWS SES, allowing your PocketBase app to send emails.
+![](2024-09-08-22-38-51.png)
 
-Setting up email services can be a bit complex, but following these steps ensures that you can receive and send emails through your custom domain using Google Suite and AWS SES.
+It requires a few additional DNS entries. Note that the MX `priority` goes into a separate field, not the MX server field:
+
+![](2024-09-08-22-41-08.png)
+
+![](2024-09-08-22-42-35.png)
+
+## Add DMARC settings
+
+![](2024-09-08-22-45-05.png)
+
+## Verifying the Setup
+
+After adding the DNS records, go back to AWS SES and wait for the domain to show as verified. Then, send a verification email. You should receive it if everything is set up correctly.
+
+![](2024-09-08-22-32-26.png)
+
+![](2024-09-08-22-35-46.png)
+
+If verification takes too long, go to **Identities > DKIM**, click **Edit**, then **Save** to trigger an immediate re-verification.
+
+![](2024-09-08-22-33-32.png)
+
+## Submit for Approval
+
+Before you can send emails to anyone, you must submit everything for approval in AWS SES. This step is crucial to avoid issues when sending emails outside your verified domain.
+
+If you have previously had a domain approved, you may be able to skip this step. To find out, simply try sending a test message to anything with a different domain.
+
+## Creating SMTP Credentials
+
+Create SMTP credentials in the AWS SES console. These credentials will be used in your PocketBase admin panel for sending emails.
+
+![](2024-09-08-22-48-53.png)
+
+## Configure SMTP in PocketBase
+
+Once you have your SMTP credentials, head over to the PocketBase admin.
+
+Enter the SMTP credentials in PocketBase's admin panel, and ensure the **SENDER** address is correctly set. If SES hasn't verified your email yet, you can test it by sending an email to `test@<yourdomain>`, which should go through if the domain is the same.
+
+![](2024-09-08-22-53-02.png)
