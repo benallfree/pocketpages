@@ -9,8 +9,8 @@
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
     "pocketpages": "bun ./cli/index.ts",
-    "serve": "bun ./cli/index.ts serve --hooksDir=app --dev",
-    "dev:serve": "bun ./cli/index.ts serve --hooksDir=app --dev",
+    "serve": "bun ./cli/index.ts serve --hooksDir=app --dev --port=8091",
+    "dev:serve": "bun ./cli/index.ts serve --hooksDir=app --dev  --port=8091",
     "dev:css": "tailwindcss -i ./app/assets/app.tailwind.css -o ./app/assets/app.css --watch"
   },
   "devDependencies": {
