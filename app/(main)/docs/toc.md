@@ -33,6 +33,7 @@
 - [Custom Domains on pockethost.io](/docs/speedruns/custom-domain-pockethost)
 - [One-Time Passwords](/docs/speedruns/otp)
 - [Outgoing Email with Amazon SES](/docs/speedruns/ses)
+- [Setting up a new email domain in Google Suite](/docs/speedruns/gs-gmail)
 - AlpineJS
 - APIs
 - DaisyUI
