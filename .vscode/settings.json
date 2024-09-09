@@ -4,5 +4,29 @@
   },
   "[html]": {
     "editor.defaultFormatter": "j69.ejs-beautify"
-  }
+  },
+  "cSpell.words": [
+    "Bootloader",
+    "bunx",
+    "daisyui",
+    "degit",
+    "dontenv",
+    "flydotio",
+    "gobot",
+    "JSVM",
+    "lzma",
+    "MOTHERSHIP",
+    "myapp",
+    "pocketbase",
+    "pocketbot",
+    "pockethost",
+    "pocketpages",
+    "pocodex",
+    "proxied",
+    "proxying",
+    "samkirkland",
+    "Speedrun",
+    "tailwindcss",
+    "tiged"
+  ]
 }
