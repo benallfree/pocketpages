@@ -1,47 +1,35 @@
 {
   "name": "pocketpages",
-  "version": "0.4.3-0",
-  "type": "module",
-  "main": "./lib/index.js",
+  "version": "0.5.0",
+  "description": "Server-side JS pages for PocketBase",
+  "author": {
+    "name": "Ben Allfree",
+    "github": "benallfree"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benallfree/pocketpages"
+  },
+  "bugs": {
+    "url": "https://github.com/benallfree/pocketpages/issues"
+  },
+  "homepage": "https://pocketpages.dev",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "dev": "concurrently \"bun:dev:*\"",
-    "pocketpages": "bun ./cli/index.ts",
-    "serve": "bun ./cli/index.ts serve --hooksDir=app --dev --port=8091",
-    "dev:serve": "bun ./cli/index.ts serve --hooksDir=app --dev  --port=8091",
-    "dev:css": "tailwindcss -i ./app/assets/app.tailwind.css -o ./app/assets/app.css --watch"
+    "build": "pocodex build",
+    "watch": "pocodex watch",
+    "prepare": "pocodex build"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "@types/command-exists": "^1.2.3",
-    "@types/fs-extra": "^11.0.4",
-    "@types/node": "^22.5.2",
-    "prettier": "^3.3.3",
-    "prettier-plugin-organize-imports": "^4.0.0",
-    "@flydotio/dockerfile": "^0.5.8",
-    "@tailwindcss/typography": "^0.5.14",
-    "concurrently": "^8.2.2",
-    "daisyui": "^4.12.10",
-    "postcss-import": "^16.1.0",
-    "tailwindcss": "^3.4.10"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "module": "index.ts",
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "trailing": "all",
-    "plugins": [
-      "prettier-plugin-organize-imports"
-    ]
-  },
-  "trustedDependencies": [
-    "gobot-pocketbase",
-    "pocodex"
-  ],
-  "dependencies": {
-    "pocketpages": "link:pocketpages",
-    "pocodex": "link:pocodex"
+    "marked": "^14.1.2",
+    "pocketbase-ejs": "^3.1.10002",
+    "pocketbase-jsvm": "^0.22.20001",
+    "pocketbase-log": "^0.0.2",
+    "pocketbase-node": "^0.0.2",
+    "pocketbase-stringify": "^0.0.2",
+    "pocodex": "^0.0.1"
   }
 }

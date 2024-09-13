@@ -1,5 +1,6 @@
 node_modules
-.vscode
-.env
-pb_data
 .DS_Store
+.vscode
+*.tgz
+dist
+pb_*
