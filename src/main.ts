@@ -23,6 +23,12 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
 
   const pagesRoot = $filepath.join(__hooks, `pages`)
 
+  if (!fs.existsSync(pagesRoot)) {
+    throw new Error(
+      `${pagesRoot} must exist. Did you launch pocketbase with --hooksDir`
+    )
+  }
+
   const physicalFiles = []
   $filepath.walkDir(pagesRoot, (path, d, err) => {
     const isDir = d.isDir()
@@ -166,7 +172,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
      */
     const physicalFname = $filepath.join(pagesRoot, urlPath)
     dbg({ physicalFname })
-    if (fs.existsSync(physicalFname)) {
+    if (fs.existsSync(physicalFname, 'file')) {
       dbg(`Found a file at ${physicalFname}`)
       return c.file(physicalFname)
     }

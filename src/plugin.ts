@@ -5,7 +5,7 @@ const plugin: PluginFactory = (config) => {
     files() {
       return {
         'pb_hooks/pocketpages.pb.js': `require('pocketpages/dist/hooks.pb')`,
-        'pages/index.md': `# Welcome to PocketPages!\nThe server time is \`<%= new Date() %>\`.`,
+        'pb_hooks/pages/index.md': `# Welcome to PocketPages!\nThe server time is \`<%= new Date() %>\`.`,
       }
     },
   }
