@@ -5,10 +5,23 @@ import ejs from 'pocketbase-ejs'
 import { marked } from 'marked'
 import { fs } from 'pocketbase-node'
 
-const AfterBootstrapHandler = (e) => {
+export type PageDataLoaderFunc = (
+  context: Omit<PagesContext<any>, 'data'>
+) => object
+
+export type PagesContext<T> = {
+  ctx: echo.Context
+  params: Record<string, string>
+  log: typeof log
+  requirePrivate: (path: string) => any
+  data?: T
+  stringify: typeof stringify
+}
+
+export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
   dbg(`pocketpages startup`)
 
-  const pagesRoot = $filepath.join(__hooks, `..`, `pages`)
+  const pagesRoot = $filepath.join(__hooks, `pages`)
 
   const physicalFiles = []
   $filepath.walkDir(pagesRoot, (path, d, err) => {
@@ -50,7 +63,7 @@ const AfterBootstrapHandler = (e) => {
   $app.cache().set(`pocketpages`, data)
 }
 
-function MiddlewareHandler(next) {
+export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
   const { pagesRoot, routes } = $app.cache().get(`pocketpages`)
   // dbg(`pocketpages handler`)
 
@@ -120,7 +133,7 @@ function MiddlewareHandler(next) {
     },
   }
 
-  return (/** @type {echo.Context} */ c) => {
+  return (c) => {
     const safeLoad = (fname, handler) => {
       try {
         return handler()
@@ -229,14 +242,7 @@ function MiddlewareHandler(next) {
 
       const requirePrivate = (path) =>
         require($filepath.join(pagesRoot, `_private`, path))
-      type PagesContext<T> = {
-        ctx: echo.Context
-        params: Record<string, string>
-        log: typeof log
-        requirePrivate: (path: string) => any
-        data?: T
-        stringify: typeof stringify
-      }
+
       const context: PagesContext<any> = {
         ctx: c,
         params,
@@ -304,5 +310,3 @@ function MiddlewareHandler(next) {
     }
   }
 }
-
-export { AfterBootstrapHandler, MiddlewareHandler }

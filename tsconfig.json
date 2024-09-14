@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
-    "types": ["pocketbase-jsvm"]
-  }
+    "types": ["pocketbase-jsvm"],
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*.ts"]
 }
