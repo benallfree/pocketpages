@@ -25,6 +25,7 @@
     "prepare": "rimraf dist && pocodex build"
   },
   "devDependencies": {
+    "@s-libs/micro-dash": "^18.0.0",
     "marked": "^14.1.2",
     "pocketbase-ejs": "^3.1.10002",
     "pocketbase-jsvm": "^0.22.20001",

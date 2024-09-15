@@ -4,6 +4,7 @@ import { stringify } from 'pocketbase-stringify'
 import ejs from 'pocketbase-ejs'
 import { marked } from 'marked'
 import { fs } from 'pocketbase-node'
+import { merge } from '@s-libs/micro-dash'
 
 export type PageDataLoaderFunc = (
   context: Omit<PagesContext<any>, 'data'>
@@ -17,6 +18,16 @@ export type PagesContext<T> = {
   data?: T
   stringify: typeof stringify
 }
+
+type Route = {
+  relativePath: string
+  segments: {
+    nodeName: string
+    paramName?: string
+  }[]
+}
+
+type Cache = { pagesRoot: string; routes: Route[] }
 
 export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
   dbg(`pocketpages startup`)
@@ -45,12 +56,12 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
 
   // dbg({ addressableFiles })
 
-  const routes = addressableFiles
+  const routes: Route[] = addressableFiles
     .map((f) => {
       // dbg(`Examining route`, f)
       const parts = f.split('/').filter((p) => !p.startsWith(`(`))
       // dbg({ parts })
-      return {
+      const route: Route = {
         relativePath: f,
         segments: parts.map((part) => {
           return {
@@ -61,23 +72,24 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
           }
         }),
       }
+      return route
     })
     .filter((r) => r.segments.length > 0)
 
-  const data = { pagesRoot, routes }
+  const cache: Cache = { pagesRoot, routes }
   // dbg({ data })
-  $app.cache().set(`pocketpages`, data)
+  $app.store<Cache>().set(`pocketpages`, cache)
 }
 
 export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
-  const { pagesRoot, routes } = $app.cache().get(`pocketpages`)
+  const { pagesRoot, routes } = $app.store<Cache>().get(`pocketpages`)
   // dbg(`pocketpages handler`)
 
   /**
    * Load the config file
    */
   const configPath = $filepath.join(pagesRoot, `+config.js`)
-  dbg({ configPath })
+  // dbg({ configPath })
   const config = {
     preprocessorExts: ['.ejs', '.md'],
     ...(() => {
@@ -88,7 +100,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
       }
     })(),
   }
-  dbg({ config })
+  // dbg({ config })
 
   marked.use({
     renderer: {
@@ -123,16 +135,16 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
   }
   ejs.cache = {
     set: function (key, val) {
-      dbg(`setting cache`, { key, val })
-      $app.cache().set(`ejs.${key}`, val)
+      // dbg(`setting cache`, { key, val })
+      $app.store().set(`ejs.${key}`, val)
     },
     get: function (key) {
-      dbg(`getting cache`, { key })
-      return $app.cache().get(`ejs.${key}`)
+      // dbg(`getting cache`, { key })
+      return $app.store().get(`ejs.${key}`)
     },
     remove: function (key) {
-      dbg(`removing cache`, { key })
-      $app.cache().remove(`ejs.${key}`)
+      // dbg(`removing cache`, { key })
+      $app.store().remove(`ejs.${key}`)
     },
     reset: function () {
       throw new Error(`resetting cache not supported`)
@@ -165,13 +177,13 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         return next(c)
       }
     }
-    dbg({ urlPath })
+    // dbg({ urlPath })
 
     /**
      * If the URL path is a static file, serve it
      */
     const physicalFname = $filepath.join(pagesRoot, urlPath)
-    dbg({ physicalFname })
+    // dbg({ physicalFname })
     if (fs.existsSync(physicalFname, 'file')) {
       dbg(`Found a file at ${physicalFname}`)
       return c.file(physicalFname)
@@ -242,7 +254,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         nodeName === 'index' &&
         !urlPath.endsWith('/')
       ) {
-        dbg(`Redirecting to ${urlPath}/`)
+        // dbg(`Redirecting to ${urlPath}/`)
         return c.redirect(302, `/${urlPath}/`)
       }
 
@@ -257,6 +269,35 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         stringify,
       }
 
+      let data = {}
+      {
+        const pathParts = $filepath
+          .dir(fname.slice(pagesRoot.length + 1))
+          .split(`/`)
+          .filter((p) => !!p)
+        dbg(`middleware`, { pathParts })
+        const current = [pagesRoot]
+
+        do {
+          const maybeMiddleware = $filepath.join(...current, `+middleware.js`)
+          dbg({ maybeMiddleware })
+          if (fs.existsSync(maybeMiddleware, 'file')) {
+            dbg(`middleware found`)
+            data = merge(
+              data,
+              safeLoad(maybeMiddleware, () =>
+                require(maybeMiddleware)({ ...context, data })
+              )
+            )
+            dbg(`data after ${maybeMiddleware}`, data)
+          }
+          if (pathParts.length === 0) {
+            break
+          }
+          current.push(pathParts.shift())
+        } while (true)
+        dbg(`final middleware data`, data)
+      }
       {
         const maybeLoad = $filepath.join(
           pagesRoot,
@@ -264,10 +305,14 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
           `+load.js`
         )
         if (fs.existsSync(maybeLoad)) {
-          context.data = safeLoad(maybeLoad, () => require(maybeLoad)(context))
+          data = merge(
+            data,
+            safeLoad(maybeLoad, () => require(maybeLoad)({ ...context, data }))
+          )
         }
       }
-      // dbg({ context })
+      context.data = data
+      dbg(`Final context:`, { params: context.params, data: context.data })
       const renderInLayout = (fname, slot) => {
         // dbg(`renderInLayout`, { fname, slot })
         if (!fname.startsWith(pagesRoot)) {
@@ -295,7 +340,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
       var str = safeLoad(fname, () =>
         ejs.renderFile(fname, { ...context, context }, { cache: true })
       )
-      dbg(`***rendering`, { fname, str })
+      // dbg(`***rendering`, { fname, str })
       if (fname.endsWith('.md')) {
         str = marked(str)
       }
@@ -304,7 +349,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         return c.json(200, parsed)
       } catch (e) {}
       str = renderInLayout(fname, str)
-      dbg(`Final result`, str)
+      // dbg(`Final result`, str)
       return c.html(200, str)
     } catch (e) {
       return c.html(
