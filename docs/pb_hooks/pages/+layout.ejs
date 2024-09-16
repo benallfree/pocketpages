@@ -1,27 +1,38 @@
 <!doctype html>
 <html lang="en" data-theme="cupcake">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PocketPages</title>
+    <link href="<%=asset('/assets/prism.css')%>" rel="stylesheet" />
+    <link href="<%=asset(`/assets/app.css`)%>" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PocketPages</title>
-  <link href="/assets/prism.css" rel="stylesheet" />
-  <link href="<%=asset(`/assets/app.css`)%>" rel="stylesheet" />
-  <%=new URL(asset(`/assets/app.css`))%>
-</head>
-
-<body>
-  <section class="-mt-px border-y border-gray-200 bg-gray-100">
-    <div class="mx-auto max-w-screen-xl px-4 py-2">
-      <a href="https://github.com/benallfree/pocketpages" rel="noreferrer" target="_blank" class="no-underline flex flex-col sm:flex-row items-center justify-center gap-1.5 transition hover:opacity-75">
-        <span class="text-sm/none font-medium">Enjoy PocketPages? Give it a star on GitHub 🎉</span>
-        <%- include(`./_include/version.ejs`) %>
-      </a>
-    </div>
-  </section>
-  <%- slot%>
-  <script src="/assets/prism.js" defer></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js" integrity="sha512-6sSYJqDreZRZGkJ3b+YfdhB3MzmuP9R7X1QZ6g5aIXhRvR1Y/N/P47jmnkENm7YL3oqsmI6AK+V6AD99uWDnIw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-</body>
-
+  <body>
+    <section class="-mt-px border-y border-gray-200 bg-gray-100">
+      <div class="mx-auto max-w-screen-xl px-4 py-2">
+        <a
+          href="https://github.com/benallfree/pocketpages"
+          rel="noreferrer"
+          target="_blank"
+          class="no-underline flex flex-col sm:flex-row items-center justify-center gap-1.5 transition hover:opacity-75"
+        >
+          <span class="text-sm/none font-medium"
+            >Enjoy PocketPages? Give it a star on GitHub 🎉</span
+          >
+          <%- include(`/_include/version.ejs`) %>
+        </a>
+      </div>
+    </section>
+    <%- slot%>
+    <script src="/assets/prism.js" defer></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"
+      integrity="sha512-6sSYJqDreZRZGkJ3b+YfdhB3MzmuP9R7X1QZ6g5aIXhRvR1Y/N/P47jmnkENm7YL3oqsmI6AK+V6AD99uWDnIw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer
+    ></script>
+  </body>
 </html>

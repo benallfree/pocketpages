@@ -1,7 +1,4 @@
 {
-  "name": "pocketpages-docs",
-  "version": "0.5.0",
-  "type": "module",
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
     "phio": "phio",
@@ -19,12 +16,6 @@
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.11",
     "typescript": "^5.6.2"
-  },
-  "module": "index.ts",
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "trailing": "all"
   },
   "trustedDependencies": [
     "esbuild",

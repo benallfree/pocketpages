@@ -20,6 +20,7 @@
 - [Managing Secrets](/docs/secrets)
 - [Going Live](/docs/deploying)
 - [Runtime Configuration](/docs/config)
+- [Caching](/docs/caching)
 
 # Guides
 

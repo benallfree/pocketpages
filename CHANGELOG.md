@@ -1,5 +1,16 @@
 # pocketpages
 
+## 0.7.0
+
+### Minor Changes
+
+- 31baf24: Enh: Added url() parser to context
+- 31baf24: Enh: asset() resolver to add cache busting when $app.isDev()
+
+### Patch Changes
+
+- Enh: Markdown images now use apply() for cache busting
+
 ## 0.6.0
 
 ### Minor Changes

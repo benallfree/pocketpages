@@ -15,6 +15,9 @@ To include a partial in an EJS file, use the following syntax:
 - **Escaping**: The opening tag is escaped with `<%%-`, which ensures that the partial's content is rendered without escaping HTML.
 - **Passing `context`**: It's important to pass the `context` object down to the partial to ensure that all necessary data, such as request context, parameters, and data loaded via `+load.js`, is available within the partial.
 - **Additional Variables**: Besides `context`, you can pass any other variables that the partial might need. These are passed as part of the object after `context`.
+- **Path Resolution**: When specifying the path to the partial, you can use either relative or absolute paths.
+  - **Relative Paths**: Paths starting with `./` or `../` are resolved relative to the current EJS file.
+  - **Absolute Paths**: Specifying an absolute path will resolve from the root of `pb_hooks/pages`. This means that if you use an absolute path like `/_foo.ejs`, it will look for the partial in `pb_hooks/pages/_foo.ejs`.
 
 ### Example Usage
 
@@ -27,10 +30,16 @@ Let's say you have a `_header.ejs` partial for a page header:
 </header>
 ```
 
-To include this partial in your main template, you would use:
+To include this partial in your main template using a relative path, you would use:
 
 ```ejs
 <%%- include(`./_header.ejs`, { context }) %>
+```
+
+Or, using an absolute path:
+
+```ejs
+<%%- include(`/_header.ejs`, { context }) %>
 ```
 
 If you need to pass additional data to the partial:

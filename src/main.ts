@@ -37,6 +37,8 @@ type Route = {
 
 type Cache = { pagesRoot: string; routes: Route[] }
 
+const pagesRoot = $filepath.join(__hooks, `pages`)
+
 const oldCompile = ejs.compile
 ejs.compile = (template, opts) => {
   const fn = oldCompile(template, { ...opts })
@@ -71,23 +73,41 @@ ejs.cache = {
 
 const oldResolveInclude = ejs.resolveInclude
 ejs.resolveInclude = function (name: string, filename: string, isDir: boolean) {
-  console.log(`***resolveInclude`, { name, filename, isDir })
-  return oldResolveInclude(name, filename, isDir)
-  var dirname = path.dirname
-  var extname = path.extname
-  var resolve = path.resolve
-  var includePath = resolve(isDir ? filename : dirname(filename), name)
-  var ext = extname(name)
-  if (!ext) {
-    includePath += '.ejs'
+  if (filename === '/') {
+    return path.resolve(pagesRoot, name)
   }
-  return includePath
+  return oldResolveInclude(name, filename, isDir)
 }
+
+const asset = (path: string) => {
+  if (!$app.isDev()) return path
+  const parsed = new URL(path, true)
+  parsed.query.__cache = Date.now().toString()
+  return parsed.toString()
+}
+
+marked.use({
+  renderer: {
+    heading({ tokens, depth }) {
+      const id = tokens[0].raw
+        .toLowerCase() // Convert to lowercase
+        .trim() // Remove leading/trailing spaces
+        .replace(/[^a-z0-9\-_ ]/g, '') // Remove invalid characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+      // dbg({ tokens, depth, id })
+      return `<h${depth} id="${id}">${this.parser.parseInline(
+        tokens
+      )}</h${depth}>\n`
+    },
+    image({ href, title, text }) {
+      return `<img src="${asset(href)}" alt="${text}" title="${title}" />`
+    },
+  },
+})
 
 export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
   dbg(`pocketpages startup`)
-
-  const pagesRoot = $filepath.join(__hooks, `pages`)
 
   if (!fs.existsSync(pagesRoot)) {
     throw new Error(
@@ -157,27 +177,8 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
   }
   // dbg({ config })
 
-  marked.use({
-    renderer: {
-      heading({ tokens, depth }) {
-        const id = tokens[0].raw
-          .toLowerCase() // Convert to lowercase
-          .trim() // Remove leading/trailing spaces
-          .replace(/[^a-z0-9\-_ ]/g, '') // Remove invalid characters
-          .replace(/\s+/g, '-') // Replace spaces with hyphens
-          .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-        // dbg({ tokens, depth, id })
-        return `<h${depth} id="${id}">${this.parser.parseInline(
-          tokens
-        )}</h${depth}>\n`
-      },
-    },
-  })
-
   return (c) => {
-    dbg(`Pages middleware request: ${c.request().method} ${c.request().url}`, {
-      headers: c.request().header,
-    })
+    dbg(`Pages middleware request: ${c.request().method} ${c.request().url}`)
     const safeLoad = (fname, handler) => {
       try {
         return handler()
@@ -291,12 +292,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         ctx: c,
         params,
         log,
-        asset: (path: string) => {
-          if (!$app.isDev()) return path
-          const parsed = new URL(path, true)
-          parsed.query.__cache = Date.now().toString()
-          return parsed.toString()
-        },
+        asset,
         url: (path: string) => new URL(path, true),
         requirePrivate,
         stringify,
