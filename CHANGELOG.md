@@ -1,5 +1,15 @@
 # pocketpages
 
+## 0.6.0
+
+### Minor Changes
+
+- 699aa06: Added support for +middleware.js
+
+### Patch Changes
+
+- 699aa06: Swapped out deprecated $app.cache()
+
 ## 0.5.1
 
 ### Patch Changes
