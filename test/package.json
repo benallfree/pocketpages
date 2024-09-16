@@ -4,7 +4,7 @@
   "type": "module",
   "dependencies": {
     "pocketpages": "link:pocketpages",
-    "pocodex": "link:pocodex"
+    "pocodex": "^0.0.2"
   },
   "devDependencies": {
     "@types/bun": "^1.1.9"

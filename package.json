@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@s-libs/micro-dash": "^18.0.0",
+    "@types/url-parse": "^1.4.11",
     "marked": "^14.1.2",
     "pocketbase-ejs": "^3.1.10002",
     "pocketbase-jsvm": "^0.22.20001",
@@ -34,5 +35,8 @@
     "pocketbase-stringify": "^0.0.2",
     "pocodex": "^0.0.1",
     "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "url-parse": "^1.5.10"
   }
 }

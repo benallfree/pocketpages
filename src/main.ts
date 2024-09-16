@@ -3,8 +3,10 @@ import { dbg } from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import ejs from 'pocketbase-ejs'
 import { marked } from 'marked'
-import { fs } from 'pocketbase-node'
+import { fs, path } from 'pocketbase-node'
 import { merge } from '@s-libs/micro-dash'
+import URL from 'url-parse'
+import URLParse from 'url-parse'
 
 export type PageDataLoaderFunc = (
   context: Omit<PagesContext<any>, 'data'>
@@ -14,9 +16,15 @@ export type PagesContext<T> = {
   ctx: echo.Context
   params: Record<string, string>
   log: typeof log
+  asset: (path: string) => string
+  url: (path: string) => URLParse<Record<string, string>>
   requirePrivate: (path: string) => any
   data?: T
   stringify: typeof stringify
+}
+
+export type PagesConfig = {
+  preprocessorExts: string[]
 }
 
 type Route = {
@@ -28,6 +36,53 @@ type Route = {
 }
 
 type Cache = { pagesRoot: string; routes: Route[] }
+
+const oldCompile = ejs.compile
+ejs.compile = (template, opts) => {
+  const fn = oldCompile(template, { ...opts })
+
+  if ($filepath.ext(opts.filename) === '.md') {
+    return (data) => {
+      // dbg(`***compiling markdown ${opts.filename}`, { data, opts }, fn(data))
+      const res = marked(fn(data))
+      // dbg(`***compiled markdown ${opts.filename}`, { data, opts, res })
+      return res
+    }
+  }
+  return fn
+}
+ejs.cache = {
+  set: function (key, val) {
+    // dbg(`setting cache`, { key, val })
+    $app.store().set(`ejs.${key}`, val)
+  },
+  get: function (key) {
+    // dbg(`getting cache`, { key })
+    return $app.store().get(`ejs.${key}`)
+  },
+  remove: function (key) {
+    // dbg(`removing cache`, { key })
+    $app.store().remove(`ejs.${key}`)
+  },
+  reset: function () {
+    throw new Error(`resetting cache not supported`)
+  },
+}
+
+const oldResolveInclude = ejs.resolveInclude
+ejs.resolveInclude = function (name: string, filename: string, isDir: boolean) {
+  console.log(`***resolveInclude`, { name, filename, isDir })
+  return oldResolveInclude(name, filename, isDir)
+  var dirname = path.dirname
+  var extname = path.extname
+  var resolve = path.resolve
+  var includePath = resolve(isDir ? filename : dirname(filename), name)
+  var ext = extname(name)
+  if (!ext) {
+    includePath += '.ejs'
+  }
+  return includePath
+}
 
 export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
   dbg(`pocketpages startup`)
@@ -90,11 +145,11 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
    */
   const configPath = $filepath.join(pagesRoot, `+config.js`)
   // dbg({ configPath })
-  const config = {
+  const config: PagesConfig = {
     preprocessorExts: ['.ejs', '.md'],
     ...(() => {
       try {
-        return require(configPath)
+        return require(configPath) as Partial<PagesConfig>
       } catch (e) {
         return {}
       }
@@ -119,39 +174,10 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
     },
   })
 
-  const oldCompile = ejs.compile
-  ejs.compile = (template, opts) => {
-    const fn = oldCompile(template, { ...opts })
-
-    if ($filepath.ext(opts.filename) === '.md') {
-      return (data) => {
-        // dbg(`***compiling markdown ${opts.filename}`, { data, opts }, fn(data))
-        const res = marked(fn(data))
-        // dbg(`***compiled markdown ${opts.filename}`, { data, opts, res })
-        return res
-      }
-    }
-    return fn
-  }
-  ejs.cache = {
-    set: function (key, val) {
-      // dbg(`setting cache`, { key, val })
-      $app.store().set(`ejs.${key}`, val)
-    },
-    get: function (key) {
-      // dbg(`getting cache`, { key })
-      return $app.store().get(`ejs.${key}`)
-    },
-    remove: function (key) {
-      // dbg(`removing cache`, { key })
-      $app.store().remove(`ejs.${key}`)
-    },
-    reset: function () {
-      throw new Error(`resetting cache not supported`)
-    },
-  }
-
   return (c) => {
+    dbg(`Pages middleware request: ${c.request().method} ${c.request().url}`, {
+      headers: c.request().header,
+    })
     const safeLoad = (fname, handler) => {
       try {
         return handler()
@@ -265,6 +291,13 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         ctx: c,
         params,
         log,
+        asset: (path: string) => {
+          if (!$app.isDev()) return path
+          const parsed = new URL(path, true)
+          parsed.query.__cache = Date.now().toString()
+          return parsed.toString()
+        },
+        url: (path: string) => new URL(path, true),
         requirePrivate,
         stringify,
       }
@@ -327,7 +360,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
             const str = ejs.renderFile(
               tryFile,
               { ...context, context, slot },
-              { cache: true }
+              { cache: $app.isDev() }
             )
             return renderInLayout($filepath.dir(tryFile), str)
           })
@@ -338,7 +371,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
       }
 
       var str = safeLoad(fname, () =>
-        ejs.renderFile(fname, { ...context, context }, { cache: true })
+        ejs.renderFile(fname, { ...context, context }, { cache: $app.isDev() })
       )
       // dbg(`***rendering`, { fname, str })
       if (fname.endsWith('.md')) {

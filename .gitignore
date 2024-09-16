@@ -4,3 +4,5 @@ node_modules
 *.tgz
 dist
 pb_*
+.env
+docs/.cache

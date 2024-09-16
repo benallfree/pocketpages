@@ -5,10 +5,16 @@
 ### Minor Changes
 
 - 699aa06: Added support for +middleware.js
+- b58a02b: Migrated to pocodex
+- Doc updates for 0.5.0
 
 ### Patch Changes
 
 - 699aa06: Swapped out deprecated $app.cache()
+- ea831b0: Docs: added Gmail speedrun
+- dc89a4c: Implement EJS caching using $app.cache()
+- dc89a4c: Fix: UTF-8 support in template engine
+- ea831b0: Docs: updated SES speedrun
 
 ## 0.5.1
 

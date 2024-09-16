@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+
+    "types": ["pocketpages", "pocketbase-jsvm"],
+    "moduleResolution": "node"
+  },
+  "include": ["./pb_hooks/**/*.js"]
+}

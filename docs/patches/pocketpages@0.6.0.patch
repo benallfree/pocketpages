@@ -1,0 +1,22 @@
+diff --git a/dist/main.js b/dist/main.js
+index 383b56bae0a0b6ce98731972aae2c60675c2888a..0c856fec802526aa6c3bfadd26b844c72f9cbabb 100644
+--- a/dist/main.js
++++ b/dist/main.js
+@@ -4125,6 +4125,9 @@ var MiddlewareHandler = (next) => {
+     }
+   };
+   return (c) => {
++    if($app.isDev()) {
++      c.response().header().set("Cache-Control", "no-cache, no-store, must-revalidate");
++    }
+     const safeLoad = (fname, handler) => {
+       try {
+         return handler();
+@@ -4196,6 +4199,7 @@ var MiddlewareHandler = (next) => {
+         ctx: c,
+         params,
+         log,
++        asset: (path) => `${path}?__cache=${Date.now()}`,
+         requirePrivate,
+         stringify: import_pocketbase_stringify.stringify
+       };
