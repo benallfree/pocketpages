@@ -11,7 +11,7 @@
     "concurrently": "^9.0.1",
     "daisyui": "^4.12.10",
     "gobot-pocketbase": "^0.22.20-14",
-    "phio": "^0.1.0",
+    "phio": "^0.1.1",
     "postcss-import": "^16.1.0",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.11",
@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "pocketbase-jsvm": "^0.22.20001",
-    "pocketpages": "^0.6.0",
+    "pocketpages": "^0.7.0",
     "pocodex": "^0.0.2"
   },
   "pockethost": {
