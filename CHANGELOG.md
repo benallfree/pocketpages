@@ -1,5 +1,16 @@
 # pocketpages
 
+## 0.8.0
+
+### Minor Changes
+
+- Adjusted installation process
+
+### Patch Changes
+
+- Refreshed minimal starter project
+- Minor bug fixes
+
 ## 0.7.0
 
 ### Minor Changes
