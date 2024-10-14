@@ -1,21 +1,29 @@
 # Installation
 
-## Prerequisite: Installing pocodex
+Installing PocketPages is easy.
 
-PocketPages is a [pocodex](https://pocodex.dev) plugin. pocodex is the open source plugin code exchange community for PocketBase.
+## Choose your package manager
 
 ```bash
-bunx pocodex init --trust
-pocketbase pocodex --help
+bun add pocketpages
 ```
 
-## Installing PocketPages
-
-Once pocodex is installed, installing PocketPages is easy:
+```bash
+yarn add pocketpages
+```
 
 ```bash
-pocketbase install pocketpages --dir=pb_data
-pocketbase serve --dir=pb_data
+npm install pocketpages
+```
+
+```bash
+pnpm add pocketpages
+```
+
+## Run PocketBase
+
+```bash
+pocketbase serve --dir=pb_data --dev
 ```
 
 _Note: `--dir=pb_data` is necessary to tell PocketBase to use the current directory for data storage._
