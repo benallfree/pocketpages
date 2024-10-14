@@ -24,28 +24,22 @@
   },
   "scripts": {
     "build": "rimraf dist && pocodex build",
-    "watch": "rimraf dist && pocodex watch",
-    "prepare": "rimraf dist && bun run build"
+    "watch": "rimraf dist && pocodex watch"
   },
   "devDependencies": {
     "@s-libs/micro-dash": "^18.0.0",
     "@types/url-parse": "^1.4.11",
     "marked": "^14.1.2",
     "pocketbase-ejs": "^3.1.10002",
-    "pocketbase-jsvm": "^0.22.20001",
+    "pocketbase-jsvm": "^0.22.20002",
     "pocketbase-log": "^0.0.2",
     "pocketbase-node": "^0.0.2",
     "pocketbase-stringify": "^0.0.2",
-    "pocodex": "^0.0.1",
+    "pocodex": "^0.0.2",
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "rimraf": "^6.0.1",
     "url-parse": "^1.5.10"
-  },
-  "dependencies": {
-    "commander": "^12.1.0",
-    "copyfiles": "^2.4.1",
-    "fs-extra": "^11.2.0"
   },
   "prettier": {
     "singleQuote": true,
