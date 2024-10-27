@@ -1,3 +1,8 @@
+---
+title: Overview
+description: PocketPages is a powerful EJS preprocessor for PocketBase, enabling the creation of modern web applications using JavaScript and EJS templates.
+---
+
 # Overview
 
 PocketPages is an EJS preprocessor for PocketBase. It's like being able to run old-school PHP files, but using JS and PocketBase instead.

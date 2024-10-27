@@ -55,41 +55,73 @@ In this example, the `slot` variable is used to place the interior content (from
 
 ### Multiple Slots
 
-If you want to use multiple slots within a layout, you can define section delimiters in your leaf EJS files using HTML comments and reference them by name in the layout.
+PocketPages provides two ways to work with content in layouts: the `slot` string which always contains the full content, and a `slots` object for accessing named sections of that content.
 
-#### Example Leaf EJS with Multiple Slots
+#### Basic Slot Usage
 
-```ejs
-<!-- slot:header -->
-<h2>Product Details</h2>
-
-<!-- slot:content -->
-<p>This is the main content of the product page.</p>
-```
-
-#### Example Layout with Multiple Slots
+For simple layouts with a single content area, you can use the `slot` variable which contains all the content:
 
 ```ejs
 <!DOCTYPE html>
-<html lang="en">
+<html>
+<body>
+    <%%- slot %>
+</body>
+</html>
+```
+
+#### Working with Multiple Slots
+
+For more complex layouts, you can divide your content into named sections using HTML comments and access them through the `slots` object, while `slot` continues to contain the complete content:
+
+```ejs
+<!-- In your content file (e.g., index.ejs) -->
+<!-- slot:header -->
+<h2>Product Details</h2>
+
+<!-- slot:sidebar -->
+<nav>Navigation items...</nav>
+
+<!-- slot:body -->
+<p>This is the main content of the product page.</p>
+```
+
+Then in your layout, access these named slots using the `slots` object:
+
+```ejs
+<!DOCTYPE html>
+<html>
 <head>
     <title>Product Page</title>
 </head>
 <body>
     <header>
-        <%%- header %%>
+        <%%- slots.header || 'Default Header' %>
     </header>
+
+    <div class="sidebar">
+        <%%- slots.sidebar %>
+    </div>
+
     <main>
-        <%%- content %%>
+        <!-- slots.body falls back to showing the full content if body slot isn't defined -->
+        <%%- slots.body || slot %>
     </main>
-    <footer>
-        <p>&copy; <%%= new Date().getFullYear() %%> My Application</p>
-    </footer>
+
+    <!-- slot always contains the complete content, regardless of slot definitions -->
+    <div class="debug">
+        <%%- slot %>
+    </div>
 </body>
 </html>
 ```
 
-In this example, the layout uses `header` and `content` slots, which are populated by the corresponding sections from the leaf EJS file.
+Note the following patterns:
+
+- The `slot` variable always contains the complete content, whether or not slots are defined
+- Use `slots.name` to access a specific named section
+- Provide defaults with `slots.name || 'Default Content'`
+- Use `slots.body || slot` to create a main content area that shows either the body slot or all content
 
 ### Leaf `+load.js` Data Availability
 

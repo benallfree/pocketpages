@@ -23,6 +23,7 @@
       property="og:url"
       content="<%=meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${ctx.request().url}`%>"
     />
+    <%- slots.head %>
   </head>
 
   <body>
@@ -41,7 +42,7 @@
         </a>
       </div>
     </section>
-    <%- slot%>
+    <%- slots.body || slot%>
     <script src="<%=asset('/assets/prism.js')%>" defer></script>
     <script
       defer

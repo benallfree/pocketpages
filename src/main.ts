@@ -1,12 +1,11 @@
+import { merge } from '@s-libs/micro-dash'
+import { marked } from 'marked'
+import ejs from 'pocketbase-ejs'
 import * as log from 'pocketbase-log'
 import { dbg } from 'pocketbase-log'
-import { stringify } from 'pocketbase-stringify'
-import ejs from 'pocketbase-ejs'
-import { marked } from 'marked'
 import { fs, path } from 'pocketbase-node'
-import { merge } from '@s-libs/micro-dash'
-import URL from 'url-parse'
-import URLParse from 'url-parse'
+import { stringify } from 'pocketbase-stringify'
+import { default as URL, default as URLParse } from 'url-parse'
 
 export type PageDataLoaderFunc = (
   context: Omit<PagesContext<any>, 'data'>
@@ -21,6 +20,8 @@ export type PagesContext<T> = {
   requirePrivate: (path: string) => any
   data?: T
   stringify: typeof stringify
+  slot: string
+  slots: Record<string, string>
   meta: (key: string, value?: string) => string | undefined
 }
 
@@ -157,6 +158,14 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
   $app.store<Cache>().set(`pocketpages`, cache)
 }
 
+const safeLoad = (fname, handler) => {
+  try {
+    return handler()
+  } catch (e) {
+    throw new Error(`${fname} failed to load with: ${e.stack}`)
+  }
+}
+
 export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
   const { pagesRoot, routes } = $app.store<Cache>().get(`pocketpages`)
   // dbg(`pocketpages handler`)
@@ -180,13 +189,6 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
 
   return (c) => {
     dbg(`Pages middleware request: ${c.request().method} ${c.request().url}`)
-    const safeLoad = (fname, handler) => {
-      try {
-        return handler()
-      } catch (e) {
-        throw new Error(`${fname} failed to load with: ${e.stack}`)
-      }
-    }
 
     const { url } = c.request()
     const params = {}
@@ -298,6 +300,8 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         url: (path: string) => new URL(path, true),
         requirePrivate,
         stringify,
+        slot: '',
+        slots: {},
         meta: (key, value) => {
           if (value === undefined) {
             return metaData[key]
@@ -350,44 +354,66 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
       }
       context.data = data
       dbg(`Final context:`, { params: context.params, data: context.data })
-      const renderInLayout = (fname, slot) => {
-        // dbg(`renderInLayout`, { fname, slot })
+
+      const parseSlots = (input: string) => {
+        const regex =
+          /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g
+        const slots = {}
+        let match
+
+        while ((match = regex.exec(input)) !== null) {
+          const name = match[1]
+          const content = match[2].trim()
+          slots[name] = content
+        }
+
+        return slots
+      }
+
+      const renderFile = (fname: string) => {
+        dbg(`renderFile`, { fname })
+        const content = ejs.renderFile(
+          fname,
+          { ...context, context },
+          { cache: $app.isDev() }
+        )
+        context.slots = parseSlots(content)
+        context.slot = context.slots.default || content
+        dbg(`slots`, context.slots)
+
+        return content
+      }
+      const renderInLayout = (fname: string, content: string) => {
+        // dbg(`renderInLayout`, { fname, content })
         if (!fname.startsWith(pagesRoot)) {
-          return slot
+          // Exit with final slot when we have reached the root
+          return content
         }
         const tryFile = $filepath.join($filepath.dir(fname), `+layout.ejs`)
         const layoutExists = fs.existsSync(tryFile)
         // dbg({ tryFile, layoutExists })
         if (layoutExists) {
           // dbg(`layout found`, { tryFile })
-          return safeLoad(tryFile, () => {
-            const str = ejs.renderFile(
-              tryFile,
-              { ...context, context, slot },
-              { cache: $app.isDev() }
-            )
-            return renderInLayout($filepath.dir(tryFile), str)
-          })
+          return renderInLayout($filepath.dir(tryFile), renderFile(tryFile))
         } else {
           // dbg(`layout not found`, { tryFile })
-          return renderInLayout($filepath.dir(tryFile), slot)
+          return renderInLayout($filepath.dir(tryFile), content)
         }
       }
 
-      var str = safeLoad(fname, () =>
-        ejs.renderFile(fname, { ...context, context }, { cache: $app.isDev() })
-      )
+      var content = renderFile(fname)
+
       // dbg(`***rendering`, { fname, str })
       if (fname.endsWith('.md')) {
-        str = marked(str)
+        content = marked(content)
       }
       try {
-        const parsed = JSON.parse(str)
+        const parsed = JSON.parse(content)
         return c.json(200, parsed)
       } catch (e) {}
-      str = renderInLayout(fname, str)
+      content = renderInLayout(fname, content)
       // dbg(`Final result`, str)
-      return c.html(200, str)
+      return c.html(200, content)
     } catch (e) {
       return c.html(
         500,

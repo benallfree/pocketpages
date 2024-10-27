@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "dev": "concurrently \"bun:dev:*\"",
     "phio": "phio",
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:pocketbase": "pocketbase --dir=pb_data --dev serve",
     "dev:css": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch"
   },
   "devDependencies": {
