@@ -16,6 +16,7 @@ export type PagesContext<T> = {
   ctx: echo.Context
   params: Record<string, string>
   log: typeof log
+  print: (...args: any[]) => void
   asset: (path: string) => string
   url: (path: string) => URLParse<Record<string, string>>
   requirePrivate: (path: string) => any
@@ -308,6 +309,18 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         ctx: c,
         params,
         log,
+        print: (...args) =>
+          args.forEach((arg) => {
+            if (typeof arg === 'function') {
+              c.response().write(arg.toString())
+            } else if (typeof arg === 'object') {
+              c.response().write(stringify(arg))
+            } else if (typeof arg === 'number') {
+              c.response().write(arg.toString())
+            } else {
+              c.response().write(`${arg}`)
+            }
+          }),
         asset,
         url: (path: string) => new URL(path, true),
         requirePrivate,
@@ -414,6 +427,21 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
           // dbg(`layout not found`, { tryFile })
           return renderInLayout($filepath.dir(tryFile), content)
         }
+      }
+
+      context.print = (...args) => {
+        const result = args.map((arg) => {
+          if (typeof arg === 'function') {
+            return arg.toString()
+          } else if (typeof arg === 'object') {
+            return stringify(arg)
+          } else if (typeof arg === 'number') {
+            return arg.toString()
+          } else {
+            return `${arg}`
+          }
+        })
+        return result.join(' ')
       }
 
       var content = renderFile(fname)
