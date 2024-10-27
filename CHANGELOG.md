@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.8.1
+
+### Patch Changes
+
+- Added starters to npm package
+
 ## 0.8.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "pocketpages",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Server-side JS pages for PocketBase",
   "author": {
     "name": "Ben Allfree",
@@ -17,7 +17,8 @@
   },
   "homepage": "https://pocketpages.dev",
   "files": [
-    "dist"
+    "dist",
+    "starters"
   ],
   "scripts": {
     "build": "rimraf dist && pocodex build",
