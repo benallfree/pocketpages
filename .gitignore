@@ -7,3 +7,4 @@ pb_*
 !docs/pb_hooks
 .env
 docs/.cache
+.secrets
