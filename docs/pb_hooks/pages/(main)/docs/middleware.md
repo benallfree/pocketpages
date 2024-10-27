@@ -33,9 +33,10 @@ pb_hooks/
 
 ### Example `+middleware.js` File
 
-Here’s how you might define a `+middleware.js` file:
+You can use JSDoc to reference the `MiddlewareLoaderFunc` type for better IDE support and type checking:
 
 ```javascript
+/** @type {import('pocketpages').MiddlewareLoaderFunc} */
 module.exports = (context) => {
   const { params, header } = context
 
