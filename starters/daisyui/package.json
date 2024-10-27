@@ -2,7 +2,7 @@
   "name": "daisyui",
   "scripts": {
     "serve": "pocketbase serve --dir=pb_data",
-    "dev": "concurrently \"bun:dev:*\"",
+    "dev": "concurrently \"dev:*\"",
     "dev:pocketbase": "pocketbase-22 serve --dir=pb_data --dev",
     "dev:css": "tailwindcss -i ./pb_hooks/pages/app.tailwind.css -o ./pb_hooks/pages/app.css --watch"
   },

@@ -3,8 +3,8 @@
 ## Installation
 
 ```bash
-bunx degit benallfree/pocketpages/starters/minimal minimal-app
+npx degit benallfree/pocketpages/starters/minimal minimal-app
 cd minimal-app
-bun i
+npm i
 pocketbase --dir=pb_data --dev serve
 ```
