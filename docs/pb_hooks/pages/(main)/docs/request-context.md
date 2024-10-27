@@ -29,6 +29,7 @@ PocketPages provides a comprehensive request context object that is accessible i
     - [14. `response` - The Echo Response Object](#14-response---the-echo-response-object)
     - [15. `formData` - Posted Form Data](#15-formdata---posted-form-data)
     - [16. `redirect` - Redirect Helper](#16-redirect---redirect-helper)
+    - [17. Database Operations - Record Filtering](#17-database-operations---record-filtering)
 - [How the Context is Available in EJS](#how-the-context-is-available-in-ejs)
   - [Example: Using the Request Context in an EJS File](#example-using-the-request-context-in-an-ejs-file)
 - [Additional Notes](#additional-notes)
@@ -512,6 +513,81 @@ export default async ({ print, log }) => {
 ```
 
 > **Important**: Always return or otherwise stop execution after calling `redirect`, as any subsequent code that writes to the response will cause errors.
+
+#### 17. Database Operations - Record Filtering
+
+The request context provides convenient methods for querying records from your PocketBase collections using filters.
+
+##### FilterOptions Type
+
+The `FilterOptions` type defines the structure for filtering and pagination parameters:
+
+```typescript
+type FilterOptions = {
+  filter?: string // Filter query expression (defaults to '1=1')
+  sort?: string // Sort expression (e.g., '-created,title')
+  limit?: number // Maximum number of records to return
+  offset?: number // Number of records to skip
+  filterParams?: Record<string, string> // Named parameters for the filter query
+}
+```
+
+##### `findRecordsByFilter`
+
+- **Type**: `(collection: string, options?: Partial<FilterOptions>) => any[]`
+- **Description**: Retrieves multiple records from a collection based on the provided filter options.
+- **Parameters**:
+  - `collection`: The name of the collection to query
+  - `options`: Optional filter options (see `FilterOptions` type)
+- **Returns**: An array of matching records, or an empty array if none found
+
+##### `findRecordByFilter`
+
+- **Type**: `(collection: string, options?: Partial<FilterOptions>) => any`
+- **Description**: Retrieves a single record from a collection based on the provided filter options. This is a convenience method that returns the first record from `findRecordsByFilter`.
+- **Parameters**:
+  - `collection`: The name of the collection to query
+  - `options`: Optional filter options (see `FilterOptions` type)
+- **Returns**: The first matching record, or undefined if none found
+
+##### Example Usage:
+
+```ejs
+<%%
+  // Find all active users, sorted by creation date
+  const activeUsers = findRecordsByFilter('users', {
+    filter: 'active = true',
+    sort: '-created'
+  });
+
+  // Find a specific user by email
+  const user = findRecordByFilter('users', {
+    filter: 'email = {:email}',
+    filterParams: { email: 'user@example.com' }
+  });
+
+  // Find records with pagination
+  const paginatedPosts = findRecordsByFilter('posts', {
+    filter: 'status = "published"',
+    sort: '-created',
+    limit: 10,
+    offset: 20  // Skip first 20 records
+  });
+%>
+
+<h2>Active Users</h2>
+<ul>
+  <%% activeUsers.forEach(user => { %>
+    <li><%%= user.name %></li>
+  <%% }); %>
+</ul>
+
+<%% if (user) { %>
+  <h2>Found User</h2>
+  <p>Name: <%%= user.name %></p>
+  <p>Email: <%%= user.email %></p>
+<%% } %>
+```
 
 ## How the Context is Available in EJS
 

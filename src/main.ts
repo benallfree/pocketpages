@@ -16,6 +16,13 @@ export type MiddlewareLoaderFunc = (
   context: Omit<PagesContext<any>, 'data'>
 ) => object
 
+export type FilterOptions = {
+  filter?: string
+  sort?: string
+  limit?: number
+  offset?: number
+  filterParams?: Record<string, string>
+}
 
 export type PagesContext<T> = {
   ctx: echo.Context
@@ -24,6 +31,14 @@ export type PagesContext<T> = {
   response: echo.Response
   log: typeof log
   formData: Record<string, any>
+  findRecordsByFilter: (
+    collection: string,
+    options?: Partial<FilterOptions>
+  ) => any[]
+  findRecordByFilter: (
+    collection: string,
+    options?: Partial<FilterOptions>
+  ) => any[]
   print: (...args: any[]) => void
   asset: (path: string) => string
   redirect: (path: string, status?: number) => void
@@ -318,6 +333,34 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         ctx: c,
         params,
         log,
+        findRecordByFilter(collection, _options) {
+          return context.findRecordsByFilter(collection, _options)?.[0]
+        },
+        findRecordsByFilter(collection, _options) {
+          const { filter, sort, limit, offset, filterParams }: FilterOptions = {
+            filter: '1=1',
+            sort: '',
+            limit: 0,
+            offset: 0,
+            filterParams: {},
+            ..._options,
+          }
+          try {
+            const records = $app
+              .dao()
+              .findRecordsByFilter(
+                collection,
+                filter,
+                sort,
+                limit,
+                offset,
+                filterParams
+              )
+            return JSON.parse(stringify(records))
+          } catch (e) {
+            context.print(e)
+          }
+        },
         print: (...args) =>
           args.forEach((arg) => {
             if (typeof arg === 'function') {
