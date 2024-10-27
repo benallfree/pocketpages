@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.8.2
+
+### Patch Changes
+
+- Updated starter kits
+
 ## 0.8.1
 
 ### Patch Changes
