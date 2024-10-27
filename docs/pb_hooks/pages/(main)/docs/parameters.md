@@ -1,3 +1,8 @@
+---
+title: 'Route and Query Parameters'
+description: 'Access URL path segments and query strings in PocketPages templates using params.paramName. Route parameters use [brackets] in file/directory names. Query parameters override route parameters when names conflict.'
+---
+
 # Handling Route and Query String Parameters in PocketPages
 
 PocketPages offers flexible routing capabilities that include support for route parameters and query string parameters. This guide will explain how to work with these parameters, enabling you to create dynamic pages that respond to user inputs via the URL.

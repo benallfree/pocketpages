@@ -1,3 +1,8 @@
+---
+title: Using +middleware.js Files in PocketPages
+description: Middleware files intercept and modify requests before EJS template rendering, executing hierarchically from root to route level, with results merging into the data object for template access.
+---
+
 # Using `+middleware.js` Files in PocketPages
 
 PocketPages provides a flexible way to handle request processing and enhance the functionality of your application through the use of `+middleware.js` files. These files can be placed at any level within your directory structure and are executed in a top-down manner, from the root level down to the current route level. This guide will explain how `+middleware.js` files work and how to use them effectively in your PocketPages application.

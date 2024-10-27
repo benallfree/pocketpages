@@ -1,3 +1,8 @@
+---
+title: Custom Configuration with +config.js
+description: Configuration options for file processing and routing in pb_hooks/pages, including preprocessor extensions, static file handling, and non-routable file patterns.
+---
+
 # Custom Configuration with `+config.js`
 
 In the `pb_hooks/pages/` root, you can create a `+config.js` file to define custom configuration options for your application. This file allows you to control how files are processed within your app, particularly when using preprocessors like EJS.

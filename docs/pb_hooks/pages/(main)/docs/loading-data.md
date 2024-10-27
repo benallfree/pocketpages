@@ -1,3 +1,8 @@
+---
+title: 'Loading Data in PocketPages'
+description: 'Implement data loading in PocketPages using +load.js files to fetch and compute data before template rendering. Files execute hierarchically based on route paths, with data accessible via the context object in EJS templates.'
+---
+
 # Loading Data in PocketPages
 
 PocketPages provides a robust mechanism to load data dynamically before rendering your EJS templates using a special `+load.js` file. This file, when placed at any directory level, will be executed before any EJS template in that directory is rendered. Below, we'll explore how to use `+load.js`, demonstrate the module structure, and explain the execution flow with examples.

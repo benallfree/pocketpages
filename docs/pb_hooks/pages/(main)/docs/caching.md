@@ -1,3 +1,8 @@
+---
+title: Understanding Caching in PocketPages
+description: Comprehensive breakdown of PocketPages caching mechanisms, including development vs production behaviors, asset() function usage, CDN integration, cache-busting strategies, and HTTP header configurations.
+---
+
 # Understanding Caching in PocketPages
 
 Effective caching is crucial for optimizing the performance of your web applications. In PocketPages, caching mechanisms are designed to ensure that your content is delivered efficiently while providing flexibility during development. This guide will delve into how caching works in PocketPages, how to manage it during development and production, and considerations when using proxies like Cloudflare.

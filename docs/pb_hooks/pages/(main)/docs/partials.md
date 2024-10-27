@@ -1,3 +1,8 @@
+---
+title: Using Partials in PocketPages
+description: EJS template partials enable code reuse through includes, with context passing, relative/absolute path resolution, and private partial conventions using underscore prefixes.
+---
+
 # Using Partials in PocketPages
 
 Partials are reusable EJS templates that you can include within other EJS files to avoid repetition and maintain a clean, modular structure in your code. In PocketPages, partials are especially useful for common components like headers, footers, or any repeated content across multiple pages.

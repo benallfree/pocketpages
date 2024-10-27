@@ -1,3 +1,8 @@
+---
+title: Installation
+description: Step-by-step guide for installing PocketPages.
+---
+
 # Installation
 
 Installing PocketPages is easy.

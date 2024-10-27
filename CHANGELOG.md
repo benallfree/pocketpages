@@ -1,5 +1,17 @@
 # pocketpages
 
+## 0.9.0
+
+### Minor Changes
+
+- Added support for Markdown frontmatter
+- d0923d5: Introduced `slots` object for managing multiple layout slots
+- d2fd7b5: Added meta() function
+
+### Patch Changes
+
+- 665c6b5: Starter kit fixes
+
 ## 0.8.2
 
 ### Patch Changes

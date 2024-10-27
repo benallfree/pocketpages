@@ -1,3 +1,8 @@
+---
+title: Starter Kits
+description: Pre-configured PocketPages templates including minimal setup, DaisyUI integration, and deployment configurations for PocketHost and Fly.io. Each template provides specific tooling and configurations for different use cases and deployment targets.
+---
+
 # Starter Kits
 
 <!-- TOC depthfrom:2 -->

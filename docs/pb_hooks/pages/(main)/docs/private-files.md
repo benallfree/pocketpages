@@ -1,4 +1,7 @@
-# Working with Private Files and Directories in PocketPages
+---
+title: Working with Private Files and Directories in PocketPages
+description: Manage sensitive files and directories securely in PocketPages using special naming conventions and functions like `requirePrivate`.
+---
 
 In PocketPages, you can securely manage sensitive files and directories that should not be publicly accessible. This is done using a combination of special naming conventions and functions like `requirePrivate`. Files and directories that begin with an underscore (`_`) or a plus sign (`+`) are treated as private or reserved for special processing, ensuring they are not routable and cannot be accessed via a URL. This guide will explain how to effectively use these features in your PocketPages application.
 

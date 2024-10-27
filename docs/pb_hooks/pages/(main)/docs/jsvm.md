@@ -1,3 +1,8 @@
+---
+title: JavaScript API
+description: PocketBase's JavaScript runtime environment capabilities, limitations, and examples for database operations, with details on NPM package compatibility and available APIs.
+---
+
 # JavaScript API
 
 PocketBase's JavaScript runtime environment is neither Browser nor NodeJS. As such, it lacks Web APIs and NodeJS APIs such as `Buffer` and `require('fs')`.

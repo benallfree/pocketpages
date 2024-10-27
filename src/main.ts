@@ -1,4 +1,5 @@
-import { merge } from '@s-libs/micro-dash'
+import { forEach, merge } from '@s-libs/micro-dash'
+import fm, { FrontMatterResult } from 'front-matter'
 import { marked } from 'marked'
 import ejs from 'pocketbase-ejs'
 import * as log from 'pocketbase-log'
@@ -40,6 +41,17 @@ type Route = {
 type Cache = { pagesRoot: string; routes: Route[] }
 
 const pagesRoot = $filepath.join(__hooks, `pages`)
+
+var frontmatter:
+  | FrontMatterResult<Partial<{ title: string; description: string }>>
+  | undefined = undefined
+function preprocess(markdown) {
+  frontmatter = fm(markdown)
+  dbg(`frontmatter`, frontmatter)
+  return frontmatter.body
+}
+
+marked.use({ hooks: { preprocess } })
 
 const oldCompile = ejs.compile
 ejs.compile = (template, opts) => {
@@ -377,6 +389,9 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
           { ...context, context },
           { cache: $app.isDev() }
         )
+        forEach(frontmatter?.attributes, (value, key) => {
+          context.meta(key, value)
+        })
         context.slots = parseSlots(content)
         context.slot = context.slots.default || content
         dbg(`slots`, context.slots)

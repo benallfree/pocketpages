@@ -1,3 +1,8 @@
+---
+title: Deploying to Production
+description: Deploy PocketPages to pockethost.io with manual or GitHub Actions workflows, or self-host on Fly.io. Includes deployment scripts, environment setup, and configuration steps.
+---
+
 # Deploying to Production
 
 PocketPages is easy to deploy. If you follow the [recommended project structure](/docs/structure), everything in `/pb_*` can be deployed.

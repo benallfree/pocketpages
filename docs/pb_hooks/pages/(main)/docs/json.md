@@ -1,3 +1,8 @@
+---
+title: Serving JSON Responses
+description: PocketPages automatically detects and serves JSON content from .ejs templates with appropriate headers, enabling RESTful API development alongside HTML pages using the same templating system.
+---
+
 # Serving JSON Responses with PocketPages
 
 PocketPages allows you to easily create RESTful APIs by simply returning JSON content from your `.ejs` templates. If the output of an `.ejs` template parses as valid JSON, PocketPages will automatically serve it as a JSON response. This feature simplifies the process of building APIs within your PocketPages application, enabling you to handle both HTML and JSON responses using the same templating system.

@@ -1,3 +1,8 @@
+---
+title: Creating a PocketPages Page
+description: Step-by-step process for creating and organizing EJS template files in PocketPages, including file naming conventions, directory structure, and URL routing patterns.
+---
+
 # Creating a PocketPages Page
 
 PocketPages allows you to create dynamic pages for your application using EJS templating. Below are the steps and guidelines to create a page that will be served by PocketPages.

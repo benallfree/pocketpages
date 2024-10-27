@@ -1,3 +1,8 @@
+---
+title: 'Setting Up Email with Google Suite and AWS SES'
+description: 'Step-by-step configuration of AWS Simple Email Service (SES) with Google Suite, including DNS records, DKIM setup, SMTP credentials, and PocketBase integration for production email delivery.'
+---
+
 # Speedrun: Setting Up Email with Google Suite and AWS SES
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->

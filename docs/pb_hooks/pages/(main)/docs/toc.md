@@ -43,7 +43,6 @@
 - Github Actions
 - HTMLx
 - JSVM
-- OpenGraph
 - OTP
 - PocketHost.io
 - SEO

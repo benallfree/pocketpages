@@ -1,3 +1,8 @@
+---
+title: 'File-Based Routing'
+description: 'File-based routing maps URLs to EJS files in pb_hooks/pages/. Files and folders create corresponding routes, index.ejs serves as default page, nested directories create sub-routes, and trailing slashes redirect for index files to enable relative path loading.'
+---
+
 # File-Based Routing in PocketPages
 
 PocketPages supports file-based routing, allowing you to create a clean and intuitive URL structure directly from your file and folder organization. This guide will discuss how to set up file-based routing using a nested directory structure, ensuring your application's URLs align with the layout of your EJS files.

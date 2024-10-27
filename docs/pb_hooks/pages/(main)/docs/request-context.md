@@ -1,3 +1,8 @@
+---
+title: Request Context
+description: Properties and methods available during request processing, including logging, asset management, environment access, and metadata handling.
+---
+
 # Understanding the Request Context in PocketPages
 
 PocketPages provides a comprehensive request context object that is accessible in every EJS file. This context object contains several useful properties and functions that enable you to manage request data, log information, require private files, and more. This guide will walk you through the key components of the request context and how to use them effectively.

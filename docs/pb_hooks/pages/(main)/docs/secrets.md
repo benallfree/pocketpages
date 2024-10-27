@@ -1,3 +1,8 @@
+---
+title: Managing Secrets in PocketPages
+description: Methods for securely storing and accessing sensitive data in PocketPages applications using environment variables and PocketBase database, with examples for EJS template integration.
+---
+
 # Managing Secrets in PocketPages
 
 When building secure applications, managing secrets like API keys, database credentials, and other sensitive information is crucial. In PocketPages, secrets can be managed in two primary ways: through environment variables or by securely storing them in the PocketBase database. This section will guide you through both methods and explain how to access these secrets within your EJS templates.

@@ -1,3 +1,8 @@
+---
+title: Setting up a new email domain in Google Suite
+description: Complete walkthrough for configuring email domains in Google Suite, including domain verification, Gmail activation, catch-all email setup, MX record configuration, and sender account integration.
+---
+
 # Setting up a new email domain in Google Suite
 
 The process of setting up a new email domain in Google Suite involves several steps. In this guide, we will walk you through the process, from adding the domain to activating Gmail and setting up a catch-all email. By following these steps, you'll be able to configure your email domain effectively and ensure smooth communication within your organization. Let's get started!

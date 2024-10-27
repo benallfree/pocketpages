@@ -1,3 +1,8 @@
+---
+title: Layouts
+description: Nested template system using +layout.ejs files, slot management, and content inheritance patterns in PocketPages applications.
+---
+
 # Working with PocketPages Layouts
 
 PocketPages provides a powerful layout system that allows you to create consistent page structures by defining layouts that can wrap your content. Layouts are defined using `+layout.ejs` files and are applied in a bottom-up order, meaning that each higher-level layout wraps the content of the child layout. This guide will explain how layouts work in PocketPages and how to use them effectively.
