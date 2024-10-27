@@ -2,15 +2,12 @@
   "scripts": {
     "dev": "concurrently \"bun:dev:*\"",
     "phio": "phio",
-    "dev:serve": "phio dev",
     "dev:css": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.5.8",
     "@tailwindcss/typography": "^0.5.15",
     "concurrently": "^9.0.1",
     "daisyui": "^4.12.10",
-    "gobot-pocketbase": "^0.22.20-14",
     "phio": "^0.1.1",
     "postcss-import": "^16.1.0",
     "prettier": "^3.3.3",
@@ -18,19 +15,13 @@
     "typescript": "^5.6.2"
   },
   "trustedDependencies": [
-    "esbuild",
-    "gobot-pocketbase",
-    "pocodex"
+    "esbuild"
   ],
   "dependencies": {
     "pocketbase-jsvm": "^0.22.20001",
-    "pocketpages": "^0.7.0",
-    "pocodex": "^0.0.2"
+    "pocketpages": "^0.7.0"
   },
   "pockethost": {
     "instanceId": "pocketpages"
-  },
-  "patchedDependencies": {
-    "pocketpages@0.6.0": "patches/pocketpages@0.6.0.patch"
   }
 }

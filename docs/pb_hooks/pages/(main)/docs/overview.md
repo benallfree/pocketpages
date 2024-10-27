@@ -7,6 +7,7 @@ Use PocketPages to create slim and modern web apps:
 - Start small and iterate
 - SEO-first principals
 - Zero dependencies
+- No build step
 - Fast server-side rendering
 
 ## Hello world in just one file

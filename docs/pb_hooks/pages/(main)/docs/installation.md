@@ -2,29 +2,7 @@
 
 Installing PocketPages is easy.
 
-## Choose your package manager
-
-```bash
-bun add pocketpages
-```
-
-```bash
-yarn add pocketpages
-```
-
-```bash
-npm install pocketpages
-```
-
-```bash
-pnpm add pocketpages
-```
-
-## Run PocketBase
-
-```bash
-pocketbase serve --dir=pb_data --dev
-```
+<%- include(`../../_include/quickstart.ejs`) %>
 
 _Note: `--dir=pb_data` is necessary to tell PocketBase to use the current directory for data storage._
 

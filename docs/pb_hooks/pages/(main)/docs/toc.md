@@ -5,6 +5,7 @@
 
 # Basic Concepts
 
+- [Directory Structure](/docs/directory-structure)
 - [Creating a Page](/docs/creating-a-page)
 - [Routing](/docs/routing)
 - [Accessing Parameters](/docs/parameters)

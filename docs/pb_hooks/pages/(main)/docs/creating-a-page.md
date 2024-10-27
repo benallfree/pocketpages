@@ -2,23 +2,6 @@
 
 PocketPages allows you to create dynamic pages for your application using EJS templating. Below are the steps and guidelines to create a page that will be served by PocketPages.
 
-## Directory Structure
-
-All PocketPages must reside within the `pb_hooks/pages/` directory of your project. This is the designated location where PocketPages looks for pages to serve.
-
-### Example Structure:
-
-```
-pb_hooks/
-   pages/
-      index.ejs
-      about.ejs
-      contact.ejs
-      products/
-         index.ejs
-         details.ejs
-```
-
 ## Creating Pages
 
 1. **Create an EJS File**: Inside the `pb_hooks/pages/` directory, create an `.ejs` file. This file will represent the page that you want to serve.
