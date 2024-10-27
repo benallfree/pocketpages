@@ -12,6 +12,11 @@ export type PageDataLoaderFunc = (
   context: Omit<PagesContext<any>, 'data'>
 ) => object
 
+export type MiddlewareLoaderFunc = (
+  context: Omit<PagesContext<any>, 'data'>
+) => object
+
+
 export type PagesContext<T> = {
   ctx: echo.Context
   params: Record<string, string>

@@ -17,6 +17,24 @@ The `+load.js` file is designed to load or compute data that your EJS templates 
 
 The `+load.js` file must use `module.exports` to export a loader function. This function will receive the request context as an argument and should return an object containing the data you wish to pass to the template.
 
+You can use JSDoc to reference the `PageDataLoaderFunc` type for better IDE support and type checking:
+
+```javascript
+/** @type {import('pocketpages').PageDataLoaderFunc} */
+module.exports = function (context) {
+  // Perform data loading operations here
+  const productId = context.params.productId
+
+  // Example: Fetch product details from a database
+  const productDetails = getProductDetails(productId)
+
+  // Return an object containing the data
+  return {
+    product: productDetails,
+  }
+}
+```
+
 ### Example `+load.js` File
 
 ```javascript
