@@ -21,6 +21,7 @@ export type PagesContext<T> = {
   requirePrivate: (path: string) => any
   data?: T
   stringify: typeof stringify
+  meta: (key: string, value?: string) => string | undefined
 }
 
 export type PagesConfig = {
@@ -288,6 +289,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
       const requirePrivate = (path) =>
         require($filepath.join(pagesRoot, `_private`, path))
 
+      const metaData = {}
       const context: PagesContext<any> = {
         ctx: c,
         params,
@@ -296,6 +298,12 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         url: (path: string) => new URL(path, true),
         requirePrivate,
         stringify,
+        meta: (key, value) => {
+          if (value === undefined) {
+            return metaData[key]
+          }
+          return (metaData[key] = value)
+        },
       }
 
       let data = {}
