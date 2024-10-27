@@ -1,19 +1,10 @@
 {
   "name": "minimal",
   "scripts": {
-    "pocketbase": "pocketbase",
-    "pocketpages": "pocketpages",
-    "serve": "pocketpages serve --hooksDir=app",
-    "dev": "pocketpages serve --hooksDir=app --dev"
+    "serve": "pocketbase --dir=pb_data serve",
+    "dev": "pocketbase --dir=pb_data --dev serve"
   },
   "dependencies": {
-    "pocketpages": "^0.1.0"
-  },
-  "pocketbase": {
-    "version": "0.22.20"
-  },
-  "trustedDependencies": [
-    "esbuild",
-    "gobot-pocketbase"
-  ]
+    "pocketpages": "^0.8.0"
+  }
 }

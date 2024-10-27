@@ -8,7 +8,7 @@ async function deployMyCode() {
     server: 'ftp.sfo-1.pockethost.io',
     username: env.get('PH_USERNAME').required().asString(),
     password: env.get('PH_PASSWORD').required().asString(),
-    'local-dir': 'app/',
+    'local-dir': 'pb_hooks/',
     'server-dir': `${env.get('APP_NAME').required().asString()}/`,
     'state-name': 'pb_hooks/.ftp-deploy-sync-state.json',
     exclude: [...excludeDefaults],

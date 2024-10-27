@@ -1,27 +1,18 @@
 {
-  "name": "pocketpages-docs",
-  "version": "0.0.1",
-  "type": "module",
+  "name": "daisyui-docs",
   "scripts": {
-    "pocketpages": "pocketpages",
-    "serve": "pocketpages serve --hooksDir=app --dev",
+    "serve": "pocketbase serve --dir=pb_data",
     "dev": "concurrently \"bun:dev:*\"",
-    "dev:serve": "pocketpages serve --hooksDir=app --dev",
-    "dev:css": "tailwindcss -i ./app/assets/app.tailwind.css -o ./app/assets/app.css --watch"
+    "dev:pocketbase": "pocketbase-22 serve --dir=pb_data --dev",
+    "dev:css": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.14",
     "concurrently": "^8.2.2",
     "daisyui": "^4.12.10",
-    "postcss-import": "^16.1.0",
-    "tailwindcss": "^3.4.10",
-    "@types/env-paths": "^2.1.0"
+    "tailwindcss": "^3.4.10"
   },
   "dependencies": {
-    "pocketpages": "^0.4.1"
-  },
-  "trustedDependencies": [
-    "esbuild",
-    "gobot-pocketbase"
-  ]
+    "pocketpages": "^0.8.0"
+  }
 }

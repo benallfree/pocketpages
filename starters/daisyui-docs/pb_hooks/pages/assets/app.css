@@ -1580,19 +1580,6 @@ html {
   justify-self: end;
 }
 
-.mockup-browser {
-  position: relative;
-  overflow: hidden;
-  overflow-x: auto;
-  border-radius: var(--rounded-box, 1rem);
-}
-
-.mockup-browser pre[data-prefix]:before {
-  content: attr(data-prefix);
-  display: inline-block;
-  text-align: right;
-}
-
 .navbar {
   display: flex;
   align-items: center;
@@ -1994,32 +1981,6 @@ html {
   margin-top: 0;
 }
 
-.mockup-browser .mockup-browser-toolbar {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-  display: inline-flex;
-  width: 100%;
-  align-items: center;
-  padding-right: 1.4em;
-}
-
-.mockup-browser .mockup-browser-toolbar:where([dir="rtl"], [dir="rtl"] *) {
-  flex-direction: row-reverse;
-}
-
-.mockup-browser .mockup-browser-toolbar:before {
-  content: "";
-  margin-right: 4.8rem;
-  display: inline-block;
-  aspect-ratio: 1 / 1;
-  height: 0.75rem;
-  border-radius: 9999px;
-  opacity: 0.3;
-  box-shadow: 1.4em 0,
-          2.8em 0,
-          4.2em 0;
-}
-
 .mockup-browser .mockup-browser-toolbar .input {
   position: relative;
   margin-left: auto;
@@ -2367,10 +2328,6 @@ pre {
   max-width: 100%;
 }
 
-.max-w-lg {
-  max-width: 32rem;
-}
-
 .max-w-xs {
   max-width: 20rem;
 }
@@ -2391,15 +2348,6 @@ pre {
   align-items: center;
 }
 
-.border {
-  border-width: 1px;
-}
-
-.bg-base-100 {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
-}
-
 .bg-base-200 {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
@@ -2408,16 +2356,6 @@ pre {
 .bg-base-300 {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
-}
-
-.bg-neutral {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
-}
-
-.bg-primary {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
 }
 
 .stroke-current {
@@ -2431,19 +2369,6 @@ pre {
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.pb-32 {
-  padding-bottom: 8rem;
-}
-
-.text-left {
-  text-align: left;
 }
 
 .text-center {
@@ -2553,15 +2478,7 @@ div.code-toolbar
     cursor: default;
     background-color: transparent;
   }
-}
 
-@media (min-width: 768px) {
-  .md\:w-full {
-    width: 100%;
-  }
-}
-
-@media (min-width: 1024px) {
   .lg\:block {
     display: block;
   }
