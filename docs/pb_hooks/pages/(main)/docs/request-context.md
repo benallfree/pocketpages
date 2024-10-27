@@ -25,6 +25,10 @@ PocketPages provides a comprehensive request context object that is accessible i
     - [10. `data` - Accessing Loaded Data](#10-data---accessing-loaded-data)
     - [11. `meta` - Managing Page Metadata and Global Values](#11-meta---managing-page-metadata-and-global-values)
     - [12. `print` - HTTP Response Output Helper](#12-print---http-response-output-helper)
+    - [13. `request` - The Echo Request Object](#13-request---the-echo-request-object)
+    - [14. `response` - The Echo Response Object](#14-response---the-echo-response-object)
+    - [15. `formData` - Posted Form Data](#15-formdata---posted-form-data)
+    - [16. `redirect` - Redirect Helper](#16-redirect---redirect-helper)
 - [How the Context is Available in EJS](#how-the-context-is-available-in-ejs)
   - [Example: Using the Request Context in an EJS File](#example-using-the-request-context-in-an-ejs-file)
 - [Additional Notes](#additional-notes)
@@ -378,6 +382,136 @@ export default async ({ print, log }) => {
 ```
 
 > **Note**: While `print` is primarily an output mechanism that writes to the HTTP response, it's also quite convenient for quick debugging during development - similar to PHP's inline debugging style. You can immediately see the output in your browser without checking log files or admin panels. However, for production monitoring and logging, `log` is more appropriate.
+
+#### 13. `request` - The Echo Request Object
+
+- **Type**: [`echo.Request`](https://pocketbase.io/jsvm/interfaces/http.Request.html)
+- **Description**: The `request` property provides direct access to the Echo framework's request object, allowing you to inspect and interact with various aspects of the incoming HTTP request.
+
+##### Example Usage:
+
+```ejs
+<%%
+  // Get request method
+  const method = request.method
+
+  // Get request headers
+  const userAgent = request.header('User-Agent')
+
+  // Get request body
+  const body = request.body()
+
+  // Get query parameters
+  const query = request.query()
+%>
+
+<p>Request Method: <%%= method %></p>
+<p>User Agent: <%%= userAgent %></p>
+```
+
+#### 14. `response` - The Echo Response Object
+
+- **Type**: [`echo.Response`](https://pocketbase.io/jsvm/interfaces/echo.Response.html)
+- **Description**: The `response` property gives you access to the Echo framework's response object, allowing you to modify the HTTP response before it's sent to the client.
+
+##### Example Usage:
+
+```ejs
+<%%
+  // Set response header
+  response.header('X-Custom-Header', 'value')
+
+  // Set response status
+  response.status(201)
+
+  // Write directly to response
+  response.write('Some content')
+%>
+```
+
+#### 15. `formData` - Posted Form Data
+
+- **Type**: `Record<string, any>`
+- **Description**: When a form is submitted via POST request, the `formData` object contains all the submitted form fields. This makes it easy to access form data without having to parse the request body manually.
+
+##### Example Usage:
+
+```ejs
+<%% if (request.method === 'POST') { %>
+  <div class="form-results">
+    <h2>Submitted Data:</h2>
+    <p>Name: <%%= formData.name %></p>
+    <p>Email: <%%= formData.email %></p>
+    <p>Message: <%%= formData.message %></p>
+  </div>
+<%% } %>
+
+<form method="POST">
+  <input type="text" name="name">
+  <input type="email" name="email">
+  <textarea name="message"></textarea>
+  <button type="submit">Send</button>
+</form>
+```
+
+#### 16. `redirect` - Redirect Helper
+
+- **Type**: `(path: string, status?: number) => void`
+- **Description**: The `redirect` function performs an immediate HTTP redirect to the specified path. By default, it uses a 302 (temporary) redirect status code, but you can specify a different status code if needed. Once called, no further response data should be written.
+
+##### Parameters:
+
+- `path`: The URL path to redirect to
+- `status`: (Optional) HTTP status code (defaults to 302)
+
+##### Example Usage:
+
+```ejs
+<%%
+  // Basic redirect
+  redirect('/new-page')
+
+  // Redirect with specific status code (301 - permanent redirect)
+  redirect('/permanent-page', 301)
+
+  // Redirect based on condition
+  if (!user.isAuthenticated) {
+    redirect('/login')
+    return // Important: stop execution after redirect
+  }
+%>
+```
+
+##### Common Use Cases:
+
+1. **Authentication Redirects**:
+
+```ejs
+<%% if (!user.isLoggedIn) {
+    redirect('/login')
+    return
+} %>
+```
+
+2. **Form Submission Success**:
+
+```ejs
+<%% if (formData.submitted) {
+    redirect('/thank-you')
+    return
+} %>
+```
+
+3. **URL Normalization**:
+
+```ejs
+<%% if (!request.url.endsWith('/')) {
+    redirect(request.url + '/')
+    return
+} %>
+```
+
+> **Important**: Always return or otherwise stop execution after calling `redirect`, as any subsequent code that writes to the response will cause errors.
 
 ## How the Context is Available in EJS
 

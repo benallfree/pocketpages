@@ -15,9 +15,13 @@ export type PageDataLoaderFunc = (
 export type PagesContext<T> = {
   ctx: echo.Context
   params: Record<string, string>
+  request: http.Request
+  response: echo.Response
   log: typeof log
+  formData: Record<string, any>
   print: (...args: any[]) => void
   asset: (path: string) => string
+  redirect: (path: string, status?: number) => void
   url: (path: string) => URLParse<Record<string, string>>
   requirePrivate: (path: string) => any
   data?: T
@@ -322,6 +326,10 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
             }
           }),
         asset,
+        formData: $apis.requestInfo(c).data,
+        request: c.request(),
+        response: c.response(),
+        redirect: (path, status = 302) => c.redirect(status, path),
         url: (path: string) => new URL(path, true),
         requirePrivate,
         stringify,
