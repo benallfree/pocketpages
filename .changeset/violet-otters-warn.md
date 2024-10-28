@@ -1,0 +1,5 @@
+---
+'pocketpages': minor
+---
+
+Asset fingerprinting
