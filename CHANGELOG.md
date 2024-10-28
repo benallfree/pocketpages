@@ -1,5 +1,15 @@
 # pocketpages
 
+## 0.10.0-rc1.1
+
+### Minor Changes
+
+- 090ab33: Asset fingerprinting
+
+### Patch Changes
+
+- 090ab33: Doc updates: major refactoring, deployment, asset management, context reference, and more
+
 ## 0.10.0-rc1.0
 
 ### Minor Changes
