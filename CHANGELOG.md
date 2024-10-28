@@ -1,5 +1,21 @@
 # pocketpages
 
+## 0.10.0-rc1.0
+
+### Minor Changes
+
+- 34f40c0: Massive refactor. Security fixes, helper functions, streamlined context. See /docs
+- dfbabfb: Added print() to context
+
+### Patch Changes
+
+- bf78737: Feat: added request, response, formData, and redirect to context
+- f1f3264: Docs: PageDataLoaderFunc type
+- 1e88e60: Starter: htmx
+- ea556b4: Starter: MVP.css
+- 1a6211c: Docs: MiddlewareLoaderFunc type
+- b9a2b51: Feat: added findRecordByFilter, findRecordsByFilter, and FilterOptions to context
+
 ## 0.9.0
 
 ### Minor Changes

@@ -1,0 +1,17 @@
+{
+  "mode": "pre",
+  "tag": "rc1",
+  "initialVersions": {
+    "pocketpages": "0.9.0"
+  },
+  "changesets": [
+    "chatty-lemons-sort",
+    "itchy-pandas-bathe",
+    "kind-ties-clean",
+    "loud-chairs-flash",
+    "nervous-humans-bathe",
+    "spotty-glasses-study",
+    "sweet-ways-turn",
+    "tidy-tigers-sell"
+  ]
+}
