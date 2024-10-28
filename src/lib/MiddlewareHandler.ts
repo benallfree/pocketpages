@@ -4,7 +4,7 @@ import { stringify } from 'pocketbase-stringify'
 import { parseSlots, renderFile } from './ejs'
 import { mkMeta, pagesRoot, safeLoad } from './helpers'
 import { marked } from './marked'
-import { parseRoute } from './parseRoute'
+import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
 import { Cache, PagesContext } from './types'
 
 export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
@@ -82,14 +82,25 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         slot: '',
         slots: {},
         asset: (path) => {
-          dbg(`asset`, { path, assetPrefix: route.assetPrefix })
-          const assetPath = path.startsWith('/')
+          const shortAssetPath = path.startsWith('/')
             ? path
             : $filepath.join(route.assetPrefix, path)
-          if ($app.isDev()) {
-            return `${assetPath}?_r=${Date.now()}`
+          const fullAssetPath = path.startsWith('/')
+            ? path
+            : $filepath.join(
+                ...route.segments.slice(0, -2).map((s) => s.nodeName),
+                route.assetPrefix,
+                path
+              )
+          const assetRoute = parseRoute(fullAssetPath, routes)
+          dbg({ fullAssetPath, shortAssetPath, assetRoute })
+          if (!assetRoute) {
+            if ($app.isDev()) {
+              return `${shortAssetPath}?_r=${Date.now()}`
+            }
+            return `${shortAssetPath}`
           }
-          return assetPath
+          return applyFingerprint(shortAssetPath, assetRoute.route.fingerprint)
         },
         meta: mkMeta(),
       }

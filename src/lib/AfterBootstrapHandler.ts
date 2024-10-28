@@ -7,6 +7,7 @@ import { Cache, PagesConfig } from './types'
 export type Route = {
   relativePath: string
   absolutePath: string
+  fingerprint: string
   shouldPreProcess: boolean
   assetPrefix: string
   segments: {
@@ -78,6 +79,7 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
       const route: Route = {
         relativePath,
         absolutePath,
+        fingerprint: $security.sha256(absolutePath).slice(0, 8),
         assetPrefix: parts[parts.length - 2],
         isMarkdown: relativePath.endsWith('.md'),
         isEjs: relativePath.endsWith('.ejs'),

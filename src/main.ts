@@ -1,9 +1,9 @@
 export * as log from 'pocketbase-log'
 export { stringify } from 'pocketbase-stringify'
-export { AfterBootstrapHandler } from './AfterBootstrapHandler'
+export { AfterBootstrapHandler } from './lib/AfterBootstrapHandler'
 export {
   findRecordByFilter,
   findRecordsByFilter,
   type FilterOptions,
-} from './db'
-export { MiddlewareHandler } from './MiddlewareHandler'
+} from './lib/db'
+export { MiddlewareHandler } from './lib/MiddlewareHandler'
