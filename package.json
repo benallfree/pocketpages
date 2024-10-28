@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@s-libs/micro-dash": "^18.0.0",
+    "@types/ejs": "^3.1.5",
     "@types/url-parse": "^1.4.11",
     "front-matter": "^4.0.2",
     "marked": "^14.1.2",
