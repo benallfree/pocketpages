@@ -19,7 +19,7 @@ export const fingerprint = (nodeName: string, fingerprint: string) => {
 
 export const parseRoute = (urlPath: string, routes: Route[]) => {
   const { config } = $app.store<Cache>().get(`pocketpages`)
-  const params = {}
+  const params: Record<string, string> = {}
   const tryFnames = [
     `${urlPath}`,
     ...config.preprocessorExts.map((ext) => `${urlPath}${ext}`),
@@ -36,8 +36,9 @@ export const parseRoute = (urlPath: string, routes: Route[]) => {
     // dbg({ routeCandidates })
     for (const route of routeCandidates) {
       const matched = route.segments.every((segment, i) => {
-        if (segment.paramName) {
-          params[segment.paramName] = parts[i]
+        const { paramName } = segment
+        if (paramName) {
+          params[paramName] = parts[i]!
           return true
         }
         const matchesWithFingerprint = (() => {

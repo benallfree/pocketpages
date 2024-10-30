@@ -74,13 +74,14 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
       dbg(`Examining route`, relativePath)
       const parts = relativePath.split('/').filter((p) => !p.startsWith(`(`))
       const absolutePath = $filepath.join(pagesRoot, relativePath)
+      dbg({ relativePath, absolutePath, parts })
 
       // dbg({ parts })
       const route: Route = {
         relativePath,
         absolutePath,
         fingerprint: $security.sha256(absolutePath).slice(0, 8),
-        assetPrefix: parts[parts.length - 2],
+        assetPrefix: parts[parts.length - 2] ?? '',
         isMarkdown: relativePath.endsWith('.md'),
         isEjs: relativePath.endsWith('.ejs'),
         shouldPreProcess: config.preprocessorExts.some((ext) =>
@@ -99,24 +100,30 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
         loaders: {},
       }
 
+      if (!route.shouldPreProcess) {
+        return route
+      }
+
       /**
        * Calculate layouts
        */
-      if (route.shouldPreProcess) {
+      {
         const pathParts = $filepath
           .dir(relativePath)
           .split(`/`)
+          .filter((node) => node != '.')
           .filter((p) => !!p)
+        dbg(`layout`, { pathParts }, $filepath.dir(relativePath))
         do {
           const maybeLayout = $filepath.join(
             pagesRoot,
             ...pathParts,
             `+layout.ejs`
           )
-          // dbg({ pathParts, maybeLayout })
+          dbg({ pathParts, maybeLayout })
           if (fs.existsSync(maybeLayout, 'file')) {
             route.layouts.push(maybeLayout)
-            // dbg(`layout found`)
+            dbg(`layout found`)
           }
           if (pathParts.length === 0) {
             break
@@ -128,7 +135,7 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
       /**
        * Calculate middlewares
        */
-      if (route.shouldPreProcess) {
+      {
         const pathParts = $filepath
           .dir(relativePath)
           .split(`/`)
@@ -144,11 +151,11 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
           if (pathParts.length === 0) {
             break
           }
-          current.push(pathParts.shift())
+          current.push(pathParts.shift()!)
         } while (true)
       }
 
-      if (route.shouldPreProcess) {
+      {
         forEach(LOADER_METHODS, (method) => {
           const maybeLoad = $filepath.join(
             pagesRoot,

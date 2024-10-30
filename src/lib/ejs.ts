@@ -7,15 +7,15 @@ import { marked } from './marked'
 import { PagesContext } from './types'
 
 ejs.cache = {
-  set: function (key, val) {
+  set: function (key: string, val: any) {
     // dbg(`setting cache`, { key, val })
     $app.store().set(`ejs.${key}`, val)
   },
-  get: function (key) {
+  get: function (key: string) {
     // dbg(`getting cache`, { key })
     return $app.store().get(`ejs.${key}`)
   },
-  remove: function (key) {
+  remove: function (key: string) {
     // dbg(`removing cache`, { key })
     $app.store().remove(`ejs.${key}`)
   },
@@ -34,16 +34,28 @@ ejs.resolveInclude = function (name: string, filename: string, isDir: boolean) {
 
 export const parseSlots = (input: string) => {
   const regex = /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g
-  const slots = {}
-  let match
+  const slots: Record<string, string> = {}
+  let lastIndex = 0
+  let cleanedContent = ''
+  let match: RegExpExecArray | null
 
   while ((match = regex.exec(input)) !== null) {
     const name = match[1]
-    const content = match[2].trim()
-    slots[name] = content
+    const content = match[2]?.trim()
+    if (name && content) {
+      slots[name] = content
+      // Add the content between the last match and this slot tag
+      cleanedContent += input.slice(lastIndex, match.index)
+      lastIndex = match.index + match[0].length
+    }
   }
+  // Add any remaining content after the last slot
+  cleanedContent += input.slice(lastIndex)
 
-  return slots
+  return {
+    slots,
+    content: cleanedContent.trim(),
+  }
 }
 
 export const renderFile = (fname: string, context: PagesContext<any>) => {
@@ -73,8 +85,6 @@ export const renderFile = (fname: string, context: PagesContext<any>) => {
       },
     }
   )
-  context.slots = parseSlots(content)
-  context.slot = context.slots.default || content
   dbg(`renderFile end`, {
     fname,
     context: pick(context, 'slots', 'slot', 'data'),

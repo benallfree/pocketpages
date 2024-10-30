@@ -17,16 +17,22 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
 
     const { url } = c.request()
 
+    if (!url) {
+      dbg(`No URL, passing on to PocketBase`)
+      return next(c)
+    }
+
     const urlPath = url.path.slice(1)
 
     /**
      * If the URL path starts with 'api' or '_', skip PocketPages
      */
     {
-      const firstPart = urlPath
-        .split('/')
-        .filter((p) => p)
-        .shift()
+      const firstPart =
+        urlPath
+          .split('/')
+          .filter((p) => p)
+          .shift() || ''
       if (['api', '_'].includes(firstPart)) {
         return next(c)
       }
@@ -34,8 +40,6 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
     // dbg({ urlPath })
 
     const parsedRoute = parseRoute(urlPath, routes)
-    const { route, params } = parsedRoute
-    const { absolutePath, relativePath } = route
 
     /**
      * If it doesn't match any known route, pass it on
@@ -45,6 +49,9 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
       dbg(`No route matched for ${urlPath}, passing on to PocketBase`)
       return next(c)
     }
+
+    const { route, params } = parsedRoute
+    const { absolutePath, relativePath } = route
 
     /**
      * If the file exists but is not a preprocessor file, skip PocketPages and serve statically
@@ -120,7 +127,8 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
       {
         const methods = ['load', c.request().method.toLowerCase()]
         forEach(methods, (method) => {
-          const loaderFname = route.loaders[method]
+          const loaderFname =
+            route.loaders[method as keyof typeof route.loaders]
           if (!loaderFname) return
           dbg(`Executing loader ${loaderFname}`)
           data = merge(
@@ -163,8 +171,6 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         dbg(`Markdown file`, { absolutePath })
         const res = marked(content, context)
         content = res.content
-        context.slots = parseSlots(content)
-        context.slot = context.slots.default || content
 
         forEach(res.frontmatter, (value, key) => {
           context.meta(key, value)
@@ -187,6 +193,9 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
        * Render the content in the layout
        */
       route.layouts.forEach((layoutPath) => {
+        const res = parseSlots(content)
+        context.slots = res.slots
+        context.slot = res.slots.default || res.content
         content = renderFile(layoutPath, context)
       })
 
@@ -195,8 +204,9 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
     } catch (e) {
       return c.html(
         500,
-        `<html><body><h1>PocketPages Error</h1><pre><code>${e.stack.replaceAll(pagesRoot, '')}).content
-        }</body></html>`
+        `<html><body><h1>PocketPages Error</h1><pre><code>${
+          e instanceof Error ? e.stack?.replaceAll(pagesRoot, '') : e
+        }</code></pre></body></html>`
       )
     }
   }

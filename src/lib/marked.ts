@@ -1,10 +1,10 @@
 import fm, { FrontMatterResult } from 'front-matter'
-import { marked as _marked } from 'marked'
+import { marked as _marked, RendererObject } from 'marked'
 import { dbg } from 'pocketbase-log'
 import { PagesContext } from './types'
 
 export type FrontMatter = Record<string, string>
-var frontmatter: FrontMatterResult<FrontMatter> = null
+var frontmatter: FrontMatterResult<FrontMatter> | null = null
 
 function preprocess(markdown: string) {
   frontmatter = fm(markdown)
@@ -14,9 +14,9 @@ function preprocess(markdown: string) {
 
 _marked.use({ hooks: { preprocess } })
 
-const createRenderer = (context: PagesContext<any>) => ({
+const createRenderer = (context: PagesContext<any>): RendererObject => ({
   heading({ tokens, depth }) {
-    const id = tokens[0].raw
+    const id = tokens[0]?.raw
       .toLowerCase() // Convert to lowercase
       .trim() // Remove leading/trailing spaces
       .replace(/[^a-z0-9\-_ ]/g, '') // Remove invalid characters
@@ -42,7 +42,7 @@ export const marked = (
   const html = _marked(content) as string
   dbg({ html })
   return {
-    frontmatter: frontmatter.attributes,
+    frontmatter: frontmatter?.attributes ?? {},
     content: html,
   }
 }
