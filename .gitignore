@@ -8,3 +8,4 @@ pb_*
 .env
 docs/.cache
 .secrets
+.vscode/settings.json
