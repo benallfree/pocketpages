@@ -4,6 +4,7 @@ import { stringify } from 'pocketbase-stringify'
 import { parseSlots, renderFile } from './ejs'
 import {
   url as _url,
+  echo,
   mkMeta,
   pagesRoot,
   requirePrivate,
@@ -14,20 +15,6 @@ import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
 import { Cache, PagesApi } from './types'
 
 const { dbg } = log
-
-const echo = (...args: any[]) => {
-  const result = args.map((arg) => {
-    if (typeof arg === 'function') {
-      return arg.toString()
-    } else if (typeof arg === 'object') {
-      return stringify(arg)
-    } else if (typeof arg === 'number') {
-      return arg.toString()
-    }
-    return `${arg}`
-  })
-  return result.join(' ')
-}
 
 export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
   const { routes, config } = $app.store<Cache>().get(`pocketpages`)
