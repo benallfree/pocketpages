@@ -1,7 +1,7 @@
 import fm, { FrontMatterResult } from 'front-matter'
 import { marked as _marked, RendererObject } from 'marked'
 import { dbg } from 'pocketbase-log'
-import { PagesContext } from './types'
+import { PagesApi } from './types'
 
 export type FrontMatter = Record<string, string>
 var frontmatter: FrontMatterResult<FrontMatter> | null = null
@@ -14,7 +14,7 @@ function preprocess(markdown: string) {
 
 _marked.use({ hooks: { preprocess } })
 
-const createRenderer = (context: PagesContext<any>): RendererObject => ({
+const createRenderer = (api: PagesApi<any>): RendererObject => ({
   heading({ tokens, depth }) {
     const id = tokens[0]?.raw
       .toLowerCase() // Convert to lowercase
@@ -28,16 +28,16 @@ const createRenderer = (context: PagesContext<any>): RendererObject => ({
     )}</h${depth}>\n`
   },
   image({ href, title, text }) {
-    return `<img src="${context.asset(href)}" alt="${text}" title="${title}" />`
+    return `<img src="${api.asset(href)}" alt="${text}" title="${title}" />`
   },
 })
 
 export const marked = (
   content: string,
-  context: PagesContext<any>
+  api: PagesApi<any>
 ): { frontmatter: FrontMatter; content: string } => {
   _marked.use({
-    renderer: createRenderer(context),
+    renderer: createRenderer(api),
   })
   const html = _marked(content) as string
   dbg({ html })

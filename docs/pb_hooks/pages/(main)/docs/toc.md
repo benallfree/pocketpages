@@ -9,7 +9,6 @@
 - [Creating a Page](/docs/creating-a-page)
 - [Routing](/docs/routing)
 - [Accessing Parameters](/docs/parameters)
-- [Request Context](/docs/request-context)
 - [Loading Data](/docs/loading-data)
 - [JSON](/docs/json)
 - [Partials](/docs/partials)
@@ -24,32 +23,26 @@
 - [Runtime Configuration](/docs/config)
 - [Caching](/docs/caching)
 
-# Request Context
+# API
 
-- [Overview](/docs/request-context/overview)
-- [`ctx`](/docs/request-context/ctx)
-- [`params`](/docs/request-context/params)
-- [`requirePrivate`](/docs/request-context/require-private)
-- [`context`](/docs/request-context/context)
-- [`asset`](/docs/request-context/asset)
-- [`data`](/docs/request-context/data)
-- [`meta`](/docs/request-context/meta)
-- [`print`](/docs/request-context/print)
-- [`request`](/docs/request-context/request)
-- [`response`](/docs/request-context/response)
-- [`formData`](/docs/request-context/form-data)
-- [`redirect`](/docs/request-context/redirect)
-
-# Database Helpers
-
-- [Fetching records](/docs/database/fetching)
-
-# Utility Helpers
-
-- [`log`](/docs/helpers/log)
-- [`stringify`](/docs/helpers/stringify)
-- [`url`](/docs/helpers/url)
-- [`env`](/docs/helpers/env)
+- [Overview](/docs/api)
+- [`api`](/docs/api/api)
+- [`asset`](/docs/api/asset)
+- [`ctx`](/docs/api/ctx)
+- [`data`](/docs/api/data)
+- [`dbg/info/warn/error`](/docs/api/log)
+- [`echo`](/docs/api/echo)
+- [`env`](/docs/api/env)
+- [`findRecord(s)ByFilter`](/docs/api/db)
+- [`formData`](/docs/api/form-data)
+- [`meta`](/docs/api/meta)
+- [`params`](/docs/api/params)
+- [`redirect`](/docs/api/redirect)
+- [`request`](/docs/api/request)
+- [`requirePrivate`](/docs/api/require-private)
+- [`response`](/docs/api/response)
+- [`stringify`](/docs/api/stringify)
+- [`url`](/docs/api/url)
 
 # Guides
 

@@ -1,11 +1,33 @@
 import { forEach, merge } from '@s-libs/micro-dash'
-import { dbg } from 'pocketbase-log'
+import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { parseSlots, renderFile } from './ejs'
-import { mkMeta, pagesRoot, safeLoad } from './helpers'
+import {
+  url as _url,
+  mkMeta,
+  pagesRoot,
+  requirePrivate,
+  safeLoad,
+} from './helpers'
 import { marked } from './marked'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
-import { Cache, PagesContext } from './types'
+import { Cache, PagesApi } from './types'
+
+const { dbg } = log
+
+const echo = (...args: any[]) => {
+  const result = args.map((arg) => {
+    if (typeof arg === 'function') {
+      return arg.toString()
+    } else if (typeof arg === 'object') {
+      return stringify(arg)
+    } else if (typeof arg === 'number') {
+      return arg.toString()
+    }
+    return `${arg}`
+  })
+  return result.join(' ')
+}
 
 export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
   const { routes, config } = $app.store<Cache>().get(`pocketpages`)
@@ -67,21 +89,14 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
     try {
       dbg(`Found a matching route`, { parsedRoute })
 
-      const context: PagesContext<any> = {
+      const api: PagesApi<any> = {
         ctx: c,
         params,
-        print: (...args) =>
-          args.forEach((arg) => {
-            if (typeof arg === 'function') {
-              c.response().write(arg.toString())
-            } else if (typeof arg === 'object') {
-              c.response().write(stringify(arg))
-            } else if (typeof arg === 'number') {
-              c.response().write(arg.toString())
-            } else {
-              c.response().write(`${arg}`)
-            }
-          }),
+        echo: (...args) => {
+          const s = echo(...args)
+          c.response().write(s)
+          return s
+        },
         formData: $apis.requestInfo(c).data,
         request: c.request(),
         response: c.response(),
@@ -110,6 +125,10 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
           return applyFingerprint(shortAssetPath, assetRoute.route.fingerprint)
         },
         meta: mkMeta(),
+        stringify,
+        url: _url,
+        requirePrivate,
+        ...log,
       }
 
       let data = {}
@@ -118,7 +137,7 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         data = merge(
           data,
           safeLoad(maybeMiddleware, () =>
-            require(maybeMiddleware)({ ...context, data })
+            require(maybeMiddleware)({ ...api, data })
           )
         )
       })
@@ -133,47 +152,32 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
           dbg(`Executing loader ${loaderFname}`)
           data = merge(
             data,
-            safeLoad(loaderFname, () =>
-              require(loaderFname)({ ...context, data })
-            )
+            safeLoad(loaderFname, () => require(loaderFname)({ ...api, data }))
           )
         })
       }
 
-      context.data = data
-      dbg(`Final context:`, { params: context.params, data: context.data })
+      api.data = data
+      dbg(`Final api:`, { params: api.params, data: api.data })
 
-      context.print = (...args) => {
-        const result = args.map((arg) => {
-          if (typeof arg === 'function') {
-            return arg.toString()
-          } else if (typeof arg === 'object') {
-            return stringify(arg)
-          } else if (typeof arg === 'number') {
-            return arg.toString()
-          } else {
-            return `${arg}`
-          }
-        })
-        return result.join(' ')
-      }
+      api.echo = echo
 
       /**
        * Run the content through the EJS preprocessor
        */
       dbg(`Rendering file`, { absolutePath })
-      var content = renderFile(absolutePath, context)
+      var content = renderFile(absolutePath, api)
 
       /**
        * Run the content through the Markdown preprocessor
        */
       if (route.isMarkdown) {
         dbg(`Markdown file`, { absolutePath })
-        const res = marked(content, context)
+        const res = marked(content, api)
         content = res.content
 
         forEach(res.frontmatter, (value, key) => {
-          context.meta(key, value)
+          api.meta(key, value)
         })
         dbg(`markdown`, { content })
       }
@@ -194,9 +198,9 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
        */
       route.layouts.forEach((layoutPath) => {
         const res = parseSlots(content)
-        context.slots = res.slots
-        context.slot = res.slots.default || res.content
-        content = renderFile(layoutPath, context)
+        api.slots = res.slots
+        api.slot = res.slots.default || res.content
+        content = renderFile(layoutPath, api)
       })
 
       // dbg(`Final result`, str)

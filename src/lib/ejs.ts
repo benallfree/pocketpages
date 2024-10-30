@@ -4,7 +4,7 @@ import { dbg } from 'pocketbase-log'
 import { fs, path } from 'pocketbase-node'
 import { pagesRoot } from './helpers'
 import { marked } from './marked'
-import { PagesContext } from './types'
+import { PagesApi } from './types'
 
 ejs.cache = {
   set: function (key: string, val: any) {
@@ -58,14 +58,14 @@ export const parseSlots = (input: string) => {
   }
 }
 
-export const renderFile = (fname: string, context: PagesContext<any>) => {
+export const renderFile = (fname: string, api: PagesApi<any>) => {
   dbg(`renderFile start`, {
     fname,
-    context: pick(context, 'slots', 'slot', 'data'),
+    api: pick(api, 'slots', 'slot', 'data'),
   })
   const content: string = ejs.renderFile(
     fname,
-    { ...context, context },
+    { ...api, api },
     {
       async: false,
       cache: $app.isDev(),
@@ -73,9 +73,9 @@ export const renderFile = (fname: string, context: PagesContext<any>) => {
         dbg({ path, filename })
         if ($filepath.ext(filename) === '.md') {
           const markdown = fs.readFileSync(filename, 'utf8')
-          const res = marked(markdown, context)
+          const res = marked(markdown, api)
           forEach(res.frontmatter, (v, k) => {
-            context.meta(k, v)
+            api.meta(k, v)
           })
           return {
             template: res.content,
@@ -87,7 +87,7 @@ export const renderFile = (fname: string, context: PagesContext<any>) => {
   )
   dbg(`renderFile end`, {
     fname,
-    context: pick(context, 'slots', 'slot', 'data'),
+    api: pick(api, 'slots', 'slot', 'data'),
   })
 
   return content

@@ -1,123 +1,163 @@
 ---
 title: Understanding Caching in PocketPages
-description: Comprehensive breakdown of PocketPages caching mechanisms, including development vs production behaviors, asset() function usage, CDN integration, cache-busting strategies, and HTTP header configurations.
+description: Learn how PocketPages handles caching through content-based fingerprinting and development mode cache busters.
 ---
 
 # Understanding Caching in PocketPages
 
-Effective caching is crucial for optimizing the performance of your web applications. In PocketPages, caching mechanisms are designed to ensure that your content is delivered efficiently while providing flexibility during development. This guide will delve into how caching works in PocketPages, how to manage it during development and production, and considerations when using proxies like Cloudflare.
+PocketPages uses content-based fingerprinting for static assets and development-mode cache busters to ensure efficient caching while maintaining quick updates during development.
 
-## Default Caching Behavior in PocketPages
+## Asset Fingerprinting
 
-### Development Mode (`--dev`)
+### How It Works
 
-- **No Cache Header**: When running PocketPages in development mode using the `--dev` flag, all HTTP responses automatically include a `Cache-Control: no-cache` header.
-- **Purpose**: This header instructs browsers and intermediaries not to cache responses, ensuring that developers always see the most recent changes without having to manually clear caches.
+1. During startup, PocketPages computes SHA-256 fingerprints for all static assets
+2. The `asset()` helper embeds these fingerprints into filenames
+3. The router dynamically matches fingerprinted URLs to their actual files
 
-  ```http
-  Cache-Control: no-cache
-  ```
+```ejs
+<!-- Template -->
+<img src="<%%= asset('logo.png') %>">
 
-- **Implications**: While this setting is convenient during development, it may not be sufficient in all scenarios, especially when dealing with aggressive caching mechanisms like CDNs.
+<!-- Output -->
+<img src="logo.abc123de.png">
+```
+
+### File Resolution
+
+PocketPages resolves asset paths relative to the current template:
+
+```
+pb_hooks/pages/
+  feature/
+    index.ejs        # asset('image.png') → /feature/image.[hash].png
+    image.png
+  products/
+    details.ejs      # asset('style.css') → /products/style.[hash].css
+    style.css
+```
+
+## Development vs Production
+
+### Development Mode
+
+When an asset doesn't exist in development:
+
+```ejs
+<!-- Template -->
+<img src="<%%= asset('missing.png') %>">
+
+<!-- Development Output -->
+<img src="missing.png?_r=1234567890">
+```
 
 ### Production Mode
 
-- **Default Behavior**: In production mode, PocketPages does not add the `Cache-Control: no-cache` header. Responses may be cached by browsers and intermediaries according to standard caching rules.
-- **Custom Headers**: You can set custom `Cache-Control` headers in your responses if you need specific caching behavior.
-
-## Using `asset()` for Cache Busting
-
-### Purpose of `asset()`
-
-- **Functionality**: The `asset()` function in the request context is used to generate asset URLs, appending a cache-busting query parameter when necessary.
-- **Syntax**:
-
-  ```ejs
-  <img src="<%%= asset('images/logo.png') %>" alt="Logo">
-  ```
-
-### Development Mode Behavior
-
-- **Cache Busting**: When `$app.isDev() === true`, `asset()` appends a cache-busting stamp to the URL, such as `?__cache=12885832`.
-- **Example**:
-
-  ```html
-  <img src="images/logo.png?__cache=12885832" alt="Logo" />
-  ```
-
-- **Benefit**: This ensures that even if an asset is cached, the browser will fetch the latest version during development, reflecting any changes immediately.
-
-### Production Mode Behavior
-
-- **Future Considerations**: In future releases, `asset()` may use a static or constant token in production mode to enable cache busting on new releases or deployments.
-- **Best Practice**: Using `asset()` ensures that you have control over asset caching behavior across different environments, making it easier to manage cache invalidation after updates.
-
-## Caching and Content Delivery Networks (CDNs)
-
-### Understanding CDN Caching
-
-- **Role of CDNs**: CDNs like Cloudflare cache content to reduce latency and improve performance by serving content from servers closer to the user.
-- **Default Behavior**: CDNs have their own caching policies and may cache content even if your server instructs otherwise.
-
-### Cloudflare Default Caching Behavior
-
-- **Documentation**: Refer to [Cloudflare's Default Cache Behavior](https://developers.cloudflare.com/cache/concepts/default-cache-behavior/) for detailed information.
-- **Key Points**:
-  - **Static Assets**: Cloudflare caches static assets like images, CSS, and JavaScript files by default.
-  - **Dynamic Content**: Dynamic content is not cached unless explicitly configured.
-  - **Cache-Control Headers**: Cloudflare respects `Cache-Control` headers to some extent but has specific rules that may override them.
-
-### Recommendations for Using CDNs
-
-- **Set Appropriate Headers**: Ensure that your application sets `Cache-Control` headers that align with your caching strategy.
-- **Use `asset()` Function**: Leverage the `asset()` function to append cache-busting tokens to asset URLs, which can force CDNs to fetch the latest version.
-- **Purge Cache on Deployment**: Consider purging the CDN cache after deploying new versions to ensure that users receive the updated content.
-- **Test Caching Behavior**: Regularly test how your application behaves behind the CDN to identify any unexpected caching issues.
-
-## Best Practices for Caching in PocketPages
-
-### During Development
-
-- **Rely on `--dev` Mode**: Use the `--dev` flag to automatically prevent caching of responses.
-- **Use `asset()`**: Always use the `asset()` function for asset URLs to handle cache busting effectively.
-- **Monitor Caching**: Be aware of any proxies or CDNs in your development environment that might cache responses unexpectedly.
-
-### During Production
-
-- **Set Explicit Cache-Control Headers**: Define caching policies for your content by setting appropriate `Cache-Control` headers.
-- **Leverage CDN Features**: Use CDN capabilities to cache content effectively while ensuring that updates propagate as needed.
-- **Implement Versioning**: Use versioning in your asset filenames or cache-busting tokens to control cache invalidation.
-- **Plan for Future Changes**: Since `asset()` may introduce static tokens in the future, ensure your application can handle cache busting based on deployment cycles.
-
-## Example: Implementing Cache Busting with `asset()`
-
-### Using `asset()` in Templates
+When an asset doesn't exist in production:
 
 ```ejs
-<!-- In your EJS template -->
-<link rel="stylesheet" href="<%%= asset('css/styles.css') %>">
-<script src="<%%= asset('js/app.js') %>"></script>
+<!-- Template -->
+<img src="<%%= asset('missing.png') %>">
+
+<!-- Production Output -->
+<img src="missing.png">
 ```
 
-### Outcome
+## Best Practices
 
-- **Development Mode**:
+1. **Keep Assets in Pages Directory**
 
-  ```html
-  <link rel="stylesheet" href="css/styles.css?__cache=12885832" />
-  <script src="js/app.js?__cache=12885832"></script>
-  ```
+   ```
+   pb_hooks/pages/
+     images/          # Global images get fingerprinted
+       logo.png
+     feature/
+       header.jpg    # Local images get fingerprinted
+       index.ejs
+   ```
 
-- **Production Mode**:
+2. **Use Relative Paths for Local Assets**
 
-  ```html
-  <link rel="stylesheet" href="css/styles.css" />
-  <script src="js/app.js"></script>
-  ```
+   ```ejs
+   <!-- Local assets use relative paths -->
+   <img src="<%%= asset('header.jpg') %>">
 
-- **Future Production Behavior**: With future updates, `asset()` might append a version token in production:
+   <!-- Global assets use absolute paths -->
+   <img src="<%%= asset('/images/logo.png') %>">
+   ```
 
-  ```html
-  <link rel="stylesheet" href="css/styles.css?v=1.0.3" />
-  <script src="js/app.js?v=1.0.3"></script>
-  ```
+3. **Verify Assets Exist**
+   - Missing assets won't get fingerprinted
+   - Development mode will show cache busters
+   - Production mode will serve un-fingerprinted paths
+
+## CDN Integration
+
+### Cloudflare Example
+
+Fingerprinted assets work well with CDNs:
+
+1. First request: `/images/logo.abc123de.png`
+
+   - CDN misses, fetches from origin
+   - Origin matches `abc123de` to `logo.png`
+   - CDN caches response indefinitely
+
+2. Content update:
+   - File changes, new hash `xyz789fg`
+   - Template outputs `/images/logo.xyz789fg.png`
+   - CDN misses, fetches new version
+   - Old version naturally expires
+
+### Cache Control Headers
+
+```javascript
+/** @type {import('pocketpages').MiddlewareLoaderFunc} */
+module.exports = function (api) {
+  const { response } = api
+
+  // Set cache headers for static assets
+  response.header('Cache-Control', 'public, max-age=31536000')
+
+  return {}
+}
+```
+
+## Complete Example
+
+```ejs
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- CSS with fingerprinting -->
+  <link rel="stylesheet" href="<%%= asset('css/styles.css') %>">
+
+  <!-- Favicon with fingerprinting -->
+  <link rel="icon" href="<%%= asset('/favicon.png') %>">
+</head>
+<body>
+  <!-- Local image -->
+  <img src="<%%= asset('header.jpg') %>" alt="Header">
+
+  <!-- Global image -->
+  <img src="<%%= asset('/images/logo.png') %>" alt="Logo">
+
+  <!-- JavaScript with fingerprinting -->
+  <script src="<%%= asset('js/app.js') %>"></script>
+</body>
+</html>
+```
+
+## Important Notes
+
+- Fingerprinting requires files to exist in pages directory
+- Development mode helps identify missing assets
+- CDNs can cache fingerprinted assets indefinitely
+- Use middleware to set cache control headers
+- Relative paths for local assets, absolute for global
+
+## Reference
+
+- [asset() Documentation](/docs/api/asset)
+- [Middleware Guide](/docs/middleware)
+- [Cloudflare Cache Documentation](https://developers.cloudflare.com/cache)
