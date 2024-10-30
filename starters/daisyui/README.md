@@ -5,8 +5,8 @@ This setup provides a minimal **PocketPages** app integrated with **Tailwind CSS
 ## Installation
 
 ```bash
-npx degit benallfree/pocketpages/starters/daisyui daisyui-app
-cd daisyui-app
+npm i pocketpages
+cp -r node_modules/pocketpages/starters/daisyui .
 npm i
 npm run dev
 ```

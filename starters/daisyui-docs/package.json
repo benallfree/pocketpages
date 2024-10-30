@@ -3,7 +3,7 @@
   "scripts": {
     "serve": "pocketbase serve --dir=pb_data",
     "dev": "concurrently \"npm:dev:*\"",
-    "dev:pocketbase": "pocketbase-22 serve --dir=pb_data --dev",
+    "dev:pocketbase": "pocketbase serve --dir=pb_data --dev",
     "dev:css": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch"
   },
   "devDependencies": {
@@ -13,6 +13,6 @@
     "tailwindcss": "^3.4.10"
   },
   "dependencies": {
-    "pocketpages": "^0.8.0"
+    "pocketpages": "latest"
   }
 }
