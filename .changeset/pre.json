@@ -1,6 +1,6 @@
 {
   "mode": "pre",
-  "tag": "rc1",
+  "tag": "next",
   "initialVersions": {
     "pocketpages": "0.9.0"
   },
