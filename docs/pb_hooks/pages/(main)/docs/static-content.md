@@ -5,7 +5,7 @@ description: Static content in PocketPages includes files like HTML, CSS, JavaSc
 
 # Serving Static Content in PocketPages
 
-In PocketPages, serving static content is straightforward and integrated seamlessly into the framework. Any file that isn't an EJS template (`*.ejs`) and doesn't begin with a `+` or `_` is treated as a static file. These files are served directly by the underlying Echo framework, which handles content type inference, streaming, and other necessary details.
+In PocketPages, serving static content is straightforward and integrated seamlessly into the framework. Any file that isn't an EJS template (`*.ejs`), doesn't begin with a `+`, and isn't in a `_private` directory is treated as a static file. These files are served directly by the underlying Echo framework, which handles content type inference, streaming, and other necessary details.
 
 ## What is Considered Static Content?
 

@@ -9,26 +9,49 @@ PocketPages supports file-based routing, allowing you to create a clean and intu
 
 <!-- TOC -->
 
-- [Understanding File-Based Routing](#understanding-file-based-routing)
-  - [Basic Example](#basic-example)
-  - [How the Routing Works](#how-the-routing-works)
-  - [Special Cases - index.ejs](#special-cases---indexejs)
-  - [Example Directory and Routes](#example-directory-and-routes)
-- [Tips for Structuring Your Routes](#tips-for-structuring-your-routes)
-  - [PocketPages Routing Priority](#pocketpages-routing-priority)
+- [File-Based Routing in PocketPages](#file-based-routing-in-pocketpages)
+  - [Understanding File-Based Routing](#understanding-file-based-routing)
+    - [Special Files and Directories](#special-files-and-directories)
+    - [Basic Example](#basic-example)
+    - [How the Routing Works](#how-the-routing-works)
+    - [Special Cases - index.ejs](#special-cases---indexejs)
+    - [Example Directory and Routes](#example-directory-and-routes)
+  - [Tips for Structuring Your Routes](#tips-for-structuring-your-routes)
+    - [PocketPages Routing Priority](#pocketpages-routing-priority)
+      - [Example Scenario](#example-scenario)
+    - [Key Points](#key-points)
+  - [Trailing Slash Redirects for index Files](#trailing-slash-redirects-for-index-files)
     - [Example Scenario](#example-scenario)
-  - [Key Points](#key-points)
-- [Trailing Slash Redirects for index Files](#trailing-slash-redirects-for-index-files)
-  - [Example Scenario](#example-scenario)
-  - [Why This Matters](#why-this-matters)
-  - [Practical Example](#practical-example)
-- [Summary](#summary)
+    - [Why This Matters](#why-this-matters)
+    - [Practical Example](#practical-example)
 
 <!-- /TOC -->
 
 ## Understanding File-Based Routing
 
 File-based routing means that the URLs in your application are automatically determined by the file and folder structure within the `pb_hooks/pages/` directory. Each `.ejs` file corresponds to a unique route, and the nested folders reflect URL paths.
+
+### Special Files and Directories
+
+PocketPages has two special naming conventions that affect routing:
+
+1. Directories named `_private` are never routable and are used for storing private files
+2. Files that begin with `+` (like `+load.js` and `+layout.ejs`) are special PocketPages files and are not routable
+
+For example:
+
+```
+pb_hooks/
+  pages/
+    _private/           # Not routable - for private files
+      header.ejs
+      config.js
+    products/
+      +load.js         # Not routable - special PocketPages file
+      +layout.ejs      # Not routable - special PocketPages file
+      index.ejs        # Routable at /products
+      details.ejs      # Routable at /products/details
+```
 
 ### Basic Example
 
@@ -66,7 +89,7 @@ pb_hooks/
   - `products/reviews/index.ejs` is served at `/products/reviews`.
   - `products/reviews/latest.ejs` is served at `/products/reviews/latest`.
 
-### Special Cases - `index.ejs`
+### Special Cases - index.ejs
 
 As mentioned, `index.ejs` files have a special role:
 

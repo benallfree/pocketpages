@@ -1,9 +1,9 @@
 ---
-title: requirePrivate - Loading Private Files
-description: Load files from _private directories securely in PocketPages templates using the requirePrivate function.
+title: require - Loading Private Modules
+description: Load files from _private directories securely in PocketPages templates using the require function.
 ---
 
-# `requirePrivate` - Loading Private Files
+# `require` - Loading Private Modules
 
 - **Type**: `Function(path: string) => any`
 - **Description**: Loads JavaScript modules or JSON files from `_private` directories, following an upward directory traversal pattern to find the requested file.
@@ -12,7 +12,7 @@ description: Load files from _private directories securely in PocketPages templa
 
 PocketPages looks for required files in `_private` directories, starting from the current template's directory and working up through parent directories until the file is found. This system provides:
 
-- Secure file access (directories starting with `_` are never routed)
+- Secure file access (directories starting with `_private` are never routed)
 - Ability to share common modules by "hoisting" them to ancestor directories
 - Section-specific private modules that are only available to that section
 - Ability to override parent modules by having a local version with the same name
@@ -38,14 +38,14 @@ pb_hooks/
     index.ejs
 ```
 
-## Using requirePrivate
+## Using require
 
 ### Basic Usage
 
 ```ejs
 <%%
 // Looks for config.js in _private directories, starting from current directory up
-const config = requirePrivate('config')
+const config = require('config')
 
 // Use the loaded module
 const apiKey = config.apiKey
@@ -73,15 +73,15 @@ Given the directory structure above:
 ```ejs
 <%%
 // In /products/categories/index.ejs:
-const formatter = requirePrivate('formatter')    // Uses /products/categories/_private/formatter.js
-const queries = requirePrivate('queries')        // Uses /products/_private/queries.js
-const config = requirePrivate('config')          // Uses /_private/config.js
+const formatter = require('formatter')    // Uses /products/categories/_private/formatter.js
+const queries = require('queries')        // Uses /products/_private/queries.js
+const config = require('config')          // Uses /_private/config.js
 
 // Using absolute path
-const productQueries = requirePrivate('/products/_private/queries')
+const productQueries = require('/products/_private/queries')
 
 // Level jumping
-const parentHelpers = requirePrivate('../helpers')  // Skips local _private/helpers.js and uses parent's version
+const parentHelpers = require('../helpers')  // Skips local _private/helpers.js and uses parent's version
 %>
 ```
 

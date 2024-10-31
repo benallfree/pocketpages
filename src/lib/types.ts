@@ -22,7 +22,7 @@ export type PagesApi<T> = {
   meta: (key: string, value?: string) => string | undefined
   stringify: typeof stringify
   url: (path: string) => URL<Record<string, string | undefined>>
-  requirePrivate: (path: string) => any
+  require: (path: string) => any
 } & typeof log
 
 export type PagesConfig = {

@@ -30,5 +30,3 @@ module.exports = {
 ## File Routing Rules
 
 - **Static Files**: Files that do not have extensions listed in `preprocessorExts` will be served directly as static files.
-
-- **Non-Routable Files**: Files following the `+` or `_` prefix rule (e.g., `+private.js`, `_layout.ejs`) are considered non-routable. They will not be directly accessible via a URL. These files are typically used for internal logic or layout templates.

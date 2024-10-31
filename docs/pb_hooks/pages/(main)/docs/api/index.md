@@ -28,7 +28,7 @@ Let's look at a practical example demonstrating various API methods:
 <%% } %>
 
 <%%
-  const config = requirePrivate('config');
+  const config = require('config');
   dbg("Config loaded:", stringify(config));
 %>
 
@@ -51,7 +51,7 @@ Let's look at a practical example demonstrating various API methods:
 - **Request Data**: Access request parameters through the global `params` object
 - **Asset Management**: Use the global `asset` function to handle static assets with automatic cache-busting
 - **URL Parsing**: The global `url` function helps parse and manipulate URLs
-- **Private Files**: Use `requirePrivate` to securely load files from private directories
+- **Private Files**: Use `require` to securely load files from private directories
 - **Utilities**: Helper functions like `stringify` are available for common operations
 
 ## Additional Notes

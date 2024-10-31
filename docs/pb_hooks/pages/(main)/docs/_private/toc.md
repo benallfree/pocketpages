@@ -39,7 +39,7 @@
 - [`params`](/docs/api/params)
 - [`redirect`](/docs/api/redirect)
 - [`request`](/docs/api/request)
-- [`requirePrivate`](/docs/api/require-private)
+- [`require`](/docs/api/require)
 - [`response`](/docs/api/response)
 - [`stringify`](/docs/api/stringify)
 - [`url`](/docs/api/url)

@@ -31,7 +31,7 @@ redirect('/new-location', 301)
 
 ```ejs
 <%%
-const auth = requirePrivate('auth')
+const auth = require('auth')
 if (!auth.isLoggedIn(ctx)) {
     redirect('/login')
     return
@@ -126,8 +126,8 @@ module.exports = ({ formData, redirect }) => {
 ```ejs
 <%%
 // Check permissions before showing admin page
-const auth = requirePrivate('auth')
-const perms = requirePrivate('permissions')
+const auth = require('auth')
+const perms = require('permissions')
 
 if (!auth.isLoggedIn(ctx)) {
     redirect('/login')

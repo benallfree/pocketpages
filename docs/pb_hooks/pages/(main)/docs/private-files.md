@@ -27,7 +27,7 @@ pb_hooks/
 PocketPages implements a powerful system for managing private files through `_private` directories. This system serves two main purposes:
 
 1. Organizing and including template partials via `include()`
-2. Loading JavaScript modules via `requirePrivate()`
+2. Loading JavaScript modules via `require()`
 
 Both functions follow the same directory traversal pattern, making it intuitive to organize and access private files throughout your application.
 
@@ -65,7 +65,7 @@ pb_hooks/
 
 ## File Resolution
 
-When you call `include()` or `requirePrivate()`, PocketPages:
+When you call `include()` or `require()`, PocketPages:
 
 1. Starts in the current template's directory
 2. Looks for the file in that directory's `_private` folder
@@ -93,10 +93,10 @@ include('product-card.ejs')      // Uses /products/_private/product-card.ejs
 // Global layout is found in the root _private
 include('layout.ejs')            // Uses /_private/layout.ejs
 
-// Same pattern works for requirePrivate
-const helpers = requirePrivate('helpers')     // Uses local /categories/_private/helpers.js
-const queries = requirePrivate('queries')     // Uses parent /products/_private/queries.js
-const config = requirePrivate('config')       // Uses root /_private/config.js
+// Same pattern works for require
+const helpers = require('helpers')     // Uses local /categories/_private/helpers.js
+const queries = require('queries')     // Uses parent /products/_private/queries.js
+const config = require('config')       // Uses root /_private/config.js
 %>
 ```
 
@@ -107,11 +107,11 @@ While the automatic resolution system handles most cases elegantly, you sometime
 ```js
 // Absolute paths start from the root
 include('/products/_private/product-card.ejs')
-requirePrivate('/products/_private/queries')
+require('/products/_private/queries')
 
 // Use ../ to skip the local _private and force parent resolution
 include('../layout.ejs')
-requirePrivate('../helpers')
+require('../helpers')
 ```
 
 ## Best Practices
@@ -194,4 +194,4 @@ This system's strength comes from its conventions:
 
 By following these patterns, you can build maintainable applications where code lives where it makes sense, while still being easy to find and use.
 
-See [requirePrivate](/docs/api/require-private) and [Using Partials](/docs/partials) for detailed documentation of the specific functions.
+See [require](/docs/api/require-private) and [Using Partials](/docs/partials) for detailed documentation of the specific functions.

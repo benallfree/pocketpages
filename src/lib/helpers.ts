@@ -3,7 +3,7 @@ import {} from 'url-parse'
 
 export const pagesRoot = $filepath.join(__hooks, `pages`)
 
-export const mkRequirePrivate = (rootPath: string) => (path: string) => {
+export const mkrequire = (rootPath: string) => (path: string) => {
   // Handle absolute paths (starting with /)
   if (path.startsWith('/')) {
     const finalPath = $filepath.join(pagesRoot, '_private', path)
