@@ -2,16 +2,16 @@ import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import type URL from 'url-parse'
 import { Route } from './AfterBootstrapHandler'
+import { PagesRequest, PagesResponse } from './pages'
 
 export type PageDataLoaderFunc = (api: Omit<PagesApi<any>, 'data'>) => object
 
 export type MiddlewareLoaderFunc = (api: Omit<PagesApi<any>, 'data'>) => object
 
 export type PagesApi<T> = {
-  ctx: echo.Context
   params: Record<string, string>
-  request: http.Request
-  response: echo.Response
+  request: PagesRequest
+  response: PagesResponse
   formData: Record<string, any>
   asset: (path: string) => string
   echo: (...args: any[]) => string

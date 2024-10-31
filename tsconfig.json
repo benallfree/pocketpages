@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "lib": ["es2021"],
-    "types": ["pocketbase-jsvm"],
     "strict": true,
     "moduleResolution": "node",
     "strictNullChecks": true,

@@ -2,6 +2,7 @@ import { forEach } from '@s-libs/micro-dash'
 import { dbg } from 'pocketbase-log'
 import { fs } from 'pocketbase-node'
 import { pagesRoot } from './helpers'
+import { PagesInitializerFunc } from './pages'
 import { Cache, PagesConfig } from './types'
 
 export type Route = {
@@ -29,7 +30,7 @@ export type Route = {
 
 export const LOADER_METHODS = ['load', 'get', 'post', 'put', 'delete'] as const
 
-export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
+export const AfterBootstrapHandler: PagesInitializerFunc = () => {
   dbg(`pocketpages startup`)
 
   if (!fs.existsSync(pagesRoot)) {

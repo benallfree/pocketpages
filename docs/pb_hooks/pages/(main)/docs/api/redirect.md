@@ -29,16 +29,6 @@ redirect('/new-location', 301)
 
 ### Authentication Redirects
 
-```ejs
-<%%
-const auth = require('auth')
-if (!auth.isLoggedIn(ctx)) {
-    redirect('/login')
-    return
-}
-%>
-```
-
 ### Form Processing
 
 ```ejs
@@ -48,46 +38,6 @@ if (formData.success) {
     return
 }
 %>
-```
-
-### URL Normalization
-
-```ejs
-<%%
-// Ensure URLs end with trailing slash
-if (!ctx.path().endsWith('/')) {
-    redirect(ctx.path() + '/')
-    return
-}
-%>
-```
-
-## Important Notes:
-
-1. Always `return` after calling `redirect` to prevent further code execution
-2. The redirect is immediate - no code after the redirect will execute
-3. Don't write any response data after calling redirect
-4. Common status codes:
-   - 302: Temporary redirect (default)
-   - 301: Permanent redirect
-   - 303: See Other (common after POST)
-   - 307: Temporary redirect (preserves method)
-   - 308: Permanent redirect (preserves method)
-
-## Comparison with ctx.redirect()
-
-While `ctx.redirect()` is available through the Echo context, the `redirect` helper is recommended because:
-
-1. It's specifically designed for PocketPages
-2. It ensures proper handling of the response
-3. It's more concise and easier to use
-
-```ejs
-// Recommended (PocketPages helper)
-<%% redirect('/dashboard') %>
-
-// Not recommended (Echo context)
-<%% ctx.redirect(302, '/dashboard') %>
 ```
 
 ## Examples in Context:
@@ -129,12 +79,12 @@ module.exports = ({ formData, redirect }) => {
 const auth = require('auth')
 const perms = require('permissions')
 
-if (!auth.isLoggedIn(ctx)) {
+if (!auth.isLoggedIn()) {
     redirect('/login')
     return
 }
 
-if (!perms.isAdmin(ctx)) {
+if (!perms.isAdmin()) {
     redirect('/unauthorized')
     return
 }

@@ -1,7 +1,5 @@
-onAfterBootstrap((e) => {
-  return require(`pocketpages/dist/main`).AfterBootstrapHandler(e)
-})
+import { getPagesProvider } from './lib/pages'
 
-routerUse((next) => {
-  return require(`pocketpages/dist/main`).MiddlewareHandler(next)
-})
+const pagesProvider = getPagesProvider()
+
+pagesProvider.boot()

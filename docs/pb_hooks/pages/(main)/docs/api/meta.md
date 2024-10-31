@@ -49,7 +49,7 @@ The most common use case for `meta` is setting page metadata in your `+load.js` 
     />
     <meta
       property="og:url"
-      content="<%%= meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${ctx.request().url}` %>"
+      content="<%%= meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${request.url}` %>"
     />
 </head>
 ```

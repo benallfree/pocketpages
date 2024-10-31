@@ -21,7 +21,7 @@
     />
     <meta
       property="og:url"
-      content="<%=meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${ctx.request().url}`%>"
+      content="<%=meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${request.url}`%>"
     />
     <%- slots.head %>
   </head>

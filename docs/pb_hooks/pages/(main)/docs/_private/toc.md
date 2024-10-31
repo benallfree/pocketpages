@@ -28,7 +28,6 @@
 - [Overview](/docs/api)
 - [`api`](/docs/api/api)
 - [`asset`](/docs/api/asset)
-- [`ctx`](/docs/api/ctx)
 - [`data`](/docs/api/data)
 - [`dbg/info/warn/error`](/docs/api/log)
 - [`echo`](/docs/api/echo)

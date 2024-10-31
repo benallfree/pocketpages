@@ -5,157 +5,62 @@ description: Access HTTP request details including method, headers, and query pa
 
 # `request` - HTTP Request Object
 
-- **Type**: [`echo.Request`](https://pocketbase.io/jsvm/interfaces/http.Request.html)
-- **Description**: The `request` property provides direct access to the Echo framework's request object, allowing you to inspect various aspects of the incoming HTTP request. It's an alias for `ctx.request()`.
+- **Type**: [`PagesRequest`](https://github.com/pockethost/pockethost/blob/main/src/lib/pages/index.ts)
+- **Description**: The `request` object provides access to essential HTTP request information in a framework-agnostic way. This abstraction ensures your templates remain compatible across PocketBase versions.
 
-## Common Methods
+## Properties
 
-### Headers
+### `method`
 
-```ejs
-<%%
-// Get a specific header
-const userAgent = request.header('User-Agent')
-const accept = request.header('Accept')
-const contentType = request.header('Content-Type')
+- Type: `'get' | 'post' | 'put' | 'delete'`
+- Description: The HTTP method of the request
 
-// Get all headers as an object
-const headers = request.headers()
-%>
-```
+### `url`
 
-### Request Information
+- Type: `URLParse<string>`
+- Description: A parsed URL object containing query parameters and other URL components
 
-```ejs
-<%%
-// Basic request properties
-const method = request.method
-const host = request.host
-const remoteIP = request.ip
-const scheme = request.scheme // "http" or "https"
-%>
-```
+### `formData`
 
-### Query Parameters
-
-```ejs
-<%%
-// Get all query parameters
-const query = request.url.query
-
-// Access individual parameters
-const page = query.page || '1'
-const sort = query.sort || 'date'
-%>
-```
+- Type: `Record<string, any>`
+- Description: Contains form data submitted with the request
 
 ## Example Usage
 
-### Basic Request Information Page
-
-```ejs
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Request Information</title>
-</head>
-<body>
-    <h1>Request Details</h1>
-
-    <h2>Basic Information</h2>
-    <ul>
-        <li>Method: <%%= request.method %></li>
-        <li>Host: <%%= request.host %></li>
-        <li>IP Address: <%%= request.ip %></li>
-        <li>Protocol: <%%= request.scheme %></li>
-    </ul>
-
-    <h2>Headers</h2>
-    <ul>
-        <li>User Agent: <%%= request.header('User-Agent') %></li>
-        <li>Accept: <%%= request.header('Accept') %></li>
-        <li>Accept Language: <%%= request.header('Accept-Language') %></li>
-    </ul>
-
-    <h2>Query Parameters</h2>
-    <pre><%%= stringify(request.url.query) %></pre>
-</body>
-</html>
-```
-
-### Content Type Handling
+### Basic Request Information
 
 ```ejs
 <%%
-const contentType = request.header('Content-Type')
+// Access request method
+const method = request.method
 
-switch (contentType) {
-    case 'application/json':
-        // Handle JSON request
-        break
-    case 'application/x-www-form-urlencoded':
-        // Handle form data
-        break
-    case 'multipart/form-data':
-        // Handle file uploads
-        break
-}
+// Get URL information
+const path = request.url.pathname
+const query = request.url.query
+
+// Access form data
+const formFields = request.formData
 %>
 ```
 
-### API Request Validation
+### Query Parameter Handling
 
 ```ejs
 <%%
-// Check for required API key
-const apiKey = request.header('X-API-Key')
-if (!apiKey) {
-    ctx.response().status(401)
-    %>
-    <h1>API Key Required</h1>
-    <%%
-    return
-}
-
-// Validate content type for POST requests
-if (request.method === 'POST') {
-    const contentType = request.header('Content-Type')
-    if (!contentType?.includes('application/json')) {
-        ctx.response().status(415)
-        %>
-        <h1>JSON Content Type Required</h1>
-        <%%
-        return
-    }
-}
+// Access query parameters from the URL
+const page = request.url.query.page || '1'
+const sort = request.url.query.sort || 'date'
 %>
 ```
 
-## Important Notes
+### Form Data Processing
 
-1. The request object is read-only - use `response` to modify the response
-2. Headers are case-insensitive
-3. Query parameters are always strings
-4. For form data, use the `formData` helper instead of parsing the request body directly
-5. For route parameters (from URL paths), use the `params` object
-
-## Common Headers
-
-- `User-Agent`: Browser/client identification
-- `Accept`: Content types the client can handle
-- `Accept-Language`: Preferred languages
-- `Content-Type`: Type of data being sent
-- `Authorization`: Authentication credentials
-- `Cookie`: Client cookies
-- `Referer`: Previous page URL
-- `X-Forwarded-For`: Original client IP when behind a proxy
-
-## Best Practices
-
-1. Always validate required headers
-2. Check content types for POST/PUT requests
-3. Use appropriate helper functions when available
-4. Handle missing values gracefully
-5. Be cautious with user-provided header values
-
-See [Echo Request Documentation](https://pocketbase.io/jsvm/interfaces/http.Request.html) for a complete list of available methods and properties.
+```ejs
+<%%
+if (request.method === 'post') {
+    // Access submitted form data
+    const username = request.formData.username
+    const email = request.formData.email
+}
+%>
+```
