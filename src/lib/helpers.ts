@@ -1,12 +1,39 @@
 import { stringify } from 'pocketbase-stringify'
-import { default as URL } from 'url-parse'
+import {} from 'url-parse'
 
 export const pagesRoot = $filepath.join(__hooks, `pages`)
 
-export const requirePrivate = (path: string) =>
-  require($filepath.join(pagesRoot, `_private`, path))
+export const mkRequirePrivate = (rootPath: string) => (path: string) => {
+  // Handle absolute paths (starting with /)
+  if (path.startsWith('/')) {
+    const finalPath = $filepath.join(pagesRoot, '_private', path)
+    try {
+      return require(finalPath)
+    } catch (e) {
+      throw new Error(`No module '${finalPath}' found`)
+    }
+  }
 
-export const url = (path: string) => new URL(path, true)
+  // Handle relative paths by searching up the directory tree
+  let currentPath = rootPath
+  while (currentPath.length >= pagesRoot.length) {
+    try {
+      return require($filepath.join(currentPath, '_private', path))
+    } catch (e) {
+      // If we're at pagesRoot and still haven't found it, throw error
+      if (currentPath === pagesRoot) {
+        throw new Error(
+          `No module '${path}' found in _private directories from ${rootPath} up to ${pagesRoot}`
+        )
+      }
+      // Move up one directory
+      currentPath = $filepath.dir(currentPath)
+    }
+  }
+
+  // This should never be reached due to the while condition, but TypeScript might want it
+  throw new Error(`No module '${path}' found in any parent _private directory`)
+}
 
 export const mkMeta = () => {
   const metaData: Record<string, string> = {}

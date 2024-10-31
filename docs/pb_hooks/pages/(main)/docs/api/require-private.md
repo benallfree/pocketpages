@@ -1,117 +1,125 @@
 ---
 title: requirePrivate - Loading Private Files
-description: Load files from the root _private directory securely in PocketPages templates using the requirePrivate function.
+description: Load files from _private directories securely in PocketPages templates using the requirePrivate function.
 ---
 
 # `requirePrivate` - Loading Private Files
 
 - **Type**: `Function(path: string) => any`
-- **Description**: Loads files from the root `_private` directory. This function provides a secure way to include configuration files, utilities, or modules that should not be publicly accessible through routes.
+- **Description**: Loads JavaScript modules or JSON files from `_private` directories, following an upward directory traversal pattern to find the requested file.
 
-## Key Features
+## Directory Resolution
 
-1. Always loads from the root `_private` directory
-2. Supports JavaScript modules and JSON files
-3. Caches loaded modules for better performance
-4. Prevents access to files outside the `_private` directory
+PocketPages looks for required files in `_private` directories, starting from the current template's directory and working up through parent directories until the file is found. This system provides:
 
-## Directory Structure
+- Secure file access (directories starting with `_` are never routed)
+- Ability to share common modules by "hoisting" them to ancestor directories
+- Section-specific private modules that are only available to that section
+- Ability to override parent modules by having a local version with the same name
+- Simplified path management since you rarely need relative paths
+
+### Example Directory Structure
 
 ```
 pb_hooks/
   pages/
-    _private/           # Root private directory
+    _private/                 # Global private files
       config.js
       auth.js
-      database/
-        queries.js
     products/
+      _private/              # Product-specific files
+        queries.js
+        helpers.js
+      categories/
+        _private/            # Category-specific files
+          formatter.js
+        index.ejs
       index.ejs
+    index.ejs
 ```
 
-## Example Usage
+## Using requirePrivate
 
-### Loading Configuration
+### Basic Usage
 
 ```ejs
 <%%
-// Load configuration from _private/config.js
+// Looks for config.js in _private directories, starting from current directory up
 const config = requirePrivate('config')
 
-// Use configuration values
+// Use the loaded module
 const apiKey = config.apiKey
-const baseUrl = config.baseUrl
 %>
 ```
 
-### Loading Utility Functions
+### Resolution Rules
+
+When resolving a file path, PocketPages will:
+
+1. Start in the current template's directory, looking for `_private/filename`
+2. If not found, check the parent directory for `_private/filename`
+3. Continue up the directory tree until the file is found or the root is reached
+
+You have several options for controlling this resolution:
+
+- **Simple name**: Just specify the file name (e.g., `config`) to use the automatic resolution system
+- **Absolute paths**: Start with `/` to specify an explicit path from the root (e.g., `/products/_private/queries`)
+- **Level jumping**: Use `../` prefix to skip the local `_private` directory and force resolution from a parent level
+
+### Examples
+
+Given the directory structure above:
 
 ```ejs
 <%%
-// Load auth utilities from _private/auth.js
-const auth = requirePrivate('auth')
+// In /products/categories/index.ejs:
+const formatter = requirePrivate('formatter')    // Uses /products/categories/_private/formatter.js
+const queries = requirePrivate('queries')        // Uses /products/_private/queries.js
+const config = requirePrivate('config')          // Uses /_private/config.js
 
-// Use auth functions
-if (!auth.hasPermission(ctx)) {
-    return ctx.redirect('/login')
-}
-%>
-```
+// Using absolute path
+const productQueries = requirePrivate('/products/_private/queries')
 
-### Loading from Subdirectories
-
-```ejs
-<%%
-// Load from _private/database/queries.js
-const queries = requirePrivate('database/queries')
-
-// Use database queries
-const products = queries.getActiveProducts()
+// Level jumping
+const parentHelpers = requirePrivate('../helpers')  // Skips local _private/helpers.js and uses parent's version
 %>
 ```
 
 ## Example Private Files
 
-### `_private/config.js`
+### Global Configuration
 
 ```javascript
+// _private/config.js
 module.exports = {
   apiKey: env.API_KEY,
   baseUrl: 'https://api.example.com',
   limits: {
-    maxUploadSize: 5 * 1024 * 1024, // 5MB
+    maxUploadSize: 5 * 1024 * 1024,
     maxResults: 100,
   },
 }
 ```
 
-### `_private/auth.js`
+### Section-Specific Utilities
 
 ```javascript
+// products/_private/queries.js
 module.exports = {
-  hasPermission: (ctx) => {
-    const token = ctx.cookie('auth_token')
-    return $app.dao().findAuthRecordByToken(token) !== null
+  getActiveProducts: () => {
+    return $app.dao().findRecordsByExpr('products', 'status = ?', ['active'])
   },
-  getUser: (ctx) => {
-    const token = ctx.cookie('auth_token')
-    return $app.dao().findAuthRecordByToken(token)
+  getCategoryProducts: (categoryId) => {
+    return $app
+      .dao()
+      .findRecordsByExpr('products', 'category = ?', [categoryId])
   },
 }
 ```
 
-## Important Notes
-
-1. Files must be in the root `_private` directory or its subdirectories
-2. Use for server-side logic and configuration only
-3. Don't store sensitive credentials directly in files - use environment variables
-4. Files in `_private` are not accessible via HTTP routes
-5. Changes to private files require a server restart in production
-6. Async/await is not available in the JSVM - use promises or callbacks instead
-
 ## Best Practices
 
-1. **Organize by Function**: Group related functionality into separate files
+1. **Organize by Function**: Group related functionality into logical directories
 
    ```
    _private/
@@ -121,9 +129,6 @@ module.exports = {
      auth/
        permissions.js
        validation.js
-     database/
-       queries.js
-       migrations.js
    ```
 
 2. **Use Environment Variables**: For sensitive data
@@ -136,7 +141,8 @@ module.exports = {
    }
    ```
 
-3. **Export Clean Interfaces**: Make your private modules easy to use
+3. **Export Clean Interfaces**: Make your modules easy to use
+
    ```javascript
    // _private/database.js
    module.exports = {
@@ -148,5 +154,13 @@ module.exports = {
      },
    }
    ```
+
+## Important Notes
+
+1. Files must be in a `_private` directory
+2. Use for server-side logic and configuration only
+3. Don't store sensitive credentials directly in files - use environment variables
+4. Changes to private files require a server restart in production
+5. Async/await is not available in the JSVM - use promises or callbacks instead
 
 See [Private Files](/docs/private-files) for more information about working with private files and directories in PocketPages.

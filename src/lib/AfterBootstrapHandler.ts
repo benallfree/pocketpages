@@ -64,9 +64,16 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
   })
   dbg({ physicalFiles })
 
-  const addressableFiles = physicalFiles.filter(
-    (f) => !$filepath.base(f).startsWith(`+`) && !f.startsWith(`_`)
-  )
+  const addressableFiles = physicalFiles.filter((f) => {
+    // Check if file name starts with +
+    if ($filepath.base(f).startsWith('+')) {
+      return false
+    }
+
+    // Check if any path segment is _private
+    const pathParts = f.split('/')
+    return !pathParts.some((part) => part === '_private')
+  })
   dbg({ addressableFiles })
 
   const routes: Route[] = addressableFiles

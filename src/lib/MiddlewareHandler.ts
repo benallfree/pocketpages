@@ -1,15 +1,9 @@
 import { forEach, merge } from '@s-libs/micro-dash'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
+import { default as URL } from 'url-parse'
 import { parseSlots, renderFile } from './ejs'
-import {
-  url as _url,
-  echo,
-  mkMeta,
-  pagesRoot,
-  requirePrivate,
-  safeLoad,
-} from './helpers'
+import { echo, mkMeta, mkRequirePrivate, pagesRoot, safeLoad } from './helpers'
 import { marked } from './marked'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
 import { Cache, PagesApi } from './types'
@@ -113,8 +107,8 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
         },
         meta: mkMeta(),
         stringify,
-        url: _url,
-        requirePrivate,
+        url: (path: string) => new URL(path, true),
+        requirePrivate: mkRequirePrivate($filepath.dir(absolutePath)),
         ...log,
       }
 

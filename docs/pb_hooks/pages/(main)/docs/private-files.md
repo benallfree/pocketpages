@@ -1,73 +1,197 @@
 ---
 title: Working with Private Files and Directories in PocketPages
-description: Manage sensitive files and directories securely in PocketPages using special naming conventions and functions like `requirePrivate`.
+description: Learn how PocketPages uses _private directories to organize and protect both template partials and JavaScript modules.
 ---
 
-In PocketPages, you can securely manage sensitive files and directories that should not be publicly accessible. This is done using a combination of special naming conventions and functions like `requirePrivate`. Files and directories that begin with an underscore (`_`) or a plus sign (`+`) are treated as private or reserved for special processing, ensuring they are not routable and cannot be accessed via a URL. This guide will explain how to effectively use these features in your PocketPages application.
+# Working with Private Files and Directories
 
-## Private Files and Directories
+## File Naming Conventions
 
-### Underscore Prefix (`_`)
+PocketPages has two special naming conventions:
 
-Any file or directory that begins with an underscore (`_`) is considered private in PocketPages. These files and directories are not routable, meaning they cannot be accessed via a URL. This makes them ideal for storing server-side logic, reusable components, or scripts that should only be used internally within your application.
+1. Directories named `_private` are used for private files and are never publicly routable
+2. Files that begin with `+` (like `+load.js` and `+layout.ejs`) are special PocketPages files and are not routable
 
-#### Example Directory Structure
+Examples:
 
-```plaintext
+```
 pb_hooks/
   pages/
-    _private/
-      config.js
-    _helpers/
-      _authCheck.ejs
-    index.ejs
-    about.ejs
+    _private/           # Private directory (not routable)
+    helpers/            # Normal directory (routable)
+    +load.js           # Special PocketPages file (not routable)
+    +layout.ejs        # Special PocketPages file (not routable)
+    index.ejs          # Normal route file (routable)
 ```
 
-In this example:
+PocketPages implements a powerful system for managing private files through `_private` directories. This system serves two main purposes:
 
-- The `_private/` directory and its contents (`config.js`) are private and cannot be accessed via routes.
-- The `_helpers/` directory contains private partials like `_authCheck.ejs`, which can be included in other EJS templates but is not routable.
+1. Organizing and including template partials via `include()`
+2. Loading JavaScript modules via `requirePrivate()`
 
-\*Note: While it's safe to store private server-side logic in these files, secrets such as API keys and passwords should never be stored in files that could be committed to a repository. For managing secrets, refer to [Managing Secrets](/docs/secrets) for best practices.
+Both functions follow the same directory traversal pattern, making it intuitive to organize and access private files throughout your application.
 
-### Plus Prefix (`+`)
+## The `_private` Directory System
 
-Files and directories that begin with a plus sign (`+`) are reserved for special processing by PocketPages and are also not routable. For example, `+load.js` files are used to load data before rendering a template. These files should be used according to their specific purposes as defined by PocketPages.
+### Core Concepts
 
-## Accessing Private Files with `requirePrivate`
+- Directories named `_private` are never publicly routable
+- Files are resolved by searching `_private` directories up the directory tree
+- Each section can have its own private files
+- Child directories can override parent files of the same name
+- Files can be "hoisted" to ancestor directories to be shared
 
-PocketPages provides the `requirePrivate` function to securely access files stored in the root `_private` directory. This root `_private` directory is a special case, allowing you to store common libraries and resources that can be accessed from anywhere in your application without worrying about relative path issues.
+### Example Directory Structure
 
-### Example Usage of `requirePrivate`
+```
+pb_hooks/
+  pages/
+    _private/                 # Global shared files
+      layout.ejs             # Base layout template
+      auth.js                # Authentication utilities
+      config.js              # Global configuration
+    products/
+      _private/              # Product-specific files
+        product-card.ejs     # Product display partial
+        queries.js           # Product database queries
+      categories/
+        _private/            # Category-specific files
+          category-nav.ejs   # Category navigation partial
+          helpers.js         # Category-specific utilities
+        index.ejs
+      index.ejs
+    index.ejs
+```
+
+## File Resolution
+
+When you call `include()` or `requirePrivate()`, PocketPages:
+
+1. Starts in the current template's directory
+2. Looks for the file in that directory's `_private` folder
+3. If not found, moves up to the parent directory and checks its `_private` folder
+4. Continues until the file is found or reaches the root
+
+This creates a natural hierarchy where:
+
+- Files used by many pages live higher in the tree
+- Files specific to a section stay close to where they're used
+- Override files when needed by creating local versions
+
+### Example Resolution
 
 ```ejs
 <%%
-  // Load the private configuration file from the root _private directory
-  const config = requirePrivate('config.js');
+// In /products/categories/index.ejs:
 
-  dbg("Config loaded:", config);
+// Looks for category-nav first in local _private, then up the tree
+include('category-nav.ejs')      // Uses /products/categories/_private/category-nav.ejs
+
+// Product card isn't in local _private, so checks parent directories
+include('product-card.ejs')      // Uses /products/_private/product-card.ejs
+
+// Global layout is found in the root _private
+include('layout.ejs')            // Uses /_private/layout.ejs
+
+// Same pattern works for requirePrivate
+const helpers = requirePrivate('helpers')     // Uses local /categories/_private/helpers.js
+const queries = requirePrivate('queries')     // Uses parent /products/_private/queries.js
+const config = requirePrivate('config')       // Uses root /_private/config.js
 %>
-
-<h1>Welcome to the Secure Page</h1>
 ```
 
-### Explanation:
+## Path Control
 
-- **Loading Files**: The `requirePrivate('config.js')` call loads the file from the root `_private` directory, ensuring it is not publicly accessible.
-- **Accessing Data**: Once loaded, you can access the data in these files just as you would with any other module in Node.js.
-- **Debugging**: You can log the contents of these files using the `dbg` function for debugging purposes (just be cautious not to expose sensitive information in production logs).
+While the automatic resolution system handles most cases elegantly, you sometimes need more control:
 
-## Practical Use Cases
+```js
+// Absolute paths start from the root
+include('/products/_private/product-card.ejs')
+requirePrivate('/products/_private/queries')
 
-### 1. Storing Server-Side Logic
+// Use ../ to skip the local _private and force parent resolution
+include('../layout.ejs')
+requirePrivate('../helpers')
+```
 
-Store reusable server-side logic, such as configuration handlers or utility functions, in the root `_private` directory. This approach keeps critical server-side operations private and secure.
+## Best Practices
 
-### 2. Configuration Files
+### 1. Proximity Principle
 
-Store environment-specific configuration files in the root `_private` directory and load them using `requirePrivate` to ensure they are not exposed to public routes. However, remember that secrets such as API keys should be managed using environment variables or a secure secrets management service, rather than being stored in files that could be committed to a repository.
+Keep private files close to where they're used:
 
-### 3. Secure Data Processing
+```
+products/
+  _private/
+    product-card.ejs     # Used only in products section
+    product-queries.js   # Product-specific database logic
+  index.ejs
+```
 
-Use private scripts or partials stored in the root `_private` directory to handle sensitive data processing, ensuring they are only accessible within your server-side code.
+### 2. Strategic Hoisting
+
+Move files up the tree when they become widely used:
+
+```
+_private/
+  layout.ejs            # Used across the site
+  auth.js              # Global authentication
+products/
+  _private/
+    product-card.ejs    # Used only in products
+```
+
+### 3. Logical Overrides
+
+Override parent files when needed for specialization:
+
+```
+_private/
+  header.ejs           # Default site header
+admin/
+  _private/
+    header.ejs         # Special admin header
+```
+
+### 4. Clean Interfaces
+
+Export clear, focused interfaces from JavaScript modules:
+
+```javascript
+// _private/database.js
+module.exports = {
+  query: (sql, params) => {
+    // Database query logic
+  },
+  getRecord: (id) => {
+    // Record retrieval logic
+  },
+}
+```
+
+## Important Notes
+
+1. Files in `_private` directories are never publicly accessible
+2. Changes to private files require a server restart in production
+3. Use environment variables for secrets, not private files
+4. Private files are perfect for:
+   - Reusable template components
+   - Server-side utilities
+   - Configuration
+   - Database queries
+   - Business logic
+
+## The Power of Convention
+
+This system's strength comes from its conventions:
+
+- Predictable file location
+- Natural code organization
+- Clear separation of concerns
+- Easy code sharing
+- Simple overrides
+- Minimal path management
+
+By following these patterns, you can build maintainable applications where code lives where it makes sense, while still being easy to find and use.
+
+See [requirePrivate](/docs/api/require-private) and [Using Partials](/docs/partials) for detailed documentation of the specific functions.

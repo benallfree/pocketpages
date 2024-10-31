@@ -1,7 +1,7 @@
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
+import type URL from 'url-parse'
 import { Route } from './AfterBootstrapHandler'
-import { requirePrivate, url } from './helpers'
 
 export type PageDataLoaderFunc = (api: Omit<PagesApi<any>, 'data'>) => object
 
@@ -21,8 +21,8 @@ export type PagesApi<T> = {
   slots: Record<string, string>
   meta: (key: string, value?: string) => string | undefined
   stringify: typeof stringify
-  url: typeof url
-  requirePrivate: typeof requirePrivate
+  url: (path: string) => URL<Record<string, string | undefined>>
+  requirePrivate: (path: string) => any
 } & typeof log
 
 export type PagesConfig = {

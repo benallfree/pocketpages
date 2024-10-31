@@ -24,7 +24,7 @@ To get started, you need just one file:
 <%%= `Hello, world!` %>
 ```
 
-<%- include(`../../_include/browser.ejs`, { content: `Hello, world!`}) %>
+<%- include(`browser.ejs`, { content: `Hello, world!`}) %>
 
 With PocketPages, making apps is easy again. Inside `<%%` and `%>`, you have the full power of JavaScript plus PocketBase's [JSVM](https://pocketbase.io/jsvm/index.html) which defines all of PocketBase's built-in functions.
 
@@ -41,4 +41,4 @@ PocketPages borrows inspiration from SvelteKit's [file-based routing](https://ki
 </html>
 ```
 
-<%- include(`../../_include/browser.ejs`, { bodyTags: `style="background-color: #b5dcb5"`, content: `Hello, world!`}) %>
+<%- include(`browser.ejs`, { bodyTags: `style="background-color: #b5dcb5"`, content: `Hello, world!`}) %>

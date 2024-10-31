@@ -25,11 +25,36 @@ ejs.cache = {
 }
 
 const oldResolveInclude = ejs.resolveInclude
-ejs.resolveInclude = function (name: string, filename: string, isDir: boolean) {
-  if (filename === '/') {
-    return path.resolve(pagesRoot, name)
+ejs.resolveInclude = function (
+  includePath: string,
+  templatePath: string,
+  isDir: boolean
+) {
+  dbg(`resolveInclude`, { name: includePath, filename: templatePath, isDir })
+  // Handle absolute paths (starting with /)
+  if (includePath.startsWith('/')) {
+    return path.resolve(pagesRoot, `_private`, includePath)
   }
-  return oldResolveInclude(name, filename, isDir)
+
+  // Handle relative paths by searching up the directory tree
+  let currentPath = path.dirname(templatePath)
+  while (currentPath.length >= pagesRoot.length) {
+    const attemptPath = path.resolve(currentPath, `_private`, includePath)
+    // dbg(`attemptPath`, { attemptPath })
+    if (fs.existsSync(attemptPath, 'file')) {
+      return attemptPath
+    } else {
+      // If we're at pagesRoot and still haven't found it, fall back to default behavior
+      if (currentPath === pagesRoot) {
+        break
+      }
+      // Move up one directory
+      currentPath = path.dirname(currentPath)
+    }
+  }
+
+  // dbg(`got here with no results`, { includePath, templatePath })
+  throw new Error(`No partial '${includePath}' found in any _private directory`)
 }
 
 export const parseSlots = (input: string) => {
@@ -70,7 +95,7 @@ export const renderFile = (fname: string, api: PagesApi<any>) => {
       async: false,
       cache: $app.isDev(),
       includer: (path: string, filename: string) => {
-        dbg({ path, filename })
+        dbg(`includer`, { path, filename })
         if ($filepath.ext(filename) === '.md') {
           const markdown = fs.readFileSync(filename, 'utf8')
           const res = marked(markdown, api)

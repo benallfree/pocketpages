@@ -7,13 +7,13 @@ description: Step-by-step guide for installing PocketPages.
 
 Installing PocketPages is easy.
 
-<%- include(`../../_include/quickstart.ejs`) %>
+<%- include(`quickstart.ejs`) %>
 
 _Note: `--dir=pb_data` is necessary to tell PocketBase to use the current directory for data storage._
 
 Browse to `http://localhost:8090` and with any luck at all, you'll see:
 
-<%- include(`../../_include/browser.ejs`, { url: `http://localhost:8090`, content: `Hello, world!`}) %>
+<%- include(`browser.ejs`, { url: `http://localhost:8090`, content: `Hello, world!`}) %>
 
 To start editing, find
 
