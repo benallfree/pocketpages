@@ -1,0 +1,11 @@
+{
+  "cSpell.words": ["includer", "jsvm", "pocketpages"],
+  "git.ignoreLimitWarning": true,
+  "emmet.includeLanguages": {
+    "ejs": "html"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "j69.ejs-beautify"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
