@@ -8,3 +8,4 @@ pb_*
 .env
 docs/.cache
 .secrets
+.ftp-deploy-sync-state.json
