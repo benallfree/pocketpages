@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.9.1
+
+### Patch Changes
+
+- Added vscode starter kit
+
 ## 0.9.0
 
 ### Minor Changes

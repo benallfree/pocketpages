@@ -28,6 +28,7 @@
 - [Upgrading](/docs/upgrading)
 - [Starter Kits](/docs/starter-kits)
 - [JS API](/docs/jsvm)
+- [VSCode/Cursor](/docs/vscode)
 
 # Speed Runs
 
@@ -48,4 +49,3 @@
 - SEO
 - SPA
 - Tailwind
-- VSCode
