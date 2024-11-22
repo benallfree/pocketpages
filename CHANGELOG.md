@@ -1,5 +1,15 @@
 # pocketpages
 
+## 0.10.0-next.6
+
+### Minor Changes
+
+- 6509984: v23/v22 compat and abstracted provider pattern
+
+### Patch Changes
+
+- Added vscode starter and updated docs
+
 ## 0.10.0-rc1.1
 
 ### Minor Changes
