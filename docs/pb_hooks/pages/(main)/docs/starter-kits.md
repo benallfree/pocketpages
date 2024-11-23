@@ -76,3 +76,7 @@ This kit helps you get started with the [htmx](https://htmx.org/) project. See t
 ## vscode/cursor
 
 This kit provides a VSCode/Cursor configuration for PocketPages. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/vscode/README.md) for more details.
+
+## mvp.css
+
+This kit provides a starter kit for the [mvp.css](https://andybrewer.github.io/mvp/#docs) project. MVP.css is a minimal styling for building fast, modern web apps. It takes all the guesswork out of styling your project, leaving you to focus on features and functionality. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/mvp.css/README.md) for more details.

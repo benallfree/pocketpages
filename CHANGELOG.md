@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.9.3
+
+### Patch Changes
+
+- Add mvp.css starter kit
+
 ## 0.9.2
 
 ### Patch Changes
