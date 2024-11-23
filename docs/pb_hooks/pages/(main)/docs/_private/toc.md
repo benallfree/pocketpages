@@ -30,6 +30,7 @@
 - [Starter Kits](/docs/starter-kits)
 - [JS API](/docs/jsvm)
 - [VSCode/Cursor](/docs/vscode)
+- [HTMX Integration](/docs/htmx)
 
 # Speed Runs
 

@@ -99,6 +99,53 @@ Let’s break down the example directory structure with corresponding routes:
 
 4. **Avoid Over-Nesting**: While nesting is powerful, avoid creating unnecessarily deep structures. This can lead to cumbersome URLs that are hard to navigate and remember.
 
+5. **Reserved Routes**: The `/api` and `/_` routes are reserved for PocketBase and will be immediately forwarded to PocketBase by PocketPages. It is recommended to use an alternative prefix like `xapi` for your custom API endpoints.
+
+## Organizing API Routes and Layouts
+
+When building applications that serve both full pages and API endpoints (especially with HTMX), it's important to properly organize your routes to prevent unwanted layout inheritance.
+
+### Recommended Structure
+
+```
+pb_hooks/
+  pages/
+    (site)/           # Pages that should inherit layouts
+      +layout.ejs     # Main site layout
+      about.ejs
+      products/
+        index.ejs
+    xapi/            # API endpoints (no layouts)
+      count.ejs
+      users.ejs
+    +layout.ejs      # Global layout (if needed)
+```
+
+### Key Points
+
+1. **Site Pages**: Place all user-facing pages that should inherit layouts inside a `(site)` directory (or similar). These pages will be served with the appropriate layouts.
+
+2. **API Routes**: Place all API endpoints (including HTMX partial responses) in a separate directory like `xapi/`. This prevents them from inheriting layouts, which is particularly important for HTMX responses that should return raw HTML without being wrapped in layout templates.
+
+3. **Layout Inheritance**: Any `+layout.ejs` file will affect all routes in its directory and subdirectories. By separating API routes from site pages, you ensure that API responses remain clean and layout-free.
+
+### Example
+
+For an HTMX application:
+
+```html
+<!-- pages/(site)/index.ejs - Full page with layout -->
+<div>
+  <button hx-get="/xapi/count">Get Count</button>
+  <div id="result"></div>
+</div>
+
+<!-- pages/xapi/count.ejs - Raw HTML response without layout -->
+<span>Current count: <%%= count %></span>
+```
+
+This organization ensures that your HTMX partial responses and other API endpoints remain clean and efficient, while your main site pages properly inherit layouts and styling.
+
 ### PocketPages Routing Priority
 
 In PocketPages, the routing system is designed to take precedence over any default PocketBase routes and static files served from the `pb_public/` directory. This means that if a route or file exists both in PocketPages and PocketBase, the PocketPages route will be served instead.
