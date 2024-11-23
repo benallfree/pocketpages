@@ -72,3 +72,7 @@ This kit helps you deploy via Github Action to fly.io. It requires `deploy-fly-m
 ## htmx
 
 This kit helps you get started with the [htmx](https://htmx.org/) project. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/htmx/README.md) for more details.
+
+## vscode/cursor
+
+This kit provides a VSCode/Cursor configuration for PocketPages. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/vscode/README.md) for more details.
