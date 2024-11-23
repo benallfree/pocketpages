@@ -35,7 +35,7 @@ pb_hooks/
         index.ejs      # Template using data
 ```
 
-> **Note**: Only the leaf-level `+load.js` file is executed. For cascading data loading, use [Middleware](/docs/middleware).
+> **Note**: Only the leaf-level `+load.js` file is executed. For cascading data loading, use [Middleware](/docs-next/middleware).
 
 ### Example Loaders
 
@@ -198,6 +198,6 @@ module.exports = function (api) {
 
 ## Reference
 
-- [Loading Data Guide](/docs/loading-data)
-- [Middleware Documentation](/docs/middleware)
-- [API Types Reference](/docs/api-types)
+- [Loading Data Guide](/docs-next/loading-data)
+- [Middleware Documentation](/docs-next/middleware)
+- [API Types Reference](/docs-next/api-types)

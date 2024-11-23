@@ -293,6 +293,6 @@ module.exports = function (api) {
 
 ## Reference
 
-- [API Documentation](/docs/api)
-- [Middleware Guide](/docs/middleware)
-- [TypeScript Types](/docs/types)
+- [API Documentation](/docs-next/api)
+- [Middleware Guide](/docs-next/middleware)
+- [TypeScript Types](/docs-next/types)

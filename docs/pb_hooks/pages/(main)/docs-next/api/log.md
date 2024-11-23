@@ -121,4 +121,4 @@ error('Error') // Shows in console
 
 ## Reference
 
-- [API Documentation](/docs/api)
+- [API Documentation](/docs-next/api)

@@ -89,5 +89,5 @@ module.exports = function (api) {
 
 ## See Also
 
-- [Logging Functions](/docs/api/log)
-- [API Documentation](/docs/api)
+- [Logging Functions](/docs-next/api/log)
+- [API Documentation](/docs-next/api)

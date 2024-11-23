@@ -54,4 +54,4 @@ Use the `asset()` helper to generate fingerprinted URLs:
 2. Use a shared directory (like `shared/` or `assets/`) for common resources
 3. Always verify assets exist in your pages directory
 
-For detailed information about the `asset()` helper and its features, see the [asset helper documentation](/docs/request-context/asset).
+For detailed information about the `asset()` helper and its features, see the [asset helper documentation](/docs-next/request-context/asset).

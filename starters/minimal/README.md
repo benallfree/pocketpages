@@ -3,8 +3,8 @@
 ## Installation
 
 ```bash
-npx degit benallfree/pocketpages/starters/minimal minimal-app
-cd minimal-app
+cp -r node_modules/pocketpages/starters/minimal .
+cd minimal
 npm i
 pocketbase --dir=pb_data --dev serve
 ```

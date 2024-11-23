@@ -313,5 +313,5 @@ module.exports = function (api) {
 
 ## Reference
 
-- [Loading Data Guide](/docs/loading-data)
-- [API Documentation](/docs/api)
+- [Loading Data Guide](/docs-next/loading-data)
+- [API Documentation](/docs-next/api)

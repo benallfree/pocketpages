@@ -5,7 +5,7 @@ description: Deploy PocketPages to pockethost.io with manual or GitHub Actions w
 
 # Deploying to Production
 
-PocketPages is easy to deploy. If you follow the [recommended project structure](/docs/structure), everything in `/pb_*` can be deployed.
+PocketPages is easy to deploy. If you follow the [recommended project structure](/docs-next/structure), everything in `/pb_*` can be deployed.
 
 The two most popular ways to go live with PocketBase are to use [pockethost.io](https://pockethost.io) or to self-host using [Fly.io](https://fly.io).
 

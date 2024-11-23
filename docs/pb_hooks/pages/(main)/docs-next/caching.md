@@ -158,6 +158,6 @@ module.exports = function (api) {
 
 ## Reference
 
-- [asset() Documentation](/docs/api/asset)
-- [Middleware Guide](/docs/middleware)
+- [asset() Documentation](/docs-next/api/asset)
+- [Middleware Guide](/docs-next/middleware)
 - [Cloudflare Cache Documentation](https://developers.cloudflare.com/cache)

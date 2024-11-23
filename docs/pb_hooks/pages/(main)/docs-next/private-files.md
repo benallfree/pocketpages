@@ -194,4 +194,4 @@ This system's strength comes from its conventions:
 
 By following these patterns, you can build maintainable applications where code lives where it makes sense, while still being easy to find and use.
 
-See [require](/docs/api/require-private) and [Using Partials](/docs/partials) for detailed documentation of the specific functions.
+See [require](/docs-next/api/require-private) and [Using Partials](/docs-next/partials) for detailed documentation of the specific functions.

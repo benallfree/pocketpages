@@ -163,4 +163,4 @@ module.exports = {
 4. Changes to private files require a server restart in production
 5. Async/await is not available in the JSVM - use promises or callbacks instead
 
-See [Private Files](/docs/private-files) for more information about working with private files and directories in PocketPages.
+See [Private Files](/docs-next/private-files) for more information about working with private files and directories in PocketPages.

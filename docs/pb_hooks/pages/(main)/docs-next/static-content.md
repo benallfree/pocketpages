@@ -20,7 +20,7 @@ Static content refers to files that are served directly to the client without se
 
 For dynamic asset handling in your templates and pages, PocketPages provides the `asset()` function that helps generate correct URLs for your static assets. This function ensures your assets are properly referenced regardless of your application's base path configuration.
 
-For more details on managing and organizing your static assets effectively, see the [Asset Management Guide](/docs/guides/asset-management).
+For more details on managing and organizing your static assets effectively, see the [Asset Management Guide](/docs-next/guides/asset-management).
 
 ### Example Directory Structure
 

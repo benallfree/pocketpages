@@ -7,7 +7,7 @@ description: PocketBase's JavaScript runtime environment capabilities, limitatio
 
 PocketBase's JavaScript runtime environment is neither Browser nor NodeJS. As such, it lacks Web APIs and NodeJS APIs such as `Buffer` and `require('fs')`.
 
-There is [extensive documentation](https://pocketbase.io/docs/js-overview/) covering many aspects of extending PocketBase with JS hooks. You'll probably be most concerned with [database operations](https://pocketbase.io/docs/js-database/) and higher-level [record operations](https://pocketbase.io/docs/js-records/), like this:
+There is [extensive documentation](https://pocketbase.io/docs-next/js-overview/) covering many aspects of extending PocketBase with JS hooks. You'll probably be most concerned with [database operations](https://pocketbase.io/docs-next/js-database/) and higher-level [record operations](https://pocketbase.io/docs-next/js-records/), like this:
 
 ```js
 const records = $app

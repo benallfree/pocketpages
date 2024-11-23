@@ -55,7 +55,7 @@ When resolving the path to a partial, PocketPages will:
 You have several options for controlling this resolution:
 
 - **Simple name**: Just specify the file name (e.g., `header.ejs`) to use the automatic resolution system
-- **Absolute paths**: Start with `/` to specify an explicit path from the root (e.g., `/docs/_private/header.ejs`)
+- **Absolute paths**: Start with `/` to specify an explicit path from the root (e.g., `/docs-next/_private/header.ejs`)
 - **Level jumping**: Use `../` prefix to skip the local `_private` directory and force resolution from a parent level (useful when you want to access an ancestor's partial that has the same name as a local one)
 
 ### Examples

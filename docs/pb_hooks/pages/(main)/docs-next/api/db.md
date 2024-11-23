@@ -205,6 +205,6 @@ const recent = findRecordsByFilter('posts', {
 
 ## Reference
 
-- [PocketBase Filter Syntax](https://pocketbase.io/docs/filtering)
-- [API Documentation](/docs/api)
-- [Loading Data Guide](/docs/loading-data)
+- [PocketBase Filter Syntax](https://pocketbase.io/docs-next/filtering)
+- [API Documentation](/docs-next/api)
+- [Loading Data Guide](/docs-next/loading-data)

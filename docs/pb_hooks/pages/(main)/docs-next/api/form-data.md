@@ -268,4 +268,4 @@ if (request.method === 'POST') {
 7. Show clear feedback messages
 8. Preserve form data on validation errors
 
-See [Form Handling](/docs/forms) for more detailed information about working with forms in PocketPages.
+See [Form Handling](/docs-next/forms) for more detailed information about working with forms in PocketPages.

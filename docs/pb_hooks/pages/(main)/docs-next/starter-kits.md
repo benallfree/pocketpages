@@ -55,19 +55,19 @@ For more detail, see https://github.com/benallfree/pocketpages/blob/master/start
 
 ## deploy-pockethost-manual
 
-This kit helps you deploy manually to pockethost.io. See the [deployment guide](/docs/deploying) for more details.
+This kit helps you deploy manually to pockethost.io. See the [deployment guide](/docs-next/deploying) for more details.
 
 ## deploy-pockethost-ga
 
-This kit helps you deploy as a Github Action to pockethost.io. See the [deployment guide](/docs/deploying) for more details.
+This kit helps you deploy as a Github Action to pockethost.io. See the [deployment guide](/docs-next/deploying) for more details.
 
 ## deploy-fly-manual
 
-This kit helps you deploy manually to fly.io. See the [deployment guide](/docs/deploying) for more details.
+This kit helps you deploy manually to fly.io. See the [deployment guide](/docs-next/deploying) for more details.
 
 ## deploy-fly-ga
 
-This kit helps you deploy via Github Action to fly.io. It requires `deploy-fly-manual` as well. See the [deployment guide](/docs/deploying) for more details.
+This kit helps you deploy via Github Action to fly.io. It requires `deploy-fly-manual` as well. See the [deployment guide](/docs-next/deploying) for more details.
 
 ## htmx
 

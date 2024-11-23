@@ -36,6 +36,12 @@
 - 1a6211c: Docs: MiddlewareLoaderFunc type
 - b9a2b51: Feat: added findRecordByFilter, findRecordsByFilter, and FilterOptions to context
 
+## 0.9.5
+
+### Patch Changes
+
+- Update starters with new install instructions
+
 ## 0.9.4
 
 ### Patch Changes
