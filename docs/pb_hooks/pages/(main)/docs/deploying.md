@@ -15,47 +15,40 @@ pockethost.io is the premiere PocketBase hosting service trusted by over 10,000 
 
 In under 30 seconds, you can provision a free instance with unlimited (Fair Use) resources.
 
-Once you have your instance URL (`something.pockethost.io`), you can choose either manual or Github Actions deployment (or both).
-
 ### Manual Deployment
 
-Start by copying the PocketHost deployment utility script:
+The easiest way to deploy is using the PocketHost.IO CLI utility (PHIO). Here's how:
+
+1. Install the PHIO CLI globally:
 
 ```bash
-bunx pocketpages degit . --template=deploy-pockethost-manual
-bun add -D @samkirkland/ftp-deploy dotenv env-vars
+npm i -g phio
 ```
 
-Once you have `deploy.ts` and its dependencies installed, create an `.env` file and edit to suit:
+2. Login to your PocketHost account:
 
 ```bash
-cp .env-deploy-pockethost .env
+phio login
 ```
 
-Finally, try a deployment:
+3. Link your local project to your PocketHost instance:
 
 ```bash
-bun ./deploy-pockethost.ts
+phio link <instanceName>
 ```
 
-Optional add support in `package.json`:
-
-```json
-"scripts": {
-    "deploy": "bun ./deploy.ts"
-  },
-```
+4. Deploy your project:
 
 ```bash
-bun run deploy
+phio deploy
 ```
 
 ### Github Actions Deployment
 
-You can also use a Github Actions configuration to deploy on every push.
+To set up automated deployments using Github Actions:
 
 ```bash
-bunx pocketpages degit . --template=deploy-pockethost-ga
+cp -r node_modules/pocketpages/starters/deploy-pockethost-ga .
 ```
 
 You'll need to set a few Github secrets. Look in the YAML file for details.
@@ -64,8 +57,10 @@ You'll need to set a few Github secrets. Look in the YAML file for details.
 
 _Warning: Self-hosting is an advanced setup. I know Fly pretty well and it still took me an hour._
 
+To set up Fly.io deployment:
+
 ```bash
-bunx pocketpages degit . --template=deploy-fly-ga .
+cp -r node_modules/pocketpages/starters/deploy-fly-ga .
 ```
 
 After this, you should see a `Dockerfile` and `fly.toml`.
