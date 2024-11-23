@@ -1,5 +1,12 @@
 # pocketpages
 
+## 0.9.2
+
+### Patch Changes
+
+- ac6674f: Docs: vscode starter kit
+- 22b3e1c: Added htmx starter kit
+
 ## 0.9.1
 
 ### Patch Changes
