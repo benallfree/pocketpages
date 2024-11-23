@@ -36,6 +36,12 @@
 - 1a6211c: Docs: MiddlewareLoaderFunc type
 - b9a2b51: Feat: added findRecordByFilter, findRecordsByFilter, and FilterOptions to context
 
+## 0.9.3
+
+### Patch Changes
+
+- Add mvp.css starter kit
+
 ## 0.9.2
 
 ### Patch Changes
