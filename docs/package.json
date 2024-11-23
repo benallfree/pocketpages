@@ -9,7 +9,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "concurrently": "^9.0.1",
     "daisyui": "^4.12.10",
-    "phio": "^0.2.1",
+    "phio": "^0.2.4",
     "pocketbase-jsvm": "^0.22.20001",
     "postcss-import": "^16.1.0",
     "prettier": "^3.3.3",
