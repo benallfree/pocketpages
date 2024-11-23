@@ -9,6 +9,7 @@
 - [Creating a Page](/docs/creating-a-page)
 - [Routing](/docs/routing)
 - [Accessing Parameters](/docs/parameters)
+- [Request Context](/docs/request-context)
 - [Loading Data](/docs/loading-data)
 - [JSON](/docs/json)
 - [Partials](/docs/partials)
@@ -22,26 +23,6 @@
 - [Going Live](/docs/deploying)
 - [Runtime Configuration](/docs/config)
 - [Caching](/docs/caching)
-
-# API
-
-- [Overview](/docs/api)
-- [`api`](/docs/api/api)
-- [`asset`](/docs/api/asset)
-- [`data`](/docs/api/data)
-- [`dbg/info/warn/error`](/docs/api/log)
-- [`echo`](/docs/api/echo)
-- [`env`](/docs/api/env)
-- [`findRecord(s)ByFilter`](/docs/api/db)
-- [`formData`](/docs/api/form-data)
-- [`meta`](/docs/api/meta)
-- [`params`](/docs/api/params)
-- [`redirect`](/docs/api/redirect)
-- [`request`](/docs/api/request)
-- [`require`](/docs/api/require)
-- [`response`](/docs/api/response)
-- [`stringify`](/docs/api/stringify)
-- [`url`](/docs/api/url)
 
 # Guides
 
