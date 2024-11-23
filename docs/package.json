@@ -1,6 +1,7 @@
 {
   "scripts": {
     "phio": "phio",
+    "push": "phio deploy --exclude='pb_data*,pb_data*/**/*'",
     "dev": "concurrently \"npm:dev:*\"",
     "xdev:pocketbase:22": "pocketbase-22 --dir=pb_data_22 --dev serve --http=127.0.0.1:8090",
     "dev:pocketbase:23": "pocketbase-23 --dir=pb_data_23 --dev serve --http=127.0.0.1:8091",
@@ -10,7 +11,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "concurrently": "^9.0.1",
     "daisyui": "^4.12.10",
-    "phio": "^0.2.0",
+    "phio": "^0.2.4",
     "pocketbase-jsvm": "^0.22.20001",
     "postcss-import": "^16.1.0",
     "prettier": "^3.3.3",

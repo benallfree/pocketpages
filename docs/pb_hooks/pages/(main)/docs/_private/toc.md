@@ -69,4 +69,3 @@
 - SEO
 - SPA
 - Tailwind
-- VSCode

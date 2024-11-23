@@ -9,3 +9,4 @@ pb_*
 docs/.cache
 .secrets
 .vscode/settings.json
+.ftp-deploy-sync-state.json

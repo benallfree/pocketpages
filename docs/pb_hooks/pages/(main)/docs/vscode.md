@@ -1,4 +1,4 @@
-# VS Code Enhancements for PocketPages
+# VS Code / Cursor Enhancements for PocketPages
 
 PocketPages includes some helpful VS Code configurations to improve your development experience. You can add these to your project by copying the `.vscode` directory from the PocketPages starter files:
 
