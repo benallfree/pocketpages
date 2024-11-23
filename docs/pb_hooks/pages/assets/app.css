@@ -3189,18 +3189,6 @@ pre {
   color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
 }
 
-.no-underline {
-  text-decoration-line: none;
-}
-
-.transition {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
 @media (pointer: coarse) {
   /* Styles for touch devices */
 
@@ -3294,10 +3282,6 @@ div.code-toolbar
     cursor: default;
     background-color: transparent;
   }
-}
-
-.hover\:opacity-75:hover {
-  opacity: 0.75;
 }
 
 @media (min-width: 640px) {
