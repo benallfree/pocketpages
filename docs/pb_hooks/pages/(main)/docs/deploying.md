@@ -48,7 +48,7 @@ phio deploy
 To set up automated deployments using Github Actions:
 
 ```bash
-cp -r node_modules/pocketpages/samples/deploy-pockethost-ga .
+cp -r node_modules/pocketpages/starters/deploy-pockethost-ga .
 ```
 
 You'll need to set a few Github secrets. Look in the YAML file for details.
@@ -60,7 +60,7 @@ _Warning: Self-hosting is an advanced setup. I know Fly pretty well and it still
 To set up Fly.io deployment:
 
 ```bash
-cp -r node_modules/pocketpages/samples/deploy-fly-ga .
+cp -r node_modules/pocketpages/starters/deploy-fly-ga .
 ```
 
 After this, you should see a `Dockerfile` and `fly.toml`.

@@ -1,0 +1,4 @@
+<%
+  $app.store().set('count', ($app.store().get('count')||1) + 1)
+%>
+<%- include('/_private/count.ejs') %>
