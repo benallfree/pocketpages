@@ -1,0 +1,10 @@
+{
+  "name": "htmx",
+  "scripts": {
+    "serve": "pocketbase --dir=pb_data serve",
+    "dev": "pocketbase --dir=pb_data --dev serve"
+  },
+  "dependencies": {
+    "pocketpages": "latest"
+  }
+}

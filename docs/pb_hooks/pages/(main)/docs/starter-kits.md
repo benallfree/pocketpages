@@ -68,3 +68,7 @@ This kit helps you deploy manually to fly.io. See the [deployment guide](/docs/d
 ## deploy-fly-ga
 
 This kit helps you deploy via Github Action to fly.io. It requires `deploy-fly-manual` as well. See the [deployment guide](/docs/deploying) for more details.
+
+## htmx
+
+This kit helps you get started with the [htmx](https://htmx.org/) project. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/htmx/README.md) for more details.
