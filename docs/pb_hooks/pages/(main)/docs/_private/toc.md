@@ -15,6 +15,7 @@
 - [Partials](/docs/partials)
 - [Layouts](/docs/layouts)
 - [Static content](/docs/static-content)
+- [Asset Management](/docs/asset-management)
 - [Private files](/docs/private-files)
 - [Middleware](/docs/middleware)
 - [Markdown](/docs/markdown)
