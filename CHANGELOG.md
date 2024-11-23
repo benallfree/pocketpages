@@ -36,6 +36,13 @@
 - 1a6211c: Docs: MiddlewareLoaderFunc type
 - b9a2b51: Feat: added findRecordByFilter, findRecordsByFilter, and FilterOptions to context
 
+## 0.9.2
+
+### Patch Changes
+
+- ac6674f: Docs: vscode starter kit
+- 22b3e1c: Added htmx starter kit
+
 ## 0.9.1
 
 ### Patch Changes
