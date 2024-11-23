@@ -1,0 +1,16 @@
+# PocketPages
+
+This project uses the PocketBase JSVM. In code samples, nothing is awaitable and we do not use the PocketBase JS SDK at all. All demo code should use the PocketBase JSVM API.
+
+# Code sample syntax
+
+- Escape the EJS start tag `<%` by using `<%%`
+- Use `<%%=` for variable interpolation.
+- Use `<%%` for control flow like `if` statements.
+
+# Documentation Style
+
+- Do not include summary sections
+- Focus on slim clients and an ethos of pure html/js rather than reactive programming
+- Assume modern browsers and features.
+- Assume JavaScript is enabled.
