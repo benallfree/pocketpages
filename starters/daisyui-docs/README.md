@@ -5,7 +5,7 @@ Demonstrates how to use Markdown pages by creating a docs site.
 ## Installation
 
 ```bash
-npx degit benallfree/pocketpages/starters/daisyui-docs daisyui-docs
+cp -r node_modules/pocketpages/starters/daisyui-docs .
 cd daisyui-docs
 npm i
 npm run dev

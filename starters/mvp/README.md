@@ -5,7 +5,7 @@ This starter kit is based on the [MVP.css](https://andybrewer.github.io/mvp/) pr
 ## Installation
 
 ```bash
-npx degit benallfree/pocketpages/starters/mvp mvp
+cp -r node_modules/pocketpages/starters/mvp .
 cd mvp
 npm i
 pocketbase --dir=pb_data --dev serve

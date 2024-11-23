@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.9.5
+
+### Patch Changes
+
+- Update starters with new install instructions
+
 ## 0.9.4
 
 ### Patch Changes
