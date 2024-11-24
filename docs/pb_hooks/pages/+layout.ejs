@@ -1,49 +1,32 @@
 <!doctype html>
 <html lang="en" data-theme="cupcake">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%=meta('title') || 'PocketPages'%></title>
-    <link href="<%=asset('/assets/prism.css')%>" rel="stylesheet" />
-    <link href="<%=asset(`/assets/app.css`)%>" rel="stylesheet" />
-    <meta
-      name="description"
-      content="<%=meta('description') || 'Server-side pages for PocketBase'%>"
-    />
-    <meta property="og:title" content="<%=meta('title') || 'PocketPages'%>" />
-    <meta
-      property="og:description"
-      content="<%=meta('description') || 'Server-side pages for PocketBase'%>"
-    />
-    <meta
-      property="og:image"
-      content="<%=meta('image') || 'https://pocketpages.dev/android-chrome-512x512.png'%>"
-    />
-    <meta
-      property="og:url"
-      content="<%=meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${ctx.request().url}`%>"
-    />
-    <%- slots.head %>
-  </head>
 
-  <body>
-    <section class="-mt-px border-y border-gray-200 bg-gray-100">
-      <div class="mx-auto max-w-screen-xl px-4 py-2">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%=meta('title') || 'PocketPages'%></title>
+  <link href="<%=asset('/assets/prism.css')%>" rel="stylesheet" />
+  <link href="<%=asset(`/assets/app.css`)%>" rel="stylesheet" />
+  <meta name="description" content="<%=meta('description') || 'Server-side pages for PocketBase'%>" />
+  <meta property="og:title" content="<%=meta('title') || 'PocketPages'%>" />
+  <meta property="og:description" content="<%=meta('description') || 'Server-side pages for PocketBase'%>" />
+  <meta property="og:image" content="<%=meta('image') || 'https://pocketpages.dev/android-chrome-512x512.png'%>" />
+  <meta property="og:url" content="<%=meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${ctx.request().url}`%>" />
+  <%- slots.head %>
+</head>
+
+<body>
+  <section class="-mt-px border-y border-gray-200 bg-gray-100">
+    <div class="mx-auto max-w-screen-xl px-4 py-2">
       <div class="flex flex-row items-center justify-center gap-1.5">
         <span class="hidden sm:block text-sm/none font-medium">Enjoy PocketPages? Give it a star on GitHub 🎉</span>
-          <%- include(`/_include/version.ejs`) %>
-        </div>
+        <%- include(`/_include/version.ejs`) %>
       </div>
-    </section>
-    <%- slots.body || slot%>
-    <script src="<%=asset('/assets/prism.js')%>" defer></script>
-    <script
-      defer
-      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"
-      integrity="sha512-6sSYJqDreZRZGkJ3b+YfdhB3MzmuP9R7X1QZ6g5aIXhRvR1Y/N/P47jmnkENm7YL3oqsmI6AK+V6AD99uWDnIw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-      defer
-    ></script>
-  </body>
+    </div>
+  </section>
+  <%- slots.body || slot%>
+  <script src="<%=asset('/assets/prism.js')%>" defer></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js" integrity="sha512-6sSYJqDreZRZGkJ3b+YfdhB3MzmuP9R7X1QZ6g5aIXhRvR1Y/N/P47jmnkENm7YL3oqsmI6AK+V6AD99uWDnIw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+</body>
+
 </html>
