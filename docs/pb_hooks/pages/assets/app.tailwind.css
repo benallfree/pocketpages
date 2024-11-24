@@ -25,6 +25,14 @@
   pre {
     background-color: #282c34 !important;
   }
+
+  .mockup-browser {
+    .mockup-browser-toolbar {
+      .input {
+        @apply ml-0 text-left w-full;
+      }
+    }
+  }
 }
 
 @media (pointer: coarse) {

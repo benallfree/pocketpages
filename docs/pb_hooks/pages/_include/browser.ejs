@@ -1,12 +1,10 @@
-<div class="max-w-lg">
-  <div class="mockup-browser bg-primary border w-full ">
-    <div class="mockup-browser-toolbar">
-      <div class="input">
-        <%= `http://localhost:8090` %>
-      </div>
+<div class="mockup-browser bg-primary border w-full">
+  <div class="mockup-browser-toolbar">
+    <div class="input">
+      <%= `http://localhost:8090` %>
     </div>
-    <div class="bg-base-100 text-left px-4 pb-32" <%- (typeof bodyTags !== 'undefined' && bodyTags)||'' %>>
-      <%- (typeof content !== 'undefined' && content)||`This page is empty.`%>
-    </div>
+  </div>
+  <div class=" bg-base-100 text-left px-4 pb-32" <%- (typeof bodyTags !== 'undefined' && bodyTags)||'' %>>
+    <%- (typeof content !== 'undefined' && content)||`This page is empty.`%>
   </div>
 </div>

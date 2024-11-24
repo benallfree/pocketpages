@@ -1534,18 +1534,6 @@ html {
     }
   }
 
-  .btn-outline.btn-accent:hover {
-    --tw-text-opacity: 1;
-    color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
-  }
-
-  @supports (color: color-mix(in oklab, black, black)) {
-    .btn-outline.btn-accent:hover {
-      background-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
-      border-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
-    }
-  }
-
   .btn-disabled:hover,
     .btn[disabled]:hover,
     .btn:disabled:hover {
@@ -2082,10 +2070,6 @@ input.tab:checked + .tab-content,
     --btn-color: var(--fallback-p);
   }
 
-  .btn-accent {
-    --btn-color: var(--fallback-a);
-  }
-
   .prose :where(code):not(:where([class~="not-prose"] *, pre *)) {
     background-color: var(--fallback-b3,oklch(var(--b3)/1));
   }
@@ -2095,11 +2079,6 @@ input.tab:checked + .tab-content,
   .btn-outline.btn-primary.btn-active {
     background-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
     border-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
-  }
-
-  .btn-outline.btn-accent.btn-active {
-    background-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
-    border-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
   }
 }
 
@@ -2119,16 +2098,6 @@ input.tab:checked + .tab-content,
   .btn-primary {
     --btn-color: var(--p);
   }
-
-  .btn-accent {
-    --btn-color: var(--a);
-  }
-}
-
-.btn-accent {
-  --tw-text-opacity: 1;
-  color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
-  outline-color: var(--fallback-a,oklch(var(--a)/1));
 }
 
 .btn.glass {
@@ -2167,16 +2136,6 @@ input.tab:checked + .tab-content,
 .btn-outline.btn-primary.btn-active {
   --tw-text-opacity: 1;
   color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
-}
-
-.btn-outline.btn-accent {
-  --tw-text-opacity: 1;
-  color: var(--fallback-a,oklch(var(--a)/var(--tw-text-opacity)));
-}
-
-.btn-outline.btn-accent.btn-active {
-  --tw-text-opacity: 1;
-  color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
 }
 
 .btn.btn-disabled,
@@ -3399,6 +3358,20 @@ pre {
   background-color: #282c34 !important;
 }
 
+.mockup-browser {
+  .mockup-browser-toolbar {
+    .input {
+      margin-left: 0px;
+    }
+    .input {
+      width: 100%;
+    }
+    .input {
+      text-align: left;
+    }
+  }
+}
+
 .visible {
   visibility: visible;
 }
@@ -3447,14 +3420,6 @@ pre {
 
 .mb-5 {
   margin-bottom: 1.25rem;
-}
-
-.mt-20 {
-  margin-top: 5rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
 }
 
 .mt-5 {
@@ -3525,10 +3490,6 @@ pre {
   max-width: 100%;
 }
 
-.max-w-lg {
-  max-width: 32rem;
-}
-
 .max-w-screen-xl {
   max-width: 1280px;
 }
@@ -3543,6 +3504,10 @@ pre {
 
 .flex-none {
   flex: none;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-col {
@@ -3563,10 +3528,6 @@ pre {
 
 .rounded-box {
   border-radius: var(--rounded-box, 1rem);
-}
-
-.rounded-md {
-  border-radius: 0.375rem;
 }
 
 .border {
@@ -3608,16 +3569,6 @@ pre {
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
-.bg-neutral {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
-}
-
-.bg-neutral-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(212 212 212 / var(--tw-bg-opacity));
-}
-
 .bg-primary {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
@@ -3630,10 +3581,6 @@ pre {
 
 .stroke-current {
   stroke: currentColor;
-}
-
-.p-10 {
-  padding: 2.5rem;
 }
 
 .p-4 {
@@ -3813,16 +3760,8 @@ div.code-toolbar
     display: block;
   }
 
-  .sm\:w-full {
-    width: 100%;
-  }
-
   .sm\:max-w-full {
     max-width: 100%;
-  }
-
-  .sm\:flex-row {
-    flex-direction: row;
   }
 }
 
