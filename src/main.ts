@@ -208,20 +208,6 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
     const urlPath = url.path.slice(1)
 
     /**
-     * If the URL path starts with 'api' or '_', skip PocketPages
-     */
-    {
-      const firstPart = urlPath
-        .split('/')
-        .filter((p) => p)
-        .shift()
-      if (['api', '_'].includes(firstPart)) {
-        return next(c)
-      }
-    }
-    // dbg({ urlPath })
-
-    /**
      * If the URL path is a static file, serve it
      */
     const physicalFname = $filepath.join(pagesRoot, urlPath)

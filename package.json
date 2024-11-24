@@ -1,6 +1,6 @@
 {
   "name": "pocketpages",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "Server-side JS pages for PocketBase",
   "author": {
     "name": "Ben Allfree",

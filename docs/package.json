@@ -3,7 +3,7 @@
     "phio": "phio",
     "push": "phio deploy --exclude='pb_data*,pb_data*/**/*'",
     "dev": "concurrently \"npm:dev:*\"",
-    "dev:pocketbase": "pocketbase --dir=pb_data --dev serve",
+    "dev:pocketbase": "pocketbase --dir=pb_data --dev serve --http=0.0.0.0:8091",
     "dev:css": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch"
   },
   "devDependencies": {
