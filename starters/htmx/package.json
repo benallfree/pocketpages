@@ -5,6 +5,6 @@
     "dev": "pocketbase --dir=pb_data --dev serve"
   },
   "dependencies": {
-    "pocketpages": "latest"
+    "pocketpages": "next"
   }
 }
