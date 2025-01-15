@@ -85,10 +85,11 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
       dbg({ relativePath, absolutePath, parts })
 
       // dbg({ parts })
+      const content = toString($os.readFile(absolutePath))
       const route: Route = {
         relativePath,
         absolutePath,
-        fingerprint: $security.sha256(absolutePath).slice(0, 8),
+        fingerprint: $security.sha256(content).slice(0, 8),
         assetPrefix: parts[parts.length - 2] ?? '',
         isMarkdown: relativePath.endsWith('.md'),
         isEjs: relativePath.endsWith('.ejs'),
