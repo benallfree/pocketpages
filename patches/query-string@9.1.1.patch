@@ -1,0 +1,15 @@
+diff --git a/base.js b/base.js
+index ad9e7b1a34180725c0da95ac150215075b2f746e..bdb7ecf120f18913c6fb24153f7ee0e86cf17537 100644
+--- a/base.js
++++ b/base.js
+@@ -505,7 +505,9 @@ export function stringifyUrl(object, options) {
+ 	};
+ 
+ 	let queryString = stringify(query, options);
+-	queryString &&= `?${queryString}`;
++	if (queryString) {
++		queryString = `?${queryString}`;
++	}
+ 
+ 	let hash = getHash(object.url);
+ 	if (typeof object.fragmentIdentifier === 'string') {

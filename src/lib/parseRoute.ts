@@ -1,6 +1,8 @@
 import { dbg } from 'pocketbase-log'
+import queryString from 'query-string'
+import URLParse from 'url-parse'
 import { Route } from './AfterBootstrapHandler'
-import { Cache } from './types'
+import { Cache, PagesParams } from './types'
 
 export const fingerprint = (nodeName: string, fingerprint: string) => {
   // Split filename into base and extension
@@ -17,9 +19,12 @@ export const fingerprint = (nodeName: string, fingerprint: string) => {
   return `${base}.${fingerprint}${ext}`
 }
 
-export const parseRoute = (urlPath: string, routes: Route[]) => {
+export const parseRoute = (url: URLParse<string>, routes: Route[]) => {
   const { config } = $app.store<Cache>().get(`pocketpages`)
-  const params: Record<string, string> = {}
+
+  const urlPath = url.pathname.slice(1)
+  // dbg(`***parseRoute`, { url, urlPath })
+  const params: PagesParams = queryString.parse(url.query)
   const tryFnames = [
     `${urlPath}`,
     ...config.preprocessorExts.map((ext) => `${urlPath}${ext}`),

@@ -24,16 +24,14 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
 
   dbg(`Pages middleware request: ${method} ${url}`)
 
-  const urlPath = url.pathname.slice(1)
-
-  const parsedRoute = parseRoute(urlPath, routes)
+  const parsedRoute = parseRoute(url, routes)
 
   /**
    * If it doesn't match any known route, pass it on
    */
   if (!parsedRoute) {
     // Otherwise, pass it on to PocketBase to handle
-    dbg(`No route matched for ${urlPath}, passing on to PocketBase`)
+    dbg(`No route matched for ${url}, passing on to PocketBase`)
     return next()
   }
 
@@ -79,7 +77,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
               route.assetPrefix,
               path
             )
-        const assetRoute = parseRoute(fullAssetPath, routes)
+        const assetRoute = parseRoute(new URL(fullAssetPath), routes)
         dbg({ fullAssetPath, shortAssetPath, assetRoute })
         if (!assetRoute) {
           if ($app.isDev()) {
