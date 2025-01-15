@@ -3210,25 +3210,25 @@ var require_pairs = __commonJS({
     var _toString = Object.prototype.toString;
     function resolveYamlPairs(data) {
       if (data === null) return true;
-      var index, length, pair, keys, result, object = data;
+      var index, length, pair, keys2, result, object = data;
       result = new Array(object.length);
       for (index = 0, length = object.length; index < length; index += 1) {
         pair = object[index];
         if (_toString.call(pair) !== "[object Object]") return false;
-        keys = Object.keys(pair);
-        if (keys.length !== 1) return false;
-        result[index] = [keys[0], pair[keys[0]]];
+        keys2 = Object.keys(pair);
+        if (keys2.length !== 1) return false;
+        result[index] = [keys2[0], pair[keys2[0]]];
       }
       return true;
     }
     function constructYamlPairs(data) {
       if (data === null) return [];
-      var index, length, pair, keys, result, object = data;
+      var index, length, pair, keys2, result, object = data;
       result = new Array(object.length);
       for (index = 0, length = object.length; index < length; index += 1) {
         pair = object[index];
-        keys = Object.keys(pair);
-        result[index] = [keys[0], pair[keys[0]]];
+        keys2 = Object.keys(pair);
+        result[index] = [keys2[0], pair[keys2[0]]];
       }
       return result;
     }
@@ -4618,12 +4618,12 @@ var require_dumper = __commonJS({
       "OFF"
     ];
     function compileStyleMap(schema, map) {
-      var result, keys, index, length, tag2, style, type;
+      var result, keys2, index, length, tag2, style, type;
       if (map === null) return {};
       result = {};
-      keys = Object.keys(map);
-      for (index = 0, length = keys.length; index < length; index += 1) {
-        tag2 = keys[index];
+      keys2 = Object.keys(map);
+      for (index = 0, length = keys2.length; index < length; index += 1) {
+        tag2 = keys2[index];
         style = String(map[tag2]);
         if (tag2.slice(0, 2) === "!!") {
           tag2 = "tag:yaml.org,2002:" + tag2.slice(2);
@@ -5269,6 +5269,13 @@ function clone(value) {
     return value;
   }
 }
+function keys(object) {
+  let val = keysOfNonArray(object);
+  if (Array.isArray(object)) {
+    val = val.filter((item) => item !== "length");
+  }
+  return val;
+}
 function keysOfNonArray(object) {
   return object ? Object.getOwnPropertyNames(object) : [];
 }
@@ -5290,6 +5297,9 @@ function forEachOfArray(array, iteratee) {
       break;
     }
   }
+}
+function values(object) {
+  return keys(object).map((key) => object[key]);
 }
 function merge(object, ...sources) {
   for (const source of sources) {
@@ -7313,25 +7323,25 @@ var Marked = class {
    * Run callback for every token
    */
   walkTokens(tokens, callback) {
-    let values = [];
+    let values2 = [];
     for (const token2 of tokens) {
-      values = values.concat(callback.call(this, token2));
+      values2 = values2.concat(callback.call(this, token2));
       switch (token2.type) {
         case "table": {
           const tableToken = token2;
           for (const cell of tableToken.header) {
-            values = values.concat(this.walkTokens(cell.tokens, callback));
+            values2 = values2.concat(this.walkTokens(cell.tokens, callback));
           }
           for (const row of tableToken.rows) {
             for (const cell of row) {
-              values = values.concat(this.walkTokens(cell.tokens, callback));
+              values2 = values2.concat(this.walkTokens(cell.tokens, callback));
             }
           }
           break;
         }
         case "list": {
           const listToken = token2;
-          values = values.concat(this.walkTokens(listToken.items, callback));
+          values2 = values2.concat(this.walkTokens(listToken.items, callback));
           break;
         }
         default: {
@@ -7339,15 +7349,15 @@ var Marked = class {
           if (this.defaults.extensions?.childTokens?.[genericToken.type]) {
             this.defaults.extensions.childTokens[genericToken.type].forEach((childTokens) => {
               const tokens2 = genericToken[childTokens].flat(Infinity);
-              values = values.concat(this.walkTokens(tokens2, callback));
+              values2 = values2.concat(this.walkTokens(tokens2, callback));
             });
           } else if (genericToken.tokens) {
-            values = values.concat(this.walkTokens(genericToken.tokens, callback));
+            values2 = values2.concat(this.walkTokens(genericToken.tokens, callback));
           }
         }
       }
     }
-    return values;
+    return values2;
   }
   use(...args) {
     const extensions = this.defaults.extensions || { renderers: {}, childTokens: {} };
@@ -7487,12 +7497,12 @@ var Marked = class {
         const walkTokens2 = this.defaults.walkTokens;
         const packWalktokens = pack.walkTokens;
         opts.walkTokens = function(token2) {
-          let values = [];
-          values.push(packWalktokens.call(this, token2));
+          let values2 = [];
+          values2.push(packWalktokens.call(this, token2));
           if (walkTokens2) {
-            values = values.concat(walkTokens2.call(this, token2));
+            values2 = values2.concat(walkTokens2.call(this, token2));
           }
-          return values;
+          return values2;
         };
       }
       this.defaults = { ...this.defaults, ...opts };
@@ -8179,11 +8189,11 @@ function stringify3(object, options2) {
       objectCopy[key] = value;
     }
   }
-  const keys = Object.keys(objectCopy);
+  const keys2 = Object.keys(objectCopy);
   if (options2.sort !== false) {
-    keys.sort(options2.sort);
+    keys2.sort(options2.sort);
   }
-  return keys.map((key) => {
+  return keys2.map((key) => {
     const value = object[key];
     if (value === void 0) {
       return "";
@@ -8330,6 +8340,10 @@ var MiddlewareHandler = (request, response, next) => {
   try {
     dbg5(`Found a matching route`, { parsedRoute });
     const api = {
+      forEach,
+      keys,
+      values,
+      merge,
       params,
       echo: (...args) => {
         const s = echo(...args);

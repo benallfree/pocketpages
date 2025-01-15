@@ -1,3 +1,4 @@
+import { forEach, keys, merge, values } from '@s-libs/micro-dash'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import type URL from 'url-parse'
@@ -30,6 +31,10 @@ export type PagesApi<TData = any> = {
   stringify: typeof stringify
   url: (path: string) => URL<Record<string, string | undefined>>
   require: (path: string) => any
+  forEach: typeof forEach
+  keys: typeof keys
+  values: typeof values
+  merge: typeof merge
 } & typeof log
 
 export type PagesConfig = {

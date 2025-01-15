@@ -1,3 +1,4 @@
+import { forEach, keys, values, merge } from '@s-libs/micro-dash';
 import * as log from 'pocketbase-log';
 export { log };
 import { stringify } from 'pocketbase-stringify';
@@ -67,6 +68,10 @@ type PagesApi<TData = any> = {
     stringify: typeof stringify;
     url: (path: string) => URLParse<Record<string, string | undefined>>;
     require: (path: string) => any;
+    forEach: typeof forEach;
+    keys: typeof keys;
+    values: typeof values;
+    merge: typeof merge;
 } & typeof log;
 type PagesConfig = {
     preprocessorExts: string[];

@@ -1,4 +1,4 @@
-import { forEach, merge } from '@s-libs/micro-dash'
+import { forEach, keys, merge, values } from '@s-libs/micro-dash'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as URL } from 'url-parse'
@@ -53,6 +53,10 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     dbg(`Found a matching route`, { parsedRoute })
 
     const api: PagesApi<any> = {
+      forEach,
+      keys,
+      values,
+      merge,
       params,
       echo: (...args) => {
         const s = echo(...args)
