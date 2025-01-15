@@ -66,7 +66,7 @@ var require_dist = __commonJS({
     var src_exports2 = {};
     __export2(src_exports2, {
       defaultReplacer: () => defaultReplacer,
-      stringify: () => stringify5
+      stringify: () => stringify6
     });
     module2.exports = __toCommonJS2(src_exports2);
     var defaultReplacer = (k, v) => {
@@ -81,7 +81,7 @@ var require_dist = __commonJS({
       }
       return v;
     };
-    var stringify5 = (obj, replacer = defaultReplacer, space = 0) => {
+    var stringify6 = (obj, replacer = defaultReplacer, space = 0) => {
       const seen = /* @__PURE__ */ new WeakSet();
       return JSON.stringify(
         obj,
@@ -297,7 +297,7 @@ var require_dist3 = __commonJS({
       isAbsolute: () => isAbsolute,
       join: () => join,
       normalize: () => normalize,
-      parse: () => parse2,
+      parse: () => parse3,
       relative: () => relative,
       resolve: () => resolve,
       sep: () => sep,
@@ -611,7 +611,7 @@ var require_dist3 = __commonJS({
       }
       return _format("/", pathObject);
     }
-    function parse2(path3) {
+    function parse3(path3) {
       assertPath(path3);
       var ret = { root: "", dir: "", base: "", ext: "", name: "" };
       if (path3.length === 0) return ret;
@@ -731,14 +731,14 @@ var require_querystringify = __commonJS({
     init_cjs_shims();
     var has = Object.prototype.hasOwnProperty;
     var undef;
-    function decode(input) {
+    function decode3(input) {
       try {
         return decodeURIComponent(input.replace(/\+/g, " "));
       } catch (e) {
         return null;
       }
     }
-    function encode(input) {
+    function encode2(input) {
       try {
         return encodeURIComponent(input);
       } catch (e) {
@@ -748,7 +748,7 @@ var require_querystringify = __commonJS({
     function querystring(query) {
       var parser2 = /([^=?#&]+)=?([^&]*)/g, result = {}, part;
       while (part = parser2.exec(query)) {
-        var key = decode(part[1]), value = decode(part[2]);
+        var key = decode3(part[1]), value = decode3(part[2]);
         if (key === null || value === null || key in result) continue;
         result[key] = value;
       }
@@ -764,8 +764,8 @@ var require_querystringify = __commonJS({
           if (!value && (value === null || value === undef || isNaN(value))) {
             value = "";
           }
-          key = encode(key);
-          value = encode(value);
+          key = encode2(key);
+          value = encode2(value);
           if (key === null || value === null) continue;
           pairs.push(key + "=" + value);
         }
@@ -912,7 +912,7 @@ var require_url_parse = __commonJS({
       if (!(this instanceof Url)) {
         return new Url(address, location, parser2);
       }
-      var relative, extracted, parse2, instruction, index, key, instructions = rules.slice(), type = typeof location, url = this, i = 0;
+      var relative, extracted, parse3, instruction, index, key, instructions = rules.slice(), type = typeof location, url = this, i = 0;
       if ("object" !== type && "string" !== type) {
         parser2 = location;
         location = null;
@@ -933,12 +933,12 @@ var require_url_parse = __commonJS({
           address = instruction(address, url);
           continue;
         }
-        parse2 = instruction[0];
+        parse3 = instruction[0];
         key = instruction[1];
-        if (parse2 !== parse2) {
+        if (parse3 !== parse3) {
           url[key] = address;
-        } else if ("string" === typeof parse2) {
-          index = parse2 === "@" ? address.lastIndexOf(parse2) : address.indexOf(parse2);
+        } else if ("string" === typeof parse3) {
+          index = parse3 === "@" ? address.lastIndexOf(parse3) : address.indexOf(parse3);
           if (~index) {
             if ("number" === typeof instruction[2]) {
               url[key] = address.slice(0, index);
@@ -948,7 +948,7 @@ var require_url_parse = __commonJS({
               address = address.slice(0, index);
             }
           }
-        } else if (index = parse2.exec(address)) {
+        } else if (index = parse3.exec(address)) {
           url[key] = index[1];
           address = address.slice(0, index.index);
         }
@@ -1053,8 +1053,8 @@ var require_url_parse = __commonJS({
       url.href = url.toString();
       return url;
     }
-    function toString(stringify5) {
-      if (!stringify5 || "function" !== typeof stringify5) stringify5 = qs.stringify;
+    function toString2(stringify6) {
+      if (!stringify6 || "function" !== typeof stringify6) stringify6 = qs.stringify;
       var query, url = this, host = url.host, protocol = url.protocol;
       if (protocol && protocol.charAt(protocol.length - 1) !== ":") protocol += ":";
       var result = protocol + (url.protocol && url.slashes || isSpecial(url.protocol) ? "//" : "");
@@ -1072,12 +1072,12 @@ var require_url_parse = __commonJS({
         host += ":";
       }
       result += host + url.pathname;
-      query = "object" === typeof url.query ? stringify5(url.query) : url.query;
+      query = "object" === typeof url.query ? stringify6(url.query) : url.query;
       if (query) result += "?" !== query.charAt(0) ? "?" + query : query;
       if (url.hash) result += url.hash;
       return result;
     }
-    Url.prototype = { set, toString };
+    Url.prototype = { set, toString: toString2 };
     Url.extractProtocol = extractProtocol;
     Url.location = lolcation;
     Url.trimLeft = trimLeft;
@@ -1194,7 +1194,7 @@ var require_dist4 = __commonJS({
       isAbsolute: () => isAbsolute,
       join: () => join,
       normalize: () => normalize,
-      parse: () => parse2,
+      parse: () => parse3,
       relative: () => relative,
       resolve: () => resolve,
       sep: () => sep,
@@ -1508,7 +1508,7 @@ var require_dist4 = __commonJS({
       }
       return _format("/", pathObject);
     }
-    function parse2(path3) {
+    function parse3(path3) {
       assertPath(path3);
       var ret = { root: "", dir: "", base: "", ext: "", name: "" };
       if (path3.length === 0) return ret;
@@ -2367,7 +2367,7 @@ var require_exception = __commonJS({
     }
     YAMLException.prototype = Object.create(Error.prototype);
     YAMLException.prototype.constructor = YAMLException;
-    YAMLException.prototype.toString = function toString(compact) {
+    YAMLException.prototype.toString = function toString2(compact) {
       var result = this.name + ": ";
       result += this.reason || "(unknown reason)";
       if (!compact && this.mark) {
@@ -2420,7 +2420,7 @@ var require_mark = __commonJS({
       snippet = this.buffer.slice(start, end);
       return common.repeat(" ", indent) + head + snippet + tail + "\n" + common.repeat(" ", indent + this.position - start + head.length) + "^";
     };
-    Mark.prototype.toString = function toString(compact) {
+    Mark.prototype.toString = function toString2(compact) {
       var snippet, where = "";
       if (this.name) {
         where += 'in "' + this.name + '" ';
@@ -2507,20 +2507,20 @@ var require_schema = __commonJS({
     var YAMLException = require_exception();
     var Type = require_type();
     function compileList(schema, name, result) {
-      var exclude = [];
+      var exclude2 = [];
       schema.include.forEach(function(includedSchema) {
         result = compileList(includedSchema, name, result);
       });
       schema[name].forEach(function(currentType) {
         result.forEach(function(previousType, previousIndex) {
           if (previousType.tag === currentType.tag && previousType.kind === currentType.kind) {
-            exclude.push(previousIndex);
+            exclude2.push(previousIndex);
           }
         });
         result.push(currentType);
       });
       return result.filter(function(type, index) {
-        return exclude.indexOf(index) === -1;
+        return exclude2.indexOf(index) === -1;
       });
     }
     function compileMap() {
@@ -5162,7 +5162,7 @@ var require_front_matter = __commonJS({
       options2.allowUnsafe = Boolean(options2.allowUnsafe);
       var lines = string.split(/(\r?\n)/);
       if (lines[0] && /= yaml =|---/.test(lines[0])) {
-        return parse2(string, options2.allowUnsafe);
+        return parse3(string, options2.allowUnsafe);
       } else {
         return {
           attributes: {},
@@ -5184,7 +5184,7 @@ var require_front_matter = __commonJS({
       }
       return line;
     }
-    function parse2(string, allowUnsafe) {
+    function parse3(string, allowUnsafe) {
       var match = regex.exec(string);
       if (!match) {
         return {
@@ -5234,8 +5234,8 @@ init_cjs_shims();
 var v23Provider = () => ({
   boot: () => {
     onBootstrap((e) => {
-      require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler();
       e.next();
+      require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler();
     });
     routerUse((e) => {
       return require(`${__hooks}/pocketpages.pb`).v23MiddlewareWrapper(e);
@@ -5246,6 +5246,9 @@ var v23Provider = () => ({
 // src/lib/pages/index.ts
 var is22 = `refreshSettings` in $app;
 var getPagesProvider = () => v23Provider();
+
+// src/lib/types.ts
+init_cjs_shims();
 
 // src/main.ts
 init_cjs_shims();
@@ -5416,10 +5419,12 @@ var AfterBootstrapHandler = () => {
     const parts = relativePath.split("/").filter((p) => !p.startsWith(`(`));
     const absolutePath = $filepath.join(pagesRoot, relativePath);
     (0, import_pocketbase_log.dbg)({ relativePath, absolutePath, parts });
+    const content = toString($os.readFile(absolutePath));
+    (0, import_pocketbase_log.dbg)("***", content.length);
     const route = {
       relativePath,
       absolutePath,
-      fingerprint: $security.sha256(absolutePath).slice(0, 8),
+      fingerprint: $security.sha256(content).slice(0, 8),
       assetPrefix: parts[parts.length - 2] ?? "",
       isMarkdown: relativePath.endsWith(".md"),
       isEjs: relativePath.endsWith(".ejs"),
@@ -5567,8 +5572,8 @@ var escapeReplacements = {
   "'": "&#39;"
 };
 var getEscapeReplacement = (ch) => escapeReplacements[ch];
-function escape$1(html2, encode) {
-  if (encode) {
+function escape$1(html2, encode2) {
+  if (encode2) {
     if (escapeTest.test(html2)) {
       return html2.replace(escapeReplace, getEscapeReplacement);
     }
@@ -5680,7 +5685,7 @@ function outputLink(cap, link2, raw, lexer2) {
   const text = cap[1].replace(/\\([\[\]])/g, "$1");
   if (cap[0].charAt(0) !== "!") {
     lexer2.state.inLink = true;
-    const token = {
+    const token2 = {
       type: "link",
       raw,
       href,
@@ -5689,7 +5694,7 @@ function outputLink(cap, link2, raw, lexer2) {
       tokens: lexer2.inlineTokens(text)
     };
     lexer2.state.inLink = false;
-    return token;
+    return token2;
   }
   return {
     type: "image",
@@ -6015,14 +6020,14 @@ ${currentText}` : currentText;
   html(src) {
     const cap = this.rules.block.html.exec(src);
     if (cap) {
-      const token = {
+      const token2 = {
         type: "html",
         block: true,
         raw: cap[0],
         pre: cap[1] === "pre" || cap[1] === "script" || cap[1] === "style",
         text: cap[0]
       };
-      return token;
+      return token2;
     }
   }
   def(src) {
@@ -6585,94 +6590,94 @@ var _Lexer = class __Lexer {
     if (this.options.pedantic) {
       src = src.replace(/\t/g, "    ").replace(/^ +$/gm, "");
     }
-    let token;
+    let token2;
     let lastToken;
     let cutSrc;
     while (src) {
       if (this.options.extensions && this.options.extensions.block && this.options.extensions.block.some((extTokenizer) => {
-        if (token = extTokenizer.call({ lexer: this }, src, tokens)) {
-          src = src.substring(token.raw.length);
-          tokens.push(token);
+        if (token2 = extTokenizer.call({ lexer: this }, src, tokens)) {
+          src = src.substring(token2.raw.length);
+          tokens.push(token2);
           return true;
         }
         return false;
       })) {
         continue;
       }
-      if (token = this.tokenizer.space(src)) {
-        src = src.substring(token.raw.length);
-        if (token.raw.length === 1 && tokens.length > 0) {
+      if (token2 = this.tokenizer.space(src)) {
+        src = src.substring(token2.raw.length);
+        if (token2.raw.length === 1 && tokens.length > 0) {
           tokens[tokens.length - 1].raw += "\n";
         } else {
-          tokens.push(token);
+          tokens.push(token2);
         }
         continue;
       }
-      if (token = this.tokenizer.code(src)) {
-        src = src.substring(token.raw.length);
+      if (token2 = this.tokenizer.code(src)) {
+        src = src.substring(token2.raw.length);
         lastToken = tokens[tokens.length - 1];
         if (lastToken && (lastToken.type === "paragraph" || lastToken.type === "text")) {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
+          lastToken.raw += "\n" + token2.raw;
+          lastToken.text += "\n" + token2.text;
           this.inlineQueue[this.inlineQueue.length - 1].src = lastToken.text;
         } else {
-          tokens.push(token);
+          tokens.push(token2);
         }
         continue;
       }
-      if (token = this.tokenizer.fences(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.fences(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.heading(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.heading(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.hr(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.hr(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.blockquote(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.blockquote(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.list(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.list(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.html(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.html(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.def(src)) {
-        src = src.substring(token.raw.length);
+      if (token2 = this.tokenizer.def(src)) {
+        src = src.substring(token2.raw.length);
         lastToken = tokens[tokens.length - 1];
         if (lastToken && (lastToken.type === "paragraph" || lastToken.type === "text")) {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.raw;
+          lastToken.raw += "\n" + token2.raw;
+          lastToken.text += "\n" + token2.raw;
           this.inlineQueue[this.inlineQueue.length - 1].src = lastToken.text;
-        } else if (!this.tokens.links[token.tag]) {
-          this.tokens.links[token.tag] = {
-            href: token.href,
-            title: token.title
+        } else if (!this.tokens.links[token2.tag]) {
+          this.tokens.links[token2.tag] = {
+            href: token2.href,
+            title: token2.title
           };
         }
         continue;
       }
-      if (token = this.tokenizer.table(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.table(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.lheading(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.lheading(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
       cutSrc = src;
@@ -6690,30 +6695,30 @@ var _Lexer = class __Lexer {
           cutSrc = src.substring(0, startIndex + 1);
         }
       }
-      if (this.state.top && (token = this.tokenizer.paragraph(cutSrc))) {
+      if (this.state.top && (token2 = this.tokenizer.paragraph(cutSrc))) {
         lastToken = tokens[tokens.length - 1];
         if (lastParagraphClipped && lastToken?.type === "paragraph") {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
+          lastToken.raw += "\n" + token2.raw;
+          lastToken.text += "\n" + token2.text;
           this.inlineQueue.pop();
           this.inlineQueue[this.inlineQueue.length - 1].src = lastToken.text;
         } else {
-          tokens.push(token);
+          tokens.push(token2);
         }
         lastParagraphClipped = cutSrc.length !== src.length;
-        src = src.substring(token.raw.length);
+        src = src.substring(token2.raw.length);
         continue;
       }
-      if (token = this.tokenizer.text(src)) {
-        src = src.substring(token.raw.length);
+      if (token2 = this.tokenizer.text(src)) {
+        src = src.substring(token2.raw.length);
         lastToken = tokens[tokens.length - 1];
         if (lastToken && lastToken.type === "text") {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
+          lastToken.raw += "\n" + token2.raw;
+          lastToken.text += "\n" + token2.text;
           this.inlineQueue.pop();
           this.inlineQueue[this.inlineQueue.length - 1].src = lastToken.text;
         } else {
-          tokens.push(token);
+          tokens.push(token2);
         }
         continue;
       }
@@ -6738,7 +6743,7 @@ var _Lexer = class __Lexer {
    * Lexing/Compiling
    */
   inlineTokens(src, tokens = []) {
-    let token, lastToken, cutSrc;
+    let token2, lastToken, cutSrc;
     let maskedSrc = src;
     let match;
     let keepPrevChar, prevChar;
@@ -6764,75 +6769,75 @@ var _Lexer = class __Lexer {
       }
       keepPrevChar = false;
       if (this.options.extensions && this.options.extensions.inline && this.options.extensions.inline.some((extTokenizer) => {
-        if (token = extTokenizer.call({ lexer: this }, src, tokens)) {
-          src = src.substring(token.raw.length);
-          tokens.push(token);
+        if (token2 = extTokenizer.call({ lexer: this }, src, tokens)) {
+          src = src.substring(token2.raw.length);
+          tokens.push(token2);
           return true;
         }
         return false;
       })) {
         continue;
       }
-      if (token = this.tokenizer.escape(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.escape(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.tag(src)) {
-        src = src.substring(token.raw.length);
+      if (token2 = this.tokenizer.tag(src)) {
+        src = src.substring(token2.raw.length);
         lastToken = tokens[tokens.length - 1];
-        if (lastToken && token.type === "text" && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
+        if (lastToken && token2.type === "text" && lastToken.type === "text") {
+          lastToken.raw += token2.raw;
+          lastToken.text += token2.text;
         } else {
-          tokens.push(token);
+          tokens.push(token2);
         }
         continue;
       }
-      if (token = this.tokenizer.link(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.link(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.reflink(src, this.tokens.links)) {
-        src = src.substring(token.raw.length);
+      if (token2 = this.tokenizer.reflink(src, this.tokens.links)) {
+        src = src.substring(token2.raw.length);
         lastToken = tokens[tokens.length - 1];
-        if (lastToken && token.type === "text" && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
+        if (lastToken && token2.type === "text" && lastToken.type === "text") {
+          lastToken.raw += token2.raw;
+          lastToken.text += token2.text;
         } else {
-          tokens.push(token);
+          tokens.push(token2);
         }
         continue;
       }
-      if (token = this.tokenizer.emStrong(src, maskedSrc, prevChar)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.emStrong(src, maskedSrc, prevChar)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.codespan(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.codespan(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.br(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.br(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.del(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.del(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (token = this.tokenizer.autolink(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (token2 = this.tokenizer.autolink(src)) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
-      if (!this.state.inLink && (token = this.tokenizer.url(src))) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (!this.state.inLink && (token2 = this.tokenizer.url(src))) {
+        src = src.substring(token2.raw.length);
+        tokens.push(token2);
         continue;
       }
       cutSrc = src;
@@ -6850,18 +6855,18 @@ var _Lexer = class __Lexer {
           cutSrc = src.substring(0, startIndex + 1);
         }
       }
-      if (token = this.tokenizer.inlineText(cutSrc)) {
-        src = src.substring(token.raw.length);
-        if (token.raw.slice(-1) !== "_") {
-          prevChar = token.raw.slice(-1);
+      if (token2 = this.tokenizer.inlineText(cutSrc)) {
+        src = src.substring(token2.raw.length);
+        if (token2.raw.slice(-1) !== "_") {
+          prevChar = token2.raw.slice(-1);
         }
         keepPrevChar = true;
         lastToken = tokens[tokens.length - 1];
         if (lastToken && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
+          lastToken.raw += token2.raw;
+          lastToken.text += token2.text;
         } else {
-          tokens.push(token);
+          tokens.push(token2);
         }
         continue;
       }
@@ -6885,7 +6890,7 @@ var _Renderer = class {
   constructor(options2) {
     this.options = options2 || _defaults;
   }
-  space(token) {
+  space(token2) {
     return "";
   }
   code({ text, lang, escaped }) {
@@ -6909,15 +6914,15 @@ ${body}</blockquote>
     return `<h${depth}>${this.parser.parseInline(tokens)}</h${depth}>
 `;
   }
-  hr(token) {
+  hr(token2) {
     return "<hr>\n";
   }
-  list(token) {
-    const ordered = token.ordered;
-    const start = token.start;
+  list(token2) {
+    const ordered = token2.ordered;
+    const start = token2.start;
     let body = "";
-    for (let j = 0; j < token.items.length; j++) {
-      const item = token.items[j];
+    for (let j = 0; j < token2.items.length; j++) {
+      const item = token2.items[j];
       body += this.listitem(item);
     }
     const type = ordered ? "ol" : "ul";
@@ -6956,16 +6961,16 @@ ${body}</blockquote>
     return `<p>${this.parser.parseInline(tokens)}</p>
 `;
   }
-  table(token) {
+  table(token2) {
     let header = "";
     let cell = "";
-    for (let j = 0; j < token.header.length; j++) {
-      cell += this.tablecell(token.header[j]);
+    for (let j = 0; j < token2.header.length; j++) {
+      cell += this.tablecell(token2.header[j]);
     }
     header += this.tablerow({ text: cell });
     let body = "";
-    for (let j = 0; j < token.rows.length; j++) {
-      const row = token.rows[j];
+    for (let j = 0; j < token2.rows.length; j++) {
+      const row = token2.rows[j];
       cell = "";
       for (let k = 0; k < row.length; k++) {
         cell += this.tablecell(row[k]);
@@ -6981,10 +6986,10 @@ ${body}</blockquote>
 ${text}</tr>
 `;
   }
-  tablecell(token) {
-    const content = this.parser.parseInline(token.tokens);
-    const type = token.header ? "th" : "td";
-    const tag2 = token.align ? `<${type} align="${token.align}">` : `<${type}>`;
+  tablecell(token2) {
+    const content = this.parser.parseInline(token2.tokens);
+    const type = token2.header ? "th" : "td";
+    const tag2 = token2.align ? `<${type} align="${token2.align}">` : `<${type}>`;
     return tag2 + content + `</${type}>
 `;
   }
@@ -7000,7 +7005,7 @@ ${text}</tr>
   codespan({ text }) {
     return `<code>${text}</code>`;
   }
-  br(token) {
+  br(token2) {
     return "<br>";
   }
   del({ tokens }) {
@@ -7033,8 +7038,8 @@ ${text}</tr>
     out += ">";
     return out;
   }
-  text(token) {
-    return "tokens" in token && token.tokens ? this.parser.parseInline(token.tokens) : token.text;
+  text(token2) {
+    return "tokens" in token2 && token2.tokens ? this.parser.parseInline(token2.tokens) : token2.text;
   }
 };
 var _TextRenderer = class {
@@ -7108,46 +7113,46 @@ var _Parser = class __Parser {
           continue;
         }
       }
-      const token = anyToken;
-      switch (token.type) {
+      const token2 = anyToken;
+      switch (token2.type) {
         case "space": {
-          out += this.renderer.space(token);
+          out += this.renderer.space(token2);
           continue;
         }
         case "hr": {
-          out += this.renderer.hr(token);
+          out += this.renderer.hr(token2);
           continue;
         }
         case "heading": {
-          out += this.renderer.heading(token);
+          out += this.renderer.heading(token2);
           continue;
         }
         case "code": {
-          out += this.renderer.code(token);
+          out += this.renderer.code(token2);
           continue;
         }
         case "table": {
-          out += this.renderer.table(token);
+          out += this.renderer.table(token2);
           continue;
         }
         case "blockquote": {
-          out += this.renderer.blockquote(token);
+          out += this.renderer.blockquote(token2);
           continue;
         }
         case "list": {
-          out += this.renderer.list(token);
+          out += this.renderer.list(token2);
           continue;
         }
         case "html": {
-          out += this.renderer.html(token);
+          out += this.renderer.html(token2);
           continue;
         }
         case "paragraph": {
-          out += this.renderer.paragraph(token);
+          out += this.renderer.paragraph(token2);
           continue;
         }
         case "text": {
-          let textToken = token;
+          let textToken = token2;
           let body = this.renderer.text(textToken);
           while (i + 1 < tokens.length && tokens[i + 1].type === "text") {
             textToken = tokens[++i];
@@ -7166,7 +7171,7 @@ var _Parser = class __Parser {
           continue;
         }
         default: {
-          const errMsg = 'Token with "' + token.type + '" type was not found.';
+          const errMsg = 'Token with "' + token2.type + '" type was not found.';
           if (this.options.silent) {
             console.error(errMsg);
             return "";
@@ -7193,50 +7198,50 @@ var _Parser = class __Parser {
           continue;
         }
       }
-      const token = anyToken;
-      switch (token.type) {
+      const token2 = anyToken;
+      switch (token2.type) {
         case "escape": {
-          out += renderer.text(token);
+          out += renderer.text(token2);
           break;
         }
         case "html": {
-          out += renderer.html(token);
+          out += renderer.html(token2);
           break;
         }
         case "link": {
-          out += renderer.link(token);
+          out += renderer.link(token2);
           break;
         }
         case "image": {
-          out += renderer.image(token);
+          out += renderer.image(token2);
           break;
         }
         case "strong": {
-          out += renderer.strong(token);
+          out += renderer.strong(token2);
           break;
         }
         case "em": {
-          out += renderer.em(token);
+          out += renderer.em(token2);
           break;
         }
         case "codespan": {
-          out += renderer.codespan(token);
+          out += renderer.codespan(token2);
           break;
         }
         case "br": {
-          out += renderer.br(token);
+          out += renderer.br(token2);
           break;
         }
         case "del": {
-          out += renderer.del(token);
+          out += renderer.del(token2);
           break;
         }
         case "text": {
-          out += renderer.text(token);
+          out += renderer.text(token2);
           break;
         }
         default: {
-          const errMsg = 'Token with "' + token.type + '" type was not found.';
+          const errMsg = 'Token with "' + token2.type + '" type was not found.';
           if (this.options.silent) {
             console.error(errMsg);
             return "";
@@ -7310,11 +7315,11 @@ var Marked = class {
    */
   walkTokens(tokens, callback) {
     let values = [];
-    for (const token of tokens) {
-      values = values.concat(callback.call(this, token));
-      switch (token.type) {
+    for (const token2 of tokens) {
+      values = values.concat(callback.call(this, token2));
+      switch (token2.type) {
         case "table": {
-          const tableToken = token;
+          const tableToken = token2;
           for (const cell of tableToken.header) {
             values = values.concat(this.walkTokens(cell.tokens, callback));
           }
@@ -7326,12 +7331,12 @@ var Marked = class {
           break;
         }
         case "list": {
-          const listToken = token;
+          const listToken = token2;
           values = values.concat(this.walkTokens(listToken.items, callback));
           break;
         }
         default: {
-          const genericToken = token;
+          const genericToken = token2;
           if (this.defaults.extensions?.childTokens?.[genericToken.type]) {
             this.defaults.extensions.childTokens[genericToken.type].forEach((childTokens) => {
               const tokens2 = genericToken[childTokens].flat(Infinity);
@@ -7482,11 +7487,11 @@ var Marked = class {
       if (pack.walkTokens) {
         const walkTokens2 = this.defaults.walkTokens;
         const packWalktokens = pack.walkTokens;
-        opts.walkTokens = function(token) {
+        opts.walkTokens = function(token2) {
           let values = [];
-          values.push(packWalktokens.call(this, token));
+          values.push(packWalktokens.call(this, token2));
           if (walkTokens2) {
-            values = values.concat(walkTokens2.call(this, token));
+            values = values.concat(walkTokens2.call(this, token2));
           }
           return values;
         };
@@ -7506,7 +7511,7 @@ var Marked = class {
     return _Parser.parse(tokens, options2 ?? this.defaults);
   }
   parseMarkdown(blockType) {
-    const parse2 = (src, options2) => {
+    const parse3 = (src, options2) => {
       const origOpt = { ...options2 };
       const opt = { ...this.defaults, ...origOpt };
       const throwError = this.onError(!!opt.silent, !!opt.async);
@@ -7548,7 +7553,7 @@ var Marked = class {
         return throwError(e);
       }
     };
-    return parse2;
+    return parse3;
   }
   onError(silent, async) {
     return (e) => {
@@ -7689,6 +7694,7 @@ var parseSlots = (input) => {
       lastIndex = match.index + match[0].length;
     }
   }
+  (0, import_pocketbase_log3.dbg)({ lastIndex, input });
   cleanedContent += input.slice(lastIndex);
   return {
     slots,
@@ -7732,6 +7738,530 @@ var renderFile = (fname, api) => {
 // src/lib/parseRoute.ts
 init_cjs_shims();
 var import_pocketbase_log4 = __toESM(require_dist2());
+
+// node_modules/query-string/index.js
+init_cjs_shims();
+
+// node_modules/query-string/base.js
+var base_exports = {};
+__export(base_exports, {
+  exclude: () => exclude,
+  extract: () => extract,
+  parse: () => parse,
+  parseUrl: () => parseUrl,
+  pick: () => pick2,
+  stringify: () => stringify3,
+  stringifyUrl: () => stringifyUrl
+});
+init_cjs_shims();
+
+// node_modules/decode-uri-component/index.js
+init_cjs_shims();
+var token = "%[a-f0-9]{2}";
+var singleMatcher = new RegExp("(" + token + ")|([^%]+?)", "gi");
+var multiMatcher = new RegExp("(" + token + ")+", "gi");
+function decodeComponents(components, split) {
+  try {
+    return [decodeURIComponent(components.join(""))];
+  } catch {
+  }
+  if (components.length === 1) {
+    return components;
+  }
+  split = split || 1;
+  const left = components.slice(0, split);
+  const right = components.slice(split);
+  return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
+}
+function decode(input) {
+  try {
+    return decodeURIComponent(input);
+  } catch {
+    let tokens = input.match(singleMatcher) || [];
+    for (let i = 1; i < tokens.length; i++) {
+      input = decodeComponents(tokens, i).join("");
+      tokens = input.match(singleMatcher) || [];
+    }
+    return input;
+  }
+}
+function customDecodeURIComponent(input) {
+  const replaceMap = {
+    "%FE%FF": "\uFFFD\uFFFD",
+    "%FF%FE": "\uFFFD\uFFFD"
+  };
+  let match = multiMatcher.exec(input);
+  while (match) {
+    try {
+      replaceMap[match[0]] = decodeURIComponent(match[0]);
+    } catch {
+      const result = decode(match[0]);
+      if (result !== match[0]) {
+        replaceMap[match[0]] = result;
+      }
+    }
+    match = multiMatcher.exec(input);
+  }
+  replaceMap["%C2"] = "\uFFFD";
+  const entries = Object.keys(replaceMap);
+  for (const key of entries) {
+    input = input.replace(new RegExp(key, "g"), replaceMap[key]);
+  }
+  return input;
+}
+function decodeUriComponent(encodedURI) {
+  if (typeof encodedURI !== "string") {
+    throw new TypeError("Expected `encodedURI` to be of type `string`, got `" + typeof encodedURI + "`");
+  }
+  try {
+    return decodeURIComponent(encodedURI);
+  } catch {
+    return customDecodeURIComponent(encodedURI);
+  }
+}
+
+// node_modules/filter-obj/index.js
+init_cjs_shims();
+function includeKeys(object, predicate) {
+  const result = {};
+  if (Array.isArray(predicate)) {
+    for (const key of predicate) {
+      const descriptor = Object.getOwnPropertyDescriptor(object, key);
+      if (descriptor?.enumerable) {
+        Object.defineProperty(result, key, descriptor);
+      }
+    }
+  } else {
+    for (const key of Reflect.ownKeys(object)) {
+      const descriptor = Object.getOwnPropertyDescriptor(object, key);
+      if (descriptor.enumerable) {
+        const value = object[key];
+        if (predicate(key, value, object)) {
+          Object.defineProperty(result, key, descriptor);
+        }
+      }
+    }
+  }
+  return result;
+}
+
+// node_modules/split-on-first/index.js
+init_cjs_shims();
+function splitOnFirst(string, separator) {
+  if (!(typeof string === "string" && typeof separator === "string")) {
+    throw new TypeError("Expected the arguments to be of type `string`");
+  }
+  if (string === "" || separator === "") {
+    return [];
+  }
+  const separatorIndex = string.indexOf(separator);
+  if (separatorIndex === -1) {
+    return [];
+  }
+  return [
+    string.slice(0, separatorIndex),
+    string.slice(separatorIndex + separator.length)
+  ];
+}
+
+// node_modules/query-string/base.js
+var isNullOrUndefined = (value) => value === null || value === void 0;
+var strictUriEncode = (string) => encodeURIComponent(string).replaceAll(/[!'()*]/g, (x) => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
+var encodeFragmentIdentifier = Symbol("encodeFragmentIdentifier");
+function encoderForArrayFormat(options2) {
+  switch (options2.arrayFormat) {
+    case "index": {
+      return (key) => (result, value) => {
+        const index = result.length;
+        if (value === void 0 || options2.skipNull && value === null || options2.skipEmptyString && value === "") {
+          return result;
+        }
+        if (value === null) {
+          return [
+            ...result,
+            [encode(key, options2), "[", index, "]"].join("")
+          ];
+        }
+        return [
+          ...result,
+          [encode(key, options2), "[", encode(index, options2), "]=", encode(value, options2)].join("")
+        ];
+      };
+    }
+    case "bracket": {
+      return (key) => (result, value) => {
+        if (value === void 0 || options2.skipNull && value === null || options2.skipEmptyString && value === "") {
+          return result;
+        }
+        if (value === null) {
+          return [
+            ...result,
+            [encode(key, options2), "[]"].join("")
+          ];
+        }
+        return [
+          ...result,
+          [encode(key, options2), "[]=", encode(value, options2)].join("")
+        ];
+      };
+    }
+    case "colon-list-separator": {
+      return (key) => (result, value) => {
+        if (value === void 0 || options2.skipNull && value === null || options2.skipEmptyString && value === "") {
+          return result;
+        }
+        if (value === null) {
+          return [
+            ...result,
+            [encode(key, options2), ":list="].join("")
+          ];
+        }
+        return [
+          ...result,
+          [encode(key, options2), ":list=", encode(value, options2)].join("")
+        ];
+      };
+    }
+    case "comma":
+    case "separator":
+    case "bracket-separator": {
+      const keyValueSeparator = options2.arrayFormat === "bracket-separator" ? "[]=" : "=";
+      return (key) => (result, value) => {
+        if (value === void 0 || options2.skipNull && value === null || options2.skipEmptyString && value === "") {
+          return result;
+        }
+        value = value === null ? "" : value;
+        if (result.length === 0) {
+          return [[encode(key, options2), keyValueSeparator, encode(value, options2)].join("")];
+        }
+        return [[result, encode(value, options2)].join(options2.arrayFormatSeparator)];
+      };
+    }
+    default: {
+      return (key) => (result, value) => {
+        if (value === void 0 || options2.skipNull && value === null || options2.skipEmptyString && value === "") {
+          return result;
+        }
+        if (value === null) {
+          return [
+            ...result,
+            encode(key, options2)
+          ];
+        }
+        return [
+          ...result,
+          [encode(key, options2), "=", encode(value, options2)].join("")
+        ];
+      };
+    }
+  }
+}
+function parserForArrayFormat(options2) {
+  let result;
+  switch (options2.arrayFormat) {
+    case "index": {
+      return (key, value, accumulator) => {
+        result = /\[(\d*)]$/.exec(key);
+        key = key.replace(/\[\d*]$/, "");
+        if (!result) {
+          accumulator[key] = value;
+          return;
+        }
+        if (accumulator[key] === void 0) {
+          accumulator[key] = {};
+        }
+        accumulator[key][result[1]] = value;
+      };
+    }
+    case "bracket": {
+      return (key, value, accumulator) => {
+        result = /(\[])$/.exec(key);
+        key = key.replace(/\[]$/, "");
+        if (!result) {
+          accumulator[key] = value;
+          return;
+        }
+        if (accumulator[key] === void 0) {
+          accumulator[key] = [value];
+          return;
+        }
+        accumulator[key] = [...accumulator[key], value];
+      };
+    }
+    case "colon-list-separator": {
+      return (key, value, accumulator) => {
+        result = /(:list)$/.exec(key);
+        key = key.replace(/:list$/, "");
+        if (!result) {
+          accumulator[key] = value;
+          return;
+        }
+        if (accumulator[key] === void 0) {
+          accumulator[key] = [value];
+          return;
+        }
+        accumulator[key] = [...accumulator[key], value];
+      };
+    }
+    case "comma":
+    case "separator": {
+      return (key, value, accumulator) => {
+        const isArray = typeof value === "string" && value.includes(options2.arrayFormatSeparator);
+        const isEncodedArray = typeof value === "string" && !isArray && decode2(value, options2).includes(options2.arrayFormatSeparator);
+        value = isEncodedArray ? decode2(value, options2) : value;
+        const newValue = isArray || isEncodedArray ? value.split(options2.arrayFormatSeparator).map((item) => decode2(item, options2)) : value === null ? value : decode2(value, options2);
+        accumulator[key] = newValue;
+      };
+    }
+    case "bracket-separator": {
+      return (key, value, accumulator) => {
+        const isArray = /(\[])$/.test(key);
+        key = key.replace(/\[]$/, "");
+        if (!isArray) {
+          accumulator[key] = value ? decode2(value, options2) : value;
+          return;
+        }
+        const arrayValue = value === null ? [] : decode2(value, options2).split(options2.arrayFormatSeparator);
+        if (accumulator[key] === void 0) {
+          accumulator[key] = arrayValue;
+          return;
+        }
+        accumulator[key] = [...accumulator[key], ...arrayValue];
+      };
+    }
+    default: {
+      return (key, value, accumulator) => {
+        if (accumulator[key] === void 0) {
+          accumulator[key] = value;
+          return;
+        }
+        accumulator[key] = [...[accumulator[key]].flat(), value];
+      };
+    }
+  }
+}
+function validateArrayFormatSeparator(value) {
+  if (typeof value !== "string" || value.length !== 1) {
+    throw new TypeError("arrayFormatSeparator must be single character string");
+  }
+}
+function encode(value, options2) {
+  if (options2.encode) {
+    return options2.strict ? strictUriEncode(value) : encodeURIComponent(value);
+  }
+  return value;
+}
+function decode2(value, options2) {
+  if (options2.decode) {
+    return decodeUriComponent(value);
+  }
+  return value;
+}
+function keysSorter(input) {
+  if (Array.isArray(input)) {
+    return input.sort();
+  }
+  if (typeof input === "object") {
+    return keysSorter(Object.keys(input)).sort((a, b) => Number(a) - Number(b)).map((key) => input[key]);
+  }
+  return input;
+}
+function removeHash(input) {
+  const hashStart = input.indexOf("#");
+  if (hashStart !== -1) {
+    input = input.slice(0, hashStart);
+  }
+  return input;
+}
+function getHash(url) {
+  let hash = "";
+  const hashStart = url.indexOf("#");
+  if (hashStart !== -1) {
+    hash = url.slice(hashStart);
+  }
+  return hash;
+}
+function parseValue(value, options2, type) {
+  if (type === "string" && typeof value === "string") {
+    return value;
+  }
+  if (typeof type === "function" && typeof value === "string") {
+    return type(value);
+  }
+  if (options2.parseBooleans && value !== null && (value.toLowerCase() === "true" || value.toLowerCase() === "false")) {
+    return value.toLowerCase() === "true";
+  }
+  if (type === "number" && !Number.isNaN(Number(value)) && (typeof value === "string" && value.trim() !== "")) {
+    return Number(value);
+  }
+  if (options2.parseNumbers && !Number.isNaN(Number(value)) && (typeof value === "string" && value.trim() !== "")) {
+    return Number(value);
+  }
+  return value;
+}
+function extract(input) {
+  input = removeHash(input);
+  const queryStart = input.indexOf("?");
+  if (queryStart === -1) {
+    return "";
+  }
+  return input.slice(queryStart + 1);
+}
+function parse(query, options2) {
+  options2 = {
+    decode: true,
+    sort: true,
+    arrayFormat: "none",
+    arrayFormatSeparator: ",",
+    parseNumbers: false,
+    parseBooleans: false,
+    types: /* @__PURE__ */ Object.create(null),
+    ...options2
+  };
+  validateArrayFormatSeparator(options2.arrayFormatSeparator);
+  const formatter = parserForArrayFormat(options2);
+  const returnValue = /* @__PURE__ */ Object.create(null);
+  if (typeof query !== "string") {
+    return returnValue;
+  }
+  query = query.trim().replace(/^[?#&]/, "");
+  if (!query) {
+    return returnValue;
+  }
+  for (const parameter of query.split("&")) {
+    if (parameter === "") {
+      continue;
+    }
+    const parameter_ = options2.decode ? parameter.replaceAll("+", " ") : parameter;
+    let [key, value] = splitOnFirst(parameter_, "=");
+    if (key === void 0) {
+      key = parameter_;
+    }
+    value = value === void 0 ? null : ["comma", "separator", "bracket-separator"].includes(options2.arrayFormat) ? value : decode2(value, options2);
+    formatter(decode2(key, options2), value, returnValue);
+  }
+  for (const [key, value] of Object.entries(returnValue)) {
+    if (typeof value === "object" && value !== null && options2.types[key] !== "string") {
+      for (const [key2, value2] of Object.entries(value)) {
+        const type = options2.types[key] ? options2.types[key].replace("[]", "") : void 0;
+        value[key2] = parseValue(value2, options2, type);
+      }
+    } else if (typeof value === "object" && value !== null && options2.types[key] === "string") {
+      returnValue[key] = Object.values(value).join(options2.arrayFormatSeparator);
+    } else {
+      returnValue[key] = parseValue(value, options2, options2.types[key]);
+    }
+  }
+  if (options2.sort === false) {
+    return returnValue;
+  }
+  return (options2.sort === true ? Object.keys(returnValue).sort() : Object.keys(returnValue).sort(options2.sort)).reduce((result, key) => {
+    const value = returnValue[key];
+    result[key] = Boolean(value) && typeof value === "object" && !Array.isArray(value) ? keysSorter(value) : value;
+    return result;
+  }, /* @__PURE__ */ Object.create(null));
+}
+function stringify3(object, options2) {
+  if (!object) {
+    return "";
+  }
+  options2 = {
+    encode: true,
+    strict: true,
+    arrayFormat: "none",
+    arrayFormatSeparator: ",",
+    ...options2
+  };
+  validateArrayFormatSeparator(options2.arrayFormatSeparator);
+  const shouldFilter = (key) => options2.skipNull && isNullOrUndefined(object[key]) || options2.skipEmptyString && object[key] === "";
+  const formatter = encoderForArrayFormat(options2);
+  const objectCopy = {};
+  for (const [key, value] of Object.entries(object)) {
+    if (!shouldFilter(key)) {
+      objectCopy[key] = value;
+    }
+  }
+  const keys = Object.keys(objectCopy);
+  if (options2.sort !== false) {
+    keys.sort(options2.sort);
+  }
+  return keys.map((key) => {
+    const value = object[key];
+    if (value === void 0) {
+      return "";
+    }
+    if (value === null) {
+      return encode(key, options2);
+    }
+    if (Array.isArray(value)) {
+      if (value.length === 0 && options2.arrayFormat === "bracket-separator") {
+        return encode(key, options2) + "[]";
+      }
+      return value.reduce(formatter(key), []).join("&");
+    }
+    return encode(key, options2) + "=" + encode(value, options2);
+  }).filter((x) => x.length > 0).join("&");
+}
+function parseUrl(url, options2) {
+  options2 = {
+    decode: true,
+    ...options2
+  };
+  let [url_, hash] = splitOnFirst(url, "#");
+  if (url_ === void 0) {
+    url_ = url;
+  }
+  return {
+    url: url_?.split("?")?.[0] ?? "",
+    query: parse(extract(url), options2),
+    ...options2 && options2.parseFragmentIdentifier && hash ? { fragmentIdentifier: decode2(hash, options2) } : {}
+  };
+}
+function stringifyUrl(object, options2) {
+  options2 = {
+    encode: true,
+    strict: true,
+    [encodeFragmentIdentifier]: true,
+    ...options2
+  };
+  const url = removeHash(object.url).split("?")[0] || "";
+  const queryFromUrl = extract(object.url);
+  const query = {
+    ...parse(queryFromUrl, { sort: false }),
+    ...object.query
+  };
+  let queryString = stringify3(query, options2);
+  queryString &&= `?${queryString}`;
+  let hash = getHash(object.url);
+  if (typeof object.fragmentIdentifier === "string") {
+    const urlObjectForFragmentEncode = new URL(url);
+    urlObjectForFragmentEncode.hash = object.fragmentIdentifier;
+    hash = options2[encodeFragmentIdentifier] ? urlObjectForFragmentEncode.hash : `#${object.fragmentIdentifier}`;
+  }
+  return `${url}${queryString}${hash}`;
+}
+function pick2(input, filter, options2) {
+  options2 = {
+    parseFragmentIdentifier: true,
+    [encodeFragmentIdentifier]: false,
+    ...options2
+  };
+  const { url, query, fragmentIdentifier } = parseUrl(input, options2);
+  return stringifyUrl({
+    url,
+    query: includeKeys(query, filter),
+    fragmentIdentifier
+  }, options2);
+}
+function exclude(input, filter, options2) {
+  const exclusionFilter = Array.isArray(filter) ? (key) => !filter.includes(key) : (key, value) => !filter(key, value);
+  return pick2(input, exclusionFilter, options2);
+}
+
+// node_modules/query-string/index.js
+var query_string_default = base_exports;
+
+// src/lib/parseRoute.ts
 var fingerprint = (nodeName, fingerprint2) => {
   const lastDotIndex = nodeName.lastIndexOf(".");
   if (lastDotIndex === -1) {
@@ -7741,9 +8271,11 @@ var fingerprint = (nodeName, fingerprint2) => {
   const ext = nodeName.slice(lastDotIndex);
   return `${base}.${fingerprint2}${ext}`;
 };
-var parseRoute = (urlPath, routes) => {
+var parseRoute = (url, routes) => {
   const { config } = $app.store().get(`pocketpages`);
-  const params = {};
+  const urlPath = url.pathname.slice(1);
+  (0, import_pocketbase_log4.dbg)(`***parseRoute`, { url, urlPath });
+  const params = query_string_default.parse(url.query);
   const tryFnames = [
     `${urlPath}`,
     ...config.preprocessorExts.map((ext) => `${urlPath}${ext}`),
@@ -7785,16 +8317,9 @@ var MiddlewareHandler = (request, response, next) => {
   const { method, url } = request;
   dbg5(`pocketpages handler`);
   dbg5(`Pages middleware request: ${method} ${url}`);
-  const urlPath = url.pathname.slice(1);
-  {
-    const firstPart = urlPath.split("/").filter((p) => p).shift() || "";
-    if (["api", "_"].includes(firstPart)) {
-      return next();
-    }
-  }
-  const parsedRoute = parseRoute(urlPath, routes);
+  const parsedRoute = parseRoute(url, routes);
   if (!parsedRoute) {
-    dbg5(`No route matched for ${urlPath}, passing on to PocketBase`);
+    dbg5(`No route matched for ${url}, passing on to PocketBase`);
     return next();
   }
   const { route, params } = parsedRoute;
@@ -7813,6 +8338,7 @@ var MiddlewareHandler = (request, response, next) => {
         return s;
       },
       formData: request.formData,
+      auth: request.auth,
       request,
       response,
       redirect: response.redirect,
@@ -7825,7 +8351,7 @@ var MiddlewareHandler = (request, response, next) => {
           route.assetPrefix,
           path3
         );
-        const assetRoute = parseRoute(fullAssetPath, routes);
+        const assetRoute = parseRoute(new import_url_parse.default(fullAssetPath), routes);
         dbg5({ fullAssetPath, shortAssetPath, assetRoute });
         if (!assetRoute) {
           if ($app.isDev()) {
@@ -7921,6 +8447,7 @@ var v23MiddlewareWrapper = (e) => {
     }
   }
   const request = {
+    auth: e.auth,
     method: method.toLowerCase(),
     url: (0, import_url_parse2.default)(url.string()),
     formData: e.requestInfo().body
@@ -7940,6 +8467,12 @@ var v23MiddlewareWrapper = (e) => {
     },
     html: (status, data) => {
       e.html(status, data);
+    },
+    header: (name, value) => {
+      e.response.header().set(name, value);
+    },
+    cookie: (name, value, options2) => {
+      response.header("Set-Cookie", `${name}=${value}; Path=/`);
     }
   };
   require(`${__hooks}/pocketpages.pb`).MiddlewareHandler(

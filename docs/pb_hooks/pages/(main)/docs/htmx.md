@@ -27,7 +27,7 @@ pb_hooks/
       index.ejs       # Home page
       products/
         index.ejs     # Products listing
-    xpi/             # API endpoints (no layouts)
+    api/             # API endpoints (no layouts)
       products/
         search.ejs    # Returns product search results
         create.ejs    # Handles product creation
