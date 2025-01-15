@@ -93,8 +93,8 @@ pb_hooks/
 ```html
 <!-- pages/(site)/products/index.ejs -->
 <div class="products-container">
-  <%% products.forEach(product => { %> <%%- include('/_private/product-card', {
-  product }) %> <%% }) %>
+  <%% products.forEach(product => { %> <%%- include('/product-card', { product
+  }) %> <%% }) %>
 
   <button
     hx-get="/api/products/load"

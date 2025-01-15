@@ -41,6 +41,2267 @@ var init_cjs_shims = __esm({
   }
 });
 
+// node_modules/pocketbase-stringify/dist/index.js
+var require_dist = __commonJS({
+  "node_modules/pocketbase-stringify/dist/index.js"(exports2, module2) {
+    "use strict";
+    init_cjs_shims();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var src_exports2 = {};
+    __export2(src_exports2, {
+      defaultReplacer: () => defaultReplacer,
+      stringify: () => stringify5
+    });
+    module2.exports = __toCommonJS2(src_exports2);
+    var defaultReplacer = (k, v) => {
+      if (v instanceof Error) {
+        return v.stack;
+      }
+      if (v instanceof RegExp) {
+        return v.toString();
+      }
+      if (v instanceof Function) {
+        return v.toString();
+      }
+      return v;
+    };
+    var stringify5 = (obj, replacer = defaultReplacer, space = 0) => {
+      const seen = /* @__PURE__ */ new WeakSet();
+      return JSON.stringify(
+        obj,
+        (k, v) => {
+          if (typeof v === "object" && v !== null) {
+            if (seen.has(v)) {
+              return replacer ? replacer(k, `[Circular]`) : `[Circular]`;
+            }
+            seen.add(v);
+          }
+          return replacer ? replacer(k, v) : v;
+        },
+        space
+      );
+    };
+  }
+});
+
+// node_modules/pocketbase-log/dist/index.js
+var require_dist2 = __commonJS({
+  "node_modules/pocketbase-log/dist/index.js"(exports2, module2) {
+    "use strict";
+    init_cjs_shims();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var src_exports2 = {};
+    __export2(src_exports2, {
+      dbg: () => dbg7,
+      error: () => error,
+      info: () => info,
+      log: () => log3,
+      warn: () => warn
+    });
+    module2.exports = __toCommonJS2(src_exports2);
+    var import_pocketbase_stringify5 = require_dist();
+    var replacer = (k, v) => {
+      if (v instanceof Error) {
+        return `${v}
+${v.stack}`;
+      }
+      if (v instanceof RegExp) {
+        return v.toString();
+      }
+      if (v instanceof Function) {
+        return v.toString();
+      }
+      return v;
+    };
+    var prepare = (objs) => {
+      const parts = objs.map((o) => {
+        if (o instanceof Error) {
+          return o.stack;
+        }
+        if (o instanceof RegExp) {
+          return o.toString();
+        }
+        if (o instanceof Function) {
+          return o.toString();
+        }
+        if (typeof o === "object") {
+          return (0, import_pocketbase_stringify5.stringify)(o, replacer, 2);
+        }
+        return o;
+      });
+      return parts.join(` `);
+    };
+    var dbg7 = (...objs) => {
+      const s = prepare(objs);
+      $app.logger().debug(s);
+    };
+    var info = (...objs) => {
+      const s = prepare(objs);
+      $app.logger().info(s);
+    };
+    var warn = (...objs) => {
+      const s = prepare(objs);
+      $app.logger().warn(s);
+    };
+    var error = (...objs) => {
+      const s = prepare(objs);
+      $app.logger().error(s);
+    };
+    var log3 = (...objs) => {
+      const s = prepare(objs);
+      console.log(s);
+    };
+  }
+});
+
+// node_modules/pocketbase-node/dist/index.js
+var require_dist3 = __commonJS({
+  "node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
+    "use strict";
+    init_cjs_shims();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var src_exports2 = {};
+    __export2(src_exports2, {
+      child_process: () => child_process_exports,
+      fs: () => fs_exports,
+      path: () => path_exports,
+      process: () => process_exports
+    });
+    module2.exports = __toCommonJS2(src_exports2);
+    var fs_exports = {};
+    __export2(fs_exports, {
+      existsSync: () => existsSync,
+      mkdirSync: () => mkdirSync,
+      readFileSync: () => readFileSync,
+      writeFileSync: () => writeFileSync
+    });
+    function byteArrayToUtf8(byteArray) {
+      let utf8String = "";
+      for (let i = 0; i < byteArray.length; i++) {
+        utf8String += String.fromCharCode(byteArray[i]);
+      }
+      return decodeURIComponent(escape(utf8String));
+    }
+    var readFileSync = (path3, options2) => {
+      if (typeof path3 !== "string") {
+        throw new Error("path must be a string");
+      }
+      const res = $os.readFile(path3);
+      if (typeof res === "string") {
+        return res;
+      }
+      const s = byteArrayToUtf8(res);
+      return s;
+    };
+    var existsSync = (pathLike, fileType = "both") => {
+      const isDir = (() => {
+        try {
+          $os.readDir(pathLike);
+          return true;
+        } catch {
+          return false;
+        }
+      })();
+      const isFile = (() => {
+        if (isDir) {
+          return false;
+        }
+        try {
+          return $filesystem.fileFromPath(pathLike) !== null;
+        } catch {
+          return false;
+        }
+      })();
+      return fileType === "file" ? isFile : fileType === "dir" ? isDir : isFile || isDir;
+    };
+    var writeFileSync = (path3, data, options2) => {
+      if (typeof path3 !== "string") {
+        throw new Error("path must be a string");
+      }
+      if (typeof data !== "string") {
+        throw new Error("data must be a string");
+      }
+      const mode = (() => {
+        if (options2 && typeof options2 === "object" && "mode" in options2) {
+          return options2.mode;
+        }
+        return 420;
+      })();
+      $os.writeFile(path3, data, mode);
+    };
+    function mkdirSync(path3, options2) {
+      const mode = (() => {
+        if (options2 && typeof options2 === "object" && "mode" in options2) {
+          return options2.mode;
+        }
+        return 493;
+      })();
+      $os.mkdirAll(path3.toString(), mode);
+      return;
+    }
+    var path_exports = {};
+    __export2(path_exports, {
+      basename: () => basename,
+      delimiter: () => delimiter,
+      dirname: () => dirname,
+      extname: () => extname,
+      format: () => format,
+      isAbsolute: () => isAbsolute,
+      join: () => join,
+      normalize: () => normalize,
+      parse: () => parse2,
+      relative: () => relative,
+      resolve: () => resolve,
+      sep: () => sep,
+      win32: () => win32
+    });
+    function assertPath(path3) {
+      if (typeof path3 !== "string") {
+        throw new TypeError(
+          "Path must be a string. Received " + JSON.stringify(path3)
+        );
+      }
+    }
+    function normalizeStringPosix(path3, allowAboveRoot) {
+      var res = "";
+      var lastSegmentLength = 0;
+      var lastSlash = -1;
+      var dots = 0;
+      var code;
+      for (var i = 0; i <= path3.length; ++i) {
+        if (i < path3.length) code = path3.charCodeAt(i);
+        else if (code === 47) break;
+        else code = 47;
+        if (code === 47) {
+          if (lastSlash === i - 1 || dots === 1) {
+          } else if (lastSlash !== i - 1 && dots === 2) {
+            if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
+              if (res.length > 2) {
+                var lastSlashIndex = res.lastIndexOf("/");
+                if (lastSlashIndex !== res.length - 1) {
+                  if (lastSlashIndex === -1) {
+                    res = "";
+                    lastSegmentLength = 0;
+                  } else {
+                    res = res.slice(0, lastSlashIndex);
+                    lastSegmentLength = res.length - 1 - res.lastIndexOf("/");
+                  }
+                  lastSlash = i;
+                  dots = 0;
+                  continue;
+                }
+              } else if (res.length === 2 || res.length === 1) {
+                res = "";
+                lastSegmentLength = 0;
+                lastSlash = i;
+                dots = 0;
+                continue;
+              }
+            }
+            if (allowAboveRoot) {
+              if (res.length > 0) res += "/..";
+              else res = "..";
+              lastSegmentLength = 2;
+            }
+          } else {
+            if (res.length > 0) res += "/" + path3.slice(lastSlash + 1, i);
+            else res = path3.slice(lastSlash + 1, i);
+            lastSegmentLength = i - lastSlash - 1;
+          }
+          lastSlash = i;
+          dots = 0;
+        } else if (code === 46 && dots !== -1) {
+          ++dots;
+        } else {
+          dots = -1;
+        }
+      }
+      return res;
+    }
+    function _format(sep2, pathObject) {
+      var dir = pathObject.dir || pathObject.root;
+      var base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
+      if (!dir) {
+        return base;
+      }
+      if (dir === pathObject.root) {
+        return dir + base;
+      }
+      return dir + sep2 + base;
+    }
+    function resolve(...args) {
+      var resolvedPath = "";
+      var resolvedAbsolute = false;
+      var cwd2;
+      for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+        var path3;
+        if (i >= 0) path3 = arguments[i];
+        else {
+          if (cwd2 === void 0) cwd2 = $os.getwd();
+          path3 = cwd2;
+        }
+        assertPath(path3);
+        if (path3.length === 0) {
+          continue;
+        }
+        resolvedPath = path3 + "/" + resolvedPath;
+        resolvedAbsolute = path3.charCodeAt(0) === 47;
+      }
+      resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
+      if (resolvedAbsolute) {
+        if (resolvedPath.length > 0) return "/" + resolvedPath;
+        else return "/";
+      } else if (resolvedPath.length > 0) {
+        return resolvedPath;
+      } else {
+        return ".";
+      }
+    }
+    function normalize(path3) {
+      assertPath(path3);
+      if (path3.length === 0) return ".";
+      var isAbsolute2 = path3.charCodeAt(0) === 47;
+      var trailingSeparator = path3.charCodeAt(path3.length - 1) === 47;
+      path3 = normalizeStringPosix(path3, !isAbsolute2);
+      if (path3.length === 0 && !isAbsolute2) path3 = ".";
+      if (path3.length > 0 && trailingSeparator) path3 += "/";
+      if (isAbsolute2) return "/" + path3;
+      return path3;
+    }
+    function isAbsolute(path3) {
+      assertPath(path3);
+      return path3.length > 0 && path3.charCodeAt(0) === 47;
+    }
+    function join(...paths) {
+      if (arguments.length === 0) return ".";
+      var joined;
+      for (var i = 0; i < arguments.length; ++i) {
+        var arg = arguments[i];
+        assertPath(arg);
+        if (arg.length > 0) {
+          if (joined === void 0) joined = arg;
+          else joined += "/" + arg;
+        }
+      }
+      if (joined === void 0) return ".";
+      return normalize(joined);
+    }
+    function relative(from, to) {
+      assertPath(from);
+      assertPath(to);
+      if (from === to) return "";
+      from = resolve(from);
+      to = resolve(to);
+      if (from === to) return "";
+      var fromStart = 1;
+      for (; fromStart < from.length; ++fromStart) {
+        if (from.charCodeAt(fromStart) !== 47) break;
+      }
+      var fromEnd = from.length;
+      var fromLen = fromEnd - fromStart;
+      var toStart = 1;
+      for (; toStart < to.length; ++toStart) {
+        if (to.charCodeAt(toStart) !== 47) break;
+      }
+      var toEnd = to.length;
+      var toLen = toEnd - toStart;
+      var length = fromLen < toLen ? fromLen : toLen;
+      var lastCommonSep = -1;
+      var i = 0;
+      for (; i <= length; ++i) {
+        if (i === length) {
+          if (toLen > length) {
+            if (to.charCodeAt(toStart + i) === 47) {
+              return to.slice(toStart + i + 1);
+            } else if (i === 0) {
+              return to.slice(toStart + i);
+            }
+          } else if (fromLen > length) {
+            if (from.charCodeAt(fromStart + i) === 47) {
+              lastCommonSep = i;
+            } else if (i === 0) {
+              lastCommonSep = 0;
+            }
+          }
+          break;
+        }
+        var fromCode = from.charCodeAt(fromStart + i);
+        var toCode = to.charCodeAt(toStart + i);
+        if (fromCode !== toCode) break;
+        else if (fromCode === 47) lastCommonSep = i;
+      }
+      var out = "";
+      for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
+        if (i === fromEnd || from.charCodeAt(i) === 47) {
+          if (out.length === 0) out += "..";
+          else out += "/..";
+        }
+      }
+      if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
+      else {
+        toStart += lastCommonSep;
+        if (to.charCodeAt(toStart) === 47) ++toStart;
+        return to.slice(toStart);
+      }
+    }
+    function dirname(path3) {
+      assertPath(path3);
+      if (path3.length === 0) return ".";
+      var code = path3.charCodeAt(0);
+      var hasRoot = code === 47;
+      var end = -1;
+      var matchedSlash = true;
+      for (var i = path3.length - 1; i >= 1; --i) {
+        code = path3.charCodeAt(i);
+        if (code === 47) {
+          if (!matchedSlash) {
+            end = i;
+            break;
+          }
+        } else {
+          matchedSlash = false;
+        }
+      }
+      if (end === -1) return hasRoot ? "/" : ".";
+      if (hasRoot && end === 1) return "//";
+      return path3.slice(0, end);
+    }
+    function basename(path3, ext) {
+      if (ext !== void 0 && typeof ext !== "string")
+        throw new TypeError('"ext" argument must be a string');
+      assertPath(path3);
+      var start = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var i;
+      if (ext !== void 0 && ext.length > 0 && ext.length <= path3.length) {
+        if (ext.length === path3.length && ext === path3) return "";
+        var extIdx = ext.length - 1;
+        var firstNonSlashEnd = -1;
+        for (i = path3.length - 1; i >= 0; --i) {
+          var code = path3.charCodeAt(i);
+          if (code === 47) {
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else {
+            if (firstNonSlashEnd === -1) {
+              matchedSlash = false;
+              firstNonSlashEnd = i + 1;
+            }
+            if (extIdx >= 0) {
+              if (code === ext.charCodeAt(extIdx)) {
+                if (--extIdx === -1) {
+                  end = i;
+                }
+              } else {
+                extIdx = -1;
+                end = firstNonSlashEnd;
+              }
+            }
+          }
+        }
+        if (start === end) end = firstNonSlashEnd;
+        else if (end === -1) end = path3.length;
+        return path3.slice(start, end);
+      } else {
+        for (i = path3.length - 1; i >= 0; --i) {
+          if (path3.charCodeAt(i) === 47) {
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else if (end === -1) {
+            matchedSlash = false;
+            end = i + 1;
+          }
+        }
+        if (end === -1) return "";
+        return path3.slice(start, end);
+      }
+    }
+    function extname(path3) {
+      assertPath(path3);
+      var startDot = -1;
+      var startPart = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var preDotState = 0;
+      for (var i = path3.length - 1; i >= 0; --i) {
+        var code = path3.charCodeAt(i);
+        if (code === 47) {
+          if (!matchedSlash) {
+            startPart = i + 1;
+            break;
+          }
+          continue;
+        }
+        if (end === -1) {
+          matchedSlash = false;
+          end = i + 1;
+        }
+        if (code === 46) {
+          if (startDot === -1) startDot = i;
+          else if (preDotState !== 1) preDotState = 1;
+        } else if (startDot !== -1) {
+          preDotState = -1;
+        }
+      }
+      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+        return "";
+      }
+      return path3.slice(startDot, end);
+    }
+    function format(pathObject) {
+      if (pathObject === null || typeof pathObject !== "object") {
+        throw new TypeError(
+          'The "pathObject" argument must be of type Object. Received type ' + typeof pathObject
+        );
+      }
+      return _format("/", pathObject);
+    }
+    function parse2(path3) {
+      assertPath(path3);
+      var ret = { root: "", dir: "", base: "", ext: "", name: "" };
+      if (path3.length === 0) return ret;
+      var code = path3.charCodeAt(0);
+      var isAbsolute2 = code === 47;
+      var start;
+      if (isAbsolute2) {
+        ret.root = "/";
+        start = 1;
+      } else {
+        start = 0;
+      }
+      var startDot = -1;
+      var startPart = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var i = path3.length - 1;
+      var preDotState = 0;
+      for (; i >= start; --i) {
+        code = path3.charCodeAt(i);
+        if (code === 47) {
+          if (!matchedSlash) {
+            startPart = i + 1;
+            break;
+          }
+          continue;
+        }
+        if (end === -1) {
+          matchedSlash = false;
+          end = i + 1;
+        }
+        if (code === 46) {
+          if (startDot === -1) startDot = i;
+          else if (preDotState !== 1) preDotState = 1;
+        } else if (startDot !== -1) {
+          preDotState = -1;
+        }
+      }
+      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+        if (end !== -1) {
+          if (startPart === 0 && isAbsolute2)
+            ret.base = ret.name = path3.slice(1, end);
+          else ret.base = ret.name = path3.slice(startPart, end);
+        }
+      } else {
+        if (startPart === 0 && isAbsolute2) {
+          ret.name = path3.slice(1, startDot);
+          ret.base = path3.slice(1, end);
+        } else {
+          ret.name = path3.slice(startPart, startDot);
+          ret.base = path3.slice(startPart, end);
+        }
+        ret.ext = path3.slice(startDot, end);
+      }
+      if (startPart > 0) ret.dir = path3.slice(0, startPart - 1);
+      else if (isAbsolute2) ret.dir = "/";
+      return ret;
+    }
+    var sep = "/";
+    var delimiter = ":";
+    var win32 = null;
+    var child_process_exports = {};
+    __export2(child_process_exports, {
+      execSync: () => execSync
+    });
+    var execSync = (cmdArr) => {
+      const [cmd, ...args] = cmdArr;
+      const _cmd = $os.cmd(cmd, ...args);
+      const charOut = _cmd.output();
+      const output = String.fromCharCode(...charOut);
+      return output;
+    };
+    var process_exports = {};
+    __export2(process_exports, {
+      cwd: () => cwd,
+      env: () => env
+    });
+    var cwd = () => $os.getwd();
+    var { env } = process;
+  }
+});
+
+// node_modules/requires-port/index.js
+var require_requires_port = __commonJS({
+  "node_modules/requires-port/index.js"(exports2, module2) {
+    "use strict";
+    init_cjs_shims();
+    module2.exports = function required(port, protocol) {
+      protocol = protocol.split(":")[0];
+      port = +port;
+      if (!port) return false;
+      switch (protocol) {
+        case "http":
+        case "ws":
+          return port !== 80;
+        case "https":
+        case "wss":
+          return port !== 443;
+        case "ftp":
+          return port !== 21;
+        case "gopher":
+          return port !== 70;
+        case "file":
+          return false;
+      }
+      return port !== 0;
+    };
+  }
+});
+
+// node_modules/querystringify/index.js
+var require_querystringify = __commonJS({
+  "node_modules/querystringify/index.js"(exports2) {
+    "use strict";
+    init_cjs_shims();
+    var has = Object.prototype.hasOwnProperty;
+    var undef;
+    function decode(input) {
+      try {
+        return decodeURIComponent(input.replace(/\+/g, " "));
+      } catch (e) {
+        return null;
+      }
+    }
+    function encode(input) {
+      try {
+        return encodeURIComponent(input);
+      } catch (e) {
+        return null;
+      }
+    }
+    function querystring(query) {
+      var parser2 = /([^=?#&]+)=?([^&]*)/g, result = {}, part;
+      while (part = parser2.exec(query)) {
+        var key = decode(part[1]), value = decode(part[2]);
+        if (key === null || value === null || key in result) continue;
+        result[key] = value;
+      }
+      return result;
+    }
+    function querystringify(obj, prefix) {
+      prefix = prefix || "";
+      var pairs = [], value, key;
+      if ("string" !== typeof prefix) prefix = "?";
+      for (key in obj) {
+        if (has.call(obj, key)) {
+          value = obj[key];
+          if (!value && (value === null || value === undef || isNaN(value))) {
+            value = "";
+          }
+          key = encode(key);
+          value = encode(value);
+          if (key === null || value === null) continue;
+          pairs.push(key + "=" + value);
+        }
+      }
+      return pairs.length ? prefix + pairs.join("&") : "";
+    }
+    exports2.stringify = querystringify;
+    exports2.parse = querystring;
+  }
+});
+
+// node_modules/url-parse/index.js
+var require_url_parse = __commonJS({
+  "node_modules/url-parse/index.js"(exports2, module2) {
+    "use strict";
+    init_cjs_shims();
+    var required = require_requires_port();
+    var qs = require_querystringify();
+    var controlOrWhitespace = /^[\x00-\x20\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/;
+    var CRHTLF = /[\n\r\t]/g;
+    var slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
+    var port = /:\d+$/;
+    var protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\\/]+)?([\S\s]*)/i;
+    var windowsDriveLetter = /^[a-zA-Z]:/;
+    function trimLeft(str) {
+      return (str ? str : "").toString().replace(controlOrWhitespace, "");
+    }
+    var rules = [
+      ["#", "hash"],
+      // Extract from the back.
+      ["?", "query"],
+      // Extract from the back.
+      function sanitize(address, url) {
+        return isSpecial(url.protocol) ? address.replace(/\\/g, "/") : address;
+      },
+      ["/", "pathname"],
+      // Extract from the back.
+      ["@", "auth", 1],
+      // Extract from the front.
+      [NaN, "host", void 0, 1, 1],
+      // Set left over value.
+      [/:(\d*)$/, "port", void 0, 1],
+      // RegExp the back.
+      [NaN, "hostname", void 0, 1, 1]
+      // Set left over.
+    ];
+    var ignore = { hash: 1, query: 1 };
+    function lolcation(loc) {
+      var globalVar;
+      if (typeof window !== "undefined") globalVar = window;
+      else if (typeof global !== "undefined") globalVar = global;
+      else if (typeof self !== "undefined") globalVar = self;
+      else globalVar = {};
+      var location = globalVar.location || {};
+      loc = loc || location;
+      var finaldestination = {}, type = typeof loc, key;
+      if ("blob:" === loc.protocol) {
+        finaldestination = new Url(unescape(loc.pathname), {});
+      } else if ("string" === type) {
+        finaldestination = new Url(loc, {});
+        for (key in ignore) delete finaldestination[key];
+      } else if ("object" === type) {
+        for (key in loc) {
+          if (key in ignore) continue;
+          finaldestination[key] = loc[key];
+        }
+        if (finaldestination.slashes === void 0) {
+          finaldestination.slashes = slashes.test(loc.href);
+        }
+      }
+      return finaldestination;
+    }
+    function isSpecial(scheme) {
+      return scheme === "file:" || scheme === "ftp:" || scheme === "http:" || scheme === "https:" || scheme === "ws:" || scheme === "wss:";
+    }
+    function extractProtocol(address, location) {
+      address = trimLeft(address);
+      address = address.replace(CRHTLF, "");
+      location = location || {};
+      var match = protocolre.exec(address);
+      var protocol = match[1] ? match[1].toLowerCase() : "";
+      var forwardSlashes = !!match[2];
+      var otherSlashes = !!match[3];
+      var slashesCount = 0;
+      var rest;
+      if (forwardSlashes) {
+        if (otherSlashes) {
+          rest = match[2] + match[3] + match[4];
+          slashesCount = match[2].length + match[3].length;
+        } else {
+          rest = match[2] + match[4];
+          slashesCount = match[2].length;
+        }
+      } else {
+        if (otherSlashes) {
+          rest = match[3] + match[4];
+          slashesCount = match[3].length;
+        } else {
+          rest = match[4];
+        }
+      }
+      if (protocol === "file:") {
+        if (slashesCount >= 2) {
+          rest = rest.slice(2);
+        }
+      } else if (isSpecial(protocol)) {
+        rest = match[4];
+      } else if (protocol) {
+        if (forwardSlashes) {
+          rest = rest.slice(2);
+        }
+      } else if (slashesCount >= 2 && isSpecial(location.protocol)) {
+        rest = match[4];
+      }
+      return {
+        protocol,
+        slashes: forwardSlashes || isSpecial(protocol),
+        slashesCount,
+        rest
+      };
+    }
+    function resolve(relative, base) {
+      if (relative === "") return base;
+      var path3 = (base || "/").split("/").slice(0, -1).concat(relative.split("/")), i = path3.length, last = path3[i - 1], unshift = false, up = 0;
+      while (i--) {
+        if (path3[i] === ".") {
+          path3.splice(i, 1);
+        } else if (path3[i] === "..") {
+          path3.splice(i, 1);
+          up++;
+        } else if (up) {
+          if (i === 0) unshift = true;
+          path3.splice(i, 1);
+          up--;
+        }
+      }
+      if (unshift) path3.unshift("");
+      if (last === "." || last === "..") path3.push("");
+      return path3.join("/");
+    }
+    function Url(address, location, parser2) {
+      address = trimLeft(address);
+      address = address.replace(CRHTLF, "");
+      if (!(this instanceof Url)) {
+        return new Url(address, location, parser2);
+      }
+      var relative, extracted, parse2, instruction, index, key, instructions = rules.slice(), type = typeof location, url = this, i = 0;
+      if ("object" !== type && "string" !== type) {
+        parser2 = location;
+        location = null;
+      }
+      if (parser2 && "function" !== typeof parser2) parser2 = qs.parse;
+      location = lolcation(location);
+      extracted = extractProtocol(address || "", location);
+      relative = !extracted.protocol && !extracted.slashes;
+      url.slashes = extracted.slashes || relative && location.slashes;
+      url.protocol = extracted.protocol || location.protocol || "";
+      address = extracted.rest;
+      if (extracted.protocol === "file:" && (extracted.slashesCount !== 2 || windowsDriveLetter.test(address)) || !extracted.slashes && (extracted.protocol || extracted.slashesCount < 2 || !isSpecial(url.protocol))) {
+        instructions[3] = [/(.*)/, "pathname"];
+      }
+      for (; i < instructions.length; i++) {
+        instruction = instructions[i];
+        if (typeof instruction === "function") {
+          address = instruction(address, url);
+          continue;
+        }
+        parse2 = instruction[0];
+        key = instruction[1];
+        if (parse2 !== parse2) {
+          url[key] = address;
+        } else if ("string" === typeof parse2) {
+          index = parse2 === "@" ? address.lastIndexOf(parse2) : address.indexOf(parse2);
+          if (~index) {
+            if ("number" === typeof instruction[2]) {
+              url[key] = address.slice(0, index);
+              address = address.slice(index + instruction[2]);
+            } else {
+              url[key] = address.slice(index);
+              address = address.slice(0, index);
+            }
+          }
+        } else if (index = parse2.exec(address)) {
+          url[key] = index[1];
+          address = address.slice(0, index.index);
+        }
+        url[key] = url[key] || (relative && instruction[3] ? location[key] || "" : "");
+        if (instruction[4]) url[key] = url[key].toLowerCase();
+      }
+      if (parser2) url.query = parser2(url.query);
+      if (relative && location.slashes && url.pathname.charAt(0) !== "/" && (url.pathname !== "" || location.pathname !== "")) {
+        url.pathname = resolve(url.pathname, location.pathname);
+      }
+      if (url.pathname.charAt(0) !== "/" && isSpecial(url.protocol)) {
+        url.pathname = "/" + url.pathname;
+      }
+      if (!required(url.port, url.protocol)) {
+        url.host = url.hostname;
+        url.port = "";
+      }
+      url.username = url.password = "";
+      if (url.auth) {
+        index = url.auth.indexOf(":");
+        if (~index) {
+          url.username = url.auth.slice(0, index);
+          url.username = encodeURIComponent(decodeURIComponent(url.username));
+          url.password = url.auth.slice(index + 1);
+          url.password = encodeURIComponent(decodeURIComponent(url.password));
+        } else {
+          url.username = encodeURIComponent(decodeURIComponent(url.auth));
+        }
+        url.auth = url.password ? url.username + ":" + url.password : url.username;
+      }
+      url.origin = url.protocol !== "file:" && isSpecial(url.protocol) && url.host ? url.protocol + "//" + url.host : "null";
+      url.href = url.toString();
+    }
+    function set(part, value, fn) {
+      var url = this;
+      switch (part) {
+        case "query":
+          if ("string" === typeof value && value.length) {
+            value = (fn || qs.parse)(value);
+          }
+          url[part] = value;
+          break;
+        case "port":
+          url[part] = value;
+          if (!required(value, url.protocol)) {
+            url.host = url.hostname;
+            url[part] = "";
+          } else if (value) {
+            url.host = url.hostname + ":" + value;
+          }
+          break;
+        case "hostname":
+          url[part] = value;
+          if (url.port) value += ":" + url.port;
+          url.host = value;
+          break;
+        case "host":
+          url[part] = value;
+          if (port.test(value)) {
+            value = value.split(":");
+            url.port = value.pop();
+            url.hostname = value.join(":");
+          } else {
+            url.hostname = value;
+            url.port = "";
+          }
+          break;
+        case "protocol":
+          url.protocol = value.toLowerCase();
+          url.slashes = !fn;
+          break;
+        case "pathname":
+        case "hash":
+          if (value) {
+            var char = part === "pathname" ? "/" : "#";
+            url[part] = value.charAt(0) !== char ? char + value : value;
+          } else {
+            url[part] = value;
+          }
+          break;
+        case "username":
+        case "password":
+          url[part] = encodeURIComponent(value);
+          break;
+        case "auth":
+          var index = value.indexOf(":");
+          if (~index) {
+            url.username = value.slice(0, index);
+            url.username = encodeURIComponent(decodeURIComponent(url.username));
+            url.password = value.slice(index + 1);
+            url.password = encodeURIComponent(decodeURIComponent(url.password));
+          } else {
+            url.username = encodeURIComponent(decodeURIComponent(value));
+          }
+      }
+      for (var i = 0; i < rules.length; i++) {
+        var ins = rules[i];
+        if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
+      }
+      url.auth = url.password ? url.username + ":" + url.password : url.username;
+      url.origin = url.protocol !== "file:" && isSpecial(url.protocol) && url.host ? url.protocol + "//" + url.host : "null";
+      url.href = url.toString();
+      return url;
+    }
+    function toString(stringify5) {
+      if (!stringify5 || "function" !== typeof stringify5) stringify5 = qs.stringify;
+      var query, url = this, host = url.host, protocol = url.protocol;
+      if (protocol && protocol.charAt(protocol.length - 1) !== ":") protocol += ":";
+      var result = protocol + (url.protocol && url.slashes || isSpecial(url.protocol) ? "//" : "");
+      if (url.username) {
+        result += url.username;
+        if (url.password) result += ":" + url.password;
+        result += "@";
+      } else if (url.password) {
+        result += ":" + url.password;
+        result += "@";
+      } else if (url.protocol !== "file:" && isSpecial(url.protocol) && !host && url.pathname !== "/") {
+        result += "@";
+      }
+      if (host[host.length - 1] === ":" || port.test(url.hostname) && !url.port) {
+        host += ":";
+      }
+      result += host + url.pathname;
+      query = "object" === typeof url.query ? stringify5(url.query) : url.query;
+      if (query) result += "?" !== query.charAt(0) ? "?" + query : query;
+      if (url.hash) result += url.hash;
+      return result;
+    }
+    Url.prototype = { set, toString };
+    Url.extractProtocol = extractProtocol;
+    Url.location = lolcation;
+    Url.trimLeft = trimLeft;
+    Url.qs = qs;
+    module2.exports = Url;
+  }
+});
+
+// node_modules/pocketbase-ejs/node_modules/pocketbase-node/dist/index.js
+var require_dist4 = __commonJS({
+  "node_modules/pocketbase-ejs/node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
+    "use strict";
+    init_cjs_shims();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var src_exports2 = {};
+    __export2(src_exports2, {
+      child_process: () => child_process_exports,
+      fs: () => fs_exports,
+      path: () => path_exports,
+      process: () => process_exports
+    });
+    module2.exports = __toCommonJS2(src_exports2);
+    var fs_exports = {};
+    __export2(fs_exports, {
+      existsSync: () => existsSync,
+      mkdirSync: () => mkdirSync,
+      readFileSync: () => readFileSync,
+      writeFileSync: () => writeFileSync
+    });
+    function byteArrayToUtf8(byteArray) {
+      let utf8String = "";
+      for (let i = 0; i < byteArray.length; i++) {
+        utf8String += String.fromCharCode(byteArray[i]);
+      }
+      return decodeURIComponent(escape(utf8String));
+    }
+    var readFileSync = (path3, options2) => {
+      const res = $os.readFile(path3);
+      if (typeof res === "string") {
+        return res;
+      }
+      const s = byteArrayToUtf8(res);
+      return s;
+    };
+    var existsSync = (path3, fileType = `file`) => {
+      const isDir = (() => {
+        try {
+          $os.readDir(path3);
+          return true;
+        } catch {
+          return false;
+        }
+      })();
+      const isFile = (() => {
+        if (isDir) {
+          return false;
+        }
+        try {
+          return $filesystem.fileFromPath(path3) !== null;
+        } catch {
+          return false;
+        }
+      })();
+      return fileType === "file" ? isFile : fileType === "dir" ? isDir : isFile || isDir;
+    };
+    var writeFileSync = (path3, data, options2) => {
+      if (typeof path3 !== "string") {
+        throw new Error("path must be a string");
+      }
+      if (typeof data !== "string") {
+        throw new Error("data must be a string");
+      }
+      const mode = (() => {
+        if (typeof options2 === "object" && "mode" in options2) {
+          return options2.mode;
+        }
+        return 420;
+      })();
+      $os.writeFile(path3, data, mode);
+    };
+    function mkdirSync(path3, options2) {
+      const mode = (() => {
+        if (typeof options2 === "object" && "mode" in options2) {
+          return options2.mode;
+        }
+        return 493;
+      })();
+      $os.mkdirAll(path3.toString(), mode);
+      return;
+    }
+    var path_exports = {};
+    __export2(path_exports, {
+      basename: () => basename,
+      delimiter: () => delimiter,
+      dirname: () => dirname,
+      extname: () => extname,
+      format: () => format,
+      isAbsolute: () => isAbsolute,
+      join: () => join,
+      normalize: () => normalize,
+      parse: () => parse2,
+      relative: () => relative,
+      resolve: () => resolve,
+      sep: () => sep,
+      win32: () => win32
+    });
+    function assertPath(path3) {
+      if (typeof path3 !== "string") {
+        throw new TypeError(
+          "Path must be a string. Received " + JSON.stringify(path3)
+        );
+      }
+    }
+    function normalizeStringPosix(path3, allowAboveRoot) {
+      var res = "";
+      var lastSegmentLength = 0;
+      var lastSlash = -1;
+      var dots = 0;
+      var code;
+      for (var i = 0; i <= path3.length; ++i) {
+        if (i < path3.length) code = path3.charCodeAt(i);
+        else if (code === 47) break;
+        else code = 47;
+        if (code === 47) {
+          if (lastSlash === i - 1 || dots === 1) {
+          } else if (lastSlash !== i - 1 && dots === 2) {
+            if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
+              if (res.length > 2) {
+                var lastSlashIndex = res.lastIndexOf("/");
+                if (lastSlashIndex !== res.length - 1) {
+                  if (lastSlashIndex === -1) {
+                    res = "";
+                    lastSegmentLength = 0;
+                  } else {
+                    res = res.slice(0, lastSlashIndex);
+                    lastSegmentLength = res.length - 1 - res.lastIndexOf("/");
+                  }
+                  lastSlash = i;
+                  dots = 0;
+                  continue;
+                }
+              } else if (res.length === 2 || res.length === 1) {
+                res = "";
+                lastSegmentLength = 0;
+                lastSlash = i;
+                dots = 0;
+                continue;
+              }
+            }
+            if (allowAboveRoot) {
+              if (res.length > 0) res += "/..";
+              else res = "..";
+              lastSegmentLength = 2;
+            }
+          } else {
+            if (res.length > 0) res += "/" + path3.slice(lastSlash + 1, i);
+            else res = path3.slice(lastSlash + 1, i);
+            lastSegmentLength = i - lastSlash - 1;
+          }
+          lastSlash = i;
+          dots = 0;
+        } else if (code === 46 && dots !== -1) {
+          ++dots;
+        } else {
+          dots = -1;
+        }
+      }
+      return res;
+    }
+    function _format(sep2, pathObject) {
+      var dir = pathObject.dir || pathObject.root;
+      var base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
+      if (!dir) {
+        return base;
+      }
+      if (dir === pathObject.root) {
+        return dir + base;
+      }
+      return dir + sep2 + base;
+    }
+    function resolve(...args) {
+      var resolvedPath = "";
+      var resolvedAbsolute = false;
+      var cwd2;
+      for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+        var path3;
+        if (i >= 0) path3 = arguments[i];
+        else {
+          if (cwd2 === void 0) cwd2 = $os.getwd();
+          path3 = cwd2;
+        }
+        assertPath(path3);
+        if (path3.length === 0) {
+          continue;
+        }
+        resolvedPath = path3 + "/" + resolvedPath;
+        resolvedAbsolute = path3.charCodeAt(0) === 47;
+      }
+      resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
+      if (resolvedAbsolute) {
+        if (resolvedPath.length > 0) return "/" + resolvedPath;
+        else return "/";
+      } else if (resolvedPath.length > 0) {
+        return resolvedPath;
+      } else {
+        return ".";
+      }
+    }
+    function normalize(path3) {
+      assertPath(path3);
+      if (path3.length === 0) return ".";
+      var isAbsolute2 = path3.charCodeAt(0) === 47;
+      var trailingSeparator = path3.charCodeAt(path3.length - 1) === 47;
+      path3 = normalizeStringPosix(path3, !isAbsolute2);
+      if (path3.length === 0 && !isAbsolute2) path3 = ".";
+      if (path3.length > 0 && trailingSeparator) path3 += "/";
+      if (isAbsolute2) return "/" + path3;
+      return path3;
+    }
+    function isAbsolute(path3) {
+      assertPath(path3);
+      return path3.length > 0 && path3.charCodeAt(0) === 47;
+    }
+    function join(...paths) {
+      if (arguments.length === 0) return ".";
+      var joined;
+      for (var i = 0; i < arguments.length; ++i) {
+        var arg = arguments[i];
+        assertPath(arg);
+        if (arg.length > 0) {
+          if (joined === void 0) joined = arg;
+          else joined += "/" + arg;
+        }
+      }
+      if (joined === void 0) return ".";
+      return normalize(joined);
+    }
+    function relative(from, to) {
+      assertPath(from);
+      assertPath(to);
+      if (from === to) return "";
+      from = resolve(from);
+      to = resolve(to);
+      if (from === to) return "";
+      var fromStart = 1;
+      for (; fromStart < from.length; ++fromStart) {
+        if (from.charCodeAt(fromStart) !== 47) break;
+      }
+      var fromEnd = from.length;
+      var fromLen = fromEnd - fromStart;
+      var toStart = 1;
+      for (; toStart < to.length; ++toStart) {
+        if (to.charCodeAt(toStart) !== 47) break;
+      }
+      var toEnd = to.length;
+      var toLen = toEnd - toStart;
+      var length = fromLen < toLen ? fromLen : toLen;
+      var lastCommonSep = -1;
+      var i = 0;
+      for (; i <= length; ++i) {
+        if (i === length) {
+          if (toLen > length) {
+            if (to.charCodeAt(toStart + i) === 47) {
+              return to.slice(toStart + i + 1);
+            } else if (i === 0) {
+              return to.slice(toStart + i);
+            }
+          } else if (fromLen > length) {
+            if (from.charCodeAt(fromStart + i) === 47) {
+              lastCommonSep = i;
+            } else if (i === 0) {
+              lastCommonSep = 0;
+            }
+          }
+          break;
+        }
+        var fromCode = from.charCodeAt(fromStart + i);
+        var toCode = to.charCodeAt(toStart + i);
+        if (fromCode !== toCode) break;
+        else if (fromCode === 47) lastCommonSep = i;
+      }
+      var out = "";
+      for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
+        if (i === fromEnd || from.charCodeAt(i) === 47) {
+          if (out.length === 0) out += "..";
+          else out += "/..";
+        }
+      }
+      if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
+      else {
+        toStart += lastCommonSep;
+        if (to.charCodeAt(toStart) === 47) ++toStart;
+        return to.slice(toStart);
+      }
+    }
+    function dirname(path3) {
+      assertPath(path3);
+      if (path3.length === 0) return ".";
+      var code = path3.charCodeAt(0);
+      var hasRoot = code === 47;
+      var end = -1;
+      var matchedSlash = true;
+      for (var i = path3.length - 1; i >= 1; --i) {
+        code = path3.charCodeAt(i);
+        if (code === 47) {
+          if (!matchedSlash) {
+            end = i;
+            break;
+          }
+        } else {
+          matchedSlash = false;
+        }
+      }
+      if (end === -1) return hasRoot ? "/" : ".";
+      if (hasRoot && end === 1) return "//";
+      return path3.slice(0, end);
+    }
+    function basename(path3, ext) {
+      if (ext !== void 0 && typeof ext !== "string")
+        throw new TypeError('"ext" argument must be a string');
+      assertPath(path3);
+      var start = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var i;
+      if (ext !== void 0 && ext.length > 0 && ext.length <= path3.length) {
+        if (ext.length === path3.length && ext === path3) return "";
+        var extIdx = ext.length - 1;
+        var firstNonSlashEnd = -1;
+        for (i = path3.length - 1; i >= 0; --i) {
+          var code = path3.charCodeAt(i);
+          if (code === 47) {
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else {
+            if (firstNonSlashEnd === -1) {
+              matchedSlash = false;
+              firstNonSlashEnd = i + 1;
+            }
+            if (extIdx >= 0) {
+              if (code === ext.charCodeAt(extIdx)) {
+                if (--extIdx === -1) {
+                  end = i;
+                }
+              } else {
+                extIdx = -1;
+                end = firstNonSlashEnd;
+              }
+            }
+          }
+        }
+        if (start === end) end = firstNonSlashEnd;
+        else if (end === -1) end = path3.length;
+        return path3.slice(start, end);
+      } else {
+        for (i = path3.length - 1; i >= 0; --i) {
+          if (path3.charCodeAt(i) === 47) {
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else if (end === -1) {
+            matchedSlash = false;
+            end = i + 1;
+          }
+        }
+        if (end === -1) return "";
+        return path3.slice(start, end);
+      }
+    }
+    function extname(path3) {
+      assertPath(path3);
+      var startDot = -1;
+      var startPart = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var preDotState = 0;
+      for (var i = path3.length - 1; i >= 0; --i) {
+        var code = path3.charCodeAt(i);
+        if (code === 47) {
+          if (!matchedSlash) {
+            startPart = i + 1;
+            break;
+          }
+          continue;
+        }
+        if (end === -1) {
+          matchedSlash = false;
+          end = i + 1;
+        }
+        if (code === 46) {
+          if (startDot === -1) startDot = i;
+          else if (preDotState !== 1) preDotState = 1;
+        } else if (startDot !== -1) {
+          preDotState = -1;
+        }
+      }
+      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+        return "";
+      }
+      return path3.slice(startDot, end);
+    }
+    function format(pathObject) {
+      if (pathObject === null || typeof pathObject !== "object") {
+        throw new TypeError(
+          'The "pathObject" argument must be of type Object. Received type ' + typeof pathObject
+        );
+      }
+      return _format("/", pathObject);
+    }
+    function parse2(path3) {
+      assertPath(path3);
+      var ret = { root: "", dir: "", base: "", ext: "", name: "" };
+      if (path3.length === 0) return ret;
+      var code = path3.charCodeAt(0);
+      var isAbsolute2 = code === 47;
+      var start;
+      if (isAbsolute2) {
+        ret.root = "/";
+        start = 1;
+      } else {
+        start = 0;
+      }
+      var startDot = -1;
+      var startPart = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var i = path3.length - 1;
+      var preDotState = 0;
+      for (; i >= start; --i) {
+        code = path3.charCodeAt(i);
+        if (code === 47) {
+          if (!matchedSlash) {
+            startPart = i + 1;
+            break;
+          }
+          continue;
+        }
+        if (end === -1) {
+          matchedSlash = false;
+          end = i + 1;
+        }
+        if (code === 46) {
+          if (startDot === -1) startDot = i;
+          else if (preDotState !== 1) preDotState = 1;
+        } else if (startDot !== -1) {
+          preDotState = -1;
+        }
+      }
+      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+        if (end !== -1) {
+          if (startPart === 0 && isAbsolute2)
+            ret.base = ret.name = path3.slice(1, end);
+          else ret.base = ret.name = path3.slice(startPart, end);
+        }
+      } else {
+        if (startPart === 0 && isAbsolute2) {
+          ret.name = path3.slice(1, startDot);
+          ret.base = path3.slice(1, end);
+        } else {
+          ret.name = path3.slice(startPart, startDot);
+          ret.base = path3.slice(startPart, end);
+        }
+        ret.ext = path3.slice(startDot, end);
+      }
+      if (startPart > 0) ret.dir = path3.slice(0, startPart - 1);
+      else if (isAbsolute2) ret.dir = "/";
+      return ret;
+    }
+    var sep = "/";
+    var delimiter = ":";
+    var win32 = null;
+    var child_process_exports = {};
+    __export2(child_process_exports, {
+      execSync: () => execSync
+    });
+    var execSync = (cmdArr) => {
+      const [cmd, ...args] = cmdArr;
+      const _cmd = $os.cmd(cmd, ...args);
+      const charOut = _cmd.output();
+      const output = String.fromCharCode(...charOut);
+      return output;
+    };
+    var process_exports = {};
+    __export2(process_exports, {
+      cwd: () => cwd,
+      env: () => env
+    });
+    var cwd = () => $os.getwd();
+    var { env } = process;
+  }
+});
+
+// node_modules/pocketbase-ejs/lib/utils.js
+var require_utils = __commonJS({
+  "node_modules/pocketbase-ejs/lib/utils.js"(exports2) {
+    "use strict";
+    init_cjs_shims();
+    var regExpChars = /[|\\{}()[\]^$+*?.]/g;
+    var hasOwnProperty = Object.prototype.hasOwnProperty;
+    var hasOwn = function(obj, key) {
+      return hasOwnProperty.apply(obj, [key]);
+    };
+    exports2.escapeRegExpChars = function(string) {
+      if (!string) {
+        return "";
+      }
+      return String(string).replace(regExpChars, "\\$&");
+    };
+    var _ENCODE_HTML_RULES = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&#34;",
+      "'": "&#39;"
+    };
+    var _MATCH_HTML = /[&<>'"]/g;
+    function encode_char(c) {
+      return _ENCODE_HTML_RULES[c] || c;
+    }
+    var escapeFuncStr = `var _ENCODE_HTML_RULES = {
+      "&": "&amp;"
+    , "<": "&lt;"
+    , ">": "&gt;"
+    , '"': "&#34;"
+    , "'": "&#39;"
+    }
+  , _MATCH_HTML = /[&<>'"]/g;
+function encode_char(c) {
+  return _ENCODE_HTML_RULES[c] || c;
+};
+`;
+    exports2.escapeXML = function(markup) {
+      return markup == void 0 ? "" : String(markup).replace(_MATCH_HTML, encode_char);
+    };
+    function escapeXMLToString() {
+      return Function.prototype.toString.call(this) + ";\n" + escapeFuncStr;
+    }
+    try {
+      if (typeof Object.defineProperty === "function") {
+        Object.defineProperty(exports2.escapeXML, "toString", { value: escapeXMLToString });
+      } else {
+        exports2.escapeXML.toString = escapeXMLToString;
+      }
+    } catch (err) {
+      console.warn("Unable to set escapeXML.toString (is the Function prototype frozen?)");
+    }
+    exports2.shallowCopy = function(to, from) {
+      from = from || {};
+      if (to !== null && to !== void 0) {
+        for (var p in from) {
+          if (!hasOwn(from, p)) {
+            continue;
+          }
+          if (p === "__proto__" || p === "constructor") {
+            continue;
+          }
+          to[p] = from[p];
+        }
+      }
+      return to;
+    };
+    exports2.shallowCopyFromList = function(to, from, list2) {
+      list2 = list2 || [];
+      from = from || {};
+      if (to !== null && to !== void 0) {
+        for (var i = 0; i < list2.length; i++) {
+          var p = list2[i];
+          if (typeof from[p] != "undefined") {
+            if (!hasOwn(from, p)) {
+              continue;
+            }
+            if (p === "__proto__" || p === "constructor") {
+              continue;
+            }
+            to[p] = from[p];
+          }
+        }
+      }
+      return to;
+    };
+    exports2.cache = {
+      _data: {},
+      set: function(key, val) {
+        this._data[key] = val;
+      },
+      get: function(key) {
+        return this._data[key];
+      },
+      remove: function(key) {
+        delete this._data[key];
+      },
+      reset: function() {
+        this._data = {};
+      }
+    };
+    exports2.hyphenToCamel = function(str) {
+      return str.replace(/-[a-z]/g, function(match) {
+        return match[1].toUpperCase();
+      });
+    };
+    exports2.createNullProtoObjWherePossible = function() {
+      if (typeof Object.create == "function") {
+        return function() {
+          return /* @__PURE__ */ Object.create(null);
+        };
+      }
+      if (!({ __proto__: null } instanceof Object)) {
+        return function() {
+          return { __proto__: null };
+        };
+      }
+      return function() {
+        return {};
+      };
+    }();
+    exports2.hasOwnOnlyObject = function(obj) {
+      var o = exports2.createNullProtoObjWherePossible();
+      for (var p in obj) {
+        if (hasOwn(obj, p)) {
+          o[p] = obj[p];
+        }
+      }
+      return o;
+    };
+  }
+});
+
+// node_modules/pocketbase-ejs/package.json
+var require_package = __commonJS({
+  "node_modules/pocketbase-ejs/package.json"(exports2, module2) {
+    module2.exports = {
+      name: "pocketbase-ejs",
+      description: "Embedded JavaScript templates",
+      keywords: [
+        "template",
+        "engine",
+        "ejs"
+      ],
+      version: "3.1.10002",
+      author: "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
+      license: "Apache-2.0",
+      main: "./lib/ejs.js",
+      types: "./lib/ejs.d.ts",
+      repository: {
+        type: "git",
+        url: "git://github.com/benallfree/pocketbase-ejs.git"
+      },
+      bugs: "https://github.com/benallfree/pocketbase-ejs/issues",
+      homepage: "https://github.com/benallfree/pocketbase-ejs",
+      devDependencies: {
+        browserify: "^16.5.1",
+        eslint: "^6.8.0",
+        "git-directory-deploy": "^1.5.1",
+        jsdoc: "^4.0.2",
+        "lru-cache": "^4.0.1",
+        mocha: "^10.2.0",
+        "uglify-js": "^3.3.16",
+        jake: "^10.8.5"
+      },
+      engines: {
+        node: ">=0.10.0"
+      },
+      scripts: {
+        test: "npx jake test"
+      },
+      files: [
+        "lib"
+      ],
+      dependencies: {
+        "pocketbase-node": "^0.0.2"
+      }
+    };
+  }
+});
+
+// node_modules/pocketbase-ejs/lib/ejs.js
+var require_ejs = __commonJS({
+  "node_modules/pocketbase-ejs/lib/ejs.js"(exports2) {
+    "use strict";
+    init_cjs_shims();
+    var { fs: fs4, path: path3 } = require_dist4();
+    var utils = require_utils();
+    var scopeOptionWarned = false;
+    var _VERSION_STRING = require_package().version;
+    var _DEFAULT_OPEN_DELIMITER = "<";
+    var _DEFAULT_CLOSE_DELIMITER = ">";
+    var _DEFAULT_DELIMITER = "%";
+    var _DEFAULT_LOCALS_NAME = "locals";
+    var _NAME = "ejs";
+    var _REGEX_STRING = "(<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)";
+    var _OPTS_PASSABLE_WITH_DATA = [
+      "delimiter",
+      "scope",
+      "context",
+      "debug",
+      "compileDebug",
+      "client",
+      "_with",
+      "rmWhitespace",
+      "strict",
+      "filename",
+      "async"
+    ];
+    var _OPTS_PASSABLE_WITH_DATA_EXPRESS = _OPTS_PASSABLE_WITH_DATA.concat("cache");
+    var _BOM = /^\uFEFF/;
+    var _JS_IDENTIFIER = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
+    exports2.cache = utils.cache;
+    exports2.fileLoader = fs4.readFileSync;
+    exports2.localsName = _DEFAULT_LOCALS_NAME;
+    exports2.promiseImpl = new Function("return this;")().Promise;
+    exports2.resolveInclude = function(name, filename, isDir) {
+      var dirname = path3.dirname;
+      var extname = path3.extname;
+      var resolve = path3.resolve;
+      var includePath = resolve(isDir ? filename : dirname(filename), name);
+      var ext = extname(name);
+      if (!ext) {
+        includePath += ".ejs";
+      }
+      return includePath;
+    };
+    function resolvePaths(name, paths) {
+      var filePath;
+      if (paths.some(function(v) {
+        filePath = exports2.resolveInclude(name, v, true);
+        return fs4.existsSync(filePath);
+      })) {
+        return filePath;
+      }
+    }
+    function getIncludePath(path4, options2) {
+      var includePath;
+      var filePath;
+      var views = options2.views;
+      var match = /^[A-Za-z]+:\\|^\//.exec(path4);
+      if (match && match.length) {
+        path4 = path4.replace(/^\/*/, "");
+        if (Array.isArray(options2.root)) {
+          includePath = resolvePaths(path4, options2.root);
+        } else {
+          includePath = exports2.resolveInclude(path4, options2.root || "/", true);
+        }
+      } else {
+        if (options2.filename) {
+          filePath = exports2.resolveInclude(path4, options2.filename);
+          if (fs4.existsSync(filePath)) {
+            includePath = filePath;
+          }
+        }
+        if (!includePath && Array.isArray(views)) {
+          includePath = resolvePaths(path4, views);
+        }
+        if (!includePath && typeof options2.includer !== "function") {
+          throw new Error('Could not find the include file "' + options2.escapeFunction(path4) + '"');
+        }
+      }
+      return includePath;
+    }
+    function handleCache(options2, template) {
+      var func;
+      var filename = options2.filename;
+      var hasTemplate = arguments.length > 1;
+      if (options2.cache) {
+        if (!filename) {
+          throw new Error("cache option requires a filename");
+        }
+        func = exports2.cache.get(filename);
+        if (func) {
+          return func;
+        }
+        if (!hasTemplate) {
+          template = fileLoader(filename).toString().replace(_BOM, "");
+        }
+      } else if (!hasTemplate) {
+        if (!filename) {
+          throw new Error("Internal EJS error: no file name or template provided");
+        }
+        template = fileLoader(filename).toString().replace(_BOM, "");
+      }
+      func = exports2.compile(template, options2);
+      if (options2.cache) {
+        exports2.cache.set(filename, func);
+      }
+      return func;
+    }
+    function fileLoader(filePath) {
+      return exports2.fileLoader(filePath);
+    }
+    function includeFile(path4, options2) {
+      var opts = utils.shallowCopy(utils.createNullProtoObjWherePossible(), options2);
+      opts.filename = getIncludePath(path4, opts);
+      if (typeof options2.includer === "function") {
+        var includerResult = options2.includer(path4, opts.filename);
+        if (includerResult) {
+          if (includerResult.filename) {
+            opts.filename = includerResult.filename;
+          }
+          if (includerResult.template) {
+            return handleCache(opts, includerResult.template);
+          }
+        }
+      }
+      return handleCache(opts);
+    }
+    function rethrow(err, str, flnm, lineno, esc) {
+      var lines = str.split("\n");
+      var start = Math.max(lineno - 3, 0);
+      var end = Math.min(lines.length, lineno + 3);
+      var filename = esc(flnm);
+      var context = lines.slice(start, end).map(function(line, i) {
+        var curr = i + start + 1;
+        return (curr == lineno ? " >> " : "    ") + curr + "| " + line;
+      }).join("\n");
+      err.path = filename;
+      err.message = (filename || "ejs") + ":" + lineno + "\n" + context + "\n\n" + err.message;
+      throw err;
+    }
+    function stripSemi(str) {
+      return str.replace(/;(\s*$)/, "$1");
+    }
+    exports2.compile = function compile(template, opts) {
+      var templ;
+      if (opts && opts.scope) {
+        if (!scopeOptionWarned) {
+          console.warn("`scope` option is deprecated and will be removed in EJS 3");
+          scopeOptionWarned = true;
+        }
+        if (!opts.context) {
+          opts.context = opts.scope;
+        }
+        delete opts.scope;
+      }
+      templ = new Template(template, opts);
+      return templ.compile();
+    };
+    exports2.render = function(template, d, o) {
+      var data = d || utils.createNullProtoObjWherePossible();
+      var opts = o || utils.createNullProtoObjWherePossible();
+      if (arguments.length == 2) {
+        utils.shallowCopyFromList(opts, data, _OPTS_PASSABLE_WITH_DATA);
+      }
+      return handleCache(opts, template)(data);
+    };
+    exports2.renderFile = function() {
+      var args = Array.prototype.slice.call(arguments);
+      var filename = args.shift();
+      var cb;
+      var opts = { filename };
+      var data;
+      var viewOpts;
+      if (typeof arguments[arguments.length - 1] == "function") {
+        cb = args.pop();
+      }
+      if (args.length) {
+        data = args.shift();
+        if (args.length) {
+          utils.shallowCopy(opts, args.pop());
+        } else {
+          if (data.settings) {
+            if (data.settings.views) {
+              opts.views = data.settings.views;
+            }
+            if (data.settings["view cache"]) {
+              opts.cache = true;
+            }
+            viewOpts = data.settings["view options"];
+            if (viewOpts) {
+              utils.shallowCopy(opts, viewOpts);
+            }
+          }
+          utils.shallowCopyFromList(opts, data, _OPTS_PASSABLE_WITH_DATA_EXPRESS);
+        }
+        opts.filename = filename;
+      } else {
+        data = utils.createNullProtoObjWherePossible();
+      }
+      return handleCache(opts)(data);
+    };
+    exports2.Template = Template;
+    exports2.clearCache = function() {
+      exports2.cache.reset();
+    };
+    function Template(text, optsParam) {
+      var opts = utils.hasOwnOnlyObject(optsParam);
+      var options2 = utils.createNullProtoObjWherePossible();
+      this.templateText = text;
+      this.mode = null;
+      this.truncate = false;
+      this.currentLine = 1;
+      this.source = "";
+      options2.client = opts.client || false;
+      options2.escapeFunction = opts.escape || opts.escapeFunction || utils.escapeXML;
+      options2.compileDebug = opts.compileDebug !== false;
+      options2.debug = !!opts.debug;
+      options2.filename = opts.filename;
+      options2.openDelimiter = opts.openDelimiter || exports2.openDelimiter || _DEFAULT_OPEN_DELIMITER;
+      options2.closeDelimiter = opts.closeDelimiter || exports2.closeDelimiter || _DEFAULT_CLOSE_DELIMITER;
+      options2.delimiter = opts.delimiter || exports2.delimiter || _DEFAULT_DELIMITER;
+      options2.strict = opts.strict || false;
+      options2.context = opts.context;
+      options2.cache = opts.cache || false;
+      options2.rmWhitespace = opts.rmWhitespace;
+      options2.root = opts.root;
+      options2.includer = opts.includer;
+      options2.outputFunctionName = opts.outputFunctionName;
+      options2.localsName = opts.localsName || exports2.localsName || _DEFAULT_LOCALS_NAME;
+      options2.views = opts.views;
+      options2.async = opts.async;
+      options2.destructuredLocals = opts.destructuredLocals;
+      options2.legacyInclude = typeof opts.legacyInclude != "undefined" ? !!opts.legacyInclude : true;
+      if (options2.strict) {
+        options2._with = false;
+      } else {
+        options2._with = typeof opts._with != "undefined" ? opts._with : true;
+      }
+      this.opts = options2;
+      this.regex = this.createRegex();
+    }
+    Template.modes = {
+      EVAL: "eval",
+      ESCAPED: "escaped",
+      RAW: "raw",
+      COMMENT: "comment",
+      LITERAL: "literal"
+    };
+    Template.prototype = {
+      createRegex: function() {
+        var str = _REGEX_STRING;
+        var delim = utils.escapeRegExpChars(this.opts.delimiter);
+        var open = utils.escapeRegExpChars(this.opts.openDelimiter);
+        var close = utils.escapeRegExpChars(this.opts.closeDelimiter);
+        str = str.replace(/%/g, delim).replace(/</g, open).replace(/>/g, close);
+        return new RegExp(str);
+      },
+      compile: function() {
+        var src;
+        var fn;
+        var opts = this.opts;
+        var prepended = "";
+        var appended = "";
+        var escapeFn = opts.escapeFunction;
+        var ctor;
+        var sanitizedFilename = opts.filename ? JSON.stringify(opts.filename) : "undefined";
+        if (!this.source) {
+          this.generateSource();
+          prepended += '  var __output = "";\n  function __append(s) { if (s !== undefined && s !== null) __output += s }\n';
+          if (opts.outputFunctionName) {
+            if (!_JS_IDENTIFIER.test(opts.outputFunctionName)) {
+              throw new Error("outputFunctionName is not a valid JS identifier.");
+            }
+            prepended += "  var " + opts.outputFunctionName + " = __append;\n";
+          }
+          if (opts.localsName && !_JS_IDENTIFIER.test(opts.localsName)) {
+            throw new Error("localsName is not a valid JS identifier.");
+          }
+          if (opts.destructuredLocals && opts.destructuredLocals.length) {
+            var destructuring = "  var __locals = (" + opts.localsName + " || {}),\n";
+            for (var i = 0; i < opts.destructuredLocals.length; i++) {
+              var name = opts.destructuredLocals[i];
+              if (!_JS_IDENTIFIER.test(name)) {
+                throw new Error("destructuredLocals[" + i + "] is not a valid JS identifier.");
+              }
+              if (i > 0) {
+                destructuring += ",\n  ";
+              }
+              destructuring += name + " = __locals." + name;
+            }
+            prepended += destructuring + ";\n";
+          }
+          if (opts._with !== false) {
+            prepended += "  with (" + opts.localsName + " || {}) {\n";
+            appended += "  }\n";
+          }
+          appended += "  return __output;\n";
+          this.source = prepended + this.source + appended;
+        }
+        if (opts.compileDebug) {
+          src = "var __line = 1\n  , __lines = " + JSON.stringify(this.templateText) + "\n  , __filename = " + sanitizedFilename + ";\ntry {\n" + this.source + "} catch (e) {\n  rethrow(e, __lines, __filename, __line, escapeFn);\n}\n";
+        } else {
+          src = this.source;
+        }
+        if (opts.client) {
+          src = "escapeFn = escapeFn || " + escapeFn.toString() + ";\n" + src;
+          if (opts.compileDebug) {
+            src = "rethrow = rethrow || " + rethrow.toString() + ";\n" + src;
+          }
+        }
+        if (opts.strict) {
+          src = '"use strict";\n' + src;
+        }
+        if (opts.debug) {
+          console.log(src);
+        }
+        if (opts.compileDebug && opts.filename) {
+          src = src + "\n//# sourceURL=" + sanitizedFilename + "\n";
+        }
+        try {
+          if (opts.async) {
+            try {
+              ctor = new Function("return (async function(){}).constructor;")();
+            } catch (e) {
+              if (e instanceof SyntaxError) {
+                throw new Error("This environment does not support async/await");
+              } else {
+                throw e;
+              }
+            }
+          } else {
+            ctor = Function;
+          }
+          fn = new ctor(opts.localsName + ", escapeFn, include, rethrow", src);
+        } catch (e) {
+          if (e instanceof SyntaxError) {
+            if (opts.filename) {
+              e.message += " in " + opts.filename;
+            }
+            e.message += " while compiling ejs\n\n";
+            e.message += "If the above error is not helpful, you may want to try EJS-Lint:\n";
+            e.message += "https://github.com/RyanZim/EJS-Lint";
+            if (!opts.async) {
+              e.message += "\n";
+              e.message += "Or, if you meant to create an async function, pass `async: true` as an option.";
+            }
+          }
+          throw e;
+        }
+        var returnedFn = opts.client ? fn : function anonymous(data) {
+          var include = function(path4, includeData) {
+            var d = utils.shallowCopy(utils.createNullProtoObjWherePossible(), data);
+            if (includeData) {
+              d = utils.shallowCopy(d, includeData);
+            }
+            return includeFile(path4, opts)(d);
+          };
+          return fn.apply(
+            opts.context,
+            [data || utils.createNullProtoObjWherePossible(), escapeFn, include, rethrow]
+          );
+        };
+        if (opts.filename && typeof Object.defineProperty === "function") {
+          var filename = opts.filename;
+          var basename = path3.basename(filename, path3.extname(filename));
+          try {
+            Object.defineProperty(returnedFn, "name", {
+              value: basename,
+              writable: false,
+              enumerable: false,
+              configurable: true
+            });
+          } catch (e) {
+          }
+        }
+        return returnedFn;
+      },
+      generateSource: function() {
+        var opts = this.opts;
+        if (opts.rmWhitespace) {
+          this.templateText = this.templateText.replace(/[\r\n]+/g, "\n").replace(/^\s+|\s+$/gm, "");
+        }
+        this.templateText = this.templateText.replace(/[ \t]*<%_/gm, "<%_").replace(/_%>[ \t]*/gm, "_%>");
+        var self2 = this;
+        var matches = this.parseTemplateText();
+        var d = this.opts.delimiter;
+        var o = this.opts.openDelimiter;
+        var c = this.opts.closeDelimiter;
+        if (matches && matches.length) {
+          matches.forEach(function(line, index) {
+            var closing;
+            if (line.indexOf(o + d) === 0 && line.indexOf(o + d + d) !== 0) {
+              closing = matches[index + 2];
+              if (!(closing == d + c || closing == "-" + d + c || closing == "_" + d + c)) {
+                throw new Error('Could not find matching close tag for "' + line + '".');
+              }
+            }
+            self2.scanLine(line);
+          });
+        }
+      },
+      parseTemplateText: function() {
+        var str = this.templateText;
+        var pat = this.regex;
+        var result = pat.exec(str);
+        var arr = [];
+        var firstPos;
+        while (result) {
+          firstPos = result.index;
+          if (firstPos !== 0) {
+            arr.push(str.substring(0, firstPos));
+            str = str.slice(firstPos);
+          }
+          arr.push(result[0]);
+          str = str.slice(result[0].length);
+          result = pat.exec(str);
+        }
+        if (str) {
+          arr.push(str);
+        }
+        return arr;
+      },
+      _addOutput: function(line) {
+        if (this.truncate) {
+          line = line.replace(/^(?:\r\n|\r|\n)/, "");
+          this.truncate = false;
+        }
+        if (!line) {
+          return line;
+        }
+        line = line.replace(/\\/g, "\\\\");
+        line = line.replace(/\n/g, "\\n");
+        line = line.replace(/\r/g, "\\r");
+        line = line.replace(/"/g, '\\"');
+        this.source += '    ; __append("' + line + '")\n';
+      },
+      scanLine: function(line) {
+        var self2 = this;
+        var d = this.opts.delimiter;
+        var o = this.opts.openDelimiter;
+        var c = this.opts.closeDelimiter;
+        var newLineCount = 0;
+        newLineCount = line.split("\n").length - 1;
+        switch (line) {
+          case o + d:
+          case o + d + "_":
+            this.mode = Template.modes.EVAL;
+            break;
+          case o + d + "=":
+            this.mode = Template.modes.ESCAPED;
+            break;
+          case o + d + "-":
+            this.mode = Template.modes.RAW;
+            break;
+          case o + d + "#":
+            this.mode = Template.modes.COMMENT;
+            break;
+          case o + d + d:
+            this.mode = Template.modes.LITERAL;
+            this.source += '    ; __append("' + line.replace(o + d + d, o + d) + '")\n';
+            break;
+          case d + d + c:
+            this.mode = Template.modes.LITERAL;
+            this.source += '    ; __append("' + line.replace(d + d + c, d + c) + '")\n';
+            break;
+          case d + c:
+          case "-" + d + c:
+          case "_" + d + c:
+            if (this.mode == Template.modes.LITERAL) {
+              this._addOutput(line);
+            }
+            this.mode = null;
+            this.truncate = line.indexOf("-") === 0 || line.indexOf("_") === 0;
+            break;
+          default:
+            if (this.mode) {
+              switch (this.mode) {
+                case Template.modes.EVAL:
+                case Template.modes.ESCAPED:
+                case Template.modes.RAW:
+                  if (line.lastIndexOf("//") > line.lastIndexOf("\n")) {
+                    line += "\n";
+                  }
+              }
+              switch (this.mode) {
+                // Just executing code
+                case Template.modes.EVAL:
+                  this.source += "    ; " + line + "\n";
+                  break;
+                // Exec, esc, and output
+                case Template.modes.ESCAPED:
+                  this.source += "    ; __append(escapeFn(" + stripSemi(line) + "))\n";
+                  break;
+                // Exec and output
+                case Template.modes.RAW:
+                  this.source += "    ; __append(" + stripSemi(line) + ")\n";
+                  break;
+                case Template.modes.COMMENT:
+                  break;
+                // Literal <%% mode, append as raw output
+                case Template.modes.LITERAL:
+                  this._addOutput(line);
+                  break;
+              }
+            } else {
+              this._addOutput(line);
+            }
+        }
+        if (self2.opts.compileDebug && newLineCount) {
+          this.currentLine += newLineCount;
+          this.source += "    ; __line = " + this.currentLine + "\n";
+        }
+      }
+    };
+    exports2.escapeXML = utils.escapeXML;
+    exports2.__express = exports2.renderFile;
+    exports2.VERSION = _VERSION_STRING;
+    exports2.name = _NAME;
+    if (typeof window != "undefined") {
+      window.ejs = exports2;
+    }
+  }
+});
+
 // node_modules/js-yaml/lib/js-yaml/common.js
 var require_common = __commonJS({
   "node_modules/js-yaml/lib/js-yaml/common.js"(exports2, module2) {
@@ -2901,7 +5162,7 @@ var require_front_matter = __commonJS({
       options2.allowUnsafe = Boolean(options2.allowUnsafe);
       var lines = string.split(/(\r?\n)/);
       if (lines[0] && /= yaml =|---/.test(lines[0])) {
-        return parse(string, options2.allowUnsafe);
+        return parse2(string, options2.allowUnsafe);
       } else {
         return {
           attributes: {},
@@ -2923,7 +5184,7 @@ var require_front_matter = __commonJS({
       }
       return line;
     }
-    function parse(string, allowUnsafe) {
+    function parse2(string, allowUnsafe) {
       var match = regex.exec(string);
       if (!match) {
         return {
@@ -2951,2277 +5212,47 @@ var require_front_matter = __commonJS({
   }
 });
 
-// node_modules/pocketbase-ejs/node_modules/pocketbase-node/dist/index.js
-var require_dist = __commonJS({
-  "node_modules/pocketbase-ejs/node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
-    "use strict";
-    init_cjs_shims();
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var src_exports2 = {};
-    __export2(src_exports2, {
-      child_process: () => child_process_exports,
-      fs: () => fs_exports,
-      path: () => path_exports,
-      process: () => process_exports
-    });
-    module2.exports = __toCommonJS2(src_exports2);
-    var fs_exports = {};
-    __export2(fs_exports, {
-      existsSync: () => existsSync,
-      mkdirSync: () => mkdirSync,
-      readFileSync: () => readFileSync,
-      writeFileSync: () => writeFileSync
-    });
-    function byteArrayToUtf8(byteArray) {
-      let utf8String = "";
-      for (let i = 0; i < byteArray.length; i++) {
-        utf8String += String.fromCharCode(byteArray[i]);
-      }
-      return decodeURIComponent(escape(utf8String));
-    }
-    var readFileSync = (path3, options2) => {
-      const res = $os.readFile(path3);
-      if (typeof res === "string") {
-        return res;
-      }
-      const s = byteArrayToUtf8(res);
-      return s;
-    };
-    var existsSync = (path3, fileType = `file`) => {
-      const isDir = (() => {
-        try {
-          $os.readDir(path3);
-          return true;
-        } catch {
-          return false;
-        }
-      })();
-      const isFile = (() => {
-        if (isDir) {
-          return false;
-        }
-        try {
-          return $filesystem.fileFromPath(path3) !== null;
-        } catch {
-          return false;
-        }
-      })();
-      return fileType === "file" ? isFile : fileType === "dir" ? isDir : isFile || isDir;
-    };
-    var writeFileSync = (path3, data, options2) => {
-      if (typeof path3 !== "string") {
-        throw new Error("path must be a string");
-      }
-      if (typeof data !== "string") {
-        throw new Error("data must be a string");
-      }
-      const mode = (() => {
-        if (typeof options2 === "object" && "mode" in options2) {
-          return options2.mode;
-        }
-        return 420;
-      })();
-      $os.writeFile(path3, data, mode);
-    };
-    function mkdirSync(path3, options2) {
-      const mode = (() => {
-        if (typeof options2 === "object" && "mode" in options2) {
-          return options2.mode;
-        }
-        return 493;
-      })();
-      $os.mkdirAll(path3.toString(), mode);
-      return;
-    }
-    var path_exports = {};
-    __export2(path_exports, {
-      basename: () => basename,
-      delimiter: () => delimiter,
-      dirname: () => dirname,
-      extname: () => extname,
-      format: () => format,
-      isAbsolute: () => isAbsolute,
-      join: () => join,
-      normalize: () => normalize,
-      parse: () => parse,
-      relative: () => relative,
-      resolve: () => resolve,
-      sep: () => sep,
-      win32: () => win32
-    });
-    function assertPath(path3) {
-      if (typeof path3 !== "string") {
-        throw new TypeError(
-          "Path must be a string. Received " + JSON.stringify(path3)
-        );
-      }
-    }
-    function normalizeStringPosix(path3, allowAboveRoot) {
-      var res = "";
-      var lastSegmentLength = 0;
-      var lastSlash = -1;
-      var dots = 0;
-      var code;
-      for (var i = 0; i <= path3.length; ++i) {
-        if (i < path3.length) code = path3.charCodeAt(i);
-        else if (code === 47) break;
-        else code = 47;
-        if (code === 47) {
-          if (lastSlash === i - 1 || dots === 1) {
-          } else if (lastSlash !== i - 1 && dots === 2) {
-            if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
-              if (res.length > 2) {
-                var lastSlashIndex = res.lastIndexOf("/");
-                if (lastSlashIndex !== res.length - 1) {
-                  if (lastSlashIndex === -1) {
-                    res = "";
-                    lastSegmentLength = 0;
-                  } else {
-                    res = res.slice(0, lastSlashIndex);
-                    lastSegmentLength = res.length - 1 - res.lastIndexOf("/");
-                  }
-                  lastSlash = i;
-                  dots = 0;
-                  continue;
-                }
-              } else if (res.length === 2 || res.length === 1) {
-                res = "";
-                lastSegmentLength = 0;
-                lastSlash = i;
-                dots = 0;
-                continue;
-              }
-            }
-            if (allowAboveRoot) {
-              if (res.length > 0) res += "/..";
-              else res = "..";
-              lastSegmentLength = 2;
-            }
-          } else {
-            if (res.length > 0) res += "/" + path3.slice(lastSlash + 1, i);
-            else res = path3.slice(lastSlash + 1, i);
-            lastSegmentLength = i - lastSlash - 1;
-          }
-          lastSlash = i;
-          dots = 0;
-        } else if (code === 46 && dots !== -1) {
-          ++dots;
-        } else {
-          dots = -1;
-        }
-      }
-      return res;
-    }
-    function _format(sep2, pathObject) {
-      var dir = pathObject.dir || pathObject.root;
-      var base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
-      if (!dir) {
-        return base;
-      }
-      if (dir === pathObject.root) {
-        return dir + base;
-      }
-      return dir + sep2 + base;
-    }
-    function resolve(...args) {
-      var resolvedPath = "";
-      var resolvedAbsolute = false;
-      var cwd2;
-      for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-        var path3;
-        if (i >= 0) path3 = arguments[i];
-        else {
-          if (cwd2 === void 0) cwd2 = $os.getwd();
-          path3 = cwd2;
-        }
-        assertPath(path3);
-        if (path3.length === 0) {
-          continue;
-        }
-        resolvedPath = path3 + "/" + resolvedPath;
-        resolvedAbsolute = path3.charCodeAt(0) === 47;
-      }
-      resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
-      if (resolvedAbsolute) {
-        if (resolvedPath.length > 0) return "/" + resolvedPath;
-        else return "/";
-      } else if (resolvedPath.length > 0) {
-        return resolvedPath;
-      } else {
-        return ".";
-      }
-    }
-    function normalize(path3) {
-      assertPath(path3);
-      if (path3.length === 0) return ".";
-      var isAbsolute2 = path3.charCodeAt(0) === 47;
-      var trailingSeparator = path3.charCodeAt(path3.length - 1) === 47;
-      path3 = normalizeStringPosix(path3, !isAbsolute2);
-      if (path3.length === 0 && !isAbsolute2) path3 = ".";
-      if (path3.length > 0 && trailingSeparator) path3 += "/";
-      if (isAbsolute2) return "/" + path3;
-      return path3;
-    }
-    function isAbsolute(path3) {
-      assertPath(path3);
-      return path3.length > 0 && path3.charCodeAt(0) === 47;
-    }
-    function join(...paths) {
-      if (arguments.length === 0) return ".";
-      var joined;
-      for (var i = 0; i < arguments.length; ++i) {
-        var arg = arguments[i];
-        assertPath(arg);
-        if (arg.length > 0) {
-          if (joined === void 0) joined = arg;
-          else joined += "/" + arg;
-        }
-      }
-      if (joined === void 0) return ".";
-      return normalize(joined);
-    }
-    function relative(from, to) {
-      assertPath(from);
-      assertPath(to);
-      if (from === to) return "";
-      from = resolve(from);
-      to = resolve(to);
-      if (from === to) return "";
-      var fromStart = 1;
-      for (; fromStart < from.length; ++fromStart) {
-        if (from.charCodeAt(fromStart) !== 47) break;
-      }
-      var fromEnd = from.length;
-      var fromLen = fromEnd - fromStart;
-      var toStart = 1;
-      for (; toStart < to.length; ++toStart) {
-        if (to.charCodeAt(toStart) !== 47) break;
-      }
-      var toEnd = to.length;
-      var toLen = toEnd - toStart;
-      var length = fromLen < toLen ? fromLen : toLen;
-      var lastCommonSep = -1;
-      var i = 0;
-      for (; i <= length; ++i) {
-        if (i === length) {
-          if (toLen > length) {
-            if (to.charCodeAt(toStart + i) === 47) {
-              return to.slice(toStart + i + 1);
-            } else if (i === 0) {
-              return to.slice(toStart + i);
-            }
-          } else if (fromLen > length) {
-            if (from.charCodeAt(fromStart + i) === 47) {
-              lastCommonSep = i;
-            } else if (i === 0) {
-              lastCommonSep = 0;
-            }
-          }
-          break;
-        }
-        var fromCode = from.charCodeAt(fromStart + i);
-        var toCode = to.charCodeAt(toStart + i);
-        if (fromCode !== toCode) break;
-        else if (fromCode === 47) lastCommonSep = i;
-      }
-      var out = "";
-      for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
-        if (i === fromEnd || from.charCodeAt(i) === 47) {
-          if (out.length === 0) out += "..";
-          else out += "/..";
-        }
-      }
-      if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
-      else {
-        toStart += lastCommonSep;
-        if (to.charCodeAt(toStart) === 47) ++toStart;
-        return to.slice(toStart);
-      }
-    }
-    function dirname(path3) {
-      assertPath(path3);
-      if (path3.length === 0) return ".";
-      var code = path3.charCodeAt(0);
-      var hasRoot = code === 47;
-      var end = -1;
-      var matchedSlash = true;
-      for (var i = path3.length - 1; i >= 1; --i) {
-        code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            end = i;
-            break;
-          }
-        } else {
-          matchedSlash = false;
-        }
-      }
-      if (end === -1) return hasRoot ? "/" : ".";
-      if (hasRoot && end === 1) return "//";
-      return path3.slice(0, end);
-    }
-    function basename(path3, ext) {
-      if (ext !== void 0 && typeof ext !== "string")
-        throw new TypeError('"ext" argument must be a string');
-      assertPath(path3);
-      var start = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var i;
-      if (ext !== void 0 && ext.length > 0 && ext.length <= path3.length) {
-        if (ext.length === path3.length && ext === path3) return "";
-        var extIdx = ext.length - 1;
-        var firstNonSlashEnd = -1;
-        for (i = path3.length - 1; i >= 0; --i) {
-          var code = path3.charCodeAt(i);
-          if (code === 47) {
-            if (!matchedSlash) {
-              start = i + 1;
-              break;
-            }
-          } else {
-            if (firstNonSlashEnd === -1) {
-              matchedSlash = false;
-              firstNonSlashEnd = i + 1;
-            }
-            if (extIdx >= 0) {
-              if (code === ext.charCodeAt(extIdx)) {
-                if (--extIdx === -1) {
-                  end = i;
-                }
-              } else {
-                extIdx = -1;
-                end = firstNonSlashEnd;
-              }
-            }
-          }
-        }
-        if (start === end) end = firstNonSlashEnd;
-        else if (end === -1) end = path3.length;
-        return path3.slice(start, end);
-      } else {
-        for (i = path3.length - 1; i >= 0; --i) {
-          if (path3.charCodeAt(i) === 47) {
-            if (!matchedSlash) {
-              start = i + 1;
-              break;
-            }
-          } else if (end === -1) {
-            matchedSlash = false;
-            end = i + 1;
-          }
-        }
-        if (end === -1) return "";
-        return path3.slice(start, end);
-      }
-    }
-    function extname(path3) {
-      assertPath(path3);
-      var startDot = -1;
-      var startPart = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var preDotState = 0;
-      for (var i = path3.length - 1; i >= 0; --i) {
-        var code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            startPart = i + 1;
-            break;
-          }
-          continue;
-        }
-        if (end === -1) {
-          matchedSlash = false;
-          end = i + 1;
-        }
-        if (code === 46) {
-          if (startDot === -1) startDot = i;
-          else if (preDotState !== 1) preDotState = 1;
-        } else if (startDot !== -1) {
-          preDotState = -1;
-        }
-      }
-      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
-      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-        return "";
-      }
-      return path3.slice(startDot, end);
-    }
-    function format(pathObject) {
-      if (pathObject === null || typeof pathObject !== "object") {
-        throw new TypeError(
-          'The "pathObject" argument must be of type Object. Received type ' + typeof pathObject
-        );
-      }
-      return _format("/", pathObject);
-    }
-    function parse(path3) {
-      assertPath(path3);
-      var ret = { root: "", dir: "", base: "", ext: "", name: "" };
-      if (path3.length === 0) return ret;
-      var code = path3.charCodeAt(0);
-      var isAbsolute2 = code === 47;
-      var start;
-      if (isAbsolute2) {
-        ret.root = "/";
-        start = 1;
-      } else {
-        start = 0;
-      }
-      var startDot = -1;
-      var startPart = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var i = path3.length - 1;
-      var preDotState = 0;
-      for (; i >= start; --i) {
-        code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            startPart = i + 1;
-            break;
-          }
-          continue;
-        }
-        if (end === -1) {
-          matchedSlash = false;
-          end = i + 1;
-        }
-        if (code === 46) {
-          if (startDot === -1) startDot = i;
-          else if (preDotState !== 1) preDotState = 1;
-        } else if (startDot !== -1) {
-          preDotState = -1;
-        }
-      }
-      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
-      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-        if (end !== -1) {
-          if (startPart === 0 && isAbsolute2)
-            ret.base = ret.name = path3.slice(1, end);
-          else ret.base = ret.name = path3.slice(startPart, end);
-        }
-      } else {
-        if (startPart === 0 && isAbsolute2) {
-          ret.name = path3.slice(1, startDot);
-          ret.base = path3.slice(1, end);
-        } else {
-          ret.name = path3.slice(startPart, startDot);
-          ret.base = path3.slice(startPart, end);
-        }
-        ret.ext = path3.slice(startDot, end);
-      }
-      if (startPart > 0) ret.dir = path3.slice(0, startPart - 1);
-      else if (isAbsolute2) ret.dir = "/";
-      return ret;
-    }
-    var sep = "/";
-    var delimiter = ":";
-    var win32 = null;
-    var child_process_exports = {};
-    __export2(child_process_exports, {
-      execSync: () => execSync
-    });
-    var execSync = (cmdArr) => {
-      const [cmd, ...args] = cmdArr;
-      const _cmd = $os.cmd(cmd, ...args);
-      const charOut = _cmd.output();
-      const output = String.fromCharCode(...charOut);
-      return output;
-    };
-    var process_exports = {};
-    __export2(process_exports, {
-      cwd: () => cwd,
-      env: () => env
-    });
-    var cwd = () => $os.getwd();
-    var { env } = process;
-  }
-});
-
-// node_modules/pocketbase-ejs/lib/utils.js
-var require_utils = __commonJS({
-  "node_modules/pocketbase-ejs/lib/utils.js"(exports2) {
-    "use strict";
-    init_cjs_shims();
-    var regExpChars = /[|\\{}()[\]^$+*?.]/g;
-    var hasOwnProperty = Object.prototype.hasOwnProperty;
-    var hasOwn = function(obj, key) {
-      return hasOwnProperty.apply(obj, [key]);
-    };
-    exports2.escapeRegExpChars = function(string) {
-      if (!string) {
-        return "";
-      }
-      return String(string).replace(regExpChars, "\\$&");
-    };
-    var _ENCODE_HTML_RULES = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&#34;",
-      "'": "&#39;"
-    };
-    var _MATCH_HTML = /[&<>'"]/g;
-    function encode_char(c) {
-      return _ENCODE_HTML_RULES[c] || c;
-    }
-    var escapeFuncStr = `var _ENCODE_HTML_RULES = {
-      "&": "&amp;"
-    , "<": "&lt;"
-    , ">": "&gt;"
-    , '"': "&#34;"
-    , "'": "&#39;"
-    }
-  , _MATCH_HTML = /[&<>'"]/g;
-function encode_char(c) {
-  return _ENCODE_HTML_RULES[c] || c;
-};
-`;
-    exports2.escapeXML = function(markup) {
-      return markup == void 0 ? "" : String(markup).replace(_MATCH_HTML, encode_char);
-    };
-    function escapeXMLToString() {
-      return Function.prototype.toString.call(this) + ";\n" + escapeFuncStr;
-    }
-    try {
-      if (typeof Object.defineProperty === "function") {
-        Object.defineProperty(exports2.escapeXML, "toString", { value: escapeXMLToString });
-      } else {
-        exports2.escapeXML.toString = escapeXMLToString;
-      }
-    } catch (err) {
-      console.warn("Unable to set escapeXML.toString (is the Function prototype frozen?)");
-    }
-    exports2.shallowCopy = function(to, from) {
-      from = from || {};
-      if (to !== null && to !== void 0) {
-        for (var p in from) {
-          if (!hasOwn(from, p)) {
-            continue;
-          }
-          if (p === "__proto__" || p === "constructor") {
-            continue;
-          }
-          to[p] = from[p];
-        }
-      }
-      return to;
-    };
-    exports2.shallowCopyFromList = function(to, from, list2) {
-      list2 = list2 || [];
-      from = from || {};
-      if (to !== null && to !== void 0) {
-        for (var i = 0; i < list2.length; i++) {
-          var p = list2[i];
-          if (typeof from[p] != "undefined") {
-            if (!hasOwn(from, p)) {
-              continue;
-            }
-            if (p === "__proto__" || p === "constructor") {
-              continue;
-            }
-            to[p] = from[p];
-          }
-        }
-      }
-      return to;
-    };
-    exports2.cache = {
-      _data: {},
-      set: function(key, val) {
-        this._data[key] = val;
-      },
-      get: function(key) {
-        return this._data[key];
-      },
-      remove: function(key) {
-        delete this._data[key];
-      },
-      reset: function() {
-        this._data = {};
-      }
-    };
-    exports2.hyphenToCamel = function(str) {
-      return str.replace(/-[a-z]/g, function(match) {
-        return match[1].toUpperCase();
-      });
-    };
-    exports2.createNullProtoObjWherePossible = function() {
-      if (typeof Object.create == "function") {
-        return function() {
-          return /* @__PURE__ */ Object.create(null);
-        };
-      }
-      if (!({ __proto__: null } instanceof Object)) {
-        return function() {
-          return { __proto__: null };
-        };
-      }
-      return function() {
-        return {};
-      };
-    }();
-    exports2.hasOwnOnlyObject = function(obj) {
-      var o = exports2.createNullProtoObjWherePossible();
-      for (var p in obj) {
-        if (hasOwn(obj, p)) {
-          o[p] = obj[p];
-        }
-      }
-      return o;
-    };
-  }
-});
-
-// node_modules/pocketbase-ejs/package.json
-var require_package = __commonJS({
-  "node_modules/pocketbase-ejs/package.json"(exports2, module2) {
-    module2.exports = {
-      name: "pocketbase-ejs",
-      description: "Embedded JavaScript templates",
-      keywords: [
-        "template",
-        "engine",
-        "ejs"
-      ],
-      version: "3.1.10002",
-      author: "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
-      license: "Apache-2.0",
-      main: "./lib/ejs.js",
-      types: "./lib/ejs.d.ts",
-      repository: {
-        type: "git",
-        url: "git://github.com/benallfree/pocketbase-ejs.git"
-      },
-      bugs: "https://github.com/benallfree/pocketbase-ejs/issues",
-      homepage: "https://github.com/benallfree/pocketbase-ejs",
-      devDependencies: {
-        browserify: "^16.5.1",
-        eslint: "^6.8.0",
-        "git-directory-deploy": "^1.5.1",
-        jsdoc: "^4.0.2",
-        "lru-cache": "^4.0.1",
-        mocha: "^10.2.0",
-        "uglify-js": "^3.3.16",
-        jake: "^10.8.5"
-      },
-      engines: {
-        node: ">=0.10.0"
-      },
-      scripts: {
-        test: "npx jake test"
-      },
-      files: [
-        "lib"
-      ],
-      dependencies: {
-        "pocketbase-node": "^0.0.2"
-      }
-    };
-  }
-});
-
-// node_modules/pocketbase-ejs/lib/ejs.js
-var require_ejs = __commonJS({
-  "node_modules/pocketbase-ejs/lib/ejs.js"(exports2) {
-    "use strict";
-    init_cjs_shims();
-    var { fs: fs3, path: path3 } = require_dist();
-    var utils = require_utils();
-    var scopeOptionWarned = false;
-    var _VERSION_STRING = require_package().version;
-    var _DEFAULT_OPEN_DELIMITER = "<";
-    var _DEFAULT_CLOSE_DELIMITER = ">";
-    var _DEFAULT_DELIMITER = "%";
-    var _DEFAULT_LOCALS_NAME = "locals";
-    var _NAME = "ejs";
-    var _REGEX_STRING = "(<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)";
-    var _OPTS_PASSABLE_WITH_DATA = [
-      "delimiter",
-      "scope",
-      "context",
-      "debug",
-      "compileDebug",
-      "client",
-      "_with",
-      "rmWhitespace",
-      "strict",
-      "filename",
-      "async"
-    ];
-    var _OPTS_PASSABLE_WITH_DATA_EXPRESS = _OPTS_PASSABLE_WITH_DATA.concat("cache");
-    var _BOM = /^\uFEFF/;
-    var _JS_IDENTIFIER = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
-    exports2.cache = utils.cache;
-    exports2.fileLoader = fs3.readFileSync;
-    exports2.localsName = _DEFAULT_LOCALS_NAME;
-    exports2.promiseImpl = new Function("return this;")().Promise;
-    exports2.resolveInclude = function(name, filename, isDir) {
-      var dirname = path3.dirname;
-      var extname = path3.extname;
-      var resolve = path3.resolve;
-      var includePath = resolve(isDir ? filename : dirname(filename), name);
-      var ext = extname(name);
-      if (!ext) {
-        includePath += ".ejs";
-      }
-      return includePath;
-    };
-    function resolvePaths(name, paths) {
-      var filePath;
-      if (paths.some(function(v) {
-        filePath = exports2.resolveInclude(name, v, true);
-        return fs3.existsSync(filePath);
-      })) {
-        return filePath;
-      }
-    }
-    function getIncludePath(path4, options2) {
-      var includePath;
-      var filePath;
-      var views = options2.views;
-      var match = /^[A-Za-z]+:\\|^\//.exec(path4);
-      if (match && match.length) {
-        path4 = path4.replace(/^\/*/, "");
-        if (Array.isArray(options2.root)) {
-          includePath = resolvePaths(path4, options2.root);
-        } else {
-          includePath = exports2.resolveInclude(path4, options2.root || "/", true);
-        }
-      } else {
-        if (options2.filename) {
-          filePath = exports2.resolveInclude(path4, options2.filename);
-          if (fs3.existsSync(filePath)) {
-            includePath = filePath;
-          }
-        }
-        if (!includePath && Array.isArray(views)) {
-          includePath = resolvePaths(path4, views);
-        }
-        if (!includePath && typeof options2.includer !== "function") {
-          throw new Error('Could not find the include file "' + options2.escapeFunction(path4) + '"');
-        }
-      }
-      return includePath;
-    }
-    function handleCache(options2, template) {
-      var func;
-      var filename = options2.filename;
-      var hasTemplate = arguments.length > 1;
-      if (options2.cache) {
-        if (!filename) {
-          throw new Error("cache option requires a filename");
-        }
-        func = exports2.cache.get(filename);
-        if (func) {
-          return func;
-        }
-        if (!hasTemplate) {
-          template = fileLoader(filename).toString().replace(_BOM, "");
-        }
-      } else if (!hasTemplate) {
-        if (!filename) {
-          throw new Error("Internal EJS error: no file name or template provided");
-        }
-        template = fileLoader(filename).toString().replace(_BOM, "");
-      }
-      func = exports2.compile(template, options2);
-      if (options2.cache) {
-        exports2.cache.set(filename, func);
-      }
-      return func;
-    }
-    function fileLoader(filePath) {
-      return exports2.fileLoader(filePath);
-    }
-    function includeFile(path4, options2) {
-      var opts = utils.shallowCopy(utils.createNullProtoObjWherePossible(), options2);
-      opts.filename = getIncludePath(path4, opts);
-      if (typeof options2.includer === "function") {
-        var includerResult = options2.includer(path4, opts.filename);
-        if (includerResult) {
-          if (includerResult.filename) {
-            opts.filename = includerResult.filename;
-          }
-          if (includerResult.template) {
-            return handleCache(opts, includerResult.template);
-          }
-        }
-      }
-      return handleCache(opts);
-    }
-    function rethrow(err, str, flnm, lineno, esc) {
-      var lines = str.split("\n");
-      var start = Math.max(lineno - 3, 0);
-      var end = Math.min(lines.length, lineno + 3);
-      var filename = esc(flnm);
-      var context = lines.slice(start, end).map(function(line, i) {
-        var curr = i + start + 1;
-        return (curr == lineno ? " >> " : "    ") + curr + "| " + line;
-      }).join("\n");
-      err.path = filename;
-      err.message = (filename || "ejs") + ":" + lineno + "\n" + context + "\n\n" + err.message;
-      throw err;
-    }
-    function stripSemi(str) {
-      return str.replace(/;(\s*$)/, "$1");
-    }
-    exports2.compile = function compile(template, opts) {
-      var templ;
-      if (opts && opts.scope) {
-        if (!scopeOptionWarned) {
-          console.warn("`scope` option is deprecated and will be removed in EJS 3");
-          scopeOptionWarned = true;
-        }
-        if (!opts.context) {
-          opts.context = opts.scope;
-        }
-        delete opts.scope;
-      }
-      templ = new Template(template, opts);
-      return templ.compile();
-    };
-    exports2.render = function(template, d, o) {
-      var data = d || utils.createNullProtoObjWherePossible();
-      var opts = o || utils.createNullProtoObjWherePossible();
-      if (arguments.length == 2) {
-        utils.shallowCopyFromList(opts, data, _OPTS_PASSABLE_WITH_DATA);
-      }
-      return handleCache(opts, template)(data);
-    };
-    exports2.renderFile = function() {
-      var args = Array.prototype.slice.call(arguments);
-      var filename = args.shift();
-      var cb;
-      var opts = { filename };
-      var data;
-      var viewOpts;
-      if (typeof arguments[arguments.length - 1] == "function") {
-        cb = args.pop();
-      }
-      if (args.length) {
-        data = args.shift();
-        if (args.length) {
-          utils.shallowCopy(opts, args.pop());
-        } else {
-          if (data.settings) {
-            if (data.settings.views) {
-              opts.views = data.settings.views;
-            }
-            if (data.settings["view cache"]) {
-              opts.cache = true;
-            }
-            viewOpts = data.settings["view options"];
-            if (viewOpts) {
-              utils.shallowCopy(opts, viewOpts);
-            }
-          }
-          utils.shallowCopyFromList(opts, data, _OPTS_PASSABLE_WITH_DATA_EXPRESS);
-        }
-        opts.filename = filename;
-      } else {
-        data = utils.createNullProtoObjWherePossible();
-      }
-      return handleCache(opts)(data);
-    };
-    exports2.Template = Template;
-    exports2.clearCache = function() {
-      exports2.cache.reset();
-    };
-    function Template(text, optsParam) {
-      var opts = utils.hasOwnOnlyObject(optsParam);
-      var options2 = utils.createNullProtoObjWherePossible();
-      this.templateText = text;
-      this.mode = null;
-      this.truncate = false;
-      this.currentLine = 1;
-      this.source = "";
-      options2.client = opts.client || false;
-      options2.escapeFunction = opts.escape || opts.escapeFunction || utils.escapeXML;
-      options2.compileDebug = opts.compileDebug !== false;
-      options2.debug = !!opts.debug;
-      options2.filename = opts.filename;
-      options2.openDelimiter = opts.openDelimiter || exports2.openDelimiter || _DEFAULT_OPEN_DELIMITER;
-      options2.closeDelimiter = opts.closeDelimiter || exports2.closeDelimiter || _DEFAULT_CLOSE_DELIMITER;
-      options2.delimiter = opts.delimiter || exports2.delimiter || _DEFAULT_DELIMITER;
-      options2.strict = opts.strict || false;
-      options2.context = opts.context;
-      options2.cache = opts.cache || false;
-      options2.rmWhitespace = opts.rmWhitespace;
-      options2.root = opts.root;
-      options2.includer = opts.includer;
-      options2.outputFunctionName = opts.outputFunctionName;
-      options2.localsName = opts.localsName || exports2.localsName || _DEFAULT_LOCALS_NAME;
-      options2.views = opts.views;
-      options2.async = opts.async;
-      options2.destructuredLocals = opts.destructuredLocals;
-      options2.legacyInclude = typeof opts.legacyInclude != "undefined" ? !!opts.legacyInclude : true;
-      if (options2.strict) {
-        options2._with = false;
-      } else {
-        options2._with = typeof opts._with != "undefined" ? opts._with : true;
-      }
-      this.opts = options2;
-      this.regex = this.createRegex();
-    }
-    Template.modes = {
-      EVAL: "eval",
-      ESCAPED: "escaped",
-      RAW: "raw",
-      COMMENT: "comment",
-      LITERAL: "literal"
-    };
-    Template.prototype = {
-      createRegex: function() {
-        var str = _REGEX_STRING;
-        var delim = utils.escapeRegExpChars(this.opts.delimiter);
-        var open = utils.escapeRegExpChars(this.opts.openDelimiter);
-        var close = utils.escapeRegExpChars(this.opts.closeDelimiter);
-        str = str.replace(/%/g, delim).replace(/</g, open).replace(/>/g, close);
-        return new RegExp(str);
-      },
-      compile: function() {
-        var src;
-        var fn;
-        var opts = this.opts;
-        var prepended = "";
-        var appended = "";
-        var escapeFn = opts.escapeFunction;
-        var ctor;
-        var sanitizedFilename = opts.filename ? JSON.stringify(opts.filename) : "undefined";
-        if (!this.source) {
-          this.generateSource();
-          prepended += '  var __output = "";\n  function __append(s) { if (s !== undefined && s !== null) __output += s }\n';
-          if (opts.outputFunctionName) {
-            if (!_JS_IDENTIFIER.test(opts.outputFunctionName)) {
-              throw new Error("outputFunctionName is not a valid JS identifier.");
-            }
-            prepended += "  var " + opts.outputFunctionName + " = __append;\n";
-          }
-          if (opts.localsName && !_JS_IDENTIFIER.test(opts.localsName)) {
-            throw new Error("localsName is not a valid JS identifier.");
-          }
-          if (opts.destructuredLocals && opts.destructuredLocals.length) {
-            var destructuring = "  var __locals = (" + opts.localsName + " || {}),\n";
-            for (var i = 0; i < opts.destructuredLocals.length; i++) {
-              var name = opts.destructuredLocals[i];
-              if (!_JS_IDENTIFIER.test(name)) {
-                throw new Error("destructuredLocals[" + i + "] is not a valid JS identifier.");
-              }
-              if (i > 0) {
-                destructuring += ",\n  ";
-              }
-              destructuring += name + " = __locals." + name;
-            }
-            prepended += destructuring + ";\n";
-          }
-          if (opts._with !== false) {
-            prepended += "  with (" + opts.localsName + " || {}) {\n";
-            appended += "  }\n";
-          }
-          appended += "  return __output;\n";
-          this.source = prepended + this.source + appended;
-        }
-        if (opts.compileDebug) {
-          src = "var __line = 1\n  , __lines = " + JSON.stringify(this.templateText) + "\n  , __filename = " + sanitizedFilename + ";\ntry {\n" + this.source + "} catch (e) {\n  rethrow(e, __lines, __filename, __line, escapeFn);\n}\n";
-        } else {
-          src = this.source;
-        }
-        if (opts.client) {
-          src = "escapeFn = escapeFn || " + escapeFn.toString() + ";\n" + src;
-          if (opts.compileDebug) {
-            src = "rethrow = rethrow || " + rethrow.toString() + ";\n" + src;
-          }
-        }
-        if (opts.strict) {
-          src = '"use strict";\n' + src;
-        }
-        if (opts.debug) {
-          console.log(src);
-        }
-        if (opts.compileDebug && opts.filename) {
-          src = src + "\n//# sourceURL=" + sanitizedFilename + "\n";
-        }
-        try {
-          if (opts.async) {
-            try {
-              ctor = new Function("return (async function(){}).constructor;")();
-            } catch (e) {
-              if (e instanceof SyntaxError) {
-                throw new Error("This environment does not support async/await");
-              } else {
-                throw e;
-              }
-            }
-          } else {
-            ctor = Function;
-          }
-          fn = new ctor(opts.localsName + ", escapeFn, include, rethrow", src);
-        } catch (e) {
-          if (e instanceof SyntaxError) {
-            if (opts.filename) {
-              e.message += " in " + opts.filename;
-            }
-            e.message += " while compiling ejs\n\n";
-            e.message += "If the above error is not helpful, you may want to try EJS-Lint:\n";
-            e.message += "https://github.com/RyanZim/EJS-Lint";
-            if (!opts.async) {
-              e.message += "\n";
-              e.message += "Or, if you meant to create an async function, pass `async: true` as an option.";
-            }
-          }
-          throw e;
-        }
-        var returnedFn = opts.client ? fn : function anonymous(data) {
-          var include = function(path4, includeData) {
-            var d = utils.shallowCopy(utils.createNullProtoObjWherePossible(), data);
-            if (includeData) {
-              d = utils.shallowCopy(d, includeData);
-            }
-            return includeFile(path4, opts)(d);
-          };
-          return fn.apply(
-            opts.context,
-            [data || utils.createNullProtoObjWherePossible(), escapeFn, include, rethrow]
-          );
-        };
-        if (opts.filename && typeof Object.defineProperty === "function") {
-          var filename = opts.filename;
-          var basename = path3.basename(filename, path3.extname(filename));
-          try {
-            Object.defineProperty(returnedFn, "name", {
-              value: basename,
-              writable: false,
-              enumerable: false,
-              configurable: true
-            });
-          } catch (e) {
-          }
-        }
-        return returnedFn;
-      },
-      generateSource: function() {
-        var opts = this.opts;
-        if (opts.rmWhitespace) {
-          this.templateText = this.templateText.replace(/[\r\n]+/g, "\n").replace(/^\s+|\s+$/gm, "");
-        }
-        this.templateText = this.templateText.replace(/[ \t]*<%_/gm, "<%_").replace(/_%>[ \t]*/gm, "_%>");
-        var self2 = this;
-        var matches = this.parseTemplateText();
-        var d = this.opts.delimiter;
-        var o = this.opts.openDelimiter;
-        var c = this.opts.closeDelimiter;
-        if (matches && matches.length) {
-          matches.forEach(function(line, index) {
-            var closing;
-            if (line.indexOf(o + d) === 0 && line.indexOf(o + d + d) !== 0) {
-              closing = matches[index + 2];
-              if (!(closing == d + c || closing == "-" + d + c || closing == "_" + d + c)) {
-                throw new Error('Could not find matching close tag for "' + line + '".');
-              }
-            }
-            self2.scanLine(line);
-          });
-        }
-      },
-      parseTemplateText: function() {
-        var str = this.templateText;
-        var pat = this.regex;
-        var result = pat.exec(str);
-        var arr = [];
-        var firstPos;
-        while (result) {
-          firstPos = result.index;
-          if (firstPos !== 0) {
-            arr.push(str.substring(0, firstPos));
-            str = str.slice(firstPos);
-          }
-          arr.push(result[0]);
-          str = str.slice(result[0].length);
-          result = pat.exec(str);
-        }
-        if (str) {
-          arr.push(str);
-        }
-        return arr;
-      },
-      _addOutput: function(line) {
-        if (this.truncate) {
-          line = line.replace(/^(?:\r\n|\r|\n)/, "");
-          this.truncate = false;
-        }
-        if (!line) {
-          return line;
-        }
-        line = line.replace(/\\/g, "\\\\");
-        line = line.replace(/\n/g, "\\n");
-        line = line.replace(/\r/g, "\\r");
-        line = line.replace(/"/g, '\\"');
-        this.source += '    ; __append("' + line + '")\n';
-      },
-      scanLine: function(line) {
-        var self2 = this;
-        var d = this.opts.delimiter;
-        var o = this.opts.openDelimiter;
-        var c = this.opts.closeDelimiter;
-        var newLineCount = 0;
-        newLineCount = line.split("\n").length - 1;
-        switch (line) {
-          case o + d:
-          case o + d + "_":
-            this.mode = Template.modes.EVAL;
-            break;
-          case o + d + "=":
-            this.mode = Template.modes.ESCAPED;
-            break;
-          case o + d + "-":
-            this.mode = Template.modes.RAW;
-            break;
-          case o + d + "#":
-            this.mode = Template.modes.COMMENT;
-            break;
-          case o + d + d:
-            this.mode = Template.modes.LITERAL;
-            this.source += '    ; __append("' + line.replace(o + d + d, o + d) + '")\n';
-            break;
-          case d + d + c:
-            this.mode = Template.modes.LITERAL;
-            this.source += '    ; __append("' + line.replace(d + d + c, d + c) + '")\n';
-            break;
-          case d + c:
-          case "-" + d + c:
-          case "_" + d + c:
-            if (this.mode == Template.modes.LITERAL) {
-              this._addOutput(line);
-            }
-            this.mode = null;
-            this.truncate = line.indexOf("-") === 0 || line.indexOf("_") === 0;
-            break;
-          default:
-            if (this.mode) {
-              switch (this.mode) {
-                case Template.modes.EVAL:
-                case Template.modes.ESCAPED:
-                case Template.modes.RAW:
-                  if (line.lastIndexOf("//") > line.lastIndexOf("\n")) {
-                    line += "\n";
-                  }
-              }
-              switch (this.mode) {
-                // Just executing code
-                case Template.modes.EVAL:
-                  this.source += "    ; " + line + "\n";
-                  break;
-                // Exec, esc, and output
-                case Template.modes.ESCAPED:
-                  this.source += "    ; __append(escapeFn(" + stripSemi(line) + "))\n";
-                  break;
-                // Exec and output
-                case Template.modes.RAW:
-                  this.source += "    ; __append(" + stripSemi(line) + ")\n";
-                  break;
-                case Template.modes.COMMENT:
-                  break;
-                // Literal <%% mode, append as raw output
-                case Template.modes.LITERAL:
-                  this._addOutput(line);
-                  break;
-              }
-            } else {
-              this._addOutput(line);
-            }
-        }
-        if (self2.opts.compileDebug && newLineCount) {
-          this.currentLine += newLineCount;
-          this.source += "    ; __line = " + this.currentLine + "\n";
-        }
-      }
-    };
-    exports2.escapeXML = utils.escapeXML;
-    exports2.__express = exports2.renderFile;
-    exports2.VERSION = _VERSION_STRING;
-    exports2.name = _NAME;
-    if (typeof window != "undefined") {
-      window.ejs = exports2;
-    }
-  }
-});
-
-// node_modules/pocketbase-stringify/dist/index.js
-var require_dist2 = __commonJS({
-  "node_modules/pocketbase-stringify/dist/index.js"(exports2, module2) {
-    "use strict";
-    init_cjs_shims();
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var src_exports2 = {};
-    __export2(src_exports2, {
-      defaultReplacer: () => defaultReplacer,
-      stringify: () => stringify2
-    });
-    module2.exports = __toCommonJS2(src_exports2);
-    var defaultReplacer = (k, v) => {
-      if (v instanceof Error) {
-        return v.stack;
-      }
-      if (v instanceof RegExp) {
-        return v.toString();
-      }
-      if (v instanceof Function) {
-        return v.toString();
-      }
-      return v;
-    };
-    var stringify2 = (obj, replacer = defaultReplacer, space = 0) => {
-      const seen = /* @__PURE__ */ new WeakSet();
-      return JSON.stringify(
-        obj,
-        (k, v) => {
-          if (typeof v === "object" && v !== null) {
-            if (seen.has(v)) {
-              return replacer ? replacer(k, `[Circular]`) : `[Circular]`;
-            }
-            seen.add(v);
-          }
-          return replacer ? replacer(k, v) : v;
-        },
-        space
-      );
-    };
-  }
-});
-
-// node_modules/pocketbase-log/dist/index.js
-var require_dist3 = __commonJS({
-  "node_modules/pocketbase-log/dist/index.js"(exports2, module2) {
-    "use strict";
-    init_cjs_shims();
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var src_exports2 = {};
-    __export2(src_exports2, {
-      dbg: () => dbg2,
-      error: () => error,
-      info: () => info,
-      log: () => log2,
-      warn: () => warn
-    });
-    module2.exports = __toCommonJS2(src_exports2);
-    var import_pocketbase_stringify2 = require_dist2();
-    var replacer = (k, v) => {
-      if (v instanceof Error) {
-        return `${v}
-${v.stack}`;
-      }
-      if (v instanceof RegExp) {
-        return v.toString();
-      }
-      if (v instanceof Function) {
-        return v.toString();
-      }
-      return v;
-    };
-    var prepare = (objs) => {
-      const parts = objs.map((o) => {
-        if (o instanceof Error) {
-          return o.stack;
-        }
-        if (o instanceof RegExp) {
-          return o.toString();
-        }
-        if (o instanceof Function) {
-          return o.toString();
-        }
-        if (typeof o === "object") {
-          return (0, import_pocketbase_stringify2.stringify)(o, replacer, 2);
-        }
-        return o;
-      });
-      return parts.join(` `);
-    };
-    var dbg2 = (...objs) => {
-      const s = prepare(objs);
-      $app.logger().debug(s);
-    };
-    var info = (...objs) => {
-      const s = prepare(objs);
-      $app.logger().info(s);
-    };
-    var warn = (...objs) => {
-      const s = prepare(objs);
-      $app.logger().warn(s);
-    };
-    var error = (...objs) => {
-      const s = prepare(objs);
-      $app.logger().error(s);
-    };
-    var log2 = (...objs) => {
-      const s = prepare(objs);
-      console.log(s);
-    };
-  }
-});
-
-// node_modules/pocketbase-node/dist/index.js
-var require_dist4 = __commonJS({
-  "node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
-    "use strict";
-    init_cjs_shims();
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var src_exports2 = {};
-    __export2(src_exports2, {
-      child_process: () => child_process_exports,
-      fs: () => fs_exports,
-      path: () => path_exports,
-      process: () => process_exports
-    });
-    module2.exports = __toCommonJS2(src_exports2);
-    var fs_exports = {};
-    __export2(fs_exports, {
-      existsSync: () => existsSync,
-      mkdirSync: () => mkdirSync,
-      readFileSync: () => readFileSync,
-      writeFileSync: () => writeFileSync
-    });
-    function byteArrayToUtf8(byteArray) {
-      let utf8String = "";
-      for (let i = 0; i < byteArray.length; i++) {
-        utf8String += String.fromCharCode(byteArray[i]);
-      }
-      return decodeURIComponent(escape(utf8String));
-    }
-    var readFileSync = (path3, options2) => {
-      if (typeof path3 !== "string") {
-        throw new Error("path must be a string");
-      }
-      const res = $os.readFile(path3);
-      if (typeof res === "string") {
-        return res;
-      }
-      const s = byteArrayToUtf8(res);
-      return s;
-    };
-    var existsSync = (pathLike, fileType = "both") => {
-      const isDir = (() => {
-        try {
-          $os.readDir(pathLike);
-          return true;
-        } catch {
-          return false;
-        }
-      })();
-      const isFile = (() => {
-        if (isDir) {
-          return false;
-        }
-        try {
-          return $filesystem.fileFromPath(pathLike) !== null;
-        } catch {
-          return false;
-        }
-      })();
-      return fileType === "file" ? isFile : fileType === "dir" ? isDir : isFile || isDir;
-    };
-    var writeFileSync = (path3, data, options2) => {
-      if (typeof path3 !== "string") {
-        throw new Error("path must be a string");
-      }
-      if (typeof data !== "string") {
-        throw new Error("data must be a string");
-      }
-      const mode = (() => {
-        if (options2 && typeof options2 === "object" && "mode" in options2) {
-          return options2.mode;
-        }
-        return 420;
-      })();
-      $os.writeFile(path3, data, mode);
-    };
-    function mkdirSync(path3, options2) {
-      const mode = (() => {
-        if (options2 && typeof options2 === "object" && "mode" in options2) {
-          return options2.mode;
-        }
-        return 493;
-      })();
-      $os.mkdirAll(path3.toString(), mode);
-      return;
-    }
-    var path_exports = {};
-    __export2(path_exports, {
-      basename: () => basename,
-      delimiter: () => delimiter,
-      dirname: () => dirname,
-      extname: () => extname,
-      format: () => format,
-      isAbsolute: () => isAbsolute,
-      join: () => join,
-      normalize: () => normalize,
-      parse: () => parse,
-      relative: () => relative,
-      resolve: () => resolve,
-      sep: () => sep,
-      win32: () => win32
-    });
-    function assertPath(path3) {
-      if (typeof path3 !== "string") {
-        throw new TypeError(
-          "Path must be a string. Received " + JSON.stringify(path3)
-        );
-      }
-    }
-    function normalizeStringPosix(path3, allowAboveRoot) {
-      var res = "";
-      var lastSegmentLength = 0;
-      var lastSlash = -1;
-      var dots = 0;
-      var code;
-      for (var i = 0; i <= path3.length; ++i) {
-        if (i < path3.length) code = path3.charCodeAt(i);
-        else if (code === 47) break;
-        else code = 47;
-        if (code === 47) {
-          if (lastSlash === i - 1 || dots === 1) {
-          } else if (lastSlash !== i - 1 && dots === 2) {
-            if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
-              if (res.length > 2) {
-                var lastSlashIndex = res.lastIndexOf("/");
-                if (lastSlashIndex !== res.length - 1) {
-                  if (lastSlashIndex === -1) {
-                    res = "";
-                    lastSegmentLength = 0;
-                  } else {
-                    res = res.slice(0, lastSlashIndex);
-                    lastSegmentLength = res.length - 1 - res.lastIndexOf("/");
-                  }
-                  lastSlash = i;
-                  dots = 0;
-                  continue;
-                }
-              } else if (res.length === 2 || res.length === 1) {
-                res = "";
-                lastSegmentLength = 0;
-                lastSlash = i;
-                dots = 0;
-                continue;
-              }
-            }
-            if (allowAboveRoot) {
-              if (res.length > 0) res += "/..";
-              else res = "..";
-              lastSegmentLength = 2;
-            }
-          } else {
-            if (res.length > 0) res += "/" + path3.slice(lastSlash + 1, i);
-            else res = path3.slice(lastSlash + 1, i);
-            lastSegmentLength = i - lastSlash - 1;
-          }
-          lastSlash = i;
-          dots = 0;
-        } else if (code === 46 && dots !== -1) {
-          ++dots;
-        } else {
-          dots = -1;
-        }
-      }
-      return res;
-    }
-    function _format(sep2, pathObject) {
-      var dir = pathObject.dir || pathObject.root;
-      var base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
-      if (!dir) {
-        return base;
-      }
-      if (dir === pathObject.root) {
-        return dir + base;
-      }
-      return dir + sep2 + base;
-    }
-    function resolve(...args) {
-      var resolvedPath = "";
-      var resolvedAbsolute = false;
-      var cwd2;
-      for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-        var path3;
-        if (i >= 0) path3 = arguments[i];
-        else {
-          if (cwd2 === void 0) cwd2 = $os.getwd();
-          path3 = cwd2;
-        }
-        assertPath(path3);
-        if (path3.length === 0) {
-          continue;
-        }
-        resolvedPath = path3 + "/" + resolvedPath;
-        resolvedAbsolute = path3.charCodeAt(0) === 47;
-      }
-      resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
-      if (resolvedAbsolute) {
-        if (resolvedPath.length > 0) return "/" + resolvedPath;
-        else return "/";
-      } else if (resolvedPath.length > 0) {
-        return resolvedPath;
-      } else {
-        return ".";
-      }
-    }
-    function normalize(path3) {
-      assertPath(path3);
-      if (path3.length === 0) return ".";
-      var isAbsolute2 = path3.charCodeAt(0) === 47;
-      var trailingSeparator = path3.charCodeAt(path3.length - 1) === 47;
-      path3 = normalizeStringPosix(path3, !isAbsolute2);
-      if (path3.length === 0 && !isAbsolute2) path3 = ".";
-      if (path3.length > 0 && trailingSeparator) path3 += "/";
-      if (isAbsolute2) return "/" + path3;
-      return path3;
-    }
-    function isAbsolute(path3) {
-      assertPath(path3);
-      return path3.length > 0 && path3.charCodeAt(0) === 47;
-    }
-    function join(...paths) {
-      if (arguments.length === 0) return ".";
-      var joined;
-      for (var i = 0; i < arguments.length; ++i) {
-        var arg = arguments[i];
-        assertPath(arg);
-        if (arg.length > 0) {
-          if (joined === void 0) joined = arg;
-          else joined += "/" + arg;
-        }
-      }
-      if (joined === void 0) return ".";
-      return normalize(joined);
-    }
-    function relative(from, to) {
-      assertPath(from);
-      assertPath(to);
-      if (from === to) return "";
-      from = resolve(from);
-      to = resolve(to);
-      if (from === to) return "";
-      var fromStart = 1;
-      for (; fromStart < from.length; ++fromStart) {
-        if (from.charCodeAt(fromStart) !== 47) break;
-      }
-      var fromEnd = from.length;
-      var fromLen = fromEnd - fromStart;
-      var toStart = 1;
-      for (; toStart < to.length; ++toStart) {
-        if (to.charCodeAt(toStart) !== 47) break;
-      }
-      var toEnd = to.length;
-      var toLen = toEnd - toStart;
-      var length = fromLen < toLen ? fromLen : toLen;
-      var lastCommonSep = -1;
-      var i = 0;
-      for (; i <= length; ++i) {
-        if (i === length) {
-          if (toLen > length) {
-            if (to.charCodeAt(toStart + i) === 47) {
-              return to.slice(toStart + i + 1);
-            } else if (i === 0) {
-              return to.slice(toStart + i);
-            }
-          } else if (fromLen > length) {
-            if (from.charCodeAt(fromStart + i) === 47) {
-              lastCommonSep = i;
-            } else if (i === 0) {
-              lastCommonSep = 0;
-            }
-          }
-          break;
-        }
-        var fromCode = from.charCodeAt(fromStart + i);
-        var toCode = to.charCodeAt(toStart + i);
-        if (fromCode !== toCode) break;
-        else if (fromCode === 47) lastCommonSep = i;
-      }
-      var out = "";
-      for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
-        if (i === fromEnd || from.charCodeAt(i) === 47) {
-          if (out.length === 0) out += "..";
-          else out += "/..";
-        }
-      }
-      if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
-      else {
-        toStart += lastCommonSep;
-        if (to.charCodeAt(toStart) === 47) ++toStart;
-        return to.slice(toStart);
-      }
-    }
-    function dirname(path3) {
-      assertPath(path3);
-      if (path3.length === 0) return ".";
-      var code = path3.charCodeAt(0);
-      var hasRoot = code === 47;
-      var end = -1;
-      var matchedSlash = true;
-      for (var i = path3.length - 1; i >= 1; --i) {
-        code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            end = i;
-            break;
-          }
-        } else {
-          matchedSlash = false;
-        }
-      }
-      if (end === -1) return hasRoot ? "/" : ".";
-      if (hasRoot && end === 1) return "//";
-      return path3.slice(0, end);
-    }
-    function basename(path3, ext) {
-      if (ext !== void 0 && typeof ext !== "string")
-        throw new TypeError('"ext" argument must be a string');
-      assertPath(path3);
-      var start = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var i;
-      if (ext !== void 0 && ext.length > 0 && ext.length <= path3.length) {
-        if (ext.length === path3.length && ext === path3) return "";
-        var extIdx = ext.length - 1;
-        var firstNonSlashEnd = -1;
-        for (i = path3.length - 1; i >= 0; --i) {
-          var code = path3.charCodeAt(i);
-          if (code === 47) {
-            if (!matchedSlash) {
-              start = i + 1;
-              break;
-            }
-          } else {
-            if (firstNonSlashEnd === -1) {
-              matchedSlash = false;
-              firstNonSlashEnd = i + 1;
-            }
-            if (extIdx >= 0) {
-              if (code === ext.charCodeAt(extIdx)) {
-                if (--extIdx === -1) {
-                  end = i;
-                }
-              } else {
-                extIdx = -1;
-                end = firstNonSlashEnd;
-              }
-            }
-          }
-        }
-        if (start === end) end = firstNonSlashEnd;
-        else if (end === -1) end = path3.length;
-        return path3.slice(start, end);
-      } else {
-        for (i = path3.length - 1; i >= 0; --i) {
-          if (path3.charCodeAt(i) === 47) {
-            if (!matchedSlash) {
-              start = i + 1;
-              break;
-            }
-          } else if (end === -1) {
-            matchedSlash = false;
-            end = i + 1;
-          }
-        }
-        if (end === -1) return "";
-        return path3.slice(start, end);
-      }
-    }
-    function extname(path3) {
-      assertPath(path3);
-      var startDot = -1;
-      var startPart = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var preDotState = 0;
-      for (var i = path3.length - 1; i >= 0; --i) {
-        var code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            startPart = i + 1;
-            break;
-          }
-          continue;
-        }
-        if (end === -1) {
-          matchedSlash = false;
-          end = i + 1;
-        }
-        if (code === 46) {
-          if (startDot === -1) startDot = i;
-          else if (preDotState !== 1) preDotState = 1;
-        } else if (startDot !== -1) {
-          preDotState = -1;
-        }
-      }
-      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
-      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-        return "";
-      }
-      return path3.slice(startDot, end);
-    }
-    function format(pathObject) {
-      if (pathObject === null || typeof pathObject !== "object") {
-        throw new TypeError(
-          'The "pathObject" argument must be of type Object. Received type ' + typeof pathObject
-        );
-      }
-      return _format("/", pathObject);
-    }
-    function parse(path3) {
-      assertPath(path3);
-      var ret = { root: "", dir: "", base: "", ext: "", name: "" };
-      if (path3.length === 0) return ret;
-      var code = path3.charCodeAt(0);
-      var isAbsolute2 = code === 47;
-      var start;
-      if (isAbsolute2) {
-        ret.root = "/";
-        start = 1;
-      } else {
-        start = 0;
-      }
-      var startDot = -1;
-      var startPart = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var i = path3.length - 1;
-      var preDotState = 0;
-      for (; i >= start; --i) {
-        code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            startPart = i + 1;
-            break;
-          }
-          continue;
-        }
-        if (end === -1) {
-          matchedSlash = false;
-          end = i + 1;
-        }
-        if (code === 46) {
-          if (startDot === -1) startDot = i;
-          else if (preDotState !== 1) preDotState = 1;
-        } else if (startDot !== -1) {
-          preDotState = -1;
-        }
-      }
-      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
-      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-        if (end !== -1) {
-          if (startPart === 0 && isAbsolute2)
-            ret.base = ret.name = path3.slice(1, end);
-          else ret.base = ret.name = path3.slice(startPart, end);
-        }
-      } else {
-        if (startPart === 0 && isAbsolute2) {
-          ret.name = path3.slice(1, startDot);
-          ret.base = path3.slice(1, end);
-        } else {
-          ret.name = path3.slice(startPart, startDot);
-          ret.base = path3.slice(startPart, end);
-        }
-        ret.ext = path3.slice(startDot, end);
-      }
-      if (startPart > 0) ret.dir = path3.slice(0, startPart - 1);
-      else if (isAbsolute2) ret.dir = "/";
-      return ret;
-    }
-    var sep = "/";
-    var delimiter = ":";
-    var win32 = null;
-    var child_process_exports = {};
-    __export2(child_process_exports, {
-      execSync: () => execSync
-    });
-    var execSync = (cmdArr) => {
-      const [cmd, ...args] = cmdArr;
-      const _cmd = $os.cmd(cmd, ...args);
-      const charOut = _cmd.output();
-      const output = String.fromCharCode(...charOut);
-      return output;
-    };
-    var process_exports = {};
-    __export2(process_exports, {
-      cwd: () => cwd,
-      env: () => env
-    });
-    var cwd = () => $os.getwd();
-    var { env } = process;
-  }
-});
-
-// node_modules/requires-port/index.js
-var require_requires_port = __commonJS({
-  "node_modules/requires-port/index.js"(exports2, module2) {
-    "use strict";
-    init_cjs_shims();
-    module2.exports = function required(port, protocol) {
-      protocol = protocol.split(":")[0];
-      port = +port;
-      if (!port) return false;
-      switch (protocol) {
-        case "http":
-        case "ws":
-          return port !== 80;
-        case "https":
-        case "wss":
-          return port !== 443;
-        case "ftp":
-          return port !== 21;
-        case "gopher":
-          return port !== 70;
-        case "file":
-          return false;
-      }
-      return port !== 0;
-    };
-  }
-});
-
-// node_modules/querystringify/index.js
-var require_querystringify = __commonJS({
-  "node_modules/querystringify/index.js"(exports2) {
-    "use strict";
-    init_cjs_shims();
-    var has = Object.prototype.hasOwnProperty;
-    var undef;
-    function decode(input) {
-      try {
-        return decodeURIComponent(input.replace(/\+/g, " "));
-      } catch (e) {
-        return null;
-      }
-    }
-    function encode(input) {
-      try {
-        return encodeURIComponent(input);
-      } catch (e) {
-        return null;
-      }
-    }
-    function querystring(query) {
-      var parser2 = /([^=?#&]+)=?([^&]*)/g, result = {}, part;
-      while (part = parser2.exec(query)) {
-        var key = decode(part[1]), value = decode(part[2]);
-        if (key === null || value === null || key in result) continue;
-        result[key] = value;
-      }
-      return result;
-    }
-    function querystringify(obj, prefix) {
-      prefix = prefix || "";
-      var pairs = [], value, key;
-      if ("string" !== typeof prefix) prefix = "?";
-      for (key in obj) {
-        if (has.call(obj, key)) {
-          value = obj[key];
-          if (!value && (value === null || value === undef || isNaN(value))) {
-            value = "";
-          }
-          key = encode(key);
-          value = encode(value);
-          if (key === null || value === null) continue;
-          pairs.push(key + "=" + value);
-        }
-      }
-      return pairs.length ? prefix + pairs.join("&") : "";
-    }
-    exports2.stringify = querystringify;
-    exports2.parse = querystring;
-  }
-});
-
-// node_modules/url-parse/index.js
-var require_url_parse = __commonJS({
-  "node_modules/url-parse/index.js"(exports2, module2) {
-    "use strict";
-    init_cjs_shims();
-    var required = require_requires_port();
-    var qs = require_querystringify();
-    var controlOrWhitespace = /^[\x00-\x20\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/;
-    var CRHTLF = /[\n\r\t]/g;
-    var slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
-    var port = /:\d+$/;
-    var protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\\/]+)?([\S\s]*)/i;
-    var windowsDriveLetter = /^[a-zA-Z]:/;
-    function trimLeft(str) {
-      return (str ? str : "").toString().replace(controlOrWhitespace, "");
-    }
-    var rules = [
-      ["#", "hash"],
-      // Extract from the back.
-      ["?", "query"],
-      // Extract from the back.
-      function sanitize(address, url) {
-        return isSpecial(url.protocol) ? address.replace(/\\/g, "/") : address;
-      },
-      ["/", "pathname"],
-      // Extract from the back.
-      ["@", "auth", 1],
-      // Extract from the front.
-      [NaN, "host", void 0, 1, 1],
-      // Set left over value.
-      [/:(\d*)$/, "port", void 0, 1],
-      // RegExp the back.
-      [NaN, "hostname", void 0, 1, 1]
-      // Set left over.
-    ];
-    var ignore = { hash: 1, query: 1 };
-    function lolcation(loc) {
-      var globalVar;
-      if (typeof window !== "undefined") globalVar = window;
-      else if (typeof global !== "undefined") globalVar = global;
-      else if (typeof self !== "undefined") globalVar = self;
-      else globalVar = {};
-      var location = globalVar.location || {};
-      loc = loc || location;
-      var finaldestination = {}, type = typeof loc, key;
-      if ("blob:" === loc.protocol) {
-        finaldestination = new Url(unescape(loc.pathname), {});
-      } else if ("string" === type) {
-        finaldestination = new Url(loc, {});
-        for (key in ignore) delete finaldestination[key];
-      } else if ("object" === type) {
-        for (key in loc) {
-          if (key in ignore) continue;
-          finaldestination[key] = loc[key];
-        }
-        if (finaldestination.slashes === void 0) {
-          finaldestination.slashes = slashes.test(loc.href);
-        }
-      }
-      return finaldestination;
-    }
-    function isSpecial(scheme) {
-      return scheme === "file:" || scheme === "ftp:" || scheme === "http:" || scheme === "https:" || scheme === "ws:" || scheme === "wss:";
-    }
-    function extractProtocol(address, location) {
-      address = trimLeft(address);
-      address = address.replace(CRHTLF, "");
-      location = location || {};
-      var match = protocolre.exec(address);
-      var protocol = match[1] ? match[1].toLowerCase() : "";
-      var forwardSlashes = !!match[2];
-      var otherSlashes = !!match[3];
-      var slashesCount = 0;
-      var rest;
-      if (forwardSlashes) {
-        if (otherSlashes) {
-          rest = match[2] + match[3] + match[4];
-          slashesCount = match[2].length + match[3].length;
-        } else {
-          rest = match[2] + match[4];
-          slashesCount = match[2].length;
-        }
-      } else {
-        if (otherSlashes) {
-          rest = match[3] + match[4];
-          slashesCount = match[3].length;
-        } else {
-          rest = match[4];
-        }
-      }
-      if (protocol === "file:") {
-        if (slashesCount >= 2) {
-          rest = rest.slice(2);
-        }
-      } else if (isSpecial(protocol)) {
-        rest = match[4];
-      } else if (protocol) {
-        if (forwardSlashes) {
-          rest = rest.slice(2);
-        }
-      } else if (slashesCount >= 2 && isSpecial(location.protocol)) {
-        rest = match[4];
-      }
-      return {
-        protocol,
-        slashes: forwardSlashes || isSpecial(protocol),
-        slashesCount,
-        rest
-      };
-    }
-    function resolve(relative, base) {
-      if (relative === "") return base;
-      var path3 = (base || "/").split("/").slice(0, -1).concat(relative.split("/")), i = path3.length, last = path3[i - 1], unshift = false, up = 0;
-      while (i--) {
-        if (path3[i] === ".") {
-          path3.splice(i, 1);
-        } else if (path3[i] === "..") {
-          path3.splice(i, 1);
-          up++;
-        } else if (up) {
-          if (i === 0) unshift = true;
-          path3.splice(i, 1);
-          up--;
-        }
-      }
-      if (unshift) path3.unshift("");
-      if (last === "." || last === "..") path3.push("");
-      return path3.join("/");
-    }
-    function Url(address, location, parser2) {
-      address = trimLeft(address);
-      address = address.replace(CRHTLF, "");
-      if (!(this instanceof Url)) {
-        return new Url(address, location, parser2);
-      }
-      var relative, extracted, parse, instruction, index, key, instructions = rules.slice(), type = typeof location, url = this, i = 0;
-      if ("object" !== type && "string" !== type) {
-        parser2 = location;
-        location = null;
-      }
-      if (parser2 && "function" !== typeof parser2) parser2 = qs.parse;
-      location = lolcation(location);
-      extracted = extractProtocol(address || "", location);
-      relative = !extracted.protocol && !extracted.slashes;
-      url.slashes = extracted.slashes || relative && location.slashes;
-      url.protocol = extracted.protocol || location.protocol || "";
-      address = extracted.rest;
-      if (extracted.protocol === "file:" && (extracted.slashesCount !== 2 || windowsDriveLetter.test(address)) || !extracted.slashes && (extracted.protocol || extracted.slashesCount < 2 || !isSpecial(url.protocol))) {
-        instructions[3] = [/(.*)/, "pathname"];
-      }
-      for (; i < instructions.length; i++) {
-        instruction = instructions[i];
-        if (typeof instruction === "function") {
-          address = instruction(address, url);
-          continue;
-        }
-        parse = instruction[0];
-        key = instruction[1];
-        if (parse !== parse) {
-          url[key] = address;
-        } else if ("string" === typeof parse) {
-          index = parse === "@" ? address.lastIndexOf(parse) : address.indexOf(parse);
-          if (~index) {
-            if ("number" === typeof instruction[2]) {
-              url[key] = address.slice(0, index);
-              address = address.slice(index + instruction[2]);
-            } else {
-              url[key] = address.slice(index);
-              address = address.slice(0, index);
-            }
-          }
-        } else if (index = parse.exec(address)) {
-          url[key] = index[1];
-          address = address.slice(0, index.index);
-        }
-        url[key] = url[key] || (relative && instruction[3] ? location[key] || "" : "");
-        if (instruction[4]) url[key] = url[key].toLowerCase();
-      }
-      if (parser2) url.query = parser2(url.query);
-      if (relative && location.slashes && url.pathname.charAt(0) !== "/" && (url.pathname !== "" || location.pathname !== "")) {
-        url.pathname = resolve(url.pathname, location.pathname);
-      }
-      if (url.pathname.charAt(0) !== "/" && isSpecial(url.protocol)) {
-        url.pathname = "/" + url.pathname;
-      }
-      if (!required(url.port, url.protocol)) {
-        url.host = url.hostname;
-        url.port = "";
-      }
-      url.username = url.password = "";
-      if (url.auth) {
-        index = url.auth.indexOf(":");
-        if (~index) {
-          url.username = url.auth.slice(0, index);
-          url.username = encodeURIComponent(decodeURIComponent(url.username));
-          url.password = url.auth.slice(index + 1);
-          url.password = encodeURIComponent(decodeURIComponent(url.password));
-        } else {
-          url.username = encodeURIComponent(decodeURIComponent(url.auth));
-        }
-        url.auth = url.password ? url.username + ":" + url.password : url.username;
-      }
-      url.origin = url.protocol !== "file:" && isSpecial(url.protocol) && url.host ? url.protocol + "//" + url.host : "null";
-      url.href = url.toString();
-    }
-    function set(part, value, fn) {
-      var url = this;
-      switch (part) {
-        case "query":
-          if ("string" === typeof value && value.length) {
-            value = (fn || qs.parse)(value);
-          }
-          url[part] = value;
-          break;
-        case "port":
-          url[part] = value;
-          if (!required(value, url.protocol)) {
-            url.host = url.hostname;
-            url[part] = "";
-          } else if (value) {
-            url.host = url.hostname + ":" + value;
-          }
-          break;
-        case "hostname":
-          url[part] = value;
-          if (url.port) value += ":" + url.port;
-          url.host = value;
-          break;
-        case "host":
-          url[part] = value;
-          if (port.test(value)) {
-            value = value.split(":");
-            url.port = value.pop();
-            url.hostname = value.join(":");
-          } else {
-            url.hostname = value;
-            url.port = "";
-          }
-          break;
-        case "protocol":
-          url.protocol = value.toLowerCase();
-          url.slashes = !fn;
-          break;
-        case "pathname":
-        case "hash":
-          if (value) {
-            var char = part === "pathname" ? "/" : "#";
-            url[part] = value.charAt(0) !== char ? char + value : value;
-          } else {
-            url[part] = value;
-          }
-          break;
-        case "username":
-        case "password":
-          url[part] = encodeURIComponent(value);
-          break;
-        case "auth":
-          var index = value.indexOf(":");
-          if (~index) {
-            url.username = value.slice(0, index);
-            url.username = encodeURIComponent(decodeURIComponent(url.username));
-            url.password = value.slice(index + 1);
-            url.password = encodeURIComponent(decodeURIComponent(url.password));
-          } else {
-            url.username = encodeURIComponent(decodeURIComponent(value));
-          }
-      }
-      for (var i = 0; i < rules.length; i++) {
-        var ins = rules[i];
-        if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
-      }
-      url.auth = url.password ? url.username + ":" + url.password : url.username;
-      url.origin = url.protocol !== "file:" && isSpecial(url.protocol) && url.host ? url.protocol + "//" + url.host : "null";
-      url.href = url.toString();
-      return url;
-    }
-    function toString(stringify2) {
-      if (!stringify2 || "function" !== typeof stringify2) stringify2 = qs.stringify;
-      var query, url = this, host = url.host, protocol = url.protocol;
-      if (protocol && protocol.charAt(protocol.length - 1) !== ":") protocol += ":";
-      var result = protocol + (url.protocol && url.slashes || isSpecial(url.protocol) ? "//" : "");
-      if (url.username) {
-        result += url.username;
-        if (url.password) result += ":" + url.password;
-        result += "@";
-      } else if (url.password) {
-        result += ":" + url.password;
-        result += "@";
-      } else if (url.protocol !== "file:" && isSpecial(url.protocol) && !host && url.pathname !== "/") {
-        result += "@";
-      }
-      if (host[host.length - 1] === ":" || port.test(url.hostname) && !url.port) {
-        host += ":";
-      }
-      result += host + url.pathname;
-      query = "object" === typeof url.query ? stringify2(url.query) : url.query;
-      if (query) result += "?" !== query.charAt(0) ? "?" + query : query;
-      if (url.hash) result += url.hash;
-      return result;
-    }
-    Url.prototype = { set, toString };
-    Url.extractProtocol = extractProtocol;
-    Url.location = lolcation;
-    Url.trimLeft = trimLeft;
-    Url.qs = qs;
-    module2.exports = Url;
-  }
-});
-
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
   AfterBootstrapHandler: () => AfterBootstrapHandler,
-  MiddlewareHandler: () => MiddlewareHandler
+  MiddlewareHandler: () => MiddlewareHandler,
+  findRecordByFilter: () => findRecordByFilter,
+  findRecordsByFilter: () => findRecordsByFilter,
+  log: () => log2,
+  stringify: () => import_pocketbase_stringify4.stringify,
+  v23MiddlewareWrapper: () => v23MiddlewareWrapper
 });
 module.exports = __toCommonJS(src_exports);
 init_cjs_shims();
 
+// src/lib/pages/index.ts
+init_cjs_shims();
+
+// src/lib/pages/providers/v23Provider/index.ts
+init_cjs_shims();
+var v23Provider = () => ({
+  boot: () => {
+    onBootstrap((e) => {
+      require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler();
+      e.next();
+    });
+    routerUse((e) => {
+      return require(`${__hooks}/pocketpages.pb`).v23MiddlewareWrapper(e);
+    });
+  }
+});
+
+// src/lib/pages/index.ts
+var is22 = `refreshSettings` in $app;
+var getPagesProvider = () => v23Provider();
+
 // src/main.ts
+init_cjs_shims();
+var log2 = __toESM(require_dist2());
+var import_pocketbase_stringify4 = __toESM(require_dist());
+
+// src/lib/AfterBootstrapHandler.ts
 init_cjs_shims();
 
 // node_modules/@s-libs/micro-dash/fesm2022/micro-dash.mjs
@@ -5269,8 +5300,239 @@ function merge(object, ...sources) {
   }
   return object;
 }
+function pick(object, ...paths) {
+  const result = {};
+  if (object != null) {
+    for (const path3 of paths) {
+      result[path3] = object[path3];
+    }
+  }
+  return result;
+}
 
-// src/main.ts
+// src/lib/AfterBootstrapHandler.ts
+var import_pocketbase_log = __toESM(require_dist2());
+var import_pocketbase_node = __toESM(require_dist3());
+
+// src/lib/helpers.ts
+init_cjs_shims();
+var import_pocketbase_stringify = __toESM(require_dist());
+var pagesRoot = $filepath.join(__hooks, `pages`);
+var mkrequire = (rootPath) => (path3) => {
+  if (path3.startsWith("/")) {
+    const finalPath = $filepath.join(pagesRoot, "_private", path3);
+    try {
+      return require(finalPath);
+    } catch (e) {
+      throw new Error(`No module '${finalPath}' found`);
+    }
+  }
+  let currentPath = rootPath;
+  while (currentPath.length >= pagesRoot.length) {
+    try {
+      return require($filepath.join(currentPath, "_private", path3));
+    } catch (e) {
+      if (currentPath === pagesRoot) {
+        throw new Error(
+          `No module '${path3}' found in _private directories from ${rootPath} up to ${pagesRoot}`
+        );
+      }
+      currentPath = $filepath.dir(currentPath);
+    }
+  }
+  throw new Error(`No module '${path3}' found in any parent _private directory`);
+};
+var mkMeta = () => {
+  const metaData = {};
+  return (key, value) => {
+    if (value === void 0) {
+      return metaData[key];
+    }
+    return metaData[key] = value;
+  };
+};
+var safeLoad = (fname, handler) => {
+  try {
+    return handler();
+  } catch (e) {
+    throw new Error(
+      `${fname} failed to load with: ${e instanceof Error ? e.stack : e}`
+    );
+  }
+};
+var echo = (...args) => {
+  const result = args.map((arg) => {
+    if (typeof arg === "function") {
+      return arg.toString();
+    } else if (typeof arg === "object") {
+      return (0, import_pocketbase_stringify.stringify)(arg);
+    } else if (typeof arg === "number") {
+      return arg.toString();
+    }
+    return `${arg}`;
+  });
+  return result.join(" ");
+};
+
+// src/lib/AfterBootstrapHandler.ts
+var LOADER_METHODS = ["load", "get", "post", "put", "delete"];
+var AfterBootstrapHandler = () => {
+  (0, import_pocketbase_log.dbg)(`pocketpages startup`);
+  if (!import_pocketbase_node.fs.existsSync(pagesRoot)) {
+    throw new Error(
+      `${pagesRoot} must exist. Did you launch pocketbase with --dir or --hooksDir`
+    );
+  }
+  const configPath = $filepath.join(pagesRoot, `+config.js`);
+  const config = {
+    preprocessorExts: [".ejs", ".md"],
+    ...(() => {
+      try {
+        return require(configPath);
+      } catch (e) {
+        return {};
+      }
+    })()
+  };
+  const physicalFiles = [];
+  $filepath.walkDir(pagesRoot, (path3, d, err) => {
+    const isDir = d.isDir();
+    if (isDir) {
+      return;
+    }
+    physicalFiles.push(path3.slice(pagesRoot.length + 1));
+  });
+  (0, import_pocketbase_log.dbg)({ physicalFiles });
+  const addressableFiles = physicalFiles.filter((f) => {
+    if ($filepath.base(f).startsWith("+")) {
+      return false;
+    }
+    const pathParts = f.split("/");
+    return !pathParts.some((part) => part === "_private");
+  });
+  (0, import_pocketbase_log.dbg)({ addressableFiles });
+  const routes = addressableFiles.map((relativePath) => {
+    (0, import_pocketbase_log.dbg)(`Examining route`, relativePath);
+    const parts = relativePath.split("/").filter((p) => !p.startsWith(`(`));
+    const absolutePath = $filepath.join(pagesRoot, relativePath);
+    (0, import_pocketbase_log.dbg)({ relativePath, absolutePath, parts });
+    const route = {
+      relativePath,
+      absolutePath,
+      fingerprint: $security.sha256(absolutePath).slice(0, 8),
+      assetPrefix: parts[parts.length - 2] ?? "",
+      isMarkdown: relativePath.endsWith(".md"),
+      isEjs: relativePath.endsWith(".ejs"),
+      shouldPreProcess: config.preprocessorExts.some(
+        (ext) => relativePath.endsWith(ext)
+      ),
+      segments: parts.map((part) => {
+        return {
+          nodeName: part,
+          paramName: part.match(/\[.*\]/) ? part.replace(/\[(.*)\]/g, "$1") : void 0
+        };
+      }),
+      middlewares: [],
+      layouts: [],
+      loaders: {}
+    };
+    if (!route.shouldPreProcess) {
+      return route;
+    }
+    {
+      const pathParts = $filepath.dir(relativePath).split(`/`).filter((node) => node != ".").filter((p) => !!p);
+      (0, import_pocketbase_log.dbg)(`layout`, { pathParts }, $filepath.dir(relativePath));
+      do {
+        const maybeLayout = $filepath.join(
+          pagesRoot,
+          ...pathParts,
+          `+layout.ejs`
+        );
+        (0, import_pocketbase_log.dbg)({ pathParts, maybeLayout });
+        if (import_pocketbase_node.fs.existsSync(maybeLayout, "file")) {
+          route.layouts.push(maybeLayout);
+          (0, import_pocketbase_log.dbg)(`layout found`);
+        }
+        if (pathParts.length === 0) {
+          break;
+        }
+        pathParts.pop();
+      } while (true);
+    }
+    {
+      const pathParts = $filepath.dir(relativePath).split(`/`).filter((p) => !!p);
+      const current = [pagesRoot];
+      do {
+        const maybeMiddleware = $filepath.join(...current, `+middleware.js`);
+        if (import_pocketbase_node.fs.existsSync(maybeMiddleware, "file")) {
+          route.middlewares.push(maybeMiddleware);
+        }
+        if (pathParts.length === 0) {
+          break;
+        }
+        current.push(pathParts.shift());
+      } while (true);
+    }
+    {
+      forEach(LOADER_METHODS, (method) => {
+        const maybeLoad = $filepath.join(
+          pagesRoot,
+          $filepath.dir(route.relativePath),
+          `+${method}.js`
+        );
+        if (import_pocketbase_node.fs.existsSync(maybeLoad)) {
+          route.loaders[method] = maybeLoad;
+        }
+      });
+    }
+    return route;
+  }).filter((r) => r.segments.length > 0);
+  (0, import_pocketbase_log.dbg)({ routes });
+  const cache = { routes, config };
+  (0, import_pocketbase_log.dbg)({ cache });
+  $app.store().set(`pocketpages`, cache);
+};
+
+// src/lib/db.ts
+init_cjs_shims();
+var import_pocketbase_stringify2 = __toESM(require_dist());
+var findRecordByFilter = (collection, options2, dao = $app.dao()) => {
+  return findRecordsByFilter(collection, options2, dao)?.[0];
+};
+var findRecordsByFilter = (collection, options2, dao = $app.dao()) => {
+  const { filter, sort, limit, offset, filterParams } = {
+    filter: "1=1",
+    sort: "",
+    limit: 0,
+    offset: 0,
+    filterParams: {},
+    ...options2
+  };
+  const records = dao.findRecordsByFilter(
+    collection,
+    filter,
+    sort,
+    limit,
+    offset,
+    filterParams
+  );
+  return JSON.parse((0, import_pocketbase_stringify2.stringify)(records));
+};
+
+// src/lib/MiddlewareHandler.ts
+init_cjs_shims();
+var log = __toESM(require_dist2());
+var import_pocketbase_stringify3 = __toESM(require_dist());
+var import_url_parse = __toESM(require_url_parse());
+
+// src/lib/ejs.ts
+init_cjs_shims();
+var import_pocketbase_ejs = __toESM(require_ejs());
+var import_pocketbase_log3 = __toESM(require_dist2());
+var import_pocketbase_node2 = __toESM(require_dist3());
+
+// src/lib/marked.ts
+init_cjs_shims();
 var import_front_matter = __toESM(require_front_matter());
 
 // node_modules/marked/lib/marked.esm.js
@@ -7244,7 +7506,7 @@ var Marked = class {
     return _Parser.parse(tokens, options2 ?? this.defaults);
   }
   parseMarkdown(blockType) {
-    const parse = (src, options2) => {
+    const parse2 = (src, options2) => {
       const origOpt = { ...options2 };
       const opt = { ...this.defaults, ...origOpt };
       const throwError = this.onError(!!opt.silent, !!opt.async);
@@ -7286,7 +7548,7 @@ var Marked = class {
         return throwError(e);
       }
     };
-    return parse;
+    return parse2;
   }
   onError(silent, async) {
     return (e) => {
@@ -7344,32 +7606,40 @@ var parseInline = marked.parseInline;
 var parser = _Parser.parse;
 var lexer = _Lexer.lex;
 
-// src/main.ts
-var import_pocketbase_ejs = __toESM(require_ejs());
-var log = __toESM(require_dist3());
-var import_pocketbase_log = __toESM(require_dist3());
-var import_pocketbase_node = __toESM(require_dist4());
-var import_pocketbase_stringify = __toESM(require_dist2());
-var import_url_parse = __toESM(require_url_parse());
-var pagesRoot = $filepath.join(__hooks, `pages`);
-var frontmatter = void 0;
+// src/lib/marked.ts
+var import_pocketbase_log2 = __toESM(require_dist2());
+var frontmatter = null;
 function preprocess(markdown) {
   frontmatter = (0, import_front_matter.default)(markdown);
-  (0, import_pocketbase_log.dbg)(`frontmatter`, frontmatter);
+  (0, import_pocketbase_log2.dbg)(`frontmatter`, frontmatter);
   return frontmatter.body;
 }
 marked.use({ hooks: { preprocess } });
-var oldCompile = import_pocketbase_ejs.default.compile;
-import_pocketbase_ejs.default.compile = (template, opts) => {
-  const fn = oldCompile(template, { ...opts });
-  if ($filepath.ext(opts.filename) === ".md") {
-    return (data) => {
-      const res = marked(fn(data));
-      return res;
-    };
+var createRenderer = (api) => ({
+  heading({ tokens, depth }) {
+    const id = tokens[0]?.raw.toLowerCase().trim().replace(/[^a-z0-9\-_ ]/g, "").replace(/\s+/g, "-").replace(/^-+|-+$/g, "");
+    return `<h${depth} id="${id}">${this.parser.parseInline(
+      tokens
+    )}</h${depth}>
+`;
+  },
+  image({ href, title, text }) {
+    return `<img src="${api.asset(href)}" alt="${text}" title="${title}" />`;
   }
-  return fn;
+});
+var marked2 = (content, api) => {
+  marked.use({
+    renderer: createRenderer(api)
+  });
+  const html2 = marked(content);
+  (0, import_pocketbase_log2.dbg)({ html: html2 });
+  return {
+    frontmatter: frontmatter?.attributes ?? {},
+    content: html2
+  };
 };
+
+// src/lib/ejs.ts
 import_pocketbase_ejs.default.cache = {
   set: function(key, val) {
     $app.store().set(`ejs.${key}`, val);
@@ -7385,282 +7655,315 @@ import_pocketbase_ejs.default.cache = {
   }
 };
 var oldResolveInclude = import_pocketbase_ejs.default.resolveInclude;
-import_pocketbase_ejs.default.resolveInclude = function(name, filename, isDir) {
-  if (filename === "/") {
-    return import_pocketbase_node.path.resolve(pagesRoot, name);
+import_pocketbase_ejs.default.resolveInclude = function(includePath, templatePath, isDir) {
+  (0, import_pocketbase_log3.dbg)(`resolveInclude`, { name: includePath, filename: templatePath, isDir });
+  if (includePath.startsWith("/")) {
+    return import_pocketbase_node2.path.resolve(pagesRoot, `_private`, includePath);
   }
-  return oldResolveInclude(name, filename, isDir);
-};
-var asset = (path3) => {
-  if (!$app.isDev()) return path3;
-  const parsed = new import_url_parse.default(path3, true);
-  parsed.query.__cache = Date.now().toString();
-  return parsed.toString();
-};
-marked.use({
-  renderer: {
-    heading({ tokens, depth }) {
-      const id = tokens[0].raw.toLowerCase().trim().replace(/[^a-z0-9\-_ ]/g, "").replace(/\s+/g, "-").replace(/^-+|-+$/g, "");
-      return `<h${depth} id="${id}">${this.parser.parseInline(
-        tokens
-      )}</h${depth}>
-`;
-    },
-    image({ href, title, text }) {
-      return `<img src="${asset(href)}" alt="${text}" title="${title}" />`;
-    }
-  }
-});
-var AfterBootstrapHandler = (e) => {
-  (0, import_pocketbase_log.dbg)(`pocketpages startup`);
-  if (!import_pocketbase_node.fs.existsSync(pagesRoot)) {
-    throw new Error(
-      `${pagesRoot} must exist. Did you launch pocketbase with --hooksDir`
-    );
-  }
-  const physicalFiles = [];
-  $filepath.walkDir(pagesRoot, (path3, d, err) => {
-    const isDir = d.isDir();
-    if (isDir) {
-      return;
-    }
-    physicalFiles.push(path3.slice(pagesRoot.length + 1));
-  });
-  const addressableFiles = physicalFiles.filter(
-    (f) => !$filepath.base(f).startsWith(`+`) && !$filepath.base(f).startsWith(`_`)
-  );
-  const routes = addressableFiles.map((f) => {
-    const parts = f.split("/").filter((p) => !p.startsWith(`(`));
-    const route = {
-      relativePath: f,
-      segments: parts.map((part) => {
-        return {
-          nodeName: part,
-          paramName: part.match(/\[.*\]/) ? part.replace(/\[(.*)\]/g, "$1") : void 0
-        };
-      })
-    };
-    return route;
-  }).filter((r) => r.segments.length > 0);
-  const cache = { pagesRoot, routes };
-  $app.store().set(`pocketpages`, cache);
-};
-var safeLoad = (fname, handler) => {
-  try {
-    return handler();
-  } catch (e) {
-    throw new Error(`${fname} failed to load with: ${e.stack}`);
-  }
-};
-var MiddlewareHandler = (e) => {
-  const { pagesRoot: pagesRoot2, routes } = $app.store().get(`pocketpages`);
-  const configPath = $filepath.join(pagesRoot2, `+config.js`);
-  const config = {
-    preprocessorExts: [".ejs", ".md"],
-    ...(() => {
-      try {
-        return require(configPath);
-      } catch (e2) {
-        return {};
+  let currentPath = import_pocketbase_node2.path.dirname(templatePath);
+  while (currentPath.length >= pagesRoot.length) {
+    const attemptPath = import_pocketbase_node2.path.resolve(currentPath, `_private`, includePath);
+    if (import_pocketbase_node2.fs.existsSync(attemptPath, "file")) {
+      return attemptPath;
+    } else {
+      if (currentPath === pagesRoot) {
+        break;
       }
-    })()
+      currentPath = import_pocketbase_node2.path.dirname(currentPath);
+    }
+  }
+  throw new Error(`No partial '${includePath}' found in any _private directory`);
+};
+var parseSlots = (input) => {
+  const regex = /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g;
+  const slots = {};
+  let lastIndex = 0;
+  let cleanedContent = "";
+  let match;
+  while ((match = regex.exec(input)) !== null) {
+    const name = match[1];
+    const content = match[2]?.trim();
+    if (name && content) {
+      slots[name] = content;
+      cleanedContent += input.slice(lastIndex, match.index);
+      lastIndex = match.index + match[0].length;
+    }
+  }
+  cleanedContent += input.slice(lastIndex);
+  return {
+    slots,
+    content: cleanedContent.trim()
   };
-  (0, import_pocketbase_log.dbg)(`Pages middleware request: ${e.request.method} ${e.request.url}`);
-  const url = e.request.url;
-  const params = {};
-  const urlPath = url.path.slice(1);
-  const physicalFname = $filepath.join(pagesRoot2, urlPath);
-  if (import_pocketbase_node.fs.existsSync(physicalFname, "file")) {
-    (0, import_pocketbase_log.dbg)(`Found a file at ${physicalFname}`);
-    return e.fileFS(
-      $os.dirFS($filepath.dir(physicalFname)),
-      $filepath.base(physicalFname)
-    );
-  }
-  const matchedRoute = (() => {
-    const tryFnames = [
-      `${urlPath}`,
-      `${urlPath}.ejs`,
-      `${urlPath}.md`,
-      `${urlPath}/index.ejs`,
-      `${urlPath}/index.md`
-    ];
-    for (const maybeFname of tryFnames) {
-      const parts = maybeFname.split("/").filter((p) => p);
-      const routeCandidates = routes.filter(
-        (r) => r.segments.length === parts.length
-      );
-      for (const route of routeCandidates) {
-        const matched = route.segments.every((segment, i) => {
-          const { paramName } = segment;
-          if (paramName) {
-            params[paramName] = parts[i];
-            return true;
-          }
-          return segment.nodeName === parts[i];
-        });
-        if (matched) {
-          return route;
+};
+var renderFile = (fname, api) => {
+  (0, import_pocketbase_log3.dbg)(`renderFile start`, {
+    fname,
+    api: pick(api, "slots", "slot", "data")
+  });
+  const content = import_pocketbase_ejs.default.renderFile(
+    fname,
+    { ...api, api },
+    {
+      async: false,
+      cache: $app.isDev(),
+      includer: (path3, filename) => {
+        (0, import_pocketbase_log3.dbg)(`includer`, { path: path3, filename });
+        if ($filepath.ext(filename) === ".md") {
+          const markdown = import_pocketbase_node2.fs.readFileSync(filename, "utf8");
+          const res = marked2(markdown, api);
+          forEach(res.frontmatter, (v, k) => {
+            api.meta(k, v);
+          });
+          return {
+            template: res.content
+          };
         }
+        return { filename };
       }
     }
-    return null;
-  })();
-  if (!matchedRoute) {
-    return;
+  );
+  (0, import_pocketbase_log3.dbg)(`renderFile end`, {
+    fname,
+    api: pick(api, "slots", "slot", "data")
+  });
+  return content;
+};
+
+// src/lib/parseRoute.ts
+init_cjs_shims();
+var import_pocketbase_log4 = __toESM(require_dist2());
+var fingerprint = (nodeName, fingerprint2) => {
+  const lastDotIndex = nodeName.lastIndexOf(".");
+  if (lastDotIndex === -1) {
+    return `${nodeName}.${fingerprint2}`;
+  }
+  const base = nodeName.slice(0, lastDotIndex);
+  const ext = nodeName.slice(lastDotIndex);
+  return `${base}.${fingerprint2}${ext}`;
+};
+var parseRoute = (urlPath, routes) => {
+  const { config } = $app.store().get(`pocketpages`);
+  const params = {};
+  const tryFnames = [
+    `${urlPath}`,
+    ...config.preprocessorExts.map((ext) => `${urlPath}${ext}`),
+    ...config.preprocessorExts.map((ext) => `${urlPath}/index${ext}`)
+  ];
+  for (const maybeFname of tryFnames) {
+    const parts = maybeFname.split("/").filter((p) => p);
+    const routeCandidates = routes.filter(
+      (r) => r.segments.length === parts.length
+    );
+    for (const route of routeCandidates) {
+      const matched = route.segments.every((segment, i) => {
+        const { paramName } = segment;
+        if (paramName) {
+          params[paramName] = parts[i];
+          return true;
+        }
+        const matchesWithFingerprint = (() => {
+          if (route.shouldPreProcess) return false;
+          if (i !== route.segments.length - 1) return false;
+          const fingerprinted = fingerprint(segment.nodeName, route.fingerprint);
+          (0, import_pocketbase_log4.dbg)({ segment, fingerprinted, parts });
+          return fingerprinted === parts[i];
+        })();
+        return segment.nodeName === parts[i] || matchesWithFingerprint;
+      });
+      if (matched) {
+        return { route, params };
+      }
+    }
+  }
+  return null;
+};
+
+// src/lib/MiddlewareHandler.ts
+var { dbg: dbg5 } = log;
+var MiddlewareHandler = (request, response, next) => {
+  const { routes, config } = $app.store().get(`pocketpages`);
+  const { method, url } = request;
+  dbg5(`pocketpages handler`);
+  dbg5(`Pages middleware request: ${method} ${url}`);
+  const urlPath = url.pathname.slice(1);
+  {
+    const firstPart = urlPath.split("/").filter((p) => p).shift() || "";
+    if (["api", "_"].includes(firstPart)) {
+      return next();
+    }
+  }
+  const parsedRoute = parseRoute(urlPath, routes);
+  if (!parsedRoute) {
+    dbg5(`No route matched for ${urlPath}, passing on to PocketBase`);
+    return next();
+  }
+  const { route, params } = parsedRoute;
+  const { absolutePath, relativePath } = route;
+  if (!route.shouldPreProcess) {
+    dbg5(`Serving static file ${absolutePath}`);
+    return response.file(absolutePath);
   }
   try {
-    (0, import_pocketbase_log.dbg)(`Found a matching route`, { matchedRoute, params });
-    const fname = $filepath.join(pagesRoot2, matchedRoute.relativePath);
-    (0, import_pocketbase_log.dbg)(`Entry point filename is ${fname}`);
-    const allowedExts = config.preprocessorExts;
-    const ext = $filepath.ext(fname);
-    if (!allowedExts.includes(ext)) {
-      (0, import_pocketbase_log.dbg)(`Not a preprocessor file, serving statically`);
-      return e.response.file(fname);
-    }
-    const [nodeName] = $filepath.base(fname).split(".");
-    if (urlPath.length > 0 && nodeName === "index" && !urlPath.endsWith("/")) {
-      return e.redirect(302, `/${urlPath}/`);
-    }
-    const requirePrivate = (path3) => require($filepath.join(pagesRoot2, `_private`, path3));
-    const metaData = {};
-    const context = {
-      ctx: e,
+    dbg5(`Found a matching route`, { parsedRoute });
+    const api = {
       params,
-      log,
-      asset,
-      url: (path3) => new import_url_parse.default(path3, true),
-      requirePrivate,
-      stringify: import_pocketbase_stringify.stringify,
+      echo: (...args) => {
+        const s = echo(...args);
+        response.write(s);
+        return s;
+      },
+      formData: request.formData,
+      request,
+      response,
+      redirect: response.redirect,
       slot: "",
       slots: {},
-      meta: (key, value) => {
-        if (value === void 0) {
-          return metaData[key];
+      asset: (path3) => {
+        const shortAssetPath = path3.startsWith("/") ? path3 : $filepath.join(route.assetPrefix, path3);
+        const fullAssetPath = path3.startsWith("/") ? path3 : $filepath.join(
+          ...route.segments.slice(0, -2).map((s) => s.nodeName),
+          route.assetPrefix,
+          path3
+        );
+        const assetRoute = parseRoute(fullAssetPath, routes);
+        dbg5({ fullAssetPath, shortAssetPath, assetRoute });
+        if (!assetRoute) {
+          if ($app.isDev()) {
+            return `${shortAssetPath}?_r=${Date.now()}`;
+          }
+          return `${shortAssetPath}`;
         }
-        return metaData[key] = value;
-      }
+        return fingerprint(shortAssetPath, assetRoute.route.fingerprint);
+      },
+      meta: mkMeta(),
+      stringify: import_pocketbase_stringify3.stringify,
+      url: (path3) => new import_url_parse.default(path3, true),
+      require: mkrequire($filepath.dir(absolutePath)),
+      ...log
     };
     let data = {};
-    {
-      const pathParts = $filepath.dir(fname.slice(pagesRoot2.length + 1)).split(`/`).filter((p) => !!p);
-      (0, import_pocketbase_log.dbg)(`middleware`, { pathParts });
-      const current = [pagesRoot2];
-      do {
-        const maybeMiddleware = $filepath.join(...current, `+middleware.js`);
-        (0, import_pocketbase_log.dbg)({ maybeMiddleware });
-        if (import_pocketbase_node.fs.existsSync(maybeMiddleware, "file")) {
-          (0, import_pocketbase_log.dbg)(`middleware found`);
-          data = merge(
-            data,
-            safeLoad(
-              maybeMiddleware,
-              () => require(maybeMiddleware)({ ...context, data })
-            )
-          );
-          (0, import_pocketbase_log.dbg)(`data after ${maybeMiddleware}`, data);
-        }
-        if (pathParts.length === 0) {
-          break;
-        }
-        current.push(pathParts.shift());
-      } while (true);
-      (0, import_pocketbase_log.dbg)(`final middleware data`, data);
-    }
-    {
-      const maybeLoad = $filepath.join(
-        pagesRoot2,
-        $filepath.dir(matchedRoute.relativePath),
-        `+load.js`
+    route.middlewares.forEach((maybeMiddleware) => {
+      dbg5(`Executing middleware ${maybeMiddleware}`);
+      data = merge(
+        data,
+        safeLoad(
+          maybeMiddleware,
+          () => require(maybeMiddleware)({ ...api, data })
+        )
       );
-      if (import_pocketbase_node.fs.existsSync(maybeLoad)) {
+    });
+    {
+      const methods = ["load", method];
+      forEach(methods, (method2) => {
+        const loaderFname = route.loaders[method2];
+        if (!loaderFname) return;
+        dbg5(`Executing loader ${loaderFname}`);
         data = merge(
           data,
-          safeLoad(maybeLoad, () => require(maybeLoad)({ ...context, data }))
+          safeLoad(loaderFname, () => require(loaderFname)({ ...api, data }))
         );
-      }
-    }
-    context.data = data;
-    (0, import_pocketbase_log.dbg)(`Final context:`, { params: context.params, data: context.data });
-    const parseSlots = (input) => {
-      const regex = /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g;
-      const slots = {};
-      let match;
-      while ((match = regex.exec(input)) !== null) {
-        const name = match[1];
-        const content2 = match[2].trim();
-        if (content2) {
-          slots[name] = content2;
-        }
-      }
-      return slots;
-    };
-    const renderFile = (fname2) => {
-      (0, import_pocketbase_log.dbg)(`renderFile`, { fname: fname2 });
-      const content2 = import_pocketbase_ejs.default.renderFile(
-        fname2,
-        { ...context, context },
-        { cache: $app.isDev() }
-      );
-      forEach(frontmatter?.attributes, (value, key) => {
-        context.meta(key, value);
       });
-      context.slots = parseSlots(content2);
-      context.slot = context.slots.default || content2;
-      (0, import_pocketbase_log.dbg)(`slots`, context.slots);
-      return content2;
-    };
-    const renderInLayout = (fname2, content2) => {
-      if (!fname2.startsWith(pagesRoot2)) {
-        return content2;
-      }
-      const tryFile = $filepath.join($filepath.dir(fname2), `+layout.ejs`);
-      const layoutExists = import_pocketbase_node.fs.existsSync(tryFile);
-      if (layoutExists) {
-        return renderInLayout($filepath.dir(tryFile), renderFile(tryFile));
-      } else {
-        return renderInLayout($filepath.dir(tryFile), content2);
-      }
-    };
-    var content = renderFile(fname);
-    if (fname.endsWith(".md")) {
-      content = marked(content);
+    }
+    api.data = data;
+    dbg5(`Final api:`, { params: api.params, data: api.data });
+    api.echo = echo;
+    dbg5(`Rendering file`, { absolutePath });
+    var content = renderFile(absolutePath, api);
+    if (route.isMarkdown) {
+      dbg5(`Markdown file`, { absolutePath });
+      const res = marked2(content, api);
+      content = res.content;
+      forEach(res.frontmatter, (value, key) => {
+        api.meta(key, value);
+      });
+      dbg5(`markdown`, { content });
     }
     try {
+      dbg5(`Attempting to parse as JSON`);
       const parsed = JSON.parse(content);
-      return e.json(200, parsed);
-    } catch (e2) {
+      return response.json(200, parsed);
+    } catch (e) {
+      dbg5(`Not JSON`);
     }
-    content = renderInLayout(fname, content);
-    return e.html(200, content);
-  } catch (err) {
-    return e.html(
+    route.layouts.forEach((layoutPath) => {
+      const res = parseSlots(content);
+      api.slots = res.slots;
+      api.slot = res.slots.default || res.content;
+      content = renderFile(layoutPath, api);
+    });
+    return response.html(200, content);
+  } catch (e) {
+    return response.html(
       500,
-      `<html><body><h1>PocketPages Error</h1>${marked(
-        `\`\`\`
-${err.stack?.replaceAll(pagesRoot2, "")}\`\`\``
-      )}</body></html>`
+      `<html><body><h1>PocketPages Error</h1><pre><code>${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "") : e}</code></pre></body></html>`
     );
   }
+};
+
+// src/lib/pages/providers/v23Provider/wrapper.ts
+init_cjs_shims();
+var import_pocketbase_log5 = __toESM(require_dist2());
+var import_url_parse2 = __toESM(require_url_parse());
+var v23MiddlewareWrapper = (e) => {
+  const next = () => {
+    e.next();
+  };
+  if (!e.request) {
+    (0, import_pocketbase_log5.dbg)(`No request, passing on to PocketBase`);
+    return next();
+  }
+  const { method, url } = e.request;
+  (0, import_pocketbase_log5.dbg)({ method, url });
+  if (!url) {
+    if (!url) {
+      (0, import_pocketbase_log5.dbg)(`No URL, passing on to PocketBase`);
+      return next();
+    }
+  }
+  const request = {
+    method: method.toLowerCase(),
+    url: (0, import_url_parse2.default)(url.string()),
+    formData: e.requestInfo().body
+  };
+  const response = {
+    file: (path3) => {
+      return e.fileFS($os.dirFS($filepath.dir(path3)), $filepath.base(path3));
+    },
+    write: (s) => {
+      e.response.write(s);
+    },
+    redirect: (path3, status = 302) => {
+      e.redirect(status, path3);
+    },
+    json: (status, data) => {
+      e.json(status, data);
+    },
+    html: (status, data) => {
+      e.html(status, data);
+    }
+  };
+  require(`${__hooks}/pocketpages.pb`).MiddlewareHandler(
+    request,
+    response,
+    next
+  );
 };
 
 // src/index.ts
 var isBooting = typeof onBootstrap !== "undefined";
 if (isBooting) {
-  onBootstrap((e) => {
-    require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler(e);
-    return e.next();
-  });
-  routerUse((e) => {
-    require(`${__hooks}/pocketpages.pb`).MiddlewareHandler(e);
-    return e.next();
-  });
+  const pagesProvider = getPagesProvider();
+  pagesProvider.boot();
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   AfterBootstrapHandler,
-  MiddlewareHandler
+  MiddlewareHandler,
+  findRecordByFilter,
+  findRecordsByFilter,
+  log,
+  stringify,
+  v23MiddlewareWrapper
 });
 /*! Bundled license information:
 

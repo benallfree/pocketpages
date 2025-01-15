@@ -1,15 +1,11 @@
+import { getPagesProvider } from './lib/pages'
+
 const isBooting = typeof onBootstrap !== 'undefined'
 
 if (isBooting) {
-  onBootstrap((e) => {
-    require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler(e)
-    return e.next()
-  })
+  const pagesProvider = getPagesProvider()
 
-  routerUse((e) => {
-    require(`${__hooks}/pocketpages.pb`).MiddlewareHandler(e)
-    return e.next()
-  })
+  pagesProvider.boot()
 }
 
 export * from './main'

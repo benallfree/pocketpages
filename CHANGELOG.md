@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.11.0
+
+### Minor Changes
+
+- Major refactoring
+
 ## 0.10.0
 
 ### Minor Changes
