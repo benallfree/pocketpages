@@ -5420,7 +5420,6 @@ var AfterBootstrapHandler = () => {
     const absolutePath = $filepath.join(pagesRoot, relativePath);
     (0, import_pocketbase_log.dbg)({ relativePath, absolutePath, parts });
     const content = toString($os.readFile(absolutePath));
-    (0, import_pocketbase_log.dbg)("***", content.length);
     const route = {
       relativePath,
       absolutePath,
@@ -7694,7 +7693,6 @@ var parseSlots = (input) => {
       lastIndex = match.index + match[0].length;
     }
   }
-  (0, import_pocketbase_log3.dbg)({ lastIndex, input });
   cleanedContent += input.slice(lastIndex);
   return {
     slots,
@@ -8231,7 +8229,9 @@ function stringifyUrl(object, options2) {
     ...object.query
   };
   let queryString = stringify3(query, options2);
-  queryString &&= `?${queryString}`;
+  if (queryString) {
+    queryString = `?${queryString}`;
+  }
   let hash = getHash(object.url);
   if (typeof object.fragmentIdentifier === "string") {
     const urlObjectForFragmentEncode = new URL(url);
@@ -8274,7 +8274,6 @@ var fingerprint = (nodeName, fingerprint2) => {
 var parseRoute = (url, routes) => {
   const { config } = $app.store().get(`pocketpages`);
   const urlPath = url.pathname.slice(1);
-  (0, import_pocketbase_log4.dbg)(`***parseRoute`, { url, urlPath });
   const params = query_string_default.parse(url.query);
   const tryFnames = [
     `${urlPath}`,
