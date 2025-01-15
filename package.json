@@ -1,6 +1,6 @@
 {
   "name": "pocketpages",
-  "version": "0.9.6",
+  "version": "0.10.0",
   "description": "Server-side JS pages for PocketBase",
   "author": {
     "name": "Ben Allfree",
@@ -21,17 +21,25 @@
     "starters"
   ],
   "scripts": {
-    "build": "rimraf dist && pocodex build",
-    "watch": "rimraf dist && pocodex watch"
+    "build": "rimraf dist && tsup",
+    "build:copy": "concurrently \"bun:build:copy:*\"",
+    "build:copy:htmx": "cp dist/pocketpages.pb.js starters/htmx/pb_hooks",
+    "build:copy:minimal": "cp dist/pocketpages.pb.js starters/minimal/pb_hooks",
+    "build:copy:mvp": "cp dist/pocketpages.pb.js starters/mvp/pb_hooks",
+    "build:copy:daisyui": "cp dist/pocketpages.pb.js starters/daisyui/pb_hooks",
+    "build:copy:daisyui-docs": "cp dist/pocketpages.pb.js starters/daisyui-docs/pb_hooks",
+    "build:copy:docs": "cp dist/pocketpages.pb.js docs/pb_hooks",
+    "watch": "rimraf dist && tsup --watch"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
     "@s-libs/micro-dash": "^18.0.0",
     "@types/url-parse": "^1.4.11",
+    "concurrently": "^9.1.2",
     "front-matter": "^4.0.2",
     "marked": "^14.1.2",
     "pocketbase-ejs": "^3.1.10002",
-    "pocketbase-jsvm": "^0.22.20002",
+    "pocketbase-jsvm": "^0.23.10002",
     "pocketbase-log": "^0.0.2",
     "pocketbase-node": "^0.0.3",
     "pocketbase-stringify": "^0.0.2",
@@ -43,6 +51,7 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "rimraf": "^6.0.1",
+    "tsup": "^8.3.5",
     "unified": "^11.0.5",
     "url-parse": "^1.5.10"
   },

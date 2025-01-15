@@ -1,10 +1,8 @@
-routerUse((next) => {
-  return (c) => {
-    $app
-      .logger()
-      .debug(`middleware request: ${c.request().method} ${c.request().url}`, {
-        headers: c.request().header,
-      })
-    next(c)
-  }
+routerUse((e) => {
+  $app
+    .logger()
+    .debug(`middleware request: ${e.request.method} ${e.request.url}`, {
+      headers: e.request.header,
+    })
+  return e.next()
 })

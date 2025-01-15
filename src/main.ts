@@ -13,7 +13,7 @@ export type PageDataLoaderFunc = (
 ) => object
 
 export type PagesContext<T> = {
-  ctx: echo.Context
+  ctx: core.RequestEvent
   params: Record<string, string>
   log: typeof log
   asset: (path: string) => string
@@ -45,7 +45,7 @@ const pagesRoot = $filepath.join(__hooks, `pages`)
 var frontmatter:
   | FrontMatterResult<Partial<{ title: string; description: string }>>
   | undefined = undefined
-function preprocess(markdown) {
+function preprocess(markdown: string) {
   frontmatter = fm(markdown)
   dbg(`frontmatter`, frontmatter)
   return frontmatter.body
@@ -54,11 +54,11 @@ function preprocess(markdown) {
 marked.use({ hooks: { preprocess } })
 
 const oldCompile = ejs.compile
-ejs.compile = (template, opts) => {
+ejs.compile = (template: string, opts: any) => {
   const fn = oldCompile(template, { ...opts })
 
   if ($filepath.ext(opts.filename) === '.md') {
-    return (data) => {
+    return (data: any) => {
       // dbg(`***compiling markdown ${opts.filename}`, { data, opts }, fn(data))
       const res = marked(fn(data))
       // dbg(`***compiled markdown ${opts.filename}`, { data, opts, res })
@@ -68,15 +68,15 @@ ejs.compile = (template, opts) => {
   return fn
 }
 ejs.cache = {
-  set: function (key, val) {
+  set: function (key: string, val: any) {
     // dbg(`setting cache`, { key, val })
     $app.store().set(`ejs.${key}`, val)
   },
-  get: function (key) {
+  get: function (key: string) {
     // dbg(`getting cache`, { key })
     return $app.store().get(`ejs.${key}`)
   },
-  remove: function (key) {
+  remove: function (key: string) {
     // dbg(`removing cache`, { key })
     $app.store().remove(`ejs.${key}`)
   },
@@ -102,7 +102,7 @@ const asset = (path: string) => {
 
 marked.use({
   renderer: {
-    heading({ tokens, depth }) {
+    heading({ tokens, depth }: any) {
       const id = tokens[0].raw
         .toLowerCase() // Convert to lowercase
         .trim() // Remove leading/trailing spaces
@@ -129,7 +129,7 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
     )
   }
 
-  const physicalFiles = []
+  const physicalFiles: string[] = []
   $filepath.walkDir(pagesRoot, (path, d, err) => {
     const isDir = d.isDir()
     if (isDir) {
@@ -170,15 +170,17 @@ export const AfterBootstrapHandler = (e: core.BootstrapEvent) => {
   $app.store<Cache>().set(`pocketpages`, cache)
 }
 
-const safeLoad = (fname, handler) => {
+const safeLoad = (fname: string, handler: () => any) => {
   try {
     return handler()
   } catch (e) {
-    throw new Error(`${fname} failed to load with: ${e.stack}`)
+    throw new Error(`${fname} failed to load with: ${(e as Error).stack}`)
   }
 }
 
-export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
+type MiddlewareFunc = (e: core.RequestEvent) => void
+
+export const MiddlewareHandler: MiddlewareFunc = (e) => {
   const { pagesRoot, routes } = $app.store<Cache>().get(`pocketpages`)
   // dbg(`pocketpages handler`)
 
@@ -199,229 +201,230 @@ export const MiddlewareHandler: echo.MiddlewareFunc = (next) => {
   }
   // dbg({ config })
 
-  return (c) => {
-    dbg(`Pages middleware request: ${c.request().method} ${c.request().url}`)
+  dbg(`Pages middleware request: ${e.request!.method} ${e.request!.url}`)
 
-    const { url } = c.request()
-    const params = {}
+  const url = e.request!.url!
+  const params: Record<string, string> = {}
 
-    const urlPath = url.path.slice(1)
+  const urlPath = url.path.slice(1)
 
-    /**
-     * If the URL path is a static file, serve it
-     */
-    const physicalFname = $filepath.join(pagesRoot, urlPath)
-    // dbg({ physicalFname })
-    if (fs.existsSync(physicalFname, 'file')) {
-      dbg(`Found a file at ${physicalFname}`)
-      return c.file(physicalFname)
-    }
+  /**
+   * If the URL path is a static file, serve it
+   */
+  const physicalFname = $filepath.join(pagesRoot, urlPath)
+  // dbg({ physicalFname })
+  if (fs.existsSync(physicalFname, 'file')) {
+    dbg(`Found a file at ${physicalFname}`)
+    return e.fileFS(
+      $os.dirFS($filepath.dir(physicalFname)),
+      $filepath.base(physicalFname)
+    )
+  }
 
-    const matchedRoute = (() => {
-      const tryFnames = [
-        `${urlPath}`,
-        `${urlPath}.ejs`,
-        `${urlPath}.md`,
-        `${urlPath}/index.ejs`,
-        `${urlPath}/index.md`,
-      ]
-      // dbg({ tryFnames })
-      for (const maybeFname of tryFnames) {
-        const parts = maybeFname.split('/').filter((p) => p)
-        // dbg({ parts })
+  const matchedRoute = (() => {
+    const tryFnames = [
+      `${urlPath}`,
+      `${urlPath}.ejs`,
+      `${urlPath}.md`,
+      `${urlPath}/index.ejs`,
+      `${urlPath}/index.md`,
+    ]
+    // dbg({ tryFnames })
+    for (const maybeFname of tryFnames) {
+      const parts = maybeFname.split('/').filter((p) => p)
+      // dbg({ parts })
 
-        // dbg({ routes })
-        const routeCandidates = routes.filter(
-          (r) => r.segments.length === parts.length
-        )
-        // dbg({ routeCandidates })
-        for (const route of routeCandidates) {
-          const matched = route.segments.every((segment, i) => {
-            if (segment.paramName) {
-              params[segment.paramName] = parts[i]
-              return true
-            }
-            return segment.nodeName === parts[i]
-          })
-          if (matched) {
-            // dbg(`Matched route`, route)
-            return route
+      // dbg({ routes })
+      const routeCandidates = routes.filter(
+        (r) => r.segments.length === parts.length
+      )
+      // dbg({ routeCandidates })
+      for (const route of routeCandidates) {
+        const matched = route.segments.every((segment, i) => {
+          const { paramName } = segment
+          if (paramName) {
+            params[paramName] = parts[i]!
+            return true
           }
+          return segment.nodeName === parts[i]
+        })
+        if (matched) {
+          // dbg(`Matched route`, route)
+          return route
         }
       }
-      return null
-    })()
+    }
+    return null
+  })()
+
+  /**
+   * If it doesn't match any known route, pass it on
+   */
+  if (!matchedRoute) {
+    return
+  }
+  try {
+    dbg(`Found a matching route`, { matchedRoute, params })
+
+    const fname = $filepath.join(pagesRoot, matchedRoute.relativePath)
+
+    dbg(`Entry point filename is ${fname}`)
 
     /**
-     * If it doesn't match any known route, pass it on
+     * If the file exists but is not a preprocessor file, skip PocketPages and serve statically
      */
-    if (!matchedRoute) {
-      return next(c)
+    const allowedExts = config.preprocessorExts
+    const ext = $filepath.ext(fname)
+
+    if (!allowedExts.includes(ext)) {
+      dbg(`Not a preprocessor file, serving statically`)
+      return e.response.file(fname)
     }
-    try {
-      dbg(`Found a matching route`, { matchedRoute, params })
 
-      const fname = $filepath.join(pagesRoot, matchedRoute.relativePath)
+    const [nodeName] = $filepath.base(fname).split('.')
+    if (urlPath.length > 0 && nodeName === 'index' && !urlPath.endsWith('/')) {
+      // dbg(`Redirecting to ${urlPath}/`)
+      return e.redirect(302, `/${urlPath}/`)
+    }
 
-      dbg(`Entry point filename is ${fname}`)
+    const requirePrivate = (path: string) =>
+      require($filepath.join(pagesRoot, `_private`, path))
 
-      /**
-       * If the file exists but is not a preprocessor file, skip PocketPages and serve statically
-       */
-      const allowedExts = config.preprocessorExts
-      const ext = $filepath.ext(fname)
+    const metaData: Record<string, string> = {}
+    const context: PagesContext<any> = {
+      ctx: e,
+      params,
+      log,
+      asset,
+      url: (path: string) =>
+        new URL(path, true) as URLParse<Record<string, string>>,
+      requirePrivate,
+      stringify,
+      slot: '',
+      slots: {},
+      meta: (key: string, value: string | undefined) => {
+        if (value === undefined) {
+          return metaData[key]
+        }
+        return (metaData[key] = value)
+      },
+    }
 
-      if (!allowedExts.includes(ext)) {
-        dbg(`Not a preprocessor file, serving statically`)
-        return c.file(fname)
-      }
+    let data = {}
+    {
+      const pathParts = $filepath
+        .dir(fname.slice(pagesRoot.length + 1))
+        .split(`/`)
+        .filter((p) => !!p)
+      dbg(`middleware`, { pathParts })
+      const current = [pagesRoot]
 
-      const [nodeName] = $filepath.base(fname).split('.')
-      if (
-        urlPath.length > 0 &&
-        nodeName === 'index' &&
-        !urlPath.endsWith('/')
-      ) {
-        // dbg(`Redirecting to ${urlPath}/`)
-        return c.redirect(302, `/${urlPath}/`)
-      }
-
-      const requirePrivate = (path) =>
-        require($filepath.join(pagesRoot, `_private`, path))
-
-      const metaData = {}
-      const context: PagesContext<any> = {
-        ctx: c,
-        params,
-        log,
-        asset,
-        url: (path: string) => new URL(path, true),
-        requirePrivate,
-        stringify,
-        slot: '',
-        slots: {},
-        meta: (key, value) => {
-          if (value === undefined) {
-            return metaData[key]
-          }
-          return (metaData[key] = value)
-        },
-      }
-
-      let data = {}
-      {
-        const pathParts = $filepath
-          .dir(fname.slice(pagesRoot.length + 1))
-          .split(`/`)
-          .filter((p) => !!p)
-        dbg(`middleware`, { pathParts })
-        const current = [pagesRoot]
-
-        do {
-          const maybeMiddleware = $filepath.join(...current, `+middleware.js`)
-          dbg({ maybeMiddleware })
-          if (fs.existsSync(maybeMiddleware, 'file')) {
-            dbg(`middleware found`)
-            data = merge(
-              data,
-              safeLoad(maybeMiddleware, () =>
-                require(maybeMiddleware)({ ...context, data })
-              )
-            )
-            dbg(`data after ${maybeMiddleware}`, data)
-          }
-          if (pathParts.length === 0) {
-            break
-          }
-          current.push(pathParts.shift())
-        } while (true)
-        dbg(`final middleware data`, data)
-      }
-      {
-        const maybeLoad = $filepath.join(
-          pagesRoot,
-          $filepath.dir(matchedRoute.relativePath),
-          `+load.js`
-        )
-        if (fs.existsSync(maybeLoad)) {
+      do {
+        const maybeMiddleware = $filepath.join(...current, `+middleware.js`)
+        dbg({ maybeMiddleware })
+        if (fs.existsSync(maybeMiddleware, 'file')) {
+          dbg(`middleware found`)
           data = merge(
             data,
-            safeLoad(maybeLoad, () => require(maybeLoad)({ ...context, data }))
+            safeLoad(maybeMiddleware, () =>
+              require(maybeMiddleware)({ ...context, data })
+            )
           )
+          dbg(`data after ${maybeMiddleware}`, data)
         }
+        if (pathParts.length === 0) {
+          break
+        }
+        current.push(pathParts.shift()!)
+      } while (true)
+      dbg(`final middleware data`, data)
+    }
+    {
+      const maybeLoad = $filepath.join(
+        pagesRoot,
+        $filepath.dir(matchedRoute.relativePath),
+        `+load.js`
+      )
+      if (fs.existsSync(maybeLoad)) {
+        data = merge(
+          data,
+          safeLoad(maybeLoad, () => require(maybeLoad)({ ...context, data }))
+        )
       }
-      context.data = data
-      dbg(`Final context:`, { params: context.params, data: context.data })
+    }
+    context.data = data
+    dbg(`Final context:`, { params: context.params, data: context.data })
 
-      const parseSlots = (input: string) => {
-        const regex =
-          /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g
-        const slots = {}
-        let match
+    const parseSlots = (input: string) => {
+      const regex =
+        /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g
+      const slots: Record<string, string> = {}
+      let match
 
-        while ((match = regex.exec(input)) !== null) {
-          const name = match[1]
-          const content = match[2].trim()
+      while ((match = regex.exec(input)) !== null) {
+        const name = match[1]!
+        const content = match[2]!.trim()
+        if (content) {
           slots[name] = content
         }
-
-        return slots
       }
 
-      const renderFile = (fname: string) => {
-        dbg(`renderFile`, { fname })
-        const content = ejs.renderFile(
-          fname,
-          { ...context, context },
-          { cache: $app.isDev() }
-        )
-        forEach(frontmatter?.attributes, (value, key) => {
-          context.meta(key, value)
-        })
-        context.slots = parseSlots(content)
-        context.slot = context.slots.default || content
-        dbg(`slots`, context.slots)
+      return slots
+    }
 
+    const renderFile = (fname: string) => {
+      dbg(`renderFile`, { fname })
+      const content = ejs.renderFile(
+        fname,
+        { ...context, context },
+        { cache: $app.isDev() }
+      )
+      forEach(frontmatter?.attributes, (value, key) => {
+        context.meta(key, value)
+      })
+      context.slots = parseSlots(content)
+      context.slot = context.slots.default || content
+      dbg(`slots`, context.slots)
+
+      return content
+    }
+    const renderInLayout = (fname: string, content: string) => {
+      // dbg(`renderInLayout`, { fname, content })
+      if (!fname.startsWith(pagesRoot)) {
+        // Exit with final slot when we have reached the root
         return content
       }
-      const renderInLayout = (fname: string, content: string) => {
-        // dbg(`renderInLayout`, { fname, content })
-        if (!fname.startsWith(pagesRoot)) {
-          // Exit with final slot when we have reached the root
-          return content
-        }
-        const tryFile = $filepath.join($filepath.dir(fname), `+layout.ejs`)
-        const layoutExists = fs.existsSync(tryFile)
-        // dbg({ tryFile, layoutExists })
-        if (layoutExists) {
-          // dbg(`layout found`, { tryFile })
-          return renderInLayout($filepath.dir(tryFile), renderFile(tryFile))
-        } else {
-          // dbg(`layout not found`, { tryFile })
-          return renderInLayout($filepath.dir(tryFile), content)
-        }
+      const tryFile = $filepath.join($filepath.dir(fname), `+layout.ejs`)
+      const layoutExists = fs.existsSync(tryFile)
+      // dbg({ tryFile, layoutExists })
+      if (layoutExists) {
+        // dbg(`layout found`, { tryFile })
+        return renderInLayout($filepath.dir(tryFile), renderFile(tryFile))
+      } else {
+        // dbg(`layout not found`, { tryFile })
+        return renderInLayout($filepath.dir(tryFile), content)
       }
-
-      var content = renderFile(fname)
-
-      // dbg(`***rendering`, { fname, str })
-      if (fname.endsWith('.md')) {
-        content = marked(content)
-      }
-      try {
-        const parsed = JSON.parse(content)
-        return c.json(200, parsed)
-      } catch (e) {}
-      content = renderInLayout(fname, content)
-      // dbg(`Final result`, str)
-      return c.html(200, content)
-    } catch (e) {
-      return c.html(
-        500,
-        `<html><body><h1>PocketPages Error</h1>${marked(
-          `\`\`\`\n${e.stack.replaceAll(pagesRoot, '')}\`\`\``
-        )}</body></html>`
-      )
     }
+
+    var content = renderFile(fname)
+
+    // dbg(`***rendering`, { fname, str })
+    if (fname.endsWith('.md')) {
+      content = marked(content)
+    }
+    try {
+      const parsed = JSON.parse(content)
+      return e.json(200, parsed)
+    } catch (e) {}
+    content = renderInLayout(fname, content)
+    // dbg(`Final result`, str)
+    return e.html(200, content)
+  } catch (err) {
+    return e.html(
+      500,
+      `<html><body><h1>PocketPages Error</h1>${marked(
+        `\`\`\`\n${(err as Error).stack?.replaceAll(pagesRoot, '')}\`\`\``
+      )}</body></html>`
+    )
   }
 }

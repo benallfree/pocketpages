@@ -11,7 +11,7 @@
   <meta property="og:title" content="<%=meta('title') || 'PocketPages'%>" />
   <meta property="og:description" content="<%=meta('description') || 'Server-side pages for PocketBase'%>" />
   <meta property="og:image" content="<%=meta('image') || 'https://pocketpages.dev/android-chrome-512x512.png'%>" />
-  <meta property="og:url" content="<%=meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${ctx.request().url}`%>" />
+  <meta property="og:url" content="<%=meta('path') ? `https://pocketpages.dev${meta('path')}` : meta('url') || `https://pocketpages.dev${ctx.request.url}`%>" />
   <%- slots.head %>
 </head>
 

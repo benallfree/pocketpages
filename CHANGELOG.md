@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.10.0
+
+### Minor Changes
+
+- PocketBase >= v0.23.0 now required.
+
 ## 0.9.6
 
 ### Patch Changes

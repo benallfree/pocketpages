@@ -1,9 +1,19 @@
 {
   "compilerOptions": {
     "types": ["pocketbase-jsvm"],
+    "strict": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitAny": true,
+    "target": "ES6",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "$util/*": ["src/lib/util/*"]
+    }
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*", "docs/**/*"]
 }

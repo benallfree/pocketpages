@@ -36,16 +36,16 @@ The request context is automatically passed to every EJS template in your Pocket
 
 ### Key Properties and Functions
 
-#### 1. `ctx` - The `echo.HttpContext`
+#### 1. `ctx` - The `core.RequestContext`
 
-- **Type**: [`echo.Context`](https://pocketbase.io/jsvm/interfaces/echo.Context.html)
+- **Type**: [`core.RequestContext`](https://pocketbase.io/jsvm/interfaces/core.RequestContext.html)
 - **Description**: The `ctx` property gives you direct access to the underlying Echo framework's HTTP context. This allows you to interact with the request and response, including reading headers, managing cookies, and more.
 
 ##### Example Usage:
 
 ```ejs
-<h1>Request Method: <%%= ctx.method() %></h1>
-<p>Request Path: <%%= ctx.path() %></p>
+<h1>Request Method: <%%= ctx.method %></h1>
+<p>Request Path: <%%= ctx.path %></p>
 ```
 
 #### 2. `params` - Routing and Query String Parameters

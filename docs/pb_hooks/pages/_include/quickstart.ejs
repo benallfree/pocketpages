@@ -1,19 +1,14 @@
-<div class="text-left w-full overflow max-w-full text-2xl mt-5 mb-5">
-  Step 1: Install pocketpages.
+<div class="text-left  overflow  text-2xl mt-5 mb-5">
+  Step 1: Copy the minimal starter.
 </div>
-<%- include(`/_include/npm.ejs`, { commands: { 
-  bun: 'bun add pocketpages@next', 
-  pnpm: 'pnpm add pocketpages@next', 
-  yarn: 'yarn add pocketpages@next', 
-  npm: 'npm add pocketpages@next' 
-}}) %>
-<div class="text-left w-full overflow max-w-full text-2xl mt-5 mb-5">
-  Step 2: Copy the minimal starter.
+
+
+<div class="max-w-2xl overflow-x-auto">
+  <pre><code class="language-bash">npx tiged https://git@github.com/benallfree/pocketpages/#0.10.0/starters/minimal/pb_hooks pb_hooks</code></pre>
 </div>
-<pre class="w-full max-w-[320px] sm:max-w-full"><code class="language-bash">cp node_modules/pocketpages/starters/minimal/pb_hooks pb_hooks
-</code></pre>
-<div class="text-left w-full overflow max-w-full text-2xl mt-5 mb-5">
-  Step 3: Run.
+
+<div class="text-left  overflow  text-2xl mt-5 mb-5">
+  Step 2: Run.
 </div>
-<pre class="w-full max-w-[320px] sm:max-w-full"><code class="language-bash">pocketbase --dir=pb_data --dev serve 
+<pre class=""><code class="language-bash">pocketbase --dir=pb_data --dev serve 
 </code></pre>
