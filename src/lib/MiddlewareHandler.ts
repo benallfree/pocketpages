@@ -26,21 +26,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
 
   const urlPath = url.pathname.slice(1)
 
-  /**
-   * If the URL path starts with 'api' or '_', skip PocketPages
-   */
-  {
-    const firstPart =
-      urlPath
-        .split('/')
-        .filter((p) => p)
-        .shift() || ''
-    if (['api', '_'].includes(firstPart)) {
-      return next()
-    }
-  }
-  // dbg({ urlPath })
-
   const parsedRoute = parseRoute(urlPath, routes)
 
   /**
