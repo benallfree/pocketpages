@@ -1,5 +1,14 @@
 # pocketpages
 
+## 0.11.2
+
+### Patch Changes
+
+- 939b761: Enh: params now support querystring values
+- 624348e: Add support for auth, headers, and cookies
+- 2b61021: Fix: bootstrap sequence
+- 6e4d7ab: Fix: calculate asset fingerprints based on file contents
+
 ## 0.11.1
 
 ### Patch Changes
