@@ -77,6 +77,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
         return s
       },
       formData: request.formData,
+      auth: request.auth,
       request,
       response,
       redirect: response.redirect,

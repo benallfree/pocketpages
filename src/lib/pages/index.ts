@@ -4,6 +4,7 @@ import { v23Provider } from './providers/v23Provider'
 export type PagesMethods = 'get' | 'post' | 'put' | 'delete'
 
 export type PagesRequest = {
+  auth?: core.Record
   method: PagesMethods
   url: URLParse<string>
   formData: Record<string, any>
@@ -15,6 +16,8 @@ export type PagesResponse = {
   redirect: (path: string, status?: number) => void
   json: (status: number, data: any) => void
   html: (status: number, data: string) => void
+  header: (name: string, value: string) => void
+  cookie: (name: string, value: string, options: any) => void
 }
 export type PagesInitializerFunc = () => void
 export type PagesNextFunc = () => void

@@ -25,6 +25,7 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
     }
   }
   const request: PagesRequest = {
+    auth: e.auth,
     method: method.toLowerCase() as PagesMethods,
     url: parse(url.string()),
     formData: e.requestInfo().body,
@@ -44,6 +45,12 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
     },
     html: (status: number, data: string) => {
       e.html(status, data)
+    },
+    header: (name: string, value: string) => {
+      e.response.header().set(name, value)
+    },
+    cookie: (name: string, value: string, options: any) => {
+      response.header('Set-Cookie', `${name}=${value}; Path=/`)
     },
   }
 

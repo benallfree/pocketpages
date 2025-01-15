@@ -15,6 +15,8 @@ export type MiddlewareLoaderFunc<TData = any> = (
 export type PagesParams<T = string> = Record<string, T | null | Array<T | null>>
 
 export type PagesApi<TData = any> = {
+  params: PagesParams
+  auth?: core.Record
   request: PagesRequest
   response: PagesResponse
   formData: Record<string, any>
