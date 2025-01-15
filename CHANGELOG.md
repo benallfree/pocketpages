@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.11.1
+
+### Patch Changes
+
+- Include dist directory
+
 ## 0.11.0
 
 ### Minor Changes

@@ -1,7 +1,6 @@
 node_modules
 .DS_Store
 *.tgz
-dist
 pb_*
 !docs/pb_hooks
 .env
