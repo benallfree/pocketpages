@@ -3,8 +3,8 @@ import type { IPagesProvider } from '../..'
 export const v23Provider = (): IPagesProvider => ({
   boot: () => {
     onBootstrap((e) => {
-      require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler()
       e.next()
+      require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler()
     })
 
     routerUse((e) => {
