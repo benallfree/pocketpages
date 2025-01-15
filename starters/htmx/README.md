@@ -5,7 +5,7 @@ This starter kit is based on the [htmx](https://htmx.org/) project. It is design
 ## Installation
 
 ```bash
-cp -r node_modules/pocketpages/starters/htmx .
+npx tiged benallfree/pocketpages/starters/htmx .
 cd htmx
 npm i
 npm run dev

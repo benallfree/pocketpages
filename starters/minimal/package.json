@@ -1,10 +1,11 @@
 {
   "name": "minimal",
   "scripts": {
-    "serve": "pocketbase --dir=pb_data serve",
-    "dev": "pocketbase --dir=pb_data --dev serve"
+    "serve": "pocketbase serve --dir=pb_data",
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:pocketbase": "pocketbase serve --dir=pb_data --dev"
   },
-  "dependencies": {
-    "pocketpages": "^0.8.0"
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
