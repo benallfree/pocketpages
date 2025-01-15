@@ -8,4 +8,5 @@ if (isBooting) {
   pagesProvider.boot()
 }
 
+export * from './lib/types'
 export * from './main'
