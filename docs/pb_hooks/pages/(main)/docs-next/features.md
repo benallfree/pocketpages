@@ -1,5 +1,0 @@
-- fast - golang and goja
-- powered by pocketbase
-- file-based routing and apis
-- ssr and seo-freindly
-- global proxy network
