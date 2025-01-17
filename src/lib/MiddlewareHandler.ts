@@ -3,7 +3,7 @@ import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as URL } from 'url-parse'
 import { parseSlots, renderFile } from './ejs'
-import { echo, mkMeta, mkrequire, pagesRoot } from './helpers'
+import { echo, mkMeta, mkResolve, pagesRoot } from './helpers'
 import { marked } from './marked'
 import { PagesMiddlewareFunc } from './pages'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
@@ -94,7 +94,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
       meta: mkMeta(),
       stringify,
       url: (path: string) => new URL(path, true),
-      require: mkrequire($filepath.dir(absolutePath)),
+      resolve: mkResolve($filepath.dir(absolutePath)),
       ...log,
     }
 

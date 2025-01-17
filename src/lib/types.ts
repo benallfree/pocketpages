@@ -30,7 +30,7 @@ export type PagesApi<TData = any> = {
   meta: (key: string, value?: string) => string | undefined
   stringify: typeof stringify
   url: (path: string) => URL<Record<string, string | undefined>>
-  require: (path: string) => any
+  resolve: (path: string) => any
   forEach: typeof forEach
   keys: typeof keys
   values: typeof values
