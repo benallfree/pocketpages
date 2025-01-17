@@ -118,7 +118,8 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     api.data = data
     dbg(`Final api:`, { params: api.params, data: api.data })
 
-    api.echo = echo
+    //@ts-ignore
+    delete api.echo
 
     /**
      * Run the content through the EJS preprocessor
