@@ -9,7 +9,7 @@ Installing PocketPages is easy.
 
 <%- include(`quickstart.ejs`) %>
 
-_Note: `--dir=minimal/pb_data` is necessary to tell PocketBase to use the correct directory for data storage._
+_Note: `--dir=pb_data` is necessary to tell PocketBase to use the current directory for data storage._
 
 Browse to `http://localhost:8090` and with any luck at all, you'll see:
 

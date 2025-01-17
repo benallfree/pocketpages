@@ -7,36 +7,11 @@ description: 'Step-by-step commands for upgrading PocketPages using Bun, npm, Ya
 
 Keeping PocketPages up to date ensures you have access to the latest features, improvements, and security patches. The upgrade process is simple and varies slightly depending on your package manager.
 
-## Using Bun:
+<%- include(`npm.ejs`, { commands: {
+bun: 'bun update pocketpages@next',
+pnpm: 'pnpm update pocketpages@next',
+yarn: 'yarn upgrade pocketpages@next',
+npm: 'npm update pocketpages@next'
+}}) %>
 
-To upgrade PocketPages to the latest version using Bun, run the following command:
-
-```bash
-bun update pocketpages --latest
-```
-
-## Using npm:
-
-If you're using npm, you can upgrade PocketPages with this command:
-
-```bash
-npm update pocketpages@latest
-```
-
-## Using Yarn:
-
-For Yarn users, the upgrade command is:
-
-```bash
-yarn upgrade pocketpages@latest
-```
-
-## Using pnpm:
-
-If you prefer pnpm, update PocketPages by running:
-
-```bash
-pnpm update pocketpages --latest
-```
-
-These commands ensure that you're always working with the most recent version of PocketPages, regardless of your preferred package manager.
+## v0.10 migration notes

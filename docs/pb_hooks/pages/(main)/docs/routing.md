@@ -9,26 +9,49 @@ PocketPages supports file-based routing, allowing you to create a clean and intu
 
 <!-- TOC -->
 
-- [Understanding File-Based Routing](#understanding-file-based-routing)
-  - [Basic Example](#basic-example)
-  - [How the Routing Works](#how-the-routing-works)
-  - [Special Cases - index.ejs](#special-cases---indexejs)
-  - [Example Directory and Routes](#example-directory-and-routes)
-- [Tips for Structuring Your Routes](#tips-for-structuring-your-routes)
-  - [PocketPages Routing Priority](#pocketpages-routing-priority)
+- [File-Based Routing in PocketPages](#file-based-routing-in-pocketpages)
+  - [Understanding File-Based Routing](#understanding-file-based-routing)
+    - [Special Files and Directories](#special-files-and-directories)
+    - [Basic Example](#basic-example)
+    - [How the Routing Works](#how-the-routing-works)
+    - [Special Cases - index.ejs](#special-cases---indexejs)
+    - [Example Directory and Routes](#example-directory-and-routes)
+  - [Tips for Structuring Your Routes](#tips-for-structuring-your-routes)
+    - [PocketPages Routing Priority](#pocketpages-routing-priority)
+      - [Example Scenario](#example-scenario)
+    - [Key Points](#key-points)
+  - [Trailing Slash Redirects for index Files](#trailing-slash-redirects-for-index-files)
     - [Example Scenario](#example-scenario)
-  - [Key Points](#key-points)
-- [Trailing Slash Redirects for index Files](#trailing-slash-redirects-for-index-files)
-  - [Example Scenario](#example-scenario)
-  - [Why This Matters](#why-this-matters)
-  - [Practical Example](#practical-example)
-- [Summary](#summary)
+    - [Why This Matters](#why-this-matters)
+    - [Practical Example](#practical-example)
 
 <!-- /TOC -->
 
 ## Understanding File-Based Routing
 
 File-based routing means that the URLs in your application are automatically determined by the file and folder structure within the `pb_hooks/pages/` directory. Each `.ejs` file corresponds to a unique route, and the nested folders reflect URL paths.
+
+### Special Files and Directories
+
+PocketPages has two special naming conventions that affect routing:
+
+1. Directories named `_private` are never routable and are used for storing private files
+2. Files that begin with `+` (like `+load.js` and `+layout.ejs`) are special PocketPages files and are not routable
+
+For example:
+
+```
+pb_hooks/
+  pages/
+    _private/           # Not routable - for private files
+      header.ejs
+      config.js
+    products/
+      +load.js         # Not routable - special PocketPages file
+      +layout.ejs      # Not routable - special PocketPages file
+      index.ejs        # Routable at /products
+      details.ejs      # Routable at /products/details
+```
 
 ### Basic Example
 
@@ -66,7 +89,7 @@ pb_hooks/
   - `products/reviews/index.ejs` is served at `/products/reviews`.
   - `products/reviews/latest.ejs` is served at `/products/reviews/latest`.
 
-### Special Cases - `index.ejs`
+### Special Cases - index.ejs
 
 As mentioned, `index.ejs` files have a special role:
 
@@ -99,6 +122,8 @@ Let’s break down the example directory structure with corresponding routes:
 
 4. **Avoid Over-Nesting**: While nesting is powerful, avoid creating unnecessarily deep structures. This can lead to cumbersome URLs that are hard to navigate and remember.
 
+5. **Reserved Routes**: The `/api` and `/_` routes are reserved for PocketBase and will be immediately forwarded to PocketBase by PocketPages. It is recommended to use an alternative prefix like `xapi` for your custom API endpoints.
+
 ## Organizing API Routes and Layouts
 
 When building applications that serve both full pages and API endpoints (especially with HTMX), it's important to properly organize your routes to prevent unwanted layout inheritance.
@@ -113,7 +138,7 @@ pb_hooks/
       about.ejs
       products/
         index.ejs
-    api/            # API endpoints (no layouts)
+    xapi/            # API endpoints (no layouts)
       count.ejs
       users.ejs
     +layout.ejs      # Global layout (if needed)
@@ -123,7 +148,7 @@ pb_hooks/
 
 1. **Site Pages**: Place all user-facing pages that should inherit layouts inside a `(site)` directory (or similar). These pages will be served with the appropriate layouts.
 
-2. **API Routes**: Place all API endpoints (including HTMX partial responses) in a separate directory like `api/`. This prevents them from inheriting layouts, which is particularly important for HTMX responses that should return raw HTML without being wrapped in layout templates.
+2. **API Routes**: Place all API endpoints (including HTMX partial responses) in a separate directory like `xapi/`. This prevents them from inheriting layouts, which is particularly important for HTMX responses that should return raw HTML without being wrapped in layout templates.
 
 3. **Layout Inheritance**: Any `+layout.ejs` file will affect all routes in its directory and subdirectories. By separating API routes from site pages, you ensure that API responses remain clean and layout-free.
 
@@ -134,11 +159,11 @@ For an HTMX application:
 ```html
 <!-- pages/(site)/index.ejs - Full page with layout -->
 <div>
-  <button hx-get="/api/count">Get Count</button>
+  <button hx-get="/xapi/count">Get Count</button>
   <div id="result"></div>
 </div>
 
-<!-- pages/api/count.ejs - Raw HTML response without layout -->
+<!-- pages/xapi/count.ejs - Raw HTML response without layout -->
 <span>Current count: <%%= count %></span>
 ```
 

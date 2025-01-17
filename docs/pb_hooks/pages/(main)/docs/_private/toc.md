@@ -2,6 +2,8 @@
 
 - [Overview](/docs/overview)
 - [Installation](/docs/installation)
+- [What's new in v0.11](/docs/whats-new)
+- [Upgrading to v0.11](/docs/upgrading)
 
 # Basic Concepts
 
@@ -9,7 +11,6 @@
 - [Creating a Page](/docs/creating-a-page)
 - [Routing](/docs/routing)
 - [Accessing Parameters](/docs/parameters)
-- [Request Context](/docs/request-context)
 - [Loading Data](/docs/loading-data)
 - [JSON](/docs/json)
 - [Partials](/docs/partials)
@@ -24,9 +25,28 @@
 - [Runtime Configuration](/docs/config)
 - [Caching](/docs/caching)
 
+# API
+
+- [Overview](/docs/api)
+- [`api`](/docs/api/api)
+- [`asset`](/docs/api/asset)
+- [`data`](/docs/api/data)
+- [`dbg/info/warn/error`](/docs/api/log)
+- [`echo`](/docs/api/echo)
+- [`env`](/docs/api/env)
+- [`findRecord(s)ByFilter`](/docs/api/db)
+- [`formData`](/docs/api/form-data)
+- [`meta`](/docs/api/meta)
+- [`params`](/docs/api/params)
+- [`redirect`](/docs/api/redirect)
+- [`request`](/docs/api/request)
+- [`resolve`](/docs/api/resolve)
+- [`response`](/docs/api/response)
+- [`stringify`](/docs/api/stringify)
+- [`url`](/docs/api/url)
+
 # Guides
 
-- [Upgrading](/docs/upgrading)
 - [Starter Kits](/docs/starter-kits)
 - [JS API](/docs/jsvm)
 - [VSCode/Cursor](/docs/vscode)

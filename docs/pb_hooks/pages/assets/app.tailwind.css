@@ -75,3 +75,10 @@ div.code-toolbar
   > span[data-copy-state='copy-success'] {
   @apply text-success;
 }
+
+blockquote p:first-of-type::before {
+  content: '';
+}
+blockquote p:last-of-type::after {
+  content: '';
+}

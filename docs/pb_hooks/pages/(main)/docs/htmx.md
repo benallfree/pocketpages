@@ -27,7 +27,7 @@ pb_hooks/
       index.ejs       # Home page
       products/
         index.ejs     # Products listing
-    api/             # API endpoints (no layouts)
+    xapi/             # API endpoints (no layouts)
       products/
         search.ejs    # Returns product search results
         create.ejs    # Handles product creation
@@ -36,7 +36,7 @@ pb_hooks/
 ### Why This Structure?
 
 1. The `(site)` directory contains full pages that inherit layouts
-2. The `api` directory contains API endpoints that return raw HTML without layouts
+2. The `xapi` directory contains API endpoints that return raw HTML without layouts
 3. This separation prevents HTMX responses from being wrapped in unnecessary layout markup
 
 ## Using the HTMX Starter Kit
@@ -49,7 +49,7 @@ cp -r node_modules/pocketpages/starters/htmx .
 
 The starter kit includes:
 
-- Proper route organization with `(site)` and `api` directories
+- Proper route organization with `(site)` and `xapi` directories
 - Example HTMX interactions
 - Basic layout structure
 - Common patterns and best practices
@@ -68,7 +68,7 @@ pb_hooks/
     (site)/
       products/
         index.ejs         # Full page that includes the partial
-    api/
+    xapi/
       products/
         load.ejs         # HTMX endpoint that includes the same partial
 ```
@@ -81,7 +81,7 @@ pb_hooks/
   <h3><%%= product.name %></h3>
   <p><%%= product.description %></p>
   <button
-    hx-delete="/api/products/delete/<%%= product.id %>"
+    hx-delete="/xapi/products/delete/<%%= product.id %>"
     hx-target="closest .product-card"
     hx-swap="outerHTML"
   >
@@ -93,11 +93,12 @@ pb_hooks/
 ```html
 <!-- pages/(site)/products/index.ejs -->
 <div class="products-container">
-  <%% products.forEach(product => { %> <%%- include('/product-card', { product
-  }) %> <%% }) %>
+  <%% products.forEach(product => { %>
+    <%%- include('/_private/product-card', { product }) %>
+  <%% }) %>
 
   <button
-    hx-get="/api/products/load"
+    hx-get="/xapi/products/load"
     hx-target=".products-container"
     hx-swap="beforeend"
   >
@@ -107,9 +108,10 @@ pb_hooks/
 ```
 
 ```html
-<!-- pages/api/products/load.ejs -->
-<%% products.items.forEach(product => { %> <%%-include('/_private/product-card',
-{ product }) %> <%% }) %>
+<!-- pages/xapi/products/load.ejs -->
+<%% products.items.forEach(product => { %>
+    <%%-include('/_private/product-card', { product }) %>
+<%% }) %>
 ```
 
 ### Benefits of Using Partials
@@ -165,7 +167,7 @@ Here's a simple example of loading content dynamically:
   <input
     type="search"
     name="search"
-    hx-get="/api/products/search"
+    hx-get="/xapi/products/search"
     hx-trigger="input changed delay:500ms"
     hx-target="#search-results"
     placeholder="Search products..."
@@ -175,7 +177,7 @@ Here's a simple example of loading content dynamically:
 ```
 
 ```html
-<!-- pages/api/products/search.ejs -->
+<!-- pages/xapi/products/search.ejs -->
 <div class="search-results">
   <%% products.forEach(product => { %>
   <div class="product-card">
@@ -193,7 +195,7 @@ HTMX makes it easy to handle form submissions with partial page updates:
 ```html
 <!-- pages/(site)/products/index.ejs -->
 <div>
-  <button hx-get="/api/products/create-form" hx-target="#form-container">
+  <button hx-get="/xapi/products/create-form" hx-target="#form-container">
     Add Product
   </button>
   <div id="form-container"></div>
@@ -202,9 +204,9 @@ HTMX makes it easy to handle form submissions with partial page updates:
 ```
 
 ```html
-<!-- pages/api/products/create-form.ejs -->
+<!-- pages/xapi/products/create-form.ejs -->
 <form
-  hx-post="/api/products/create"
+  hx-post="/xapi/products/create"
   hx-target="#products-list"
   hx-swap="beforeend"
 >
@@ -215,7 +217,7 @@ HTMX makes it easy to handle form submissions with partial page updates:
 ```
 
 ```html
-<!-- pages/api/products/create.ejs -->
+<!-- pages/xapi/products/create.ejs -->
 <div class="product-card" id="product-<%%= product.id %>">
   <h3><%%= product.name %></h3>
   <p><%%= product.description %></p>
@@ -226,7 +228,7 @@ HTMX makes it easy to handle form submissions with partial page updates:
 
 1. **Route Organization**
 
-   - Keep API endpoints in `api/` to avoid layout inheritance
+   - Keep API endpoints in `xapi/` to avoid layout inheritance
    - Use meaningful route names that reflect the action being performed
 
 2. **Response Size**
@@ -238,7 +240,7 @@ HTMX makes it easy to handle form submissions with partial page updates:
 
    ```html
    <form
-     hx-post="/api/products/create"
+     hx-post="/xapi/products/create"
      hx-target="#result"
      hx-swap="innerHTML"
      hx-error-class="error"
@@ -251,7 +253,7 @@ HTMX makes it easy to handle form submissions with partial page updates:
 
    ```html
    <button
-     hx-get="/api/products/load"
+     hx-get="/xapi/products/load"
      hx-target="#content"
      class="button"
      hx-indicator="#spinner"
@@ -268,7 +270,7 @@ HTMX makes it easy to handle form submissions with partial page updates:
 Update multiple elements on the page with a single request:
 
 ```html
-<!-- pages/api/products/create.ejs -->
+<!-- pages/xapi/products/create.ejs -->
 <div id="main-content">
   <!-- Main response content -->
 </div>
@@ -282,7 +284,7 @@ Implement real-time updates with polling:
 
 ```html
 <div
-  hx-get="/api/products/latest"
+  hx-get="/xapi/products/latest"
   hx-trigger="every 30s"
   hx-target="#latest-products"
 >

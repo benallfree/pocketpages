@@ -1,97 +1,315 @@
 ---
-title: 'Loading Data in PocketPages'
-description: 'Implement data loading in PocketPages using +load.js files to fetch and compute data before template rendering. Files execute hierarchically based on route paths, with data accessible via the context object in EJS templates.'
+title: Loading Data in PocketPages
+description: Learn different ways to load data in your PocketPages templates
 ---
 
 # Loading Data in PocketPages
 
-PocketPages provides a robust mechanism to load data dynamically before rendering your EJS templates using a special `+load.js` file. This file, when placed at any directory level, will be executed before any EJS template in that directory is rendered. Below, we'll explore how to use `+load.js`, demonstrate the module structure, and explain the execution flow with examples.
+There are several ways to load data in PocketPages, from simple inline loading to more structured approaches.
 
-## The `+load.js` File
+## Inline Data Loading
 
-### Purpose
+The simplest way to load data is directly in your template using `<%% %>` tags at the top of your file:
 
-The `+load.js` file is designed to load or compute data that your EJS templates might need. The data returned by the loader function in `+load.js` will be made available to your EJS templates through the `data` property in the request context.
+```ejs
+<%%
+  const products = findRecordsByFilter('products', {
+    filter: 'active = true',
+    sort: 'name'
+  })
+%>
 
-### Structure of `+load.js`
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+</head>
+<body>
+  <h1>Products</h1>
+  <%% products.forEach(product => { %>
+    <div class="product">
+      <h2><%%= product.name %></h2>
+    </div>
+  <%% }) %>
+</body>
+</html>
+```
 
-The `+load.js` file must use `module.exports` to export a loader function. This function will receive the request context as an argument and should return an object containing the data you wish to pass to the template.
+## Server Script Blocks
 
-### Example `+load.js` File
+For better code formatting support in editors like VSCode, you can use the `<script server<%-`>`%>` syntax, which is equivalent to `<%% %>`:
+
+```ejs
+<script server<%-`>` %>
+  const products = findRecordsByFilter('products', {
+    filter: 'active = true',
+    sort: 'name'
+  })
+
+  const categories = findRecordsByFilter('categories', {
+    sort: 'name'
+  })
+</script>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+</head>
+<body>
+  <h1>Products by Category</h1>
+  <%% categories.forEach(category => { %>
+    <h2><%%= category.name %></h2>
+    <%% const categoryProducts = products.filter(p => p.category === category.id) %>
+
+    <div class="product-grid">
+      <%% categoryProducts.forEach(product => { %>
+        <div class="product">
+          <h3><%%= product.name %></h3>
+        </div>
+      <%% }) %>
+    </div>
+  <%% }) %>
+</body>
+</html>
+```
+
+## Structured Data Loading with +load.js
+
+For more complex data loading needs, PocketPages provides `+load.js` files. These are useful when you need to:
+
+- Share data loading logic across multiple templates
+- Separate concerns between data loading and presentation
+- Handle complex routing scenarios
+- Implement method-specific loading (GET, POST, etc.)
+
+### Basic Usage
 
 ```javascript
-module.exports = function (context) {
-  // Perform data loading operations here
-  const productId = context.params.productId
+/** @type {import('pocketpages').PageDataLoaderFunc} */
+module.exports = function (api) {
+  const { findRecordsByFilter } = api
 
-  // Example: Fetch product details from a database
-  const productDetails = getProductDetails(productId)
+  const products = findRecordsByFilter('products', {
+    filter: 'active = true',
+    sort: 'name',
+  })
 
-  // Return an object containing the data
+  return { products }
+}
+```
+
+## File Structure
+
+Data loaders follow your route hierarchy:
+
+```
+pb_hooks/pages/
+  +load.js           # Only executes if index.ejs is the entry point
+  index.ejs          # Home page entry point
+  products/
+    +load.js         # Only executes if products/index.ejs is the entry point
+    [id]/
+      +load.js       # Only executes if products/[id]/index.ejs is the entry point
+      +get.js        # Only executes for GET requests if products/[id]/index.ejs is the entry point
+      index.ejs      # Template using data
+```
+
+> **Important**: Only a single `+load.js` file executes per request - the one at the same level as the entry point EJS file. This is different from `+middleware.js` files, which execute hierarchically from root to leaf along the route path. Use middleware when you need cascading data loading.
+
+### Example: Route `/products/123`
+
+If the route resolves to `/products/123/index.ejs`:
+
+1. **Loader Execution** (single file):
+
+   ```
+   /products/[id]/+load.js  # Only this loader executes
+   ```
+
+2. **Method-Specific Loader Execution** (single file):
+
+   ```
+   /products/[id]/+get.js  # Only this method-specific loader executes
+   ```
+
+3. **Template Rendering**:
+   ```
+   /products/[id]/index.ejs
+   ```
+
+## Example Scenarios
+
+### Product List (`/products`)
+
+```javascript
+/** @type {import('pocketpages').PageDataLoaderFunc} */
+module.exports = function (api) {
+  const { findRecordsByFilter } = api
+
+  const products = findRecordsByFilter('products', {
+    filter: 'active = true',
+    sort: '-created',
+  })
+
+  return { products }
+}
+```
+
+### Product Details (`/products/[id]`)
+
+```javascript
+/** @type {import('pocketpages').PageDataLoaderFunc} */
+module.exports = function (api) {
+  const { findRecordByFilter, params, response } = api
+
+  const product = findRecordByFilter('products', {
+    filter: `id = "${params.id}"`,
+  })
+
+  if (!product) {
+    response.status(404)
+    return { error: 'Product not found' }
+  }
+
+  return { product }
+}
+```
+
+## HTTP Method-Specific Loaders
+
+In addition to `+load.js`, PocketPages supports method-specific loaders that only execute for their respective HTTP methods:
+
+```
+pb_hooks/pages/
+  contact/
+    +load.js     # Runs for all methods
+    +get.js      # Runs only for GET, after +load.js
+    +post.js     # Runs only for POST, after +load.js
+    index.ejs
+```
+
+### Execution Order
+
+1. `+load.js` executes first (if present)
+2. Method-specific loader executes second (if present)
+3. Data from both loaders is merged
+
+### Example: Contact Form
+
+```javascript
+// contact/+load.js - Runs for all methods
+/** @type {import('pocketpages').PageDataLoaderFunc} */
+module.exports = function (api) {
   return {
-    product: productDetails,
+    departments: findRecordsByFilter('departments', {
+      filter: 'active = true',
+    }),
+  }
+}
+
+// contact/+get.js - Runs only for GET requests
+/** @type {import('pocketpages').PageDataLoaderFunc} */
+module.exports = function (api) {
+  return {
+    csrf: generateToken(),
+  }
+}
+
+// contact/+post.js - Runs only for POST requests
+/** @type {import('pocketpages').PageDataLoaderFunc} */
+module.exports = function (api) {
+  const { formData, redirect } = api
+
+  try {
+    const message = findRecordByFilter('messages', {
+      create: {
+        email: formData.email,
+        message: formData.message,
+        department: formData.department,
+      },
+    })
+
+    redirect('/contact/success')
+  } catch (error) {
+    return {
+      error: 'Failed to send message',
+      values: formData,
+    }
   }
 }
 ```
 
-### How It Works
+### Available Method Loaders
 
-- **Execution**: When a request matches a route level with a `+load.js` file, the loader function in that file is executed.
-- **Data Availability**: The returned object from the loader function is attached to the request context as `data`, making it accessible in the EJS templates.
+- `+load.js` - Runs for all HTTP methods
+- `+get.js` - GET requests only
+- `+post.js` - POST requests only
+- `+put.js` - PUT requests only
+- `+delete.js` - DELETE requests only
 
-## Example Scenario with Multiple `+load.js` Files
+> **Note**: Method-specific loaders are optional. If not present, only `+load.js` (if it exists) will execute.
 
-Consider the following directory structure:
+## Using Data in Templates
 
+### Basic Example
+
+```ejs
+<!-- Display site name -->
+<h1><%%= data.siteName %></h1>
+
+<!-- Show navigation -->
+<nav>
+  <%% data.navigation.forEach(item => { %>
+    <a href="<%%= item.url %>"><%%= item.title %></a>
+  <%% }) %>
+</nav>
 ```
-pb_hooks/pages/
-   +load.js
-   index.ejs
-   about/
-      +load.js
-      index.ejs
-   products/
-      +load.js
-      [productId]/
-         +load.js
-         index.ejs
-         details.ejs
-   contact.ejs
+
+### Complete Example
+
+```ejs
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%%= data.product?.name || 'Products' %> | <%%= data.siteName %></title>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <%% data.navigation.forEach(item => { %>
+      <a href="<%%= item.url %>"><%%= item.title %></a>
+    <%% }) %>
+  </nav>
+
+  <!-- Content -->
+  <%% if (data.error) { %>
+    <h1>Error: <%%= data.error %></h1>
+  <%% } else if (data.product) { %>
+    <!-- Single Product View -->
+    <main>
+      <h1><%%= data.product.name %></h1>
+      <p><%%= data.product.description %></p>
+    </main>
+  <%% } else if (data.products) { %>
+    <!-- Product List View -->
+    <main>
+      <h1>Products</h1>
+      <div class="grid">
+        <%% data.products.forEach(product => { %>
+          <a href="/products/<%%= product.id %>">
+            <h2><%%= product.name %></h2>
+          </a>
+        <%% }) %>
+      </div>
+    </main>
+  <%% } %>
+</body>
+</html>
 ```
 
-### Loader Execution Scenarios
+## Reference
 
-1. **Root Level Request (`/`)**:
-
-   - **Files Involved**: `pb_hooks/pages/+load.js`, `pb_hooks/pages/index.ejs`
-   - **Loader Executed**: The loader in `pages/+load.js` will execute when accessing the root URL (`/`). The data returned by this loader will be available in `pages/index.ejs`.
-
-2. **About Page Request (`/about`)**:
-
-   - **Files Involved**: `pb_hooks/pages/about/+load.js`, `pb_hooks/pages/about/index.ejs`
-   - **Loader Executed**: The loader in `pages/about/+load.js` will execute when accessing `/about`. The data returned will be available in `about/index.ejs`.
-
-3. **Products Page Request (`/products`)**:
-
-   - **Files Involved**: `pb_hooks/pages/products/+load.js`, `pb_hooks/pages/products/index.ejs`
-   - **Loader Executed**: The loader in `pages/products/+load.js` will execute when accessing `/products`. The data returned will be available in `products/index.ejs`.
-
-4. **Product Details Request (`/products/123`)**:
-
-   - **Files Involved**: `pb_hooks/pages/products/[productId]/+load.js`, `pb_hooks/pages/products/[productId]/index.ejs`
-   - **Loader Executed**: The loader in `pages/products/[productId]/+load.js` will execute when accessing `/products/123`. The data returned will be available in `products/[productId]/index.ejs`.
-
-5. **Product Details Specific Page (`/products/123/details`)**:
-
-   - **Files Involved**: `pb_hooks/pages/products/[productId]/+load.js`, `pb_hooks/pages/products/[productId]/details.ejs`
-   - **Loader Executed**: The same loader in `pages/products/[productId]/+load.js` will execute for both `index.ejs` and `details.ejs` under `[productId]`. Therefore, when accessing `/products/123/details`, this loader will still be executed, and its data will be available in `details.ejs`.
-
-6. **Contact Page Request (`/contact`)**:
-   - **Files Involved**: `pb_hooks/pages/contact.ejs`
-   - **Loader Executed**: No loader is executed because there is no `+load.js` file in the `pages/` directory that directly corresponds to the `contact.ejs` file. The template will render without additional data loading.
-
-### Key Points to Remember
-
-- **Isolated Loaders**: Loaders in isolated directories (like `pages/about/+load.js`) only execute for requests that match the route corresponding to that directory (`/about` in this case).
-- **Multiple EJS Files**: If you have multiple EJS files at the same directory level (like `index.ejs` and `details.ejs` in `products/[productId]/`), the same loader (`+load.js`) will be executed for any request that matches that directory.
-- **No Loader Execution**: If there is no `+load.js` at the specific route level, no data loading will occur, and the EJS template will render as usual.
+- [API Documentation](/docs/api)
+- [Middleware Guide](/docs/middleware)
+- [TypeScript Types](/docs/types)

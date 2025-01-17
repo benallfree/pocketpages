@@ -1086,9 +1086,9 @@ var require_url_parse = __commonJS({
   }
 });
 
-// node_modules/pocketbase-ejs/node_modules/pocketbase-node/dist/index.js
+// ../pocketbase-ejs/node_modules/pocketbase-node/dist/index.js
 var require_dist4 = __commonJS({
-  "node_modules/pocketbase-ejs/node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
+  "../pocketbase-ejs/node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
     "use strict";
     init_cjs_shims();
     var __defProp2 = Object.defineProperty;
@@ -1593,9 +1593,9 @@ var require_dist4 = __commonJS({
   }
 });
 
-// node_modules/pocketbase-ejs/lib/utils.js
+// ../pocketbase-ejs/lib/utils.js
 var require_utils = __commonJS({
-  "node_modules/pocketbase-ejs/lib/utils.js"(exports2) {
+  "../pocketbase-ejs/lib/utils.js"(exports2) {
     "use strict";
     init_cjs_shims();
     var regExpChars = /[|\\{}()[\]^$+*?.]/g;
@@ -1728,9 +1728,9 @@ function encode_char(c) {
   }
 });
 
-// node_modules/pocketbase-ejs/package.json
+// ../pocketbase-ejs/package.json
 var require_package = __commonJS({
-  "node_modules/pocketbase-ejs/package.json"(exports2, module2) {
+  "../pocketbase-ejs/package.json"(exports2, module2) {
     module2.exports = {
       name: "pocketbase-ejs",
       description: "Embedded JavaScript templates",
@@ -1776,9 +1776,9 @@ var require_package = __commonJS({
   }
 });
 
-// node_modules/pocketbase-ejs/lib/ejs.js
+// ../pocketbase-ejs/lib/ejs.js
 var require_ejs = __commonJS({
-  "node_modules/pocketbase-ejs/lib/ejs.js"(exports2) {
+  "../pocketbase-ejs/lib/ejs.js"(exports2) {
     "use strict";
     init_cjs_shims();
     var { fs: fs4, path: path3 } = require_dist4();
@@ -1991,6 +1991,7 @@ var require_ejs = __commonJS({
       this.truncate = false;
       this.currentLine = 1;
       this.source = "";
+      options2.prepend = opts.prepend || "";
       options2.client = opts.client || false;
       options2.escapeFunction = opts.escape || opts.escapeFunction || utils.escapeXML;
       options2.compileDebug = opts.compileDebug !== false;
@@ -2039,7 +2040,7 @@ var require_ejs = __commonJS({
         var src;
         var fn;
         var opts = this.opts;
-        var prepended = "";
+        var prepended = opts.prepend;
         var appended = "";
         var escapeFn = opts.escapeFunction;
         var ctor;
@@ -5331,7 +5332,7 @@ var import_pocketbase_node = __toESM(require_dist3());
 init_cjs_shims();
 var import_pocketbase_stringify = __toESM(require_dist());
 var pagesRoot = $filepath.join(__hooks, `pages`);
-var mkrequire = (rootPath) => (path3) => {
+var mkResolve = (rootPath) => (path3) => {
   if (path3.startsWith("/")) {
     const finalPath = $filepath.join(pagesRoot, "_private", path3);
     try {
@@ -5421,13 +5422,13 @@ var AfterBootstrapHandler = () => {
     const absolutePath = $filepath.join(pagesRoot, relativePath);
     (0, import_pocketbase_log.dbg)({ relativePath, absolutePath, parts });
     const content = toString($os.readFile(absolutePath));
+    const contentSha = $security.sha256(content);
     const route = {
       relativePath,
       absolutePath,
-      fingerprint: $security.sha256(content).slice(0, 8),
+      fingerprint: contentSha,
       assetPrefix: parts[parts.length - 2] ?? "",
       isMarkdown: relativePath.endsWith(".md"),
-      isEjs: relativePath.endsWith(".ejs"),
       shouldPreProcess: config.preprocessorExts.some(
         (ext) => relativePath.endsWith(ext)
       ),
@@ -7659,6 +7660,14 @@ import_pocketbase_ejs.default.cache = {
     throw new Error(`resetting cache not supported`);
   }
 };
+var oldCompile = import_pocketbase_ejs.default.compile;
+import_pocketbase_ejs.default.compile = function(template, options2) {
+  const newTemplate = template.replace(
+    /<script\s+server>([\s\S]*?)<\/script>/,
+    "<% \n $1 \n %>"
+  );
+  return oldCompile(newTemplate, { ...options2 });
+};
 var oldResolveInclude = import_pocketbase_ejs.default.resolveInclude;
 import_pocketbase_ejs.default.resolveInclude = function(includePath, templatePath, isDir) {
   (0, import_pocketbase_log3.dbg)(`resolveInclude`, { name: includePath, filename: templatePath, isDir });
@@ -7709,6 +7718,21 @@ var renderFile = (fname, api) => {
     fname,
     { ...api, api },
     {
+      prepend: `
+        const echo = (...args) => {
+          const result = args.map((arg) => {
+            if (typeof arg === 'function') {
+              return arg.toString()
+            } else if (typeof arg === 'object') {
+              return JSON.stringify(arg)
+            } else if (typeof arg === 'number') {
+              return arg.toString()
+            }
+            return arg.toString()
+          })
+          return __append(result.join(' '));
+        }
+      `,
       async: false,
       cache: $app.isDev(),
       includer: (path3, filename) => {
@@ -8368,7 +8392,7 @@ var MiddlewareHandler = (request, response, next) => {
       meta: mkMeta(),
       stringify: import_pocketbase_stringify3.stringify,
       url: (path3) => new import_url_parse.default(path3, true),
-      require: mkrequire($filepath.dir(absolutePath)),
+      resolve: mkResolve($filepath.dir(absolutePath)),
       ...log
     };
     let data = {};
@@ -8387,7 +8411,7 @@ var MiddlewareHandler = (request, response, next) => {
     }
     api.data = data;
     dbg5(`Final api:`, { params: api.params, data: api.data });
-    api.echo = echo;
+    delete api.echo;
     dbg5(`Rendering file`, { absolutePath });
     var content = renderFile(absolutePath, api);
     if (route.isMarkdown) {
@@ -8496,14 +8520,10 @@ if (isBooting) {
   stringify,
   v23MiddlewareWrapper
 });
-/*! Bundled license information:
-
-pocketbase-ejs/lib/ejs.js:
-  (**
-   * @file Embedded JavaScript templating engine. {@link http://ejs.co}
-   * @author Matthew Eernisse <mde@fleegix.org>
-   * @author Tiancheng "Timothy" Gu <timothygu99@gmail.com>
-   * @project EJS
-   * @license {@link http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0}
-   *)
-*/
+/**
+ * @file Embedded JavaScript templating engine. {@link http://ejs.co}
+ * @author Matthew Eernisse <mde@fleegix.org>
+ * @author Tiancheng "Timothy" Gu <timothygu99@gmail.com>
+ * @project EJS
+ * @license {@link http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0}
+ */
