@@ -24,6 +24,15 @@ ejs.cache = {
   },
 }
 
+const oldCompile = ejs.compile
+ejs.compile = function (template: string, options: any) {
+  const newTemplate = template.replace(
+    /<script\s+server>([\s\S]*?)<\/script>/,
+    '<% \n $1 \n %>'
+  )
+  return oldCompile(newTemplate, { ...options })
+}
+
 const oldResolveInclude = ejs.resolveInclude
 ejs.resolveInclude = function (
   includePath: string,
