@@ -45,16 +45,6 @@ export const mkMeta = () => {
   }
 }
 
-export const safeLoad = (fname: string, handler: () => any) => {
-  try {
-    return handler()
-  } catch (e) {
-    throw new Error(
-      `${fname} failed to load with: ${e instanceof Error ? e.stack : e}`
-    )
-  }
-}
-
 export const echo = (...args: any[]) => {
   const result = args.map((arg) => {
     if (typeof arg === 'function') {

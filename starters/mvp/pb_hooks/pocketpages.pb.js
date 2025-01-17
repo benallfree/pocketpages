@@ -4538,13 +4538,13 @@ var require_loader = __commonJS({
       }
       return loadAll(input, iterator, common.extend({ schema: DEFAULT_SAFE_SCHEMA }, options2));
     }
-    function safeLoad2(input, options2) {
+    function safeLoad(input, options2) {
       return load(input, common.extend({ schema: DEFAULT_SAFE_SCHEMA }, options2));
     }
     module2.exports.loadAll = loadAll;
     module2.exports.load = load;
     module2.exports.safeLoadAll = safeLoadAll;
-    module2.exports.safeLoad = safeLoad2;
+    module2.exports.safeLoad = safeLoad;
   }
 });
 
@@ -5363,15 +5363,6 @@ var mkMeta = () => {
     }
     return metaData[key] = value;
   };
-};
-var safeLoad = (fname, handler) => {
-  try {
-    return handler();
-  } catch (e) {
-    throw new Error(
-      `${fname} failed to load with: ${e instanceof Error ? e.stack : e}`
-    );
-  }
 };
 var echo = (...args) => {
   const result = args.map((arg) => {
@@ -8383,13 +8374,7 @@ var MiddlewareHandler = (request, response, next) => {
     let data = {};
     route.middlewares.forEach((maybeMiddleware) => {
       dbg5(`Executing middleware ${maybeMiddleware}`);
-      data = merge(
-        data,
-        safeLoad(
-          maybeMiddleware,
-          () => require(maybeMiddleware)({ ...api, data })
-        )
-      );
+      data = merge(data, require(maybeMiddleware)({ ...api, data }));
     });
     {
       const methods = ["load", method];
@@ -8397,10 +8382,7 @@ var MiddlewareHandler = (request, response, next) => {
         const loaderFname = route.loaders[method2];
         if (!loaderFname) return;
         dbg5(`Executing loader ${loaderFname}`);
-        data = merge(
-          data,
-          safeLoad(loaderFname, () => require(loaderFname)({ ...api, data }))
-        );
+        data = merge(data, require(loaderFname)({ ...api, data }));
       });
     }
     api.data = data;
@@ -8432,6 +8414,9 @@ var MiddlewareHandler = (request, response, next) => {
     });
     return response.html(200, content);
   } catch (e) {
+    if (e instanceof BadRequestError) {
+      return response.html(400, `${e}`);
+    }
     return response.html(
       500,
       `<html><body><h1>PocketPages Error</h1><pre><code>${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "") : e}</code></pre></body></html>`

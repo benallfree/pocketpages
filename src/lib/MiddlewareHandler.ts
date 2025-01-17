@@ -3,7 +3,7 @@ import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as URL } from 'url-parse'
 import { parseSlots, renderFile } from './ejs'
-import { echo, mkMeta, mkrequire, pagesRoot, safeLoad } from './helpers'
+import { echo, mkMeta, mkrequire, pagesRoot } from './helpers'
 import { marked } from './marked'
 import { PagesMiddlewareFunc } from './pages'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
@@ -101,12 +101,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     let data = {}
     route.middlewares.forEach((maybeMiddleware) => {
       dbg(`Executing middleware ${maybeMiddleware}`)
-      data = merge(
-        data,
-        safeLoad(maybeMiddleware, () =>
-          require(maybeMiddleware)({ ...api, data })
-        )
-      )
+      data = merge(data, require(maybeMiddleware)({ ...api, data }))
     })
 
     // Execute loaders
@@ -116,10 +111,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
         const loaderFname = route.loaders[method as keyof typeof route.loaders]
         if (!loaderFname) return
         dbg(`Executing loader ${loaderFname}`)
-        data = merge(
-          data,
-          safeLoad(loaderFname, () => require(loaderFname)({ ...api, data }))
-        )
+        data = merge(data, require(loaderFname)({ ...api, data }))
       })
     }
 
@@ -172,6 +164,9 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     // dbg(`Final result`, str)
     return response.html(200, content)
   } catch (e) {
+    if (e instanceof BadRequestError) {
+      return response.html(400, `${e}`)
+    }
     return response.html(
       500,
       `<html><body><h1>PocketPages Error</h1><pre><code>${
