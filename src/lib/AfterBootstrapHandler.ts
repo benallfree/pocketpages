@@ -24,7 +24,6 @@ export type Route = {
     delete: string
   }>
   isMarkdown: boolean
-  isEjs: boolean
   layouts: string[]
 }
 
@@ -92,7 +91,6 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
         fingerprint: $security.sha256(content).slice(0, 8),
         assetPrefix: parts[parts.length - 2] ?? '',
         isMarkdown: relativePath.endsWith('.md'),
-        isEjs: relativePath.endsWith('.ejs'),
         shouldPreProcess: config.preprocessorExts.some((ext) =>
           relativePath.endsWith(ext)
         ),
