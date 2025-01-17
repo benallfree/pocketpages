@@ -1,5 +1,15 @@
 # pocketpages
 
+## 0.11.3
+
+### Patch Changes
+
+- 2ebb22c: Fix: Allow default handling of BadRequestError
+- 7f52562: Fix content fingerprinting calculation
+- dd96680: Feat: Add micro-dash helpers
+- 42fe2f1: Add support for <script server> notation
+- 3b680b5: Renamed require() to resolve()
+
 ## 0.11.2
 
 ### Patch Changes
