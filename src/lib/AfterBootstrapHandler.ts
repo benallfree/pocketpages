@@ -85,10 +85,12 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
 
       // dbg({ parts })
       const content = toString($os.readFile(absolutePath))
+      const contentSha = $security.sha256(content)
+
       const route: Route = {
         relativePath,
         absolutePath,
-        fingerprint: $security.sha256(content).slice(0, 8),
+        fingerprint: contentSha,
         assetPrefix: parts[parts.length - 2] ?? '',
         isMarkdown: relativePath.endsWith('.md'),
         shouldPreProcess: config.preprocessorExts.some((ext) =>
