@@ -1739,7 +1739,7 @@ var require_package = __commonJS({
         "engine",
         "ejs"
       ],
-      version: "3.1.10002",
+      version: "3.1.10003",
       author: "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
       license: "Apache-2.0",
       main: "./lib/ejs.js",
@@ -1751,6 +1751,7 @@ var require_package = __commonJS({
       bugs: "https://github.com/benallfree/pocketbase-ejs/issues",
       homepage: "https://github.com/benallfree/pocketbase-ejs",
       devDependencies: {
+        "@changesets/cli": "^2.27.11",
         browserify: "^16.5.1",
         eslint: "^6.8.0",
         "git-directory-deploy": "^1.5.1",

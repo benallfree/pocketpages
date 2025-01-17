@@ -44,7 +44,6 @@ type Route = {
         delete: string;
     }>;
     isMarkdown: boolean;
-    isEjs: boolean;
     layouts: string[];
 };
 declare const AfterBootstrapHandler: PagesInitializerFunc;
@@ -67,7 +66,7 @@ type PagesApi<TData = any> = {
     meta: (key: string, value?: string) => string | undefined;
     stringify: typeof stringify;
     url: (path: string) => URLParse<Record<string, string | undefined>>;
-    require: (path: string) => any;
+    resolve: (path: string) => any;
     forEach: typeof forEach;
     keys: typeof keys;
     values: typeof values;
