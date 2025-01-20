@@ -104,16 +104,12 @@ export const renderFile = (fname: string, api: PagesApi<any>) => {
       prepend: `
         const echo = (...args) => {
           const result = args.map((arg) => {
-            if (typeof arg === 'function') {
-              return arg.toString()
-            } else if (typeof arg === 'object') {
+            if (typeof arg === 'object') {
               return JSON.stringify(arg)
-            } else if (typeof arg === 'number') {
-              return arg.toString()
             }
             return arg.toString()
           })
-          return __append(result.join(' '));
+          return __append(result.join(' '))
         }
       `,
       async: false,
