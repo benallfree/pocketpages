@@ -2,6 +2,7 @@ import { forEach, pick } from '@s-libs/micro-dash'
 import ejs from 'pocketbase-ejs'
 import { dbg } from 'pocketbase-log'
 import { fs, path } from 'pocketbase-node'
+import { stringify } from 'pocketbase-stringify'
 import { pagesRoot } from './helpers'
 import { marked } from './marked'
 import { PagesApi } from './types'
@@ -134,6 +135,10 @@ export const renderFile = (fname: string, api: PagesApi<any>) => {
     fname,
     api: pick(api, 'slots', 'slot', 'data'),
   })
+
+  if (typeof content !== 'string') {
+    return stringify(content)
+  }
 
   return content
 }

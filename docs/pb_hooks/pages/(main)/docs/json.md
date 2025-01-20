@@ -5,19 +5,32 @@ description: PocketPages automatically detects and serves JSON content from .ejs
 
 # Serving JSON Responses with PocketPages
 
-PocketPages allows you to easily create RESTful APIs by simply returning JSON content from your `.ejs` templates. If the output of an `.ejs` template parses as valid JSON, PocketPages will automatically serve it as a JSON response. This feature simplifies the process of building APIs within your PocketPages application, enabling you to handle both HTML and JSON responses using the same templating system.
+PocketPages allows you to easily create RESTful APIs by returning JSON content from your `.ejs` templates. If the output of an `.ejs` template parses as valid JSON, PocketPages will automatically serve it as a JSON response. This feature simplifies the process of building APIs within your PocketPages application, enabling you to handle both HTML and JSON responses using the same templating system.
 
 ## How It Works
 
-### JSON Parsing in `.ejs` Files
+When an `.ejs` template returns content that can be parsed as valid JSON, PocketPages detects this and serves the response with the appropriate `Content-Type: application/json` header. There are several ways to return JSON from your templates:
 
-When an `.ejs` template returns content that can be parsed as valid JSON, PocketPages detects this and serves the response with the appropriate `Content-Type: application/json` header. This means that you can use your `.ejs` files to generate dynamic JSON content just as easily as you would generate HTML.
+### 1. Return an Object Directly
 
-### Creating a JSON Response
+The simplest way is to return an object directly from your template:
 
-To create a JSON response, your `.ejs` template should output a valid JSON string using `<%%= JSON.stringify(...) %%>`. Here’s an example:
+```ejs
+<%%
+  return {
+    status: "success",
+    data: {
+      productId: params.productId,
+      name: "Example Product",
+      price: 29.99
+    }
+  }
+%>
+```
 
-### Example JSON Response Template
+### 2. Using `echo()`
+
+You can use the `echo()` function with an object:
 
 ```ejs
 <%%
@@ -28,17 +41,28 @@ To create a JSON response, your `.ejs` template should output a valid JSON strin
       name: "Example Product",
       price: 29.99
     }
-  };
-%%>
-
-<%%= JSON.stringify(response) %%>
+  }
+  echo(response)
+%>
 ```
 
-### How It Works:
+### 3. Using JSON.stringify
 
-- **Dynamic Data**: The `response` object is dynamically populated with data, such as route parameters or other information, that you want to include in the JSON response.
-- **Returning JSON**: The `<%%= JSON.stringify(response) %%>` statement converts the `response` object into a JSON string and outputs it as the template's content.
-- **Automatic JSON Response**: Since the output is valid JSON, PocketPages will serve this as a JSON response with the correct headers.
+You can also explicitly stringify your JSON:
+
+```ejs
+<%%
+  const response = {
+    status: "success",
+    data: {
+      productId: params.productId,
+      name: "Example Product",
+      price: 29.99
+    }
+  }
+%>
+<%%= JSON.stringify(response) %>
+```
 
 ### Example URL and Response
 
