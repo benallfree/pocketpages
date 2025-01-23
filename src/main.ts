@@ -1,5 +1,6 @@
 export * as log from 'pocketbase-log'
 export { stringify } from 'pocketbase-stringify'
+export { globalApi } from './globalApi'
 export { AfterBootstrapHandler } from './lib/AfterBootstrapHandler'
 export {
   findRecordByFilter,

@@ -9,6 +9,9 @@ export const v23Provider = (): IPagesProvider => ({
         const oldRequire = require
         require = (path) => {
           try {
+            if (path === 'pocketpages') {
+              return require(`${__hooks}/pocketpages.pb`).globalApi
+            }
             return oldRequire(path)
           } catch (e) {
             const errorMsg = `${e}`
@@ -32,6 +35,9 @@ export const v23Provider = (): IPagesProvider => ({
         const oldRequire = require
         require = (path) => {
           try {
+            if (path === 'pocketpages') {
+              return require(`${__hooks}/pocketpages.pb`).globalApi
+            }
             return oldRequire(path)
           } catch (e) {
             const errorMsg = `${e}`

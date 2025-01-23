@@ -25,25 +25,29 @@
 - [Runtime Configuration](/docs/config)
 - [Caching](/docs/caching)
 
-# API
+# Global API
 
-- [Overview](/docs/api)
-- [`api`](/docs/api/api)
-- [`asset`](/docs/api/asset)
-- [`data`](/docs/api/data)
-- [`dbg/info/warn/error`](/docs/api/log)
-- [`echo`](/docs/api/echo)
-- [`env`](/docs/api/env)
-- [`findRecord(s)ByFilter`](/docs/api/db)
-- [`formData`](/docs/api/form-data)
-- [`meta`](/docs/api/meta)
-- [`params`](/docs/api/params)
-- [`redirect`](/docs/api/redirect)
-- [`request`](/docs/api/request)
-- [`resolve`](/docs/api/resolve)
-- [`response`](/docs/api/response)
-- [`stringify`](/docs/api/stringify)
-- [`url`](/docs/api/url)
+- [Overview](/docs/global-api)
+- [`stringify`](/docs/global-api/stringify)
+- [`url`](/docs/global-api/url)
+- [`findRecord(s)ByFilter`](/docs/global-api/db)
+- [`dbg/info/warn/error`](/docs/global-api/log)
+- [`micro-dash`](/docs/global-api/micro-dash)
+
+# Context API
+
+- [Overview](/docs/context-api)
+- [`api`](/docs/context-api/api)
+- [`asset`](/docs/context-api/asset)
+- [`data`](/docs/context-api/data)
+- [`echo`](/docs/context-api/echo)
+- [`formData`](/docs/context-api/form-data)
+- [`meta`](/docs/context-api/meta)
+- [`params`](/docs/context-api/params)
+- [`redirect`](/docs/context-api/redirect)
+- [`request`](/docs/context-api/request)
+- [`resolve`](/docs/context-api/resolve)
+- [`response`](/docs/context-api/response)
 
 # Guides
 

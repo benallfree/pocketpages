@@ -93,5 +93,6 @@ module.exports = function (api) {
 
 ## See Also
 
-- [Logging Functions](/docs/api/log)
-- [API Documentation](/docs/api)
+- [Logging Functions](/docs/global-api/log)
+- [Global API](/docs/global-api)
+- [Context API Documentation](/docs/context-api)

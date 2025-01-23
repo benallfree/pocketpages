@@ -15,6 +15,14 @@ export type MiddlewareLoaderFunc<TData = any> = (
 
 export type PagesParams<T = string> = Record<string, T | null | Array<T | null>>
 
+export type PagesGlobalApi = {
+  stringify: typeof stringify
+  forEach: typeof forEach
+  keys: typeof keys
+  values: typeof values
+  merge: typeof merge
+} & typeof log
+
 export type PagesApi<TData = any> = {
   params: PagesParams
   auth?: core.Record
