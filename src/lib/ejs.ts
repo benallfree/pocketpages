@@ -29,7 +29,7 @@ const oldCompile = ejs.compile
 ejs.compile = function (template: string, options: any) {
   const newTemplate = template.replace(
     /<script\s+server>([\s\S]*?)<\/script>/,
-    '<% \n $1 \n %>'
+    '<% $1 %>'
   )
   return oldCompile(newTemplate, { ...options })
 }
@@ -113,6 +113,7 @@ export const renderFile = (fname: string, api: PagesApi<any>) => {
           return __append(result.join(' '))
         }
       `,
+      compileDebug: true,
       async: false,
       cache: $app.isDev(),
       includer: (path: string, filename: string) => {
