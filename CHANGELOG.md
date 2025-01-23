@@ -1,5 +1,14 @@
 # pocketpages
 
+## 0.11.4
+
+### Patch Changes
+
+- 11b33f5: Enh: introduce global API
+- 3e9e44d: Fix: handle object returns from EJS
+- 13edc33: Enh: improved line number error reporting
+- d6306a4: Enh: improve require() error messaging
+
 ## 0.11.3
 
 ### Patch Changes

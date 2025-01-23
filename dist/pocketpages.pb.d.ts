@@ -51,6 +51,13 @@ declare const AfterBootstrapHandler: PagesInitializerFunc;
 type PageDataLoaderFunc<TData = any> = (api: Omit<PagesApi<TData>, 'data'>) => object;
 type MiddlewareLoaderFunc<TData = any> = (api: Omit<PagesApi<TData>, 'data'>) => object;
 type PagesParams<T = string> = Record<string, T | null | Array<T | null>>;
+type PagesGlobalApi = {
+    stringify: typeof stringify;
+    forEach: typeof forEach;
+    keys: typeof keys;
+    values: typeof values;
+    merge: typeof merge;
+} & typeof log;
 type PagesApi<TData = any> = {
     params: PagesParams;
     auth?: core.Record;
@@ -80,6 +87,8 @@ type Cache = {
     config: PagesConfig;
 };
 
+declare const globalApi: PagesGlobalApi;
+
 type FilterOptions = {
     filter?: string;
     sort?: string;
@@ -94,4 +103,4 @@ declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
-export { AfterBootstrapHandler, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesApi, type PagesConfig, type PagesParams, findRecordByFilter, findRecordsByFilter, v23MiddlewareWrapper };
+export { AfterBootstrapHandler, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesApi, type PagesConfig, type PagesGlobalApi, type PagesParams, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };

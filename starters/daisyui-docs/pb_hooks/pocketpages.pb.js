@@ -66,7 +66,7 @@ var require_dist = __commonJS({
     var src_exports2 = {};
     __export2(src_exports2, {
       defaultReplacer: () => defaultReplacer,
-      stringify: () => stringify6
+      stringify: () => stringify8
     });
     module2.exports = __toCommonJS2(src_exports2);
     var defaultReplacer = (k, v) => {
@@ -81,7 +81,7 @@ var require_dist = __commonJS({
       }
       return v;
     };
-    var stringify6 = (obj, replacer = defaultReplacer, space = 0) => {
+    var stringify8 = (obj, replacer = defaultReplacer, space = 0) => {
       const seen = /* @__PURE__ */ new WeakSet();
       return JSON.stringify(
         obj,
@@ -127,11 +127,11 @@ var require_dist2 = __commonJS({
       dbg: () => dbg7,
       error: () => error,
       info: () => info,
-      log: () => log3,
+      log: () => log4,
       warn: () => warn
     });
     module2.exports = __toCommonJS2(src_exports2);
-    var import_pocketbase_stringify5 = require_dist();
+    var import_pocketbase_stringify7 = require_dist();
     var replacer = (k, v) => {
       if (v instanceof Error) {
         return `${v}
@@ -157,7 +157,7 @@ ${v.stack}`;
           return o.toString();
         }
         if (typeof o === "object") {
-          return (0, import_pocketbase_stringify5.stringify)(o, replacer, 2);
+          return (0, import_pocketbase_stringify7.stringify)(o, replacer, 2);
         }
         return o;
       });
@@ -179,7 +179,7 @@ ${v.stack}`;
       const s = prepare(objs);
       $app.logger().error(s);
     };
-    var log3 = (...objs) => {
+    var log4 = (...objs) => {
       const s = prepare(objs);
       console.log(s);
     };
@@ -1053,8 +1053,8 @@ var require_url_parse = __commonJS({
       url.href = url.toString();
       return url;
     }
-    function toString2(stringify6) {
-      if (!stringify6 || "function" !== typeof stringify6) stringify6 = qs.stringify;
+    function toString2(stringify8) {
+      if (!stringify8 || "function" !== typeof stringify8) stringify8 = qs.stringify;
       var query, url = this, host = url.host, protocol = url.protocol;
       if (protocol && protocol.charAt(protocol.length - 1) !== ":") protocol += ":";
       var result = protocol + (url.protocol && url.slashes || isSpecial(url.protocol) ? "//" : "");
@@ -1072,7 +1072,7 @@ var require_url_parse = __commonJS({
         host += ":";
       }
       result += host + url.pathname;
-      query = "object" === typeof url.query ? stringify6(url.query) : url.query;
+      query = "object" === typeof url.query ? stringify8(url.query) : url.query;
       if (query) result += "?" !== query.charAt(0) ? "?" + query : query;
       if (url.hash) result += url.hash;
       return result;
@@ -1739,7 +1739,7 @@ var require_package = __commonJS({
         "engine",
         "ejs"
       ],
-      version: "3.1.10003",
+      version: "3.1.10004",
       author: "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
       license: "Apache-2.0",
       main: "./lib/ejs.js",
@@ -1906,18 +1906,33 @@ var require_ejs = __commonJS({
       }
       return handleCache(opts);
     }
-    function rethrow(err, str, flnm, lineno, esc) {
+    function extractLineAndCol(stack) {
+      const match = stack.match(/anonymous \(<eval>:(\d+):(\d+)/);
+      if (match) {
+        return {
+          line: parseInt(match[1]),
+          col: parseInt(match[2])
+        };
+      }
+      return null;
+    }
+    function rethrow(err, str, flnm, lineno, esc, prependLines) {
+      const { line, col } = extractLineAndCol(err.stack);
+      const realLineNo = line - prependLines - lineno + 1;
+      console.log(`lineno`, lineno, `prependLines`, prependLines, `line`, line, `realLineNo`, realLineNo);
+      console.log(err.stack);
       var lines = str.split("\n");
-      var start = Math.max(lineno - 3, 0);
-      var end = Math.min(lines.length, lineno + 3);
+      var start = Math.max(realLineNo - 30, 0);
+      var end = Math.min(lines.length, realLineNo + 3);
       var filename = esc(flnm);
-      var context = lines.slice(start, end).map(function(line, i) {
+      var context = lines.slice(start, end).map(function(line2, i) {
         var curr = i + start + 1;
-        return (curr == lineno ? " >> " : "    ") + curr + "| " + line;
+        return (curr == realLineNo ? " >> " : "    ") + curr + "| " + line2;
       }).join("\n");
-      err.path = filename;
-      err.message = (filename || "ejs") + ":" + lineno + "\n" + context + "\n\n" + err.message;
-      throw err;
+      const newErr = new Error((filename || "ejs") + ":" + realLineNo + "\n" + context + "\n\n" + err.message);
+      newErr.path = filename;
+      newErr.originalError = err;
+      throw newErr;
     }
     function stripSemi(str) {
       return str.replace(/;(\s*$)/, "$1");
@@ -2080,7 +2095,10 @@ var require_ejs = __commonJS({
           this.source = prepended + this.source + appended;
         }
         if (opts.compileDebug) {
-          src = "var __line = 1\n  , __lines = " + JSON.stringify(this.templateText) + "\n  , __filename = " + sanitizedFilename + ";\ntry {\n" + this.source + "} catch (e) {\n  rethrow(e, __lines, __filename, __line, escapeFn);\n}\n";
+          src = "var __line = 1\n  , __lines = " + JSON.stringify(this.templateText) + "\n  , __filename = " + sanitizedFilename + ";\ntry {\n" + this.source + `} catch (e) {
+  rethrow(e, __lines, __filename, __line, escapeFn, ${prepended.split("\n").length + 4});
+}
+`;
         } else {
           src = this.source;
         }
@@ -5221,8 +5239,9 @@ __export(src_exports, {
   MiddlewareHandler: () => MiddlewareHandler,
   findRecordByFilter: () => findRecordByFilter,
   findRecordsByFilter: () => findRecordsByFilter,
-  log: () => log2,
-  stringify: () => import_pocketbase_stringify4.stringify,
+  globalApi: () => globalApi,
+  log: () => log3,
+  stringify: () => import_pocketbase_stringify6.stringify,
   v23MiddlewareWrapper: () => v23MiddlewareWrapper
 });
 module.exports = __toCommonJS(src_exports);
@@ -5237,9 +5256,49 @@ var v23Provider = () => ({
   boot: () => {
     onBootstrap((e) => {
       e.next();
+      if (!require.isOverridden) {
+        const oldRequire = require;
+        require = (path3) => {
+          try {
+            if (path3 === "pocketpages") {
+              return require(`${__hooks}/pocketpages.pb`).globalApi;
+            }
+            return oldRequire(path3);
+          } catch (e2) {
+            const errorMsg = `${e2}`;
+            if (errorMsg.includes("Invalid module")) {
+              throw new Error(
+                `${path3} is not a valid module. Did you mean resolve()?`
+              );
+            }
+            throw e2;
+          }
+        };
+        require.isOverridden = true;
+      }
       require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler();
     });
     routerUse((e) => {
+      if (!require.isOverridden) {
+        const oldRequire = require;
+        require = (path3) => {
+          try {
+            if (path3 === "pocketpages") {
+              return require(`${__hooks}/pocketpages.pb`).globalApi;
+            }
+            return oldRequire(path3);
+          } catch (e2) {
+            const errorMsg = `${e2}`;
+            if (errorMsg.includes("Invalid module")) {
+              throw new Error(
+                `${path3} is not a valid module. Did you mean resolve()?`
+              );
+            }
+            throw e2;
+          }
+        };
+        require.isOverridden = true;
+      }
       return require(`${__hooks}/pocketpages.pb`).v23MiddlewareWrapper(e);
     });
   }
@@ -5254,10 +5313,10 @@ init_cjs_shims();
 
 // src/main.ts
 init_cjs_shims();
-var log2 = __toESM(require_dist2());
-var import_pocketbase_stringify4 = __toESM(require_dist());
+var log3 = __toESM(require_dist2());
+var import_pocketbase_stringify6 = __toESM(require_dist());
 
-// src/lib/AfterBootstrapHandler.ts
+// src/globalApi.ts
 init_cjs_shims();
 
 // node_modules/@s-libs/micro-dash/fesm2022/micro-dash.mjs
@@ -5325,13 +5384,26 @@ function pick(object, ...paths) {
   return result;
 }
 
+// src/globalApi.ts
+var log = __toESM(require_dist2());
+var import_pocketbase_stringify = __toESM(require_dist());
+var globalApi = {
+  stringify: import_pocketbase_stringify.stringify,
+  forEach,
+  keys,
+  values,
+  merge,
+  ...log
+};
+
 // src/lib/AfterBootstrapHandler.ts
+init_cjs_shims();
 var import_pocketbase_log = __toESM(require_dist2());
 var import_pocketbase_node = __toESM(require_dist3());
 
 // src/lib/helpers.ts
 init_cjs_shims();
-var import_pocketbase_stringify = __toESM(require_dist());
+var import_pocketbase_stringify2 = __toESM(require_dist());
 var pagesRoot = $filepath.join(__hooks, `pages`);
 var mkResolve = (rootPath) => (path3) => {
   if (path3.startsWith("/")) {
@@ -5371,7 +5443,7 @@ var echo = (...args) => {
     if (typeof arg === "function") {
       return arg.toString();
     } else if (typeof arg === "object") {
-      return (0, import_pocketbase_stringify.stringify)(arg);
+      return (0, import_pocketbase_stringify2.stringify)(arg);
     } else if (typeof arg === "number") {
       return arg.toString();
     }
@@ -5502,7 +5574,7 @@ var AfterBootstrapHandler = () => {
 
 // src/lib/db.ts
 init_cjs_shims();
-var import_pocketbase_stringify2 = __toESM(require_dist());
+var import_pocketbase_stringify3 = __toESM(require_dist());
 var findRecordByFilter = (collection, options2, dao = $app.dao()) => {
   return findRecordsByFilter(collection, options2, dao)?.[0];
 };
@@ -5523,13 +5595,13 @@ var findRecordsByFilter = (collection, options2, dao = $app.dao()) => {
     offset,
     filterParams
   );
-  return JSON.parse((0, import_pocketbase_stringify2.stringify)(records));
+  return JSON.parse((0, import_pocketbase_stringify3.stringify)(records));
 };
 
 // src/lib/MiddlewareHandler.ts
 init_cjs_shims();
-var log = __toESM(require_dist2());
-var import_pocketbase_stringify3 = __toESM(require_dist());
+var log2 = __toESM(require_dist2());
+var import_pocketbase_stringify5 = __toESM(require_dist());
 var import_url_parse = __toESM(require_url_parse());
 
 // src/lib/ejs.ts
@@ -5537,6 +5609,7 @@ init_cjs_shims();
 var import_pocketbase_ejs = __toESM(require_ejs());
 var import_pocketbase_log3 = __toESM(require_dist2());
 var import_pocketbase_node2 = __toESM(require_dist3());
+var import_pocketbase_stringify4 = __toESM(require_dist());
 
 // src/lib/marked.ts
 init_cjs_shims();
@@ -7665,7 +7738,7 @@ var oldCompile = import_pocketbase_ejs.default.compile;
 import_pocketbase_ejs.default.compile = function(template, options2) {
   const newTemplate = template.replace(
     /<script\s+server>([\s\S]*?)<\/script>/,
-    "<% \n $1 \n %>"
+    "<% $1 %>"
   );
   return oldCompile(newTemplate, { ...options2 });
 };
@@ -7722,18 +7795,15 @@ var renderFile = (fname, api) => {
       prepend: `
         const echo = (...args) => {
           const result = args.map((arg) => {
-            if (typeof arg === 'function') {
-              return arg.toString()
-            } else if (typeof arg === 'object') {
+            if (typeof arg === 'object') {
               return JSON.stringify(arg)
-            } else if (typeof arg === 'number') {
-              return arg.toString()
             }
             return arg.toString()
           })
-          return __append(result.join(' '));
+          return __append(result.join(' '))
         }
       `,
+      compileDebug: true,
       async: false,
       cache: $app.isDev(),
       includer: (path3, filename) => {
@@ -7756,6 +7826,9 @@ var renderFile = (fname, api) => {
     fname,
     api: pick(api, "slots", "slot", "data")
   });
+  if (typeof content !== "string") {
+    return (0, import_pocketbase_stringify4.stringify)(content);
+  }
   return content;
 };
 
@@ -7774,7 +7847,7 @@ __export(base_exports, {
   parse: () => parse,
   parseUrl: () => parseUrl,
   pick: () => pick2,
-  stringify: () => stringify3,
+  stringify: () => stringify5,
   stringifyUrl: () => stringifyUrl
 });
 init_cjs_shims();
@@ -8185,7 +8258,7 @@ function parse(query, options2) {
     return result;
   }, /* @__PURE__ */ Object.create(null));
 }
-function stringify3(object, options2) {
+function stringify5(object, options2) {
   if (!object) {
     return "";
   }
@@ -8254,7 +8327,7 @@ function stringifyUrl(object, options2) {
     ...parse(queryFromUrl, { sort: false }),
     ...object.query
   };
-  let queryString = stringify3(query, options2);
+  let queryString = stringify5(query, options2);
   if (queryString) {
     queryString = `?${queryString}`;
   }
@@ -8336,7 +8409,7 @@ var parseRoute = (url, routes) => {
 };
 
 // src/lib/MiddlewareHandler.ts
-var { dbg: dbg5 } = log;
+var { dbg: dbg5 } = log2;
 var MiddlewareHandler = (request, response, next) => {
   const { routes, config } = $app.store().get(`pocketpages`);
   const { method, url } = request;
@@ -8391,10 +8464,10 @@ var MiddlewareHandler = (request, response, next) => {
         return fingerprint(shortAssetPath, assetRoute.route.fingerprint);
       },
       meta: mkMeta(),
-      stringify: import_pocketbase_stringify3.stringify,
+      stringify: import_pocketbase_stringify5.stringify,
       url: (path3) => new import_url_parse.default(path3, true),
       resolve: mkResolve($filepath.dir(absolutePath)),
-      ...log
+      ...log2
     };
     let data = {};
     route.middlewares.forEach((maybeMiddleware) => {
@@ -8517,6 +8590,7 @@ if (isBooting) {
   MiddlewareHandler,
   findRecordByFilter,
   findRecordsByFilter,
+  globalApi,
   log,
   stringify,
   v23MiddlewareWrapper
