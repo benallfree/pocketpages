@@ -171,7 +171,11 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     return response.html(
       500,
       `<html><body><h1>PocketPages Error</h1><pre><code>${
-        e instanceof Error ? e.stack?.replaceAll(pagesRoot, '') : e
+        e instanceof Error
+          ? e.stack
+              ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
+              .replaceAll(__hooks, '')
+          : e
       }</code></pre></body></html>`
     )
   }
