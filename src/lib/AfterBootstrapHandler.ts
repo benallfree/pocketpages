@@ -100,7 +100,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
           return {
             nodeName: part,
             paramName: part.match(/\[.*\]/)
-              ? part.replace(/\[(.*)\]/g, '$1')
+              ? part.replace(/\[(.*)\].*$/g, '$1')
               : undefined,
           }
         }),
