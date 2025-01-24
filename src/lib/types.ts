@@ -23,6 +23,10 @@ export type PagesGlobalApi = {
   merge: typeof merge
 } & typeof log
 
+export type ResolveOptions = {
+  mode: 'inline' | 'require' | 'script'
+}
+
 export type PagesApi<TData = any> = {
   params: PagesParams
   auth?: core.Record
@@ -38,7 +42,7 @@ export type PagesApi<TData = any> = {
   meta: (key: string, value?: string) => string | undefined
   stringify: typeof stringify
   url: (path: string) => URL<Record<string, string | undefined>>
-  resolve: (path: string) => any
+  resolve: (path: string, options?: Partial<ResolveOptions>) => any
   forEach: typeof forEach
   keys: typeof keys
   values: typeof values

@@ -52,6 +52,35 @@ const apiKey = config.apiKey
 %>
 ```
 
+### Resolution Options
+
+The resolve function accepts an optional second parameter to control how the module is loaded:
+
+```typescript
+type ResolveOptions = {
+  mode: 'inline' | 'require' | 'script'
+}
+```
+
+- **`require`** (default): Loads and evaluates the module, returning the exports
+- **`inline`**: Returns the raw file contents as a string
+- **`script`**: Returns the file contents wrapped in a `<script>` tag with safety headers
+
+Example usage:
+
+```ejs
+<%%
+// Get raw file contents
+const rawConfig = resolve('config', { mode: 'inline' })
+
+// Load as a module (default behavior)
+const config = resolve('config', { mode: 'require' })
+
+// Include as a script tag
+const scriptTag = resolve('config', { mode: 'script' })
+%>
+```
+
 ### Resolution Rules
 
 When resolving a file path, PocketPages will:
