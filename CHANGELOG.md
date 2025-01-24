@@ -1,5 +1,13 @@
 # pocketpages
 
+## 0.11.5
+
+### Patch Changes
+
+- 84d92ef: Fix: hide paths above root on exception tracebacks
+- df4bc9b: Fix: ignore file extension on file path params
+- 169ba6d: Enh: add 'mode' option to resolve()
+
 ## 0.11.4
 
 ### Patch Changes
