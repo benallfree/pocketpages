@@ -1782,7 +1782,7 @@ var require_ejs = __commonJS({
   "../pocketbase-ejs/lib/ejs.js"(exports2) {
     "use strict";
     init_cjs_shims();
-    var { fs: fs4, path: path3 } = require_dist4();
+    var { fs: fs5, path: path3 } = require_dist4();
     var utils = require_utils();
     var scopeOptionWarned = false;
     var _VERSION_STRING = require_package().version;
@@ -1809,7 +1809,7 @@ var require_ejs = __commonJS({
     var _BOM = /^\uFEFF/;
     var _JS_IDENTIFIER = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
     exports2.cache = utils.cache;
-    exports2.fileLoader = fs4.readFileSync;
+    exports2.fileLoader = fs5.readFileSync;
     exports2.localsName = _DEFAULT_LOCALS_NAME;
     exports2.promiseImpl = new Function("return this;")().Promise;
     exports2.resolveInclude = function(name, filename, isDir) {
@@ -1827,7 +1827,7 @@ var require_ejs = __commonJS({
       var filePath;
       if (paths.some(function(v) {
         filePath = exports2.resolveInclude(name, v, true);
-        return fs4.existsSync(filePath);
+        return fs5.existsSync(filePath);
       })) {
         return filePath;
       }
@@ -1847,7 +1847,7 @@ var require_ejs = __commonJS({
       } else {
         if (options2.filename) {
           filePath = exports2.resolveInclude(path4, options2.filename);
-          if (fs4.existsSync(filePath)) {
+          if (fs5.existsSync(filePath)) {
             includePath = filePath;
           }
         }
@@ -1917,6 +1917,9 @@ var require_ejs = __commonJS({
       return null;
     }
     function rethrow(err, str, flnm, lineno, esc, prependLines) {
+      if (err instanceof BadRequestError) {
+        throw err;
+      }
       const { line, col } = extractLineAndCol(err.stack);
       const realLineNo = line - prependLines - lineno + 1;
       console.log(`lineno`, lineno, `prependLines`, prependLines, `line`, line, `realLineNo`, realLineNo);
@@ -1929,10 +1932,10 @@ var require_ejs = __commonJS({
         var curr = i + start + 1;
         return (curr == realLineNo ? " >> " : "    ") + curr + "| " + line2;
       }).join("\n");
-      const newErr = new Error((filename || "ejs") + ":" + realLineNo + "\n" + context + "\n\n" + err.message);
-      newErr.path = filename;
-      newErr.originalError = err;
-      throw newErr;
+      err.message = (filename || "ejs") + ":" + realLineNo + "\n" + context + "\n\n" + err.message;
+      err.path = filename;
+      err.originalError = err;
+      throw err;
     }
     function stripSemi(str) {
       return str.replace(/;(\s*$)/, "$1");
@@ -5399,17 +5402,43 @@ var globalApi = {
 // src/lib/AfterBootstrapHandler.ts
 init_cjs_shims();
 var import_pocketbase_log = __toESM(require_dist2());
-var import_pocketbase_node = __toESM(require_dist3());
+var import_pocketbase_node2 = __toESM(require_dist3());
 
 // src/lib/helpers.ts
 init_cjs_shims();
+var import_pocketbase_node = __toESM(require_dist3());
 var import_pocketbase_stringify2 = __toESM(require_dist());
 var pagesRoot = $filepath.join(__hooks, `pages`);
-var mkResolve = (rootPath) => (path3) => {
+var SAFE_HEADER = `if (typeof module === 'undefined') { module = { exports: {} } };`;
+var exts = ["", ".js", ".json"];
+var simulateRequire = (path3) => {
+  for (let i = 0; i < exts.length; i++) {
+    try {
+      return import_pocketbase_node.fs.readFileSync(path3 + exts[i], "utf-8");
+    } catch (e) {
+      continue;
+    }
+  }
+  throw new Error(`No module '${path3}' found`);
+};
+var mkResolve = (rootPath) => (path3, options2) => {
+  const _require = (path4) => {
+    switch (options2?.mode || "require") {
+      case "inline":
+        return simulateRequire(path4);
+      case "require":
+        return require(path4);
+      case "script":
+        return `<script>
+${SAFE_HEADER}
+${simulateRequire(path4)}
+</script>`;
+    }
+  };
   if (path3.startsWith("/")) {
     const finalPath = $filepath.join(pagesRoot, "_private", path3);
     try {
-      return require(finalPath);
+      return _require(finalPath);
     } catch (e) {
       throw new Error(`No module '${finalPath}' found`);
     }
@@ -5417,7 +5446,7 @@ var mkResolve = (rootPath) => (path3) => {
   let currentPath = rootPath;
   while (currentPath.length >= pagesRoot.length) {
     try {
-      return require($filepath.join(currentPath, "_private", path3));
+      return _require($filepath.join(currentPath, "_private", path3));
     } catch (e) {
       if (currentPath === pagesRoot) {
         throw new Error(
@@ -5427,7 +5456,9 @@ var mkResolve = (rootPath) => (path3) => {
       currentPath = $filepath.dir(currentPath);
     }
   }
-  throw new Error(`No module '${path3}' found in any parent _private directory`);
+  throw new Error(
+    `No module '${path3}' found in any parent _private directory`
+  );
 };
 var mkMeta = () => {
   const metaData = {};
@@ -5456,7 +5487,7 @@ var echo = (...args) => {
 var LOADER_METHODS = ["load", "get", "post", "put", "delete"];
 var AfterBootstrapHandler = () => {
   (0, import_pocketbase_log.dbg)(`pocketpages startup`);
-  if (!import_pocketbase_node.fs.existsSync(pagesRoot)) {
+  if (!import_pocketbase_node2.fs.existsSync(pagesRoot)) {
     throw new Error(
       `${pagesRoot} must exist. Did you launch pocketbase with --dir or --hooksDir`
     );
@@ -5508,7 +5539,7 @@ var AfterBootstrapHandler = () => {
       segments: parts.map((part) => {
         return {
           nodeName: part,
-          paramName: part.match(/\[.*\]/) ? part.replace(/\[(.*)\]/g, "$1") : void 0
+          paramName: part.match(/\[.*\]/) ? part.replace(/\[(.*)\].*$/g, "$1") : void 0
         };
       }),
       middlewares: [],
@@ -5528,7 +5559,7 @@ var AfterBootstrapHandler = () => {
           `+layout.ejs`
         );
         (0, import_pocketbase_log.dbg)({ pathParts, maybeLayout });
-        if (import_pocketbase_node.fs.existsSync(maybeLayout, "file")) {
+        if (import_pocketbase_node2.fs.existsSync(maybeLayout, "file")) {
           route.layouts.push(maybeLayout);
           (0, import_pocketbase_log.dbg)(`layout found`);
         }
@@ -5543,7 +5574,7 @@ var AfterBootstrapHandler = () => {
       const current = [pagesRoot];
       do {
         const maybeMiddleware = $filepath.join(...current, `+middleware.js`);
-        if (import_pocketbase_node.fs.existsSync(maybeMiddleware, "file")) {
+        if (import_pocketbase_node2.fs.existsSync(maybeMiddleware, "file")) {
           route.middlewares.push(maybeMiddleware);
         }
         if (pathParts.length === 0) {
@@ -5559,7 +5590,7 @@ var AfterBootstrapHandler = () => {
           $filepath.dir(route.relativePath),
           `+${method}.js`
         );
-        if (import_pocketbase_node.fs.existsSync(maybeLoad)) {
+        if (import_pocketbase_node2.fs.existsSync(maybeLoad)) {
           route.loaders[method] = maybeLoad;
         }
       });
@@ -5608,7 +5639,7 @@ var import_url_parse = __toESM(require_url_parse());
 init_cjs_shims();
 var import_pocketbase_ejs = __toESM(require_ejs());
 var import_pocketbase_log3 = __toESM(require_dist2());
-var import_pocketbase_node2 = __toESM(require_dist3());
+var import_pocketbase_node3 = __toESM(require_dist3());
 var import_pocketbase_stringify4 = __toESM(require_dist());
 
 // src/lib/marked.ts
@@ -7746,18 +7777,18 @@ var oldResolveInclude = import_pocketbase_ejs.default.resolveInclude;
 import_pocketbase_ejs.default.resolveInclude = function(includePath, templatePath, isDir) {
   (0, import_pocketbase_log3.dbg)(`resolveInclude`, { name: includePath, filename: templatePath, isDir });
   if (includePath.startsWith("/")) {
-    return import_pocketbase_node2.path.resolve(pagesRoot, `_private`, includePath);
+    return import_pocketbase_node3.path.resolve(pagesRoot, `_private`, includePath);
   }
-  let currentPath = import_pocketbase_node2.path.dirname(templatePath);
+  let currentPath = import_pocketbase_node3.path.dirname(templatePath);
   while (currentPath.length >= pagesRoot.length) {
-    const attemptPath = import_pocketbase_node2.path.resolve(currentPath, `_private`, includePath);
-    if (import_pocketbase_node2.fs.existsSync(attemptPath, "file")) {
+    const attemptPath = import_pocketbase_node3.path.resolve(currentPath, `_private`, includePath);
+    if (import_pocketbase_node3.fs.existsSync(attemptPath, "file")) {
       return attemptPath;
     } else {
       if (currentPath === pagesRoot) {
         break;
       }
-      currentPath = import_pocketbase_node2.path.dirname(currentPath);
+      currentPath = import_pocketbase_node3.path.dirname(currentPath);
     }
   }
   throw new Error(`No partial '${includePath}' found in any _private directory`);
@@ -7809,7 +7840,7 @@ var renderFile = (fname, api) => {
       includer: (path3, filename) => {
         (0, import_pocketbase_log3.dbg)(`includer`, { path: path3, filename });
         if ($filepath.ext(filename) === ".md") {
-          const markdown = import_pocketbase_node2.fs.readFileSync(filename, "utf8");
+          const markdown = import_pocketbase_node3.fs.readFileSync(filename, "utf8");
           const res = marked2(markdown, api);
           forEach(res.frontmatter, (v, k) => {
             api.meta(k, v);
@@ -8517,7 +8548,7 @@ var MiddlewareHandler = (request, response, next) => {
     }
     return response.html(
       500,
-      `<html><body><h1>PocketPages Error</h1><pre><code>${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "") : e}</code></pre></body></html>`
+      `<html><body><h1>PocketPages Error</h1><pre><code>${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pagesRoot)).replaceAll(__hooks, "") : e}</code></pre></body></html>`
     );
   }
 };

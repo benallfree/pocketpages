@@ -29,12 +29,13 @@
     "build:copy:daisyui": "cp dist/pocketpages.pb.js starters/daisyui/pb_hooks",
     "build:copy:daisyui-docs": "cp dist/pocketpages.pb.js starters/daisyui-docs/pb_hooks",
     "build:copy:docs": "cp dist/pocketpages.pb.js docs/pb_hooks",
-    "watch": "rimraf dist && tsup --watch"
+    "watch": "rimraf dist && chokidar 'src/**/*' -c 'bun run build'"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
     "@s-libs/micro-dash": "^18.0.0",
     "@types/url-parse": "^1.4.11",
+    "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
     "front-matter": "^4.0.2",
     "marked": "^14.1.2",

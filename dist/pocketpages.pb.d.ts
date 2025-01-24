@@ -58,6 +58,9 @@ type PagesGlobalApi = {
     values: typeof values;
     merge: typeof merge;
 } & typeof log;
+type ResolveOptions = {
+    mode: 'inline' | 'require' | 'script';
+};
 type PagesApi<TData = any> = {
     params: PagesParams;
     auth?: core.Record;
@@ -73,7 +76,7 @@ type PagesApi<TData = any> = {
     meta: (key: string, value?: string) => string | undefined;
     stringify: typeof stringify;
     url: (path: string) => URLParse<Record<string, string | undefined>>;
-    resolve: (path: string) => any;
+    resolve: (path: string, options?: Partial<ResolveOptions>) => any;
     forEach: typeof forEach;
     keys: typeof keys;
     values: typeof values;
@@ -103,4 +106,4 @@ declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
-export { AfterBootstrapHandler, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesApi, type PagesConfig, type PagesGlobalApi, type PagesParams, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
+export { AfterBootstrapHandler, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesApi, type PagesConfig, type PagesGlobalApi, type PagesParams, type ResolveOptions, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
