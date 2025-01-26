@@ -58,26 +58,30 @@ The resolve function accepts an optional second parameter to control how the mod
 
 ```typescript
 type ResolveOptions = {
-  mode: 'inline' | 'require' | 'script'
+  mode: 'raw' | 'require' | 'script' | 'style'
 }
 ```
 
 - **`require`** (default): Loads and evaluates the module, returning the exports
-- **`inline`**: Returns the raw file contents as a string
+- **`raw`**: Returns the raw file contents as a string
 - **`script`**: Returns the file contents wrapped in a `<script>` tag with safety headers
+- **`style`**: Returns the file contents wrapped in a `<style>` tag
 
 Example usage:
 
 ```ejs
 <%%
 // Get raw file contents
-const rawConfig = resolve('config', { mode: 'inline' })
+const rawConfig = resolve('config', { mode: 'raw' })
 
 // Load as a module (default behavior)
 const config = resolve('config', { mode: 'require' })
 
 // Include as a script tag
 const scriptTag = resolve('config', { mode: 'script' })
+
+// Include as a style tag
+const styleTag = resolve('styles', { mode: 'style' })
 %>
 ```
 

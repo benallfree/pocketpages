@@ -22,12 +22,14 @@ export const mkResolve =
   (rootPath: string) => (path: string, options?: Partial<ResolveOptions>) => {
     const _require = (path: string) => {
       switch (options?.mode || 'require') {
-        case 'inline':
+        case 'raw':
           return simulateRequire(path)
         case 'require':
           return require(path)
         case 'script':
           return `<script>\n${SAFE_HEADER}\n${simulateRequire(path)}\n</script>`
+        case 'style':
+          return `<style>\n${simulateRequire(path)}\n</style>`
       }
     }
 

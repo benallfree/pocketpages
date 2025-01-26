@@ -24,7 +24,7 @@ export type PagesGlobalApi = {
 } & typeof log
 
 export type ResolveOptions = {
-  mode: 'inline' | 'require' | 'script'
+  mode: 'raw' | 'require' | 'script' | 'style'
 }
 
 export type PagesApi<TData = any> = {
