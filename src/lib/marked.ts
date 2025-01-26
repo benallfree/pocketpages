@@ -1,6 +1,6 @@
 import fm, { FrontMatterResult } from 'front-matter'
 import { marked as _marked, RendererObject } from 'marked'
-import { dbg } from 'pocketbase-log'
+import { dbg } from './debug'
 import { PagesApi } from './types'
 
 export type FrontMatter = Record<string, string>

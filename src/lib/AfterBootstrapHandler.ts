@@ -1,6 +1,7 @@
 import { forEach } from '@s-libs/micro-dash'
-import { dbg } from 'pocketbase-log'
+import { info } from 'pocketbase-log'
 import { fs } from 'pocketbase-node'
+import { dbg } from './debug'
 import { pagesRoot } from './helpers'
 import { PagesInitializerFunc } from './pages'
 import { Cache, PagesConfig } from './types'
@@ -30,7 +31,7 @@ export type Route = {
 export const LOADER_METHODS = ['load', 'get', 'post', 'put', 'delete'] as const
 
 export const AfterBootstrapHandler: PagesInitializerFunc = () => {
-  dbg(`pocketpages startup`)
+  info(`pocketpages startup`)
 
   if (!fs.existsSync(pagesRoot)) {
     throw new Error(
@@ -45,6 +46,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
   // dbg({ configPath })
   const config: PagesConfig = {
     preprocessorExts: ['.ejs', '.md'],
+    debug: false,
     ...(() => {
       try {
         return require(configPath) as Partial<PagesConfig>
@@ -52,6 +54,9 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
         return {}
       }
     })(),
+  }
+  if (config.debug) {
+    $app.store().set('__pocketpages_debug', true)
   }
 
   const physicalFiles: string[] = []

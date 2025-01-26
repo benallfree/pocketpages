@@ -20,12 +20,15 @@ Here is an example of a basic `+config.js` file:
 ```javascript
 module.exports = {
   preprocessorExts: ['.md', '.ejs'],
+  debug: false,
 }
 ```
 
 ## Configuration Options
 
 - **`preprocessorExts`**: An array that specifies which file extensions should be passed through the EJS preprocessor. Files with these extensions will be processed by EJS before being served. Any other file types not listed in this array will be served as static files.
+
+- **`debug`**: A boolean that enables internal PocketPages debugging output to the console. When set to `true`, it will output information about routes, parameters, and other internal details that are helpful for troubleshooting. Defaults to `false`.
 
 ## File Routing Rules
 

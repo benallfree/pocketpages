@@ -1,4 +1,3 @@
-import { dbg } from 'pocketbase-log'
 import { default as parse } from 'url-parse'
 import type {
   PagesMethods,
@@ -6,6 +5,7 @@ import type {
   PagesRequest,
   PagesResponse,
 } from '../..'
+import { dbg } from '../../../debug'
 
 export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
   const next: PagesNextFunc = () => {

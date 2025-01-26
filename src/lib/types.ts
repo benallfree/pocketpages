@@ -51,6 +51,7 @@ export type PagesApi<TData = any> = {
 
 export type PagesConfig = {
   preprocessorExts: string[]
+  debug: boolean
 }
 
 export type Cache = { routes: Route[]; config: PagesConfig }
