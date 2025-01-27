@@ -1,5 +1,16 @@
 # pocketpages
 
+## 0.11.6
+
+### Patch Changes
+
+- 1151a8a: Chore: updated pocketbase-ejs to improve BadRequestError handling
+- cee3c3e: Enh: added shuffle() to global API
+- b4d5894: Enh: added `raw` and `style` support to resolve()
+- 9a6d543: Enh: improved exception handling error messages
+- 281ae68: Fix: route returning undefined value now handled properly
+- dc3c586: Enh: suppress PocketPages internal debugging by default
+
 ## 0.11.5
 
 ### Patch Changes
