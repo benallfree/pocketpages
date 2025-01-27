@@ -159,17 +159,24 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     // dbg(`Final result`, str)
     return response.html(200, content)
   } catch (e) {
+    error(e)
+    const message = (() => {
+      const m = `${e}`
+      if (m.includes('Value is not an object'))
+        return `${m} - are you referencing a symbol missing from require() or resolve()?`
+      return `${e}`
+    })()
     if (e instanceof BadRequestError) {
-      return response.html(400, `${e}`)
+      return response.html(400, message)
     }
     return response.html(
       500,
-      `<html><body><h1>PocketPages Error</h1><pre><code>${
+      `<html><body><h1>PocketPages Error</h1><pre><code>${message}\n${
         e instanceof Error
           ? e.stack
               ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
               .replaceAll(__hooks, '')
-          : e
+          : ''
       }</code></pre></body></html>`
     )
   }
