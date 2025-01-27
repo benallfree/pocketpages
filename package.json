@@ -39,7 +39,7 @@
     "concurrently": "^9.1.2",
     "front-matter": "^4.0.2",
     "marked": "^14.1.2",
-    "pocketbase-ejs": "^3.1.10004",
+    "pocketbase-ejs": "^3.1.10005",
     "pocketbase-jsvm": "^0.23.10002",
     "pocketbase-log": "^0.0.2",
     "pocketbase-node": "^0.0.3",
