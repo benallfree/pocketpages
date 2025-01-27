@@ -1,6 +1,6 @@
-import { forEach, keys, merge, values } from '@s-libs/micro-dash'
-import * as log from 'pocketbase-log'
-import { stringify } from 'pocketbase-stringify'
+import { forEach, merge } from '@s-libs/micro-dash'
+import { error } from 'pocketbase-log'
+import { globalApi } from 'src/globalApi'
 import { default as URL } from 'url-parse'
 import { dbg } from './debug'
 import { parseSlots, renderFile } from './ejs'
@@ -9,8 +9,6 @@ import { marked } from './marked'
 import { PagesMiddlewareFunc } from './pages'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
 import { Cache, PagesApi } from './types'
-
-const { dbg } = log
 
 export const MiddlewareHandler: PagesMiddlewareFunc = (
   request,
@@ -54,10 +52,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     dbg(`Found a matching route`, { parsedRoute })
 
     const api: PagesApi<any> = {
-      forEach,
-      keys,
-      values,
-      merge,
+      ...globalApi,
       params,
       echo: (...args) => {
         const s = echo(...args)
@@ -93,10 +88,8 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
         return applyFingerprint(shortAssetPath, assetRoute.route.fingerprint)
       },
       meta: mkMeta(),
-      stringify,
       url: (path: string) => new URL(path, true),
       resolve: mkResolve($filepath.dir(absolutePath)),
-      ...log,
     }
 
     let data = {}
