@@ -1,4 +1,4 @@
-import { forEach, keys, merge, values } from '@s-libs/micro-dash'
+import { forEach, keys, merge, shuffle, values } from '@s-libs/micro-dash'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import type URL from 'url-parse'
@@ -21,6 +21,7 @@ export type PagesGlobalApi = {
   keys: typeof keys
   values: typeof values
   merge: typeof merge
+  shuffle: typeof shuffle
 } & typeof log
 
 export type ResolveOptions = {
