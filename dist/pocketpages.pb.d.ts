@@ -1,4 +1,4 @@
-import { forEach, keys, values, merge } from '@s-libs/micro-dash';
+import { forEach, keys, values, merge, shuffle } from '@s-libs/micro-dash';
 import * as log from 'pocketbase-log';
 export { log };
 import { stringify } from 'pocketbase-stringify';
@@ -57,9 +57,10 @@ type PagesGlobalApi = {
     keys: typeof keys;
     values: typeof values;
     merge: typeof merge;
+    shuffle: typeof shuffle;
 } & typeof log;
 type ResolveOptions = {
-    mode: 'inline' | 'require' | 'script';
+    mode: 'raw' | 'require' | 'script' | 'style';
 };
 type PagesApi<TData = any> = {
     params: PagesParams;
@@ -84,6 +85,7 @@ type PagesApi<TData = any> = {
 } & typeof log;
 type PagesConfig = {
     preprocessorExts: string[];
+    debug: boolean;
 };
 type Cache = {
     routes: Route[];

@@ -66,7 +66,7 @@ var require_dist = __commonJS({
     var src_exports2 = {};
     __export2(src_exports2, {
       defaultReplacer: () => defaultReplacer,
-      stringify: () => stringify8
+      stringify: () => stringify7
     });
     module2.exports = __toCommonJS2(src_exports2);
     var defaultReplacer = (k, v) => {
@@ -81,7 +81,7 @@ var require_dist = __commonJS({
       }
       return v;
     };
-    var stringify8 = (obj, replacer = defaultReplacer, space = 0) => {
+    var stringify7 = (obj, replacer = defaultReplacer, space = 0) => {
       const seen = /* @__PURE__ */ new WeakSet();
       return JSON.stringify(
         obj,
@@ -124,14 +124,14 @@ var require_dist2 = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var src_exports2 = {};
     __export2(src_exports2, {
-      dbg: () => dbg7,
-      error: () => error,
-      info: () => info,
+      dbg: () => dbg3,
+      error: () => error2,
+      info: () => info2,
       log: () => log4,
       warn: () => warn
     });
     module2.exports = __toCommonJS2(src_exports2);
-    var import_pocketbase_stringify7 = require_dist();
+    var import_pocketbase_stringify6 = require_dist();
     var replacer = (k, v) => {
       if (v instanceof Error) {
         return `${v}
@@ -157,17 +157,17 @@ ${v.stack}`;
           return o.toString();
         }
         if (typeof o === "object") {
-          return (0, import_pocketbase_stringify7.stringify)(o, replacer, 2);
+          return (0, import_pocketbase_stringify6.stringify)(o, replacer, 2);
         }
         return o;
       });
       return parts.join(` `);
     };
-    var dbg7 = (...objs) => {
+    var dbg3 = (...objs) => {
       const s = prepare(objs);
       $app.logger().debug(s);
     };
-    var info = (...objs) => {
+    var info2 = (...objs) => {
       const s = prepare(objs);
       $app.logger().info(s);
     };
@@ -175,7 +175,7 @@ ${v.stack}`;
       const s = prepare(objs);
       $app.logger().warn(s);
     };
-    var error = (...objs) => {
+    var error2 = (...objs) => {
       const s = prepare(objs);
       $app.logger().error(s);
     };
@@ -1053,8 +1053,8 @@ var require_url_parse = __commonJS({
       url.href = url.toString();
       return url;
     }
-    function toString2(stringify8) {
-      if (!stringify8 || "function" !== typeof stringify8) stringify8 = qs.stringify;
+    function toString2(stringify7) {
+      if (!stringify7 || "function" !== typeof stringify7) stringify7 = qs.stringify;
       var query, url = this, host = url.host, protocol = url.protocol;
       if (protocol && protocol.charAt(protocol.length - 1) !== ":") protocol += ":";
       var result = protocol + (url.protocol && url.slashes || isSpecial(url.protocol) ? "//" : "");
@@ -1072,7 +1072,7 @@ var require_url_parse = __commonJS({
         host += ":";
       }
       result += host + url.pathname;
-      query = "object" === typeof url.query ? stringify8(url.query) : url.query;
+      query = "object" === typeof url.query ? stringify7(url.query) : url.query;
       if (query) result += "?" !== query.charAt(0) ? "?" + query : query;
       if (url.hash) result += url.hash;
       return result;
@@ -2482,11 +2482,11 @@ var require_type = __commonJS({
       "sequence",
       "mapping"
     ];
-    function compileStyleAliases(map) {
+    function compileStyleAliases(map2) {
       var result = {};
-      if (map !== null) {
-        Object.keys(map).forEach(function(style) {
-          map[style].forEach(function(alias) {
+      if (map2 !== null) {
+        Object.keys(map2).forEach(function(style) {
+          map2[style].forEach(function(alias) {
             result[String(alias)] = style;
           });
         });
@@ -3108,9 +3108,9 @@ var require_binary = __commonJS({
     var BASE64_MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\n\r";
     function resolveYamlBinary(data) {
       if (data === null) return false;
-      var code, idx, bitlen = 0, max = data.length, map = BASE64_MAP;
+      var code, idx, bitlen = 0, max = data.length, map2 = BASE64_MAP;
       for (idx = 0; idx < max; idx++) {
-        code = map.indexOf(data.charAt(idx));
+        code = map2.indexOf(data.charAt(idx));
         if (code > 64) continue;
         if (code < 0) return false;
         bitlen += 6;
@@ -3118,14 +3118,14 @@ var require_binary = __commonJS({
       return bitlen % 8 === 0;
     }
     function constructYamlBinary(data) {
-      var idx, tailbits, input = data.replace(/[\r\n=]/g, ""), max = input.length, map = BASE64_MAP, bits = 0, result = [];
+      var idx, tailbits, input = data.replace(/[\r\n=]/g, ""), max = input.length, map2 = BASE64_MAP, bits = 0, result = [];
       for (idx = 0; idx < max; idx++) {
         if (idx % 4 === 0 && idx) {
           result.push(bits >> 16 & 255);
           result.push(bits >> 8 & 255);
           result.push(bits & 255);
         }
-        bits = bits << 6 | map.indexOf(input.charAt(idx));
+        bits = bits << 6 | map2.indexOf(input.charAt(idx));
       }
       tailbits = max % 4 * 6;
       if (tailbits === 0) {
@@ -3144,32 +3144,32 @@ var require_binary = __commonJS({
       return result;
     }
     function representYamlBinary(object) {
-      var result = "", bits = 0, idx, tail, max = object.length, map = BASE64_MAP;
+      var result = "", bits = 0, idx, tail, max = object.length, map2 = BASE64_MAP;
       for (idx = 0; idx < max; idx++) {
         if (idx % 3 === 0 && idx) {
-          result += map[bits >> 18 & 63];
-          result += map[bits >> 12 & 63];
-          result += map[bits >> 6 & 63];
-          result += map[bits & 63];
+          result += map2[bits >> 18 & 63];
+          result += map2[bits >> 12 & 63];
+          result += map2[bits >> 6 & 63];
+          result += map2[bits & 63];
         }
         bits = (bits << 8) + object[idx];
       }
       tail = max % 3;
       if (tail === 0) {
-        result += map[bits >> 18 & 63];
-        result += map[bits >> 12 & 63];
-        result += map[bits >> 6 & 63];
-        result += map[bits & 63];
+        result += map2[bits >> 18 & 63];
+        result += map2[bits >> 12 & 63];
+        result += map2[bits >> 6 & 63];
+        result += map2[bits & 63];
       } else if (tail === 2) {
-        result += map[bits >> 10 & 63];
-        result += map[bits >> 4 & 63];
-        result += map[bits << 2 & 63];
-        result += map[64];
+        result += map2[bits >> 10 & 63];
+        result += map2[bits >> 4 & 63];
+        result += map2[bits << 2 & 63];
+        result += map2[64];
       } else if (tail === 1) {
-        result += map[bits >> 2 & 63];
-        result += map[bits << 4 & 63];
-        result += map[64];
-        result += map[64];
+        result += map2[bits >> 2 & 63];
+        result += map2[bits << 4 & 63];
+        result += map2[64];
+        result += map2[64];
       }
       return result;
     }
@@ -4640,14 +4640,14 @@ var require_dumper = __commonJS({
       "Off",
       "OFF"
     ];
-    function compileStyleMap(schema, map) {
+    function compileStyleMap(schema, map2) {
       var result, keys2, index, length, tag2, style, type;
-      if (map === null) return {};
+      if (map2 === null) return {};
       result = {};
-      keys2 = Object.keys(map);
+      keys2 = Object.keys(map2);
       for (index = 0, length = keys2.length; index < length; index += 1) {
         tag2 = keys2[index];
-        style = String(map[tag2]);
+        style = String(map2[tag2]);
         if (tag2.slice(0, 2) === "!!") {
           tag2 = "tag:yaml.org,2002:" + tag2.slice(2);
         }
@@ -5244,7 +5244,7 @@ __export(src_exports, {
   findRecordsByFilter: () => findRecordsByFilter,
   globalApi: () => globalApi,
   log: () => log3,
-  stringify: () => import_pocketbase_stringify6.stringify,
+  stringify: () => import_pocketbase_stringify5.stringify,
   v23MiddlewareWrapper: () => v23MiddlewareWrapper
 });
 module.exports = __toCommonJS(src_exports);
@@ -5317,13 +5317,16 @@ init_cjs_shims();
 // src/main.ts
 init_cjs_shims();
 var log3 = __toESM(require_dist2());
-var import_pocketbase_stringify6 = __toESM(require_dist());
+var import_pocketbase_stringify5 = __toESM(require_dist());
 
 // src/globalApi.ts
 init_cjs_shims();
 
 // node_modules/@s-libs/micro-dash/fesm2022/micro-dash.mjs
 init_cjs_shims();
+function identity(value) {
+  return value;
+}
 function clone(value) {
   if (Array.isArray(value)) {
     return value.slice();
@@ -5365,6 +5368,45 @@ function forEachOfArray(array, iteratee) {
 function values(object) {
   return keys(object).map((key) => object[key]);
 }
+function times(n, iteratee) {
+  const result = [];
+  for (let i = 0; i < n; ++i) {
+    result[i] = iteratee(i);
+  }
+  return result;
+}
+function flatten(array) {
+  const result = [];
+  for (const element of array) {
+    if (Array.isArray(element)) {
+      for (const inner of element) {
+        result.push(inner);
+      }
+    } else {
+      result.push(element);
+    }
+  }
+  return result;
+}
+function pullAt(array, ...indexes) {
+  const flattenedIndexes = flatten(indexes);
+  const result = flattenedIndexes.map((i) => array[i]);
+  let lastI;
+  for (const i of flattenedIndexes.sort((a, b) => b - a)) {
+    if (i !== lastI) {
+      array.splice(i, 1);
+    }
+    lastI = i;
+  }
+  return result;
+}
+function map(collection, iteratee) {
+  const mapped = [];
+  forEach(collection, (value, keyOrIndex) => {
+    mapped.push(iteratee(value, keyOrIndex));
+  });
+  return mapped;
+}
 function merge(object, ...sources) {
   for (const source of sources) {
     forEach(source, (value, key) => {
@@ -5386,6 +5428,27 @@ function pick(object, ...paths) {
   }
   return result;
 }
+var randomInt = (lower, upper, floating) => {
+  let range = upper - lower;
+  if (!floating) {
+    ++range;
+  }
+  let result = Math.random() * range + lower;
+  if (!floating) {
+    result = Math.floor(result);
+  }
+  return result;
+};
+function sampleSize(collection, n = 1) {
+  const values2 = map(collection, identity);
+  return times(Math.min(n, values2.length), () => pullAt(values2, randomInt(0, values2.length - 1, false))[0]);
+}
+function size(collection) {
+  return keys(collection).length;
+}
+function shuffle(collection) {
+  return sampleSize(collection, size(collection));
+}
 
 // src/globalApi.ts
 var log = __toESM(require_dist2());
@@ -5396,6 +5459,7 @@ var globalApi = {
   keys,
   values,
   merge,
+  shuffle,
   ...log
 };
 
@@ -5403,6 +5467,15 @@ var globalApi = {
 init_cjs_shims();
 var import_pocketbase_log = __toESM(require_dist2());
 var import_pocketbase_node2 = __toESM(require_dist3());
+
+// src/lib/debug.ts
+init_cjs_shims();
+var log2 = __toESM(require_dist2());
+var dbg2 = (...args) => {
+  const dbgVal = $app.store().get("__pocketpages_debug");
+  if (!dbgVal) return;
+  return log2.dbg(...args);
+};
 
 // src/lib/helpers.ts
 init_cjs_shims();
@@ -5424,7 +5497,7 @@ var simulateRequire = (path3) => {
 var mkResolve = (rootPath) => (path3, options2) => {
   const _require = (path4) => {
     switch (options2?.mode || "require") {
-      case "inline":
+      case "raw":
         return simulateRequire(path4);
       case "require":
         return require(path4);
@@ -5433,6 +5506,10 @@ var mkResolve = (rootPath) => (path3, options2) => {
 ${SAFE_HEADER}
 ${simulateRequire(path4)}
 </script>`;
+      case "style":
+        return `<style>
+${simulateRequire(path4)}
+</style>`;
     }
   };
   if (path3.startsWith("/")) {
@@ -5486,7 +5563,7 @@ var echo = (...args) => {
 // src/lib/AfterBootstrapHandler.ts
 var LOADER_METHODS = ["load", "get", "post", "put", "delete"];
 var AfterBootstrapHandler = () => {
-  (0, import_pocketbase_log.dbg)(`pocketpages startup`);
+  (0, import_pocketbase_log.info)(`pocketpages startup`);
   if (!import_pocketbase_node2.fs.existsSync(pagesRoot)) {
     throw new Error(
       `${pagesRoot} must exist. Did you launch pocketbase with --dir or --hooksDir`
@@ -5495,6 +5572,7 @@ var AfterBootstrapHandler = () => {
   const configPath = $filepath.join(pagesRoot, `+config.js`);
   const config = {
     preprocessorExts: [".ejs", ".md"],
+    debug: false,
     ...(() => {
       try {
         return require(configPath);
@@ -5503,6 +5581,9 @@ var AfterBootstrapHandler = () => {
       }
     })()
   };
+  if (config.debug) {
+    $app.store().set("__pocketpages_debug", true);
+  }
   const physicalFiles = [];
   $filepath.walkDir(pagesRoot, (path3, d, err) => {
     const isDir = d.isDir();
@@ -5511,7 +5592,7 @@ var AfterBootstrapHandler = () => {
     }
     physicalFiles.push(path3.slice(pagesRoot.length + 1));
   });
-  (0, import_pocketbase_log.dbg)({ physicalFiles });
+  dbg2({ physicalFiles });
   const addressableFiles = physicalFiles.filter((f) => {
     if ($filepath.base(f).startsWith("+")) {
       return false;
@@ -5519,12 +5600,12 @@ var AfterBootstrapHandler = () => {
     const pathParts = f.split("/");
     return !pathParts.some((part) => part === "_private");
   });
-  (0, import_pocketbase_log.dbg)({ addressableFiles });
+  dbg2({ addressableFiles });
   const routes = addressableFiles.map((relativePath) => {
-    (0, import_pocketbase_log.dbg)(`Examining route`, relativePath);
+    dbg2(`Examining route`, relativePath);
     const parts = relativePath.split("/").filter((p) => !p.startsWith(`(`));
     const absolutePath = $filepath.join(pagesRoot, relativePath);
-    (0, import_pocketbase_log.dbg)({ relativePath, absolutePath, parts });
+    dbg2({ relativePath, absolutePath, parts });
     const content = toString($os.readFile(absolutePath));
     const contentSha = $security.sha256(content);
     const route = {
@@ -5551,17 +5632,17 @@ var AfterBootstrapHandler = () => {
     }
     {
       const pathParts = $filepath.dir(relativePath).split(`/`).filter((node) => node != ".").filter((p) => !!p);
-      (0, import_pocketbase_log.dbg)(`layout`, { pathParts }, $filepath.dir(relativePath));
+      dbg2(`layout`, { pathParts }, $filepath.dir(relativePath));
       do {
         const maybeLayout = $filepath.join(
           pagesRoot,
           ...pathParts,
           `+layout.ejs`
         );
-        (0, import_pocketbase_log.dbg)({ pathParts, maybeLayout });
+        dbg2({ pathParts, maybeLayout });
         if (import_pocketbase_node2.fs.existsSync(maybeLayout, "file")) {
           route.layouts.push(maybeLayout);
-          (0, import_pocketbase_log.dbg)(`layout found`);
+          dbg2(`layout found`);
         }
         if (pathParts.length === 0) {
           break;
@@ -5597,9 +5678,9 @@ var AfterBootstrapHandler = () => {
     }
     return route;
   }).filter((r) => r.segments.length > 0);
-  (0, import_pocketbase_log.dbg)({ routes });
+  dbg2({ routes });
   const cache = { routes, config };
-  (0, import_pocketbase_log.dbg)({ cache });
+  dbg2({ cache });
   $app.store().set(`pocketpages`, cache);
 };
 
@@ -5631,14 +5712,12 @@ var findRecordsByFilter = (collection, options2, dao = $app.dao()) => {
 
 // src/lib/MiddlewareHandler.ts
 init_cjs_shims();
-var log2 = __toESM(require_dist2());
-var import_pocketbase_stringify5 = __toESM(require_dist());
+var import_pocketbase_log2 = __toESM(require_dist2());
 var import_url_parse = __toESM(require_url_parse());
 
 // src/lib/ejs.ts
 init_cjs_shims();
 var import_pocketbase_ejs = __toESM(require_ejs());
-var import_pocketbase_log3 = __toESM(require_dist2());
 var import_pocketbase_node3 = __toESM(require_dist3());
 var import_pocketbase_stringify4 = __toESM(require_dist());
 
@@ -7718,11 +7797,10 @@ var parser = _Parser.parse;
 var lexer = _Lexer.lex;
 
 // src/lib/marked.ts
-var import_pocketbase_log2 = __toESM(require_dist2());
 var frontmatter = null;
 function preprocess(markdown) {
   frontmatter = (0, import_front_matter.default)(markdown);
-  (0, import_pocketbase_log2.dbg)(`frontmatter`, frontmatter);
+  dbg2(`frontmatter`, frontmatter);
   return frontmatter.body;
 }
 marked.use({ hooks: { preprocess } });
@@ -7743,7 +7821,7 @@ var marked2 = (content, api) => {
     renderer: createRenderer(api)
   });
   const html2 = marked(content);
-  (0, import_pocketbase_log2.dbg)({ html: html2 });
+  dbg2({ html: html2 });
   return {
     frontmatter: frontmatter?.attributes ?? {},
     content: html2
@@ -7775,7 +7853,7 @@ import_pocketbase_ejs.default.compile = function(template, options2) {
 };
 var oldResolveInclude = import_pocketbase_ejs.default.resolveInclude;
 import_pocketbase_ejs.default.resolveInclude = function(includePath, templatePath, isDir) {
-  (0, import_pocketbase_log3.dbg)(`resolveInclude`, { name: includePath, filename: templatePath, isDir });
+  dbg2(`resolveInclude`, { name: includePath, filename: templatePath, isDir });
   if (includePath.startsWith("/")) {
     return import_pocketbase_node3.path.resolve(pagesRoot, `_private`, includePath);
   }
@@ -7815,7 +7893,7 @@ var parseSlots = (input) => {
   };
 };
 var renderFile = (fname, api) => {
-  (0, import_pocketbase_log3.dbg)(`renderFile start`, {
+  dbg2(`renderFile start`, {
     fname,
     api: pick(api, "slots", "slot", "data")
   });
@@ -7838,7 +7916,7 @@ var renderFile = (fname, api) => {
       async: false,
       cache: $app.isDev(),
       includer: (path3, filename) => {
-        (0, import_pocketbase_log3.dbg)(`includer`, { path: path3, filename });
+        dbg2(`includer`, { path: path3, filename });
         if ($filepath.ext(filename) === ".md") {
           const markdown = import_pocketbase_node3.fs.readFileSync(filename, "utf8");
           const res = marked2(markdown, api);
@@ -7853,11 +7931,14 @@ var renderFile = (fname, api) => {
       }
     }
   );
-  (0, import_pocketbase_log3.dbg)(`renderFile end`, {
+  dbg2(`renderFile end`, {
     fname,
     api: pick(api, "slots", "slot", "data")
   });
   if (typeof content !== "string") {
+    if (typeof content === "undefined") {
+      return "";
+    }
     return (0, import_pocketbase_stringify4.stringify)(content);
   }
   return content;
@@ -7865,7 +7946,6 @@ var renderFile = (fname, api) => {
 
 // src/lib/parseRoute.ts
 init_cjs_shims();
-var import_pocketbase_log4 = __toESM(require_dist2());
 
 // node_modules/query-string/index.js
 init_cjs_shims();
@@ -8426,7 +8506,7 @@ var parseRoute = (url, routes) => {
           if (route.shouldPreProcess) return false;
           if (i !== route.segments.length - 1) return false;
           const fingerprinted = fingerprint(segment.nodeName, route.fingerprint);
-          (0, import_pocketbase_log4.dbg)({ segment, fingerprinted, parts });
+          dbg2({ segment, fingerprinted, parts });
           return fingerprinted === parts[i];
         })();
         return segment.nodeName === parts[i] || matchesWithFingerprint;
@@ -8440,30 +8520,26 @@ var parseRoute = (url, routes) => {
 };
 
 // src/lib/MiddlewareHandler.ts
-var { dbg: dbg5 } = log2;
 var MiddlewareHandler = (request, response, next) => {
   const { routes, config } = $app.store().get(`pocketpages`);
   const { method, url } = request;
-  dbg5(`pocketpages handler`);
-  dbg5(`Pages middleware request: ${method} ${url}`);
+  dbg2(`pocketpages handler`);
+  dbg2(`Pages middleware request: ${method} ${url}`);
   const parsedRoute = parseRoute(url, routes);
   if (!parsedRoute) {
-    dbg5(`No route matched for ${url}, passing on to PocketBase`);
+    dbg2(`No route matched for ${url}, passing on to PocketBase`);
     return next();
   }
   const { route, params } = parsedRoute;
   const { absolutePath, relativePath } = route;
   if (!route.shouldPreProcess) {
-    dbg5(`Serving static file ${absolutePath}`);
+    dbg2(`Serving static file ${absolutePath}`);
     return response.file(absolutePath);
   }
   try {
-    dbg5(`Found a matching route`, { parsedRoute });
+    dbg2(`Found a matching route`, { parsedRoute });
     const api = {
-      forEach,
-      keys,
-      values,
-      merge,
+      ...globalApi,
       params,
       echo: (...args) => {
         const s = echo(...args);
@@ -8485,7 +8561,7 @@ var MiddlewareHandler = (request, response, next) => {
           path3
         );
         const assetRoute = parseRoute(new import_url_parse.default(fullAssetPath), routes);
-        dbg5({ fullAssetPath, shortAssetPath, assetRoute });
+        dbg2({ fullAssetPath, shortAssetPath, assetRoute });
         if (!assetRoute) {
           if ($app.isDev()) {
             return `${shortAssetPath}?_r=${Date.now()}`;
@@ -8495,14 +8571,12 @@ var MiddlewareHandler = (request, response, next) => {
         return fingerprint(shortAssetPath, assetRoute.route.fingerprint);
       },
       meta: mkMeta(),
-      stringify: import_pocketbase_stringify5.stringify,
       url: (path3) => new import_url_parse.default(path3, true),
-      resolve: mkResolve($filepath.dir(absolutePath)),
-      ...log2
+      resolve: mkResolve($filepath.dir(absolutePath))
     };
     let data = {};
     route.middlewares.forEach((maybeMiddleware) => {
-      dbg5(`Executing middleware ${maybeMiddleware}`);
+      dbg2(`Executing middleware ${maybeMiddleware}`);
       data = merge(data, require(maybeMiddleware)({ ...api, data }));
     });
     {
@@ -8510,30 +8584,30 @@ var MiddlewareHandler = (request, response, next) => {
       forEach(methods, (method2) => {
         const loaderFname = route.loaders[method2];
         if (!loaderFname) return;
-        dbg5(`Executing loader ${loaderFname}`);
+        dbg2(`Executing loader ${loaderFname}`);
         data = merge(data, require(loaderFname)({ ...api, data }));
       });
     }
     api.data = data;
-    dbg5(`Final api:`, { params: api.params, data: api.data });
+    dbg2(`Final api:`, { params: api.params, data: api.data });
     delete api.echo;
-    dbg5(`Rendering file`, { absolutePath });
+    dbg2(`Rendering file`, { absolutePath });
     var content = renderFile(absolutePath, api);
     if (route.isMarkdown) {
-      dbg5(`Markdown file`, { absolutePath });
+      dbg2(`Markdown file`, { absolutePath });
       const res = marked2(content, api);
       content = res.content;
       forEach(res.frontmatter, (value, key) => {
         api.meta(key, value);
       });
-      dbg5(`markdown`, { content });
+      dbg2(`markdown`, { content });
     }
     try {
-      dbg5(`Attempting to parse as JSON`);
+      dbg2(`Attempting to parse as JSON`);
       const parsed = JSON.parse(content);
       return response.json(200, parsed);
     } catch (e) {
-      dbg5(`Not JSON`);
+      dbg2(`Not JSON`);
     }
     route.layouts.forEach((layoutPath) => {
       const res = parseSlots(content);
@@ -8543,33 +8617,40 @@ var MiddlewareHandler = (request, response, next) => {
     });
     return response.html(200, content);
   } catch (e) {
+    (0, import_pocketbase_log2.error)(e);
+    const message = (() => {
+      const m = `${e}`;
+      if (m.includes("Value is not an object"))
+        return `${m} - are you referencing a symbol missing from require() or resolve()?`;
+      return `${e}`;
+    })();
     if (e instanceof BadRequestError) {
-      return response.html(400, `${e}`);
+      return response.html(400, message);
     }
     return response.html(
       500,
-      `<html><body><h1>PocketPages Error</h1><pre><code>${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pagesRoot)).replaceAll(__hooks, "") : e}</code></pre></body></html>`
+      `<html><body><h1>PocketPages Error</h1><pre><code>${message}
+${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pagesRoot)).replaceAll(__hooks, "") : ""}</code></pre></body></html>`
     );
   }
 };
 
 // src/lib/pages/providers/v23Provider/wrapper.ts
 init_cjs_shims();
-var import_pocketbase_log5 = __toESM(require_dist2());
 var import_url_parse2 = __toESM(require_url_parse());
 var v23MiddlewareWrapper = (e) => {
   const next = () => {
     e.next();
   };
   if (!e.request) {
-    (0, import_pocketbase_log5.dbg)(`No request, passing on to PocketBase`);
+    dbg2(`No request, passing on to PocketBase`);
     return next();
   }
   const { method, url } = e.request;
-  (0, import_pocketbase_log5.dbg)({ method, url });
+  dbg2({ method, url });
   if (!url) {
     if (!url) {
-      (0, import_pocketbase_log5.dbg)(`No URL, passing on to PocketBase`);
+      dbg2(`No URL, passing on to PocketBase`);
       return next();
     }
   }
