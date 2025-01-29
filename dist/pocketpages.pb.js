@@ -7915,7 +7915,8 @@ var renderFile = (fname, api) => {
       `,
       compileDebug: true,
       async: false,
-      cache: $app.isDev(),
+      cache: false,
+      // !$app.isDev(),
       includer: (path3, filename) => {
         dbg2(`includer`, { path: path3, filename });
         if ($filepath.ext(filename) === ".md") {
