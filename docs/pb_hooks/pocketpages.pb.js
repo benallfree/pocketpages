@@ -1739,7 +1739,7 @@ var require_package = __commonJS({
         "engine",
         "ejs"
       ],
-      version: "3.1.10004",
+      version: "3.1.10005",
       author: "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
       license: "Apache-2.0",
       main: "./lib/ejs.js",
@@ -5460,6 +5460,7 @@ var globalApi = {
   values,
   merge,
   shuffle,
+  env: (key) => process.env[key] ?? "",
   ...log
 };
 
@@ -7936,7 +7937,7 @@ var renderFile = (fname, api) => {
     api: pick(api, "slots", "slot", "data")
   });
   if (typeof content !== "string") {
-    if (typeof content === "undefined") {
+    if (content === void 0 || content === null) {
       return "";
     }
     return (0, import_pocketbase_stringify4.stringify)(content);
@@ -8571,7 +8572,6 @@ var MiddlewareHandler = (request, response, next) => {
         return fingerprint(shortAssetPath, assetRoute.route.fingerprint);
       },
       meta: mkMeta(),
-      url: (path3) => new import_url_parse.default(path3, true),
       resolve: mkResolve($filepath.dir(absolutePath))
     };
     let data = {};
@@ -8658,7 +8658,8 @@ var v23MiddlewareWrapper = (e) => {
     auth: e.auth,
     method: method.toLowerCase(),
     url: (0, import_url_parse2.default)(url.string()),
-    formData: e.requestInfo().body
+    formData: () => e.requestInfo().body,
+    body: () => e.requestInfo().body
   };
   const response = {
     file: (path3) => {

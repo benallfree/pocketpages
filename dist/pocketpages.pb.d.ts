@@ -10,7 +10,8 @@ type PagesRequest = {
     auth?: core.Record;
     method: PagesMethods;
     url: URLParse<string>;
-    formData: Record<string, any>;
+    formData: () => Record<string, any>;
+    body: () => any;
 };
 type PagesResponse = {
     file: (path: string) => void;
@@ -58,31 +59,26 @@ type PagesGlobalApi = {
     values: typeof values;
     merge: typeof merge;
     shuffle: typeof shuffle;
+    env: (key: string) => string;
 } & typeof log;
 type ResolveOptions = {
     mode: 'raw' | 'require' | 'script' | 'style';
 };
 type PagesApi<TData = any> = {
-    params: PagesParams;
-    auth?: core.Record;
-    request: PagesRequest;
-    response: PagesResponse;
-    formData: Record<string, any>;
     asset: (path: string) => string;
-    echo: (...args: any[]) => string;
-    redirect: (path: string, status?: number) => void;
+    auth?: core.Record;
     data?: TData;
+    echo: (...args: any[]) => string;
+    formData: Record<string, any>;
+    meta: (key: string, value?: string) => string | undefined;
+    params: PagesParams;
+    redirect: (path: string, status?: number) => void;
+    request: PagesRequest;
+    resolve: (path: string, options?: Partial<ResolveOptions>) => any;
+    response: PagesResponse;
     slot: string;
     slots: Record<string, string>;
-    meta: (key: string, value?: string) => string | undefined;
-    stringify: typeof stringify;
-    url: (path: string) => URLParse<Record<string, string | undefined>>;
-    resolve: (path: string, options?: Partial<ResolveOptions>) => any;
-    forEach: typeof forEach;
-    keys: typeof keys;
-    values: typeof values;
-    merge: typeof merge;
-} & typeof log;
+} & PagesGlobalApi;
 type PagesConfig = {
     preprocessorExts: string[];
     debug: boolean;
