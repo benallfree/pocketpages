@@ -88,7 +88,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
         return applyFingerprint(shortAssetPath, assetRoute.route.fingerprint)
       },
       meta: mkMeta(),
-      url: (path: string) => new URL(path, true),
       resolve: mkResolve($filepath.dir(absolutePath)),
     }
 
