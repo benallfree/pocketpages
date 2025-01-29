@@ -138,7 +138,7 @@ export const renderFile = (fname: string, api: PagesApi<any>) => {
   })
 
   if (typeof content !== 'string') {
-    if (typeof content === 'undefined') {
+    if (content === undefined || content === null) {
       return ''
     }
     return stringify(content)
