@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.11.8
+
+### Patch Changes
+
+- cf7b526: Fix: concurrency broken when ejs caching enabled
+
 ## 0.11.7
 
 ### Patch Changes
