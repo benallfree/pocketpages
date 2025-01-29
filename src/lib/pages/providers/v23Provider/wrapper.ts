@@ -28,7 +28,8 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
     auth: e.auth,
     method: method.toLowerCase() as PagesMethods,
     url: parse(url.string()),
-    formData: e.requestInfo().body,
+    formData: () => e.requestInfo().body,
+    body: () => e.requestInfo().body,
   }
   const response: PagesResponse = {
     file: (path: string) => {

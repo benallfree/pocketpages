@@ -7,7 +7,8 @@ export type PagesRequest = {
   auth?: core.Record
   method: PagesMethods
   url: URLParse<string>
-  formData: Record<string, any>
+  formData: () => Record<string, any>
+  body: () => any
 }
 
 export type PagesResponse = {
