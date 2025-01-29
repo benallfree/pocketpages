@@ -1,5 +1,13 @@
 # pocketpages
 
+## 0.11.7
+
+### Patch Changes
+
+- a630553: Fix: improve undefined or null content return from ejs
+- f4fae28: Enh: add body() and formData() to request object
+- c38fe70: Fix: add env() to globals
+
 ## 0.11.6
 
 ### Patch Changes
