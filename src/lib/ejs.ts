@@ -115,7 +115,7 @@ export const renderFile = (fname: string, api: PagesApi<any>) => {
       `,
       compileDebug: true,
       async: false,
-      cache: $app.isDev(),
+      cache: false, // !$app.isDev(),
       includer: (path: string, filename: string) => {
         dbg(`includer`, { path, filename })
         if ($filepath.ext(filename) === '.md') {
