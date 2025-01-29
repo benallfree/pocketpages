@@ -2,8 +2,7 @@
 
 - [Overview](/docs/overview)
 - [Installation](/docs/installation)
-- [What's new in v0.11](/docs/whats-new)
-- [Upgrading to v0.11](/docs/upgrading)
+- [Upgrading](/docs/upgrading)
 
 # Basic Concepts
 
