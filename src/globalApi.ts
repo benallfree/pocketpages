@@ -10,5 +10,6 @@ export const globalApi: PagesGlobalApi = {
   values,
   merge,
   shuffle,
+  env: (key: string) => process.env[key] ?? '',
   ...log,
 }

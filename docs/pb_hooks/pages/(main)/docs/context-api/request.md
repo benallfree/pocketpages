@@ -20,10 +20,15 @@ description: Access HTTP request details including method, headers, and query pa
 - Type: `URLParse<string>`
 - Description: A parsed URL object containing query parameters and other URL components
 
-### `formData`
+### `body()`
 
-- Type: `Record<string, any>`
-- Description: Contains form data submitted with the request
+- Type: `() => string`
+- Description: Function that returns the raw request body
+
+### `formData()`
+
+- Type: `() => Record<string, any>`
+- Description: Function that returns form data submitted with the request
 
 ## Example Usage
 
@@ -39,7 +44,10 @@ const path = request.url.pathname
 const query = request.url.query
 
 // Access form data
-const formFields = request.formData
+const formFields = request.formData()
+
+// Access raw body
+const rawBody = request.body()
 %>
 ```
 
@@ -59,8 +67,9 @@ const sort = request.url.query.sort || 'date'
 <%%
 if (request.method === 'post') {
     // Access submitted form data
-    const username = request.formData.username
-    const email = request.formData.email
+    const formData = request.formData()
+    const username = formData.username
+    const email = formData.email
 }
 %>
 ```

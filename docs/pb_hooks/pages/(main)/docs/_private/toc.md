@@ -30,6 +30,7 @@
 - [Overview](/docs/global-api)
 - [`stringify`](/docs/global-api/stringify)
 - [`url`](/docs/global-api/url)
+- [`env`](/docs/global-api/env)
 - [`findRecord(s)ByFilter`](/docs/global-api/db)
 - [`dbg/info/warn/error`](/docs/global-api/log)
 - [`micro-dash`](/docs/global-api/micro-dash)
