@@ -27,7 +27,7 @@ pb_hooks/
       index.ejs       # Home page
       products/
         index.ejs     # Products listing
-    xapi/             # API endpoints (no layouts)
+    xapi/             # HTMX API endpoints (no layouts)
       products/
         search.ejs    # Returns product search results
         create.ejs    # Handles product creation
