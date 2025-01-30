@@ -5,10 +5,15 @@ description: Access HTTP request details including method, headers, and query pa
 
 # `request` - HTTP Request Object
 
-- **Type**: [`PagesRequest`](https://github.com/benallfree/pocketpages/blob/main/src/lib/pages/index.ts#L5-L6)
+- **Type**: [`PagesRequest`](https://github.com/benallfree/pocketpages/blob/main/src/lib/pages/index.ts#L6-L12)
 - **Description**: The `request` object provides access to essential HTTP request information in a framework-agnostic way. This abstraction ensures your templates remain compatible across PocketBase versions.
 
 ## Properties
+
+### `auth`
+
+- Type: `core.Record | undefined`
+- Description: The authenticated user record, if available
 
 ### `method`
 
@@ -20,15 +25,15 @@ description: Access HTTP request details including method, headers, and query pa
 - Type: `URLParse<string>`
 - Description: A parsed URL object containing query parameters and other URL components
 
-### `body()`
-
-- Type: `() => string`
-- Description: Function that returns the raw request body
-
 ### `formData()`
 
 - Type: `() => Record<string, any>`
 - Description: Function that returns form data submitted with the request
+
+### `body()`
+
+- Type: `() => any`
+- Description: Function that returns the raw request body
 
 ## Example Usage
 
@@ -44,10 +49,24 @@ const path = request.url.pathname
 const query = request.url.query
 
 // Access form data
-const formFields = request.formData()
+const formData = request.formData()
 
 // Access raw body
 const rawBody = request.body()
+%>
+```
+
+### Authentication Check
+
+```ejs
+<%%
+if (request.auth) {
+  // User is authenticated
+  const userId = request.auth.id
+  const email = request.auth.email
+} else {
+  // User is not authenticated
+}
 %>
 ```
 
