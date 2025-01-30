@@ -5,7 +5,7 @@ import { stringify } from 'pocketbase-stringify'
 import { dbg } from './debug'
 import { pagesRoot } from './helpers'
 import { marked } from './marked'
-import { PagesApi } from './types'
+import { PagesRequestContext } from './types'
 
 ejs.cache = {
   set: function (key: string, val: any) {
@@ -93,7 +93,7 @@ export const parseSlots = (input: string) => {
   }
 }
 
-export const renderFile = (fname: string, api: PagesApi<any>) => {
+export const renderFile = (fname: string, api: PagesRequestContext<any>) => {
   dbg(`renderFile start`, {
     fname,
     api: pick(api, 'slots', 'slot', 'data'),

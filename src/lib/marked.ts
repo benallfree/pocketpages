@@ -1,7 +1,7 @@
 import fm, { FrontMatterResult } from 'front-matter'
 import { marked as _marked, RendererObject } from 'marked'
 import { dbg } from './debug'
-import { PagesApi } from './types'
+import { PagesRequestContext } from './types'
 
 export type FrontMatter = Record<string, string>
 var frontmatter: FrontMatterResult<FrontMatter> | null = null
@@ -14,7 +14,7 @@ function preprocess(markdown: string) {
 
 _marked.use({ hooks: { preprocess } })
 
-const createRenderer = (api: PagesApi<any>): RendererObject => ({
+const createRenderer = (api: PagesRequestContext<any>): RendererObject => ({
   heading({ tokens, depth }) {
     const id = tokens[0]?.raw
       .toLowerCase() // Convert to lowercase
@@ -34,7 +34,7 @@ const createRenderer = (api: PagesApi<any>): RendererObject => ({
 
 export const marked = (
   content: string,
-  api: PagesApi<any>
+  api: PagesRequestContext<any>
 ): { frontmatter: FrontMatter; content: string } => {
   _marked.use({
     renderer: createRenderer(api),

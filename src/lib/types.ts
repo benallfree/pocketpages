@@ -5,16 +5,16 @@ import { Route } from './AfterBootstrapHandler'
 import { PagesRequest, PagesResponse } from './pages'
 
 export type PageDataLoaderFunc<TData = any> = (
-  api: Omit<PagesApi<TData>, 'data'>
+  api: Omit<PagesRequestContext<TData>, 'data'>
 ) => object
 
 export type MiddlewareLoaderFunc<TData = any> = (
-  api: Omit<PagesApi<TData>, 'data'>
+  api: Omit<PagesRequestContext<TData>, 'data'>
 ) => object
 
 export type PagesParams<T = string> = Record<string, T | null | Array<T | null>>
 
-export type PagesGlobalApi = {
+export type PagesGlobalContext = {
   stringify: typeof stringify
   forEach: typeof forEach
   keys: typeof keys
@@ -28,7 +28,7 @@ export type ResolveOptions = {
   mode: 'raw' | 'require' | 'script' | 'style'
 }
 
-export type PagesApi<TData = any> = {
+export type PagesRequestContext<TData = any> = {
   asset: (path: string) => string
   auth?: core.Record
   data?: TData
@@ -42,7 +42,7 @@ export type PagesApi<TData = any> = {
   response: PagesResponse
   slot: string
   slots: Record<string, string>
-} & PagesGlobalApi
+} & PagesGlobalContext
 
 export type PagesConfig = {
   preprocessorExts: string[]

@@ -8,7 +8,7 @@ import { echo, mkMeta, mkResolve, pagesRoot } from './helpers'
 import { marked } from './marked'
 import { PagesMiddlewareFunc } from './pages'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
-import { Cache, PagesApi } from './types'
+import { Cache, PagesRequestContext } from './types'
 
 export const MiddlewareHandler: PagesMiddlewareFunc = (
   request,
@@ -51,7 +51,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
   try {
     dbg(`Found a matching route`, { parsedRoute })
 
-    const api: PagesApi<any> = {
+    const api: PagesRequestContext<any> = {
       ...globalApi,
       params,
       echo: (...args) => {

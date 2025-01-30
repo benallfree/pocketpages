@@ -5,7 +5,7 @@ description: Modify HTTP response headers, status codes, and content in PocketPa
 
 # `response` - HTTP Response Object
 
-- **Type**: [`PagesResponse`](https://github.com/pockethost/pockethost/blob/main/src/lib/pages/index.ts)
+- **Type**: [`PagesResponse`](https://github.com/benallfree/pocketpages/blob/main/src/lib/pages/index.ts#L13-L14)
 - **Description**: The `response` object provides methods to control the HTTP response in a framework-agnostic way. This abstraction ensures your templates remain compatible across PocketBase versions.
 
 ## Methods

@@ -5,7 +5,7 @@ description: Access HTTP request details including method, headers, and query pa
 
 # `request` - HTTP Request Object
 
-- **Type**: [`PagesRequest`](https://github.com/pockethost/pockethost/blob/main/src/lib/pages/index.ts)
+- **Type**: [`PagesRequest`](https://github.com/benallfree/pocketpages/blob/main/src/lib/pages/index.ts#L5-L6)
 - **Description**: The `request` object provides access to essential HTTP request information in a framework-agnostic way. This abstraction ensures your templates remain compatible across PocketBase versions.
 
 ## Properties
