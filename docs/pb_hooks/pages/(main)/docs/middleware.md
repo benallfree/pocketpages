@@ -3,36 +3,30 @@ title: Using Middleware in PocketPages
 description: Execute route-based middleware for authentication, data loading, request processing, and more.
 ---
 
-# Using Middleware in PocketPages
+# Middleware
 
-PocketPages uses `+middleware.js` files to process requests before they reach your templates. Middleware can:
+Middleware files (`+middleware.js`) process requests before they reach your templates. Use middleware to:
 
-- Guard routes with authentication checks
-- Process and validate requests
-- Set response headers
+- Check authentication
 - Load shared data
-- Transform request/response
+- Set headers
+- Validate requests
 - Handle errors
 
-Each middleware receives the PocketPages API object and executes hierarchically from root to leaf along the route path.
-
-## Basic Usage
+## Basic Example
 
 ```javascript
 /** @type {import('pocketpages').MiddlewareLoaderFunc} */
 module.exports = function (api) {
-  const { request, response, redirect } = api
+  const { request, redirect } = api
 
-  // Guard route
+  // Check auth
   if (!request.header('Authorization')) {
     redirect('/login')
     return {}
   }
 
-  // Set headers
-  response.header('X-Frame-Options', 'DENY')
-
-  // Load shared data
+  // Load data
   const categories = findRecordsByFilter('categories', {
     filter: 'active = true',
   })
@@ -41,9 +35,28 @@ module.exports = function (api) {
 }
 ```
 
+## How Middleware Works
+
+Middleware executes hierarchically from root to leaf:
+
+```
+pb_hooks/pages/
+  +middleware.js         # Runs first (all routes)
+  products/
+    +middleware.js       # Runs second (/products/*)
+    [id]/
+      +middleware.js     # Runs third (/products/[id]/*)
+```
+
+For URL `/products/123`:
+
+1. `/+middleware.js` runs
+2. `/products/+middleware.js` runs
+3. `/products/[id]/+middleware.js` runs
+
 ## Common Use Cases
 
-### Authentication Guards
+### Auth Guard
 
 ```javascript
 /** @type {import('pocketpages').MiddlewareLoaderFunc} */
@@ -60,12 +73,6 @@ module.exports = function (api) {
     filter: `session = "${session}"`,
   })
 
-  if (!user) {
-    response.clearCookie('session')
-    redirect('/login')
-    return {}
-  }
-
   return { user }
 }
 ```
@@ -77,121 +84,21 @@ module.exports = function (api) {
 module.exports = function (api) {
   const { request, response, params } = api
 
-  // Validate required parameters
   if (!params.id?.match(/^[0-9]+$/)) {
     response.status(400)
-    return { error: 'Invalid ID format' }
-  }
-
-  // Check content type
-  if (
-    request.method === 'POST' &&
-    !request.header('Content-Type')?.includes('application/json')
-  ) {
-    response.status(415)
-    return { error: 'JSON required' }
+    return { error: 'Invalid ID' }
   }
 
   return {}
 }
 ```
 
-### Response Headers
+### Loading Data
 
 ```javascript
 /** @type {import('pocketpages').MiddlewareLoaderFunc} */
 module.exports = function (api) {
-  const { response } = api
-
-  // Security headers
-  response.header('X-Frame-Options', 'DENY')
-  response.header('X-Content-Type-Options', 'nosniff')
-  response.header('Referrer-Policy', 'same-origin')
-
-  return {}
-}
-```
-
-## File Structure
-
-Middleware files execute hierarchically:
-
-```
-pb_hooks/pages/
-  +middleware.js     # Executes first for all routes
-  +load.js           # Only executes if index.ejs is the entry point
-  index.ejs          # Home page template
-  products/
-    +middleware.js   # Executes second for /products/* routes
-    +load.js         # Only executes if products/index.ejs is entry point
-    [id]/
-      +middleware.js # Executes third for /products/[id]/* routes
-      +load.js       # Only executes if [id]/index.ejs is entry point
-      index.ejs      # Template using the data
-```
-
-> **Important**: All `+middleware.js` files along the route path execute in order, from root to leaf. This is different from `+load.js` files, where only the leaf-level file executes. Use middleware when you need cascading data loading.
-
-### Example: Route `/products/123`
-
-If the route resolves to `/products/123/index.ejs`:
-
-1. **Middleware Execution** (cascading, root to leaf):
-
-   ```
-   /+middleware.js
-   /products/+middleware.js
-   /products/[id]/+middleware.js
-   ```
-
-2. **Loader Execution** (single file):
-   ```
-   /products/[id]/+load.js  # Only this loader executes
-   ```
-
-## Example Scenarios
-
-### Global Auth Check
-
-```javascript
-/** @type {import('pocketpages').MiddlewareLoaderFunc} */
-module.exports = function (api) {
-  const { request, redirect } = api
-
-  const token = request.header('Authorization')
-  if (!token) {
-    redirect('/login')
-    return {}
-  }
-
-  return {
-    isAuthenticated: true,
-  }
-}
-```
-
-### Product Section Data
-
-```javascript
-/** @type {import('pocketpages').MiddlewareLoaderFunc} */
-module.exports = function (api) {
-  const { findRecordsByFilter } = api
-
-  const categories = findRecordsByFilter('categories', {
-    filter: 'active = true',
-    sort: 'name',
-  })
-
-  return { categories }
-}
-```
-
-### Single Product Context
-
-```javascript
-/** @type {import('pocketpages').MiddlewareLoaderFunc} */
-module.exports = function (api) {
-  const { findRecordByFilter, params, response } = api
+  const { params, response } = api
 
   const product = findRecordByFilter('products', {
     filter: `id = "${params.id}"`,
@@ -199,7 +106,7 @@ module.exports = function (api) {
 
   if (!product) {
     response.status(404)
-    return { error: 'Product not found' }
+    return { error: 'Not found' }
   }
 
   return { product }
@@ -208,108 +115,56 @@ module.exports = function (api) {
 
 ## Using Middleware Data
 
-### Basic Example
+Access middleware data in templates through `data`:
 
 ```ejs
-<!-- Check auth from root middleware -->
-<%% if (data.isAuthenticated) { %>
-  <!-- Show categories from products middleware -->
-  <aside>
-    <%% data.categories.forEach(cat => { %>
-      <a href="/products?cat=<%%= cat.id %>">
-        <%%= cat.name %>
-      </a>
-    <%% }) %>
-  </aside>
+<%% if (data.user) { %>
+  <h1>Welcome, <%%= data.user.name %></h1>
+
+  <%% if (data.product) { %>
+    <h2><%%= data.product.name %></h2>
+    <p><%%= data.product.description %></p>
+  <%% } %>
 <%% } %>
 ```
 
-### Complete Example
-
-```ejs
-<!DOCTYPE html>
-<html>
-<head>
-  <title><%%= data.product?.name || 'Products' %></title>
-</head>
-<body>
-  <%% if (!data.isAuthenticated) { %>
-    <h1>Please Log In</h1>
-  <%% } else if (data.error) { %>
-    <h1>Error: <%%= data.error %></h1>
-  <%% } else { %>
-    <aside>
-      <h2>Categories</h2>
-      <%% data.categories.forEach(cat => { %>
-        <a href="/products?cat=<%%= cat.id %>">
-          <%%= cat.name %>
-        </a>
-      <%% }) %>
-    </aside>
-
-    <main>
-      <h1><%%= data.product.name %></h1>
-      <p><%%= data.product.description %></p>
-    </main>
-  <%% } %>
-</body>
-</html>
-```
-
-## Best Practices
-
-1. **Clear Purpose**
-
-   ```javascript
-   // Good: Single responsibility
-   module.exports = function (api) {
-     // Just handles auth
-     if (!api.request.header('Authorization')) {
-       api.redirect('/login')
-     }
-     return {}
-   }
-
-   // Avoid: Mixed concerns
-   module.exports = function (api) {
-     // Auth + data loading + headers + ...
-     // Too many responsibilities
-   }
-   ```
-
-2. **Early Returns**
-
-   ```javascript
-   // Good: Return early on failure
-   module.exports = function (api) {
-     if (!isValid(api.params)) {
-       api.response.status(400)
-       return { error: 'Invalid params' }
-     }
-     // Continue processing...
-   }
-   ```
-
-3. **Error Handling**
-   ```javascript
-   module.exports = function (api) {
-     try {
-       // Risky operations...
-     } catch (error) {
-       api.response.status(500)
-       return { error: 'Server error' }
-     }
-   }
-   ```
-
 ## Important Notes
 
-- Middleware executes hierarchically
-- Can modify request/response
-- Can halt request processing
-- Can return data for templates
-- Executes before loaders
+- Middleware runs before page loaders (`+load.js`)
+- All middleware along the route path executes
+- Return an object to pass data to templates
+- Return early to stop processing
 - Keep processing efficient
+
+## HTTP Method-Specific Middleware
+
+In addition to `+middleware.js` which runs for all HTTP methods, you can create method-specific middleware files that only run for specific HTTP methods:
+
+```javascript
+// +get.js - Only runs for GET requests
+/** @type {import('pocketpages').MiddlewareLoaderFunc} */
+module.exports = function (api) {
+  // Handle GET requests
+  return {}
+}
+
+// +post.js - Only runs for POST requests
+/** @type {import('pocketpages').MiddlewareLoaderFunc} */
+module.exports = function (api) {
+  // Handle POST requests
+  return {}
+}
+```
+
+Supported method-specific middleware files:
+
+- `+get.js`
+- `+post.js`
+- `+put.js`
+- `+patch.js`
+- `+delete.js`
+
+These files follow the same hierarchical execution order as `+middleware.js`.
 
 ## Reference
 
