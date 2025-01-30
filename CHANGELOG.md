@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.11.9
+
+### Patch Changes
+
+- Fix: restored db helpers to global API
+
 ## 0.11.8
 
 ### Patch Changes

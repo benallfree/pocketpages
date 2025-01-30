@@ -2,6 +2,7 @@ import { forEach, keys, merge, shuffle, values } from '@s-libs/micro-dash'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { Route } from './AfterBootstrapHandler'
+import { findRecordByFilter, findRecordsByFilter } from './db'
 import { PagesRequest, PagesResponse } from './pages'
 
 export type PageDataLoaderFunc<TData = any> = (
@@ -22,6 +23,8 @@ export type PagesGlobalContext = {
   merge: typeof merge
   shuffle: typeof shuffle
   env: (key: string) => string
+  findRecordByFilter: typeof findRecordByFilter
+  findRecordsByFilter: typeof findRecordsByFilter
 } & typeof log
 
 export type ResolveOptions = {
