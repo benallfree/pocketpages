@@ -5,7 +5,7 @@ description: Modify HTTP response headers, status codes, and content in PocketPa
 
 # `response` - HTTP Response Object
 
-- **Type**: [`PagesResponse`](https://github.com/benallfree/pocketpages/blob/main/src/lib/pages/index.ts#L13-L14)
+- **Type**: [`PagesResponse`](https://github.com/benallfree/pocketpages/blob/main/src/lib/pages/index.ts#L14-L21)
 - **Description**: The `response` object provides methods to control the HTTP response in a framework-agnostic way. This abstraction ensures your templates remain compatible across PocketBase versions.
 
 ## Methods
@@ -68,20 +68,57 @@ response.html(200, '<h1>Hello World</h1>')
 %>
 ```
 
-## Example Usage
+### `header(name: string, value: string)`
 
-### Success Response
+Sets a response header.
 
 ```ejs
 <%%
-const data = {
-    user: {
-        name: 'John Doe',
-        email: 'john@example.com'
-    }
-}
+response.header('Content-Type', 'application/json')
+response.header('X-Custom-Header', 'custom-value')
+%>
+```
 
-response.json(200, data)
+### `cookie(name: string, value: string, options: any)`
+
+Sets a cookie in the response.
+
+```ejs
+<%%
+// Set a simple cookie
+response.cookie('user_id', '123', {})
+
+// Set a cookie with options
+response.cookie('session', 'abc123', {
+    httpOnly: true,
+    secure: true,
+    maxAge: 3600,
+    path: '/'
+})
+%>
+```
+
+## Example Usage
+
+### Complete Response with Headers
+
+```ejs
+<%%
+// Set headers
+response.header('Cache-Control', 'no-cache')
+response.header('X-Custom-Header', 'custom-value')
+
+// Set a cookie
+response.cookie('session', 'xyz789', {
+    httpOnly: true,
+    secure: true
+})
+
+// Send JSON response
+response.json(200, {
+    success: true,
+    data: { message: 'Operation completed' }
+})
 %>
 ```
 
@@ -90,6 +127,7 @@ response.json(200, data)
 ```ejs
 <%%
 if (!params.id) {
+    response.header('X-Error-Type', 'validation')
     response.json(400, {
         error: 'Missing ID parameter'
     })
@@ -103,25 +141,11 @@ if (!record) {
 %>
 ```
 
-### File Downloads
+### File Download with Headers
 
 ```ejs
 <%%
-// Serve a file
+response.header('Content-Disposition', 'attachment; filename="document.pdf"')
 response.file('/path/to/document.pdf')
-%>
-```
-
-### Redirects
-
-```ejs
-<%%
-if (!user.isAuthenticated) {
-    response.redirect('/login')
-    return
-}
-
-// Permanent redirect
-response.redirect('/new-page', 301)
 %>
 ```
