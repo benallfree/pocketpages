@@ -76,8 +76,7 @@ module.exports = ({ formData, redirect }) => {
 ```ejs
 <%%
 // Check permissions before showing admin page
-const auth = require('auth')
-const perms = require('permissions')
+const perms = resolve('permissions')
 
 if (!auth.isLoggedIn()) {
     redirect('/login')
