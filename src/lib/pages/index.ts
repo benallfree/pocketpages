@@ -33,7 +33,4 @@ export type IPagesProvider = {
   boot(): void
 }
 
-export const is22 = `refreshSettings` in $app
-export const is23 = !is22
-
 export const getPagesProvider = (): IPagesProvider => v23Provider()
