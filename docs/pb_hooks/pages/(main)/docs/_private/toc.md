@@ -4,21 +4,33 @@
 - [Installation](/docs/installation)
 - [Upgrading](/docs/upgrading)
 
-# Basic Concepts
+# Page Basics
 
 - [Directory Structure](/docs/directory-structure)
 - [Creating a Page](/docs/creating-a-page)
 - [Routing](/docs/routing)
 - [Accessing Parameters](/docs/parameters)
+- [Markdown](/docs/markdown)
+- [Middleware](/docs/middleware)
+
+# Data
+
 - [Loading Data](/docs/loading-data)
 - [JSON](/docs/json)
+
+# Templates & Layouts
+
 - [Partials](/docs/partials)
 - [Layouts](/docs/layouts)
+
+# Assets
+
 - [Static content](/docs/static-content)
 - [Asset Management](/docs/asset-management)
 - [Private files](/docs/private-files)
-- [Middleware](/docs/middleware)
-- [Markdown](/docs/markdown)
+
+# Going Live
+
 - [Managing Secrets](/docs/secrets)
 - [Going Live](/docs/deploying)
 - [Runtime Configuration](/docs/config)
@@ -63,15 +75,3 @@
 - [One-Time Passwords](/docs/speedruns/otp)
 - [Outgoing Email with Amazon SES](/docs/speedruns/ses)
 - [Setting up a new email domain in Google Suite](/docs/speedruns/gs-gmail)
-- AlpineJS
-- APIs
-- DaisyUI
-- Database
-- Github Actions
-- HTMLx
-- JSVM
-- OTP
-- PocketHost.io
-- SEO
-- SPA
-- Tailwind
