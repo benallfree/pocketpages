@@ -49,6 +49,16 @@ type Route = {
 };
 declare const AfterBootstrapHandler: PagesInitializerFunc;
 
+type FilterOptions = {
+    filter?: string;
+    sort?: string;
+    limit?: number;
+    offset?: number;
+    filterParams?: Record<string, string>;
+};
+declare const findRecordByFilter: (collection: string, options?: Partial<FilterOptions>, dao?: any) => any;
+declare const findRecordsByFilter: (collection: string, options?: Partial<FilterOptions>, dao?: any) => any;
+
 type PageDataLoaderFunc<TData = any> = (api: Omit<PagesRequestContext<TData>, 'data'>) => object;
 type MiddlewareLoaderFunc<TData = any> = (api: Omit<PagesRequestContext<TData>, 'data'>) => object;
 type PagesParams<T = string> = Record<string, T | null | Array<T | null>>;
@@ -60,6 +70,8 @@ type PagesGlobalContext = {
     merge: typeof merge;
     shuffle: typeof shuffle;
     env: (key: string) => string;
+    findRecordByFilter: typeof findRecordByFilter;
+    findRecordsByFilter: typeof findRecordsByFilter;
 } & typeof log;
 type ResolveOptions = {
     mode: 'raw' | 'require' | 'script' | 'style';
@@ -89,16 +101,6 @@ type Cache = {
 };
 
 declare const globalApi: PagesGlobalContext;
-
-type FilterOptions = {
-    filter?: string;
-    sort?: string;
-    limit?: number;
-    offset?: number;
-    filterParams?: Record<string, string>;
-};
-declare const findRecordByFilter: (collection: string, options?: Partial<FilterOptions>, dao?: any) => any;
-declare const findRecordsByFilter: (collection: string, options?: Partial<FilterOptions>, dao?: any) => any;
 
 declare const MiddlewareHandler: PagesMiddlewareFunc;
 

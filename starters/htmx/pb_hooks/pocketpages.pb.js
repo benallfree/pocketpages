@@ -5452,15 +5452,45 @@ function shuffle(collection) {
 
 // src/globalApi.ts
 var log = __toESM(require_dist2());
+var import_pocketbase_stringify2 = __toESM(require_dist());
+
+// src/lib/db.ts
+init_cjs_shims();
 var import_pocketbase_stringify = __toESM(require_dist());
+var findRecordByFilter = (collection, options2, dao = $app.dao()) => {
+  return findRecordsByFilter(collection, options2, dao)?.[0];
+};
+var findRecordsByFilter = (collection, options2, dao = $app.dao()) => {
+  const { filter, sort, limit, offset, filterParams } = {
+    filter: "1=1",
+    sort: "",
+    limit: 0,
+    offset: 0,
+    filterParams: {},
+    ...options2
+  };
+  const records = dao.findRecordsByFilter(
+    collection,
+    filter,
+    sort,
+    limit,
+    offset,
+    filterParams
+  );
+  return JSON.parse((0, import_pocketbase_stringify.stringify)(records));
+};
+
+// src/globalApi.ts
 var globalApi = {
-  stringify: import_pocketbase_stringify.stringify,
+  stringify: import_pocketbase_stringify2.stringify,
   forEach,
   keys,
   values,
   merge,
   shuffle,
   env: (key) => process.env[key] ?? "",
+  findRecordByFilter,
+  findRecordsByFilter,
   ...log
 };
 
@@ -5481,7 +5511,7 @@ var dbg2 = (...args) => {
 // src/lib/helpers.ts
 init_cjs_shims();
 var import_pocketbase_node = __toESM(require_dist3());
-var import_pocketbase_stringify2 = __toESM(require_dist());
+var import_pocketbase_stringify3 = __toESM(require_dist());
 var pagesRoot = $filepath.join(__hooks, `pages`);
 var SAFE_HEADER = `if (typeof module === 'undefined') { module = { exports: {} } };`;
 var exts = ["", ".js", ".json"];
@@ -5552,7 +5582,7 @@ var echo = (...args) => {
     if (typeof arg === "function") {
       return arg.toString();
     } else if (typeof arg === "object") {
-      return (0, import_pocketbase_stringify2.stringify)(arg);
+      return (0, import_pocketbase_stringify3.stringify)(arg);
     } else if (typeof arg === "number") {
       return arg.toString();
     }
@@ -5683,32 +5713,6 @@ var AfterBootstrapHandler = () => {
   const cache = { routes, config };
   dbg2({ cache });
   $app.store().set(`pocketpages`, cache);
-};
-
-// src/lib/db.ts
-init_cjs_shims();
-var import_pocketbase_stringify3 = __toESM(require_dist());
-var findRecordByFilter = (collection, options2, dao = $app.dao()) => {
-  return findRecordsByFilter(collection, options2, dao)?.[0];
-};
-var findRecordsByFilter = (collection, options2, dao = $app.dao()) => {
-  const { filter, sort, limit, offset, filterParams } = {
-    filter: "1=1",
-    sort: "",
-    limit: 0,
-    offset: 0,
-    filterParams: {},
-    ...options2
-  };
-  const records = dao.findRecordsByFilter(
-    collection,
-    filter,
-    sort,
-    limit,
-    offset,
-    filterParams
-  );
-  return JSON.parse((0, import_pocketbase_stringify3.stringify)(records));
 };
 
 // src/lib/MiddlewareHandler.ts
