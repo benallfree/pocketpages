@@ -3,122 +3,81 @@ title: 'Route and Query Parameters'
 description: 'Access URL path segments and query strings in PocketPages templates using params.paramName. Route parameters use [brackets] in file/directory names. Query parameters override route parameters when names conflict.'
 ---
 
-# Handling Route and Query String Parameters in PocketPages
+# Route and Query Parameters
 
-PocketPages offers flexible routing capabilities that include support for route parameters and query string parameters. This guide will explain how to work with these parameters, enabling you to create dynamic pages that respond to user inputs via the URL.
+PocketPages lets you access both route parameters (from URL paths) and query parameters (from query strings) in your templates.
 
 ## Route Parameters
 
-Route parameters allow you to capture specific values from the URL path and use them within your EJS templates. These parameters are defined by using placeholder directory or file names enclosed in square brackets `[]`.
+Use square brackets `[]` in file or directory names to capture URL path segments as parameters.
 
-### Example Structure with Route Parameters
-
-Consider the following directory structure:
+### Example Structure
 
 ```
-pb_hooks/
-  pages/
-    products/
-      [productId]/
-        index.ejs
-      [productId]/
-        reviews/
-          [reviewId].ejs
+pb_hooks/pages/
+  products/
+    [productId]/
+      index.ejs
+    [productId]/reviews/
+      [reviewId].ejs
 ```
 
-### How Route Parameters Work
+This structure handles URLs like:
 
-- **Defining Parameters**:
+- `/products/123`
+- `/products/123/reviews/456`
 
-  - `[productId]` in the directory name allows you to capture the value from the URL.
-  - `[reviewId].ejs` captures a value from the URL for a specific review.
+### Using Route Parameters
 
-- **Accessing Parameters in EJS**:
-  - In `products/[productId]/index.ejs`, you can access the `productId` parameter via `params.productId`.
-  - In `products/[productId]/reviews/[reviewId].ejs`, both `productId` and `reviewId` will be available as `params.productId` and `params.reviewId`.
-
-### Example Routes
-
-- `pb_hooks/pages/products/[productId]/index.ejs`:
-
-  - URL: `/products/123`
-  - Accessible Parameter: `params.productId` = `123`
-
-- `pb_hooks/pages/products/[productId]/reviews/[reviewId].ejs`:
-  - URL: `/products/123/reviews/456`
-  - Accessible Parameters: `params.productId` = `123`, `params.reviewId` = `456`
-
-### Using Route Parameters in EJS
+Access route parameters through `params` in your templates:
 
 ```ejs
-<h1>Product ID: <%%= params.productId %></h1>
-<p>Review ID: <%%= params.reviewId %></p>
+<!-- In products/[productId]/index.ejs -->
+<h1>Product: <%%= params.productId %></h1>
+
+<!-- In products/[productId]/reviews/[reviewId].ejs -->
+<h1>Product: <%%= params.productId %></h1>
+<p>Review: <%%= params.reviewId %></p>
 ```
 
-This will render:
+## Query Parameters
 
-- **For `/products/123`**: `Product ID: 123`
-- **For `/products/123/reviews/456`**: `Product ID: 123`, `Review ID: 456`
+Query parameters come from the URL's query string (after the `?`). They're also available through `params`:
 
-## Query String Parameters
+```
+/products/123?sort=latest&highlight=true
+```
 
-Query string parameters are key-value pairs appended to the URL after a `?`. These parameters are also accessible in your EJS templates via `params`, and they will override route parameters if there is a name conflict.
+Access them the same way in templates:
 
-### Example URL with Query Strings
+```ejs
+<p>Sort by: <%%= params.sort %></p>
+<p>Highlight: <%%= params.highlight %></p>
+```
 
-Given the following URL:
+## Parameter Priority
+
+Query parameters override route parameters when they have the same name:
+
+```
+/products/123?productId=789
+```
+
+Here, `params.productId` will be `789`, not `123`.
+
+## Complete Example
+
+URL:
 
 ```
 /products/123/reviews/456?sort=latest&highlight=true
 ```
 
-- **Accessing Query String Parameters**:
-
-  - `params.sort` = `"latest"`
-  - `params.highlight` = `"true"`
-
-- **Overriding Route Parameters**:
-  - If a query string parameter has the same name as a route parameter, the query string parameter's value will override the route parameter's value.
-  - Example: If your route parameter is `params.productId = 123` but your query string contains `?productId=789`, then `params.productId` will be `789`.
-
-### Example Usage in EJS
+Template:
 
 ```ejs
-<h1>Product ID: <%%= params.productId %></h1>
+<h1>Product: <%%= params.productId %></h1>
+<h2>Review: <%%= params.reviewId %></h2>
 <p>Sort by: <%%= params.sort %></p>
 <p>Highlight: <%%= params.highlight %></p>
 ```
-
-This will render:
-
-- **For `/products/123/reviews/456?sort=latest&highlight=true`**:
-
-  - `Product ID: 123`
-  - `Sort by: latest`
-  - `Highlight: true`
-
-- **For `/products/123/reviews/456?productId=789`**:
-  - `Product ID: 789` (overrides the route parameter)
-
-## Combining Route and Query String Parameters
-
-PocketPages provides a powerful way to combine route and query string parameters, making your URLs highly dynamic and adaptable to various use cases.
-
-### Practical Example
-
-Let's say you have a URL like this:
-
-```
-/products/123/reviews/456?sort=latest&highlight=true
-```
-
-In your EJS template located at `pb_hooks/pages/products/[productId]/reviews/[reviewId].ejs`, you can access and utilize all these parameters:
-
-```ejs
-<h1>Product ID: <%%= params.productId %></h1>
-<h2>Review ID: <%%= params.reviewId %></h2>
-<p>Sort by: <%%= params.sort %></p>
-<p>Highlight: <%%= params.highlight %></p>
-```
-
-This setup allows you to create dynamic and responsive pages that change based on the parameters provided in the URL.
