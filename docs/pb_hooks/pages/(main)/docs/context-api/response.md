@@ -68,25 +68,29 @@ response.html(200, '<h1>Hello World</h1>')
 %>
 ```
 
-### `header(name: string, value: string)`
+### `header(name: string, value?: string)`
 
-Sets a response header.
+Gets or sets a response header. If value is provided, sets the header. If value is omitted, returns the current header value.
 
 ```ejs
 <%%
+// Set a header
 response.header('Content-Type', 'application/json')
 response.header('X-Custom-Header', 'custom-value')
+
+// Get a header value
+const contentType = response.header('Content-Type')
 %>
 ```
 
-### `cookie(name: string, value: string, options: any)`
+### `cookie(name: string, value: string, options?: any)`
 
-Sets a cookie in the response.
+Sets a cookie in the response. Returns the serialized cookie string.
 
 ```ejs
 <%%
 // Set a simple cookie
-response.cookie('user_id', '123', {})
+response.cookie('user_id', '123')
 
 // Set a cookie with options
 response.cookie('session', 'abc123', {

@@ -1,3 +1,4 @@
+import * as cookie from 'cookie'
 import { default as parse } from 'url-parse'
 import type {
   PagesMethods,
@@ -24,13 +25,27 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
       return next()
     }
   }
+
   const request: PagesRequest = {
     auth: e.auth,
     method: method.toLowerCase() as PagesMethods,
     url: parse(url.string()),
     formData: () => e.requestInfo().body,
     body: () => e.requestInfo().body,
+    header: (name: string) => {
+      return e.request?.header.get(name) || ''
+    },
+    cookies: (() => {
+      let parsed: Record<string, string | undefined>
+      return (name: string) => {
+        if (!parsed) {
+          parsed = cookie.parse(request.header(`Cookie`))
+        }
+        return parsed[name]
+      }
+    })(),
   }
+
   const response: PagesResponse = {
     file: (path: string) => {
       return e.fileFS($os.dirFS($filepath.dir(path)), $filepath.base(path))
@@ -47,11 +62,17 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
     html: (status: number, data: string) => {
       e.html(status, data)
     },
-    header: (name: string, value: string) => {
+    header: (name: string, value?: string) => {
+      if (value === undefined) {
+        return e.response.header().get(name) || ''
+      }
       e.response.header().set(name, value)
+      return value
     },
-    cookie: (name: string, value: string, options: any) => {
-      response.header('Set-Cookie', `${name}=${value}; Path=/`)
+    cookie: (name: string, value: string, options?: any) => {
+      const serialized = cookie.serialize(name, value, options)
+      response.header(`Set-Cookie`, serialized)
+      return serialized
     },
   }
 

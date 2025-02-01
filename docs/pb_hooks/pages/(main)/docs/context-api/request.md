@@ -35,6 +35,16 @@ description: Access HTTP request details including method, headers, and query pa
 - Type: `() => any`
 - Description: Function that returns the raw request body
 
+### `header()`
+
+- Type: `(name: string) => string`
+- Description: Function that returns the value of the specified request header
+
+### `cookies()`
+
+- Type: `(name: string) => string | undefined`
+- Description: Function that returns the value of the specified cookie
+
 ## Example Usage
 
 ### Basic Request Information
@@ -90,5 +100,19 @@ if (request.method === 'post') {
     const username = formData.username
     const email = formData.email
 }
+%>
+```
+
+### Working with Headers and Cookies
+
+```ejs
+<%%
+// Access request headers
+const userAgent = request.header('User-Agent')
+const contentType = request.header('Content-Type')
+
+// Access cookies
+const sessionId = request.cookies('sessionId')
+const theme = request.cookies('theme')
 %>
 ```

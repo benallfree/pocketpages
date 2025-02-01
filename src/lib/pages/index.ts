@@ -8,7 +8,8 @@ export type PagesRequest = {
   method: PagesMethods
   url: URLParse<string>
   formData: () => Record<string, any>
-  body: () => any
+  header: (name: string) => string
+  cookies: (name: string) => string | undefined
 }
 
 export type PagesResponse = {
@@ -17,8 +18,8 @@ export type PagesResponse = {
   redirect: (path: string, status?: number) => void
   json: (status: number, data: any) => void
   html: (status: number, data: string) => void
-  header: (name: string, value: string) => void
-  cookie: (name: string, value: string, options: any) => void
+  header: (name: string, value?: string) => void
+  cookie: (name: string, value: string, options?: any) => void
 }
 export type PagesInitializerFunc = () => void
 export type PagesNextFunc = () => void
