@@ -51,6 +51,7 @@
 - [Overview](/docs/context-api)
 - [`api`](/docs/context-api/api)
 - [`asset`](/docs/context-api/asset)
+- [`body`](/docs/context-api/body)
 - [`data`](/docs/context-api/data)
 - [`echo`](/docs/context-api/echo)
 - [`formData`](/docs/context-api/form-data)
