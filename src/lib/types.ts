@@ -37,6 +37,7 @@ export type PagesRequestContext<TData = any> = {
   data?: TData
   echo: (...args: any[]) => string
   formData: Record<string, any>
+  body: () => Record<string, any> | string
   meta: (key: string, value?: string) => string | undefined
   params: PagesParams
   redirect: (path: string, status?: number) => void

@@ -60,6 +60,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
         return s
       },
       formData: request.formData,
+      body: request.body,
       auth: request.auth,
       request,
       response,
