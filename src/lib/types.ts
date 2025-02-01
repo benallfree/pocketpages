@@ -35,6 +35,10 @@ export type MiddlewareLoaderFunc<TData = any> = (
 
 export type PagesParams<T = string> = Record<string, T | null | Array<T | null>>
 
+export type AuthOptions = {
+  collection: string
+}
+
 export type PagesGlobalContext = {
   stringify: typeof stringify
   forEach: typeof forEach
@@ -45,8 +49,8 @@ export type PagesGlobalContext = {
   env: (key: string) => string
   findRecordByFilter: typeof findRecordByFilter
   findRecordsByFilter: typeof findRecordsByFilter
-  createUser: (email: string, password: string) => User
-  createAnonymousUser: () => {
+  createUser: (email: string, password: string, options?: AuthOptions) => User
+  createAnonymousUser: (options?: AuthOptions) => {
     user: User
     email: string
     password: string
@@ -73,9 +77,17 @@ export type PagesRequestContext<TData = any> = {
   response: PagesResponse
   slot: string
   slots: Record<string, string>
-  signInWithPassword: (email: string, password: string) => AuthData
-  registerWithPassword: (email: string, password: string) => AuthData
-  signInAnonymously: () => AuthData
+  signInWithPassword: (
+    email: string,
+    password: string,
+    options?: AuthOptions
+  ) => AuthData
+  registerWithPassword: (
+    email: string,
+    password: string,
+    options?: AuthOptions
+  ) => AuthData
+  signInAnonymously: (options?: AuthOptions) => AuthData
   signOut: () => void
   signInWithToken: (token: string) => void
 } & PagesGlobalContext

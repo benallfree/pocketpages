@@ -5,15 +5,31 @@ description: Create and authenticate anonymous users in PocketPages templates.
 
 # `signInAnonymously` - Anonymous Authentication
 
-- **Type**: `() => AuthData`
+- **Type**: `(options?: AuthOptions) => AuthData`
 - **Description**: Creates a new anonymous user account and automatically signs them in. This is useful for allowing users to try your application before creating a full account.
+
+## Parameters
+
+- `options`: (Optional) Authentication options
+  ```typescript
+  type AuthOptions = {
+    collection: string // The collection to authenticate against (defaults to "users")
+  }
+  ```
 
 ## Basic Usage
 
 ```ejs
 <%%
 try {
+  // Default usage - creates anonymous user in "users" collection
   const authData = signInAnonymously()
+
+  // Or specify a custom collection
+  const authData = signInAnonymously({
+    collection: 'customers'
+  })
+
   // User is now anonymously authenticated
   redirect('/welcome')
 } catch (error) {
@@ -29,7 +45,14 @@ Returns an `AuthData` object containing:
 ```typescript
 interface AuthData {
   token: string // The authentication token
-  user: Record // The anonymous user record
+  record: {
+    // The authenticated user record
+    id: string
+    email: string
+    username: string
+    verified: boolean
+    // ... other user fields
+  }
 }
 ```
 
@@ -37,7 +60,7 @@ interface AuthData {
 
 This function:
 
-1. Creates a new user with a random email and password
+1. Creates a new user with a random email and password in the specified collection
 2. Signs in with those credentials
 3. Sets the authentication cookie via `signInWithToken`
 
@@ -49,11 +72,13 @@ This function:
 <%%
 if (request.method === 'POST' && formData.action === 'guest-checkout') {
   try {
-    const authData = signInAnonymously()
+    const authData = signInAnonymously({
+      collection: 'customers'
+    })
 
     // Store cart data with anonymous user
     const cart = resolve('cart')
-    cart.associateWithUser(authData.user.id)
+    cart.associateWithUser(authData.record.id)
 
     redirect('/checkout')
   } catch (error) {

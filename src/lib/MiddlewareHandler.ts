@@ -8,7 +8,7 @@ import { echo, mkMeta, mkResolve, pagesRoot } from './helpers'
 import { marked } from './marked'
 import { PagesMiddlewareFunc } from './pages'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
-import { AuthData, Cache, PagesRequestContext } from './types'
+import { AuthData, AuthOptions, Cache, PagesRequestContext } from './types'
 
 export const MiddlewareHandler: PagesMiddlewareFunc = (
   request,
@@ -90,21 +90,29 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
       },
       meta: mkMeta(),
       resolve: mkResolve($filepath.dir(absolutePath)),
-      registerWithPassword: (email: string, password: string) => {
-        const user = globalApi.createUser(email, password)
-        const authData = api.signInWithPassword(email, password)
+      registerWithPassword: (
+        email: string,
+        password: string,
+        options?: AuthOptions
+      ) => {
+        const user = globalApi.createUser(email, password, options)
+        const authData = api.signInWithPassword(email, password, options)
         return authData
       },
-      signInWithPassword: (email: string, password: string) => {
+      signInWithPassword: (
+        email: string,
+        password: string,
+        options?: AuthOptions
+      ) => {
         const authData = globalApi
           .pb()
-          .collection('users')
+          .collection(options?.collection ?? 'users')
           .authWithPassword(email, password) as AuthData
 
         api.signInWithToken(authData.token)
         return authData
       },
-      signInAnonymously: () => {
+      signInAnonymously: (options?: AuthOptions) => {
         const { user, email, password } = globalApi.createAnonymousUser()
 
         const authData = api.signInWithPassword(email, password)

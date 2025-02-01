@@ -5,15 +5,33 @@ description: Authenticate users with email and password in PocketPages templates
 
 # `signInWithPassword` - Password Authentication
 
-- **Type**: `(email: string, password: string) => AuthData`
+- **Type**: `(email: string, password: string, options?: AuthOptions) => AuthData`
 - **Description**: Authenticates a user with their email and password, automatically setting the authentication cookie upon success.
+
+## Parameters
+
+- `email`: The user's email address
+- `password`: The user's password
+- `options`: (Optional) Authentication options
+  ```typescript
+  type AuthOptions = {
+    collection: string // The collection to authenticate against (defaults to "users")
+  }
+  ```
 
 ## Basic Usage
 
 ```ejs
 <%%
 try {
+  // Default usage - authenticates against "users" collection
   const authData = signInWithPassword('user@example.com', 'password123')
+
+  // Or specify a custom collection
+  const authData = signInWithPassword('user@example.com', 'password123', {
+    collection: 'admins'
+  })
+
   // User is now logged in
   redirect('/dashboard')
 } catch (error) {
@@ -29,7 +47,14 @@ Returns an `AuthData` object containing:
 ```typescript
 interface AuthData {
   token: string // The authentication token
-  user: Record // The authenticated user record
+  record: {
+    // The authenticated user record
+    id: string
+    email: string
+    username: string
+    verified: boolean
+    // ... other user fields
+  }
 }
 ```
 

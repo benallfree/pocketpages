@@ -3,7 +3,7 @@ import PocketBase from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { findRecordByFilter, findRecordsByFilter } from 'src/lib/db'
-import { Cache, PagesGlobalContext, User } from 'src/lib/types'
+import { AuthOptions, Cache, PagesGlobalContext, User } from 'src/lib/types'
 
 export const globalApi: PagesGlobalContext = {
   stringify,
@@ -15,7 +15,7 @@ export const globalApi: PagesGlobalContext = {
   env: (key: string) => process.env[key] ?? '',
   findRecordByFilter,
   findRecordsByFilter,
-  createUser: (email: string, password: string) => {
+  createUser: (email: string, password: string, options?: AuthOptions) => {
     if (!email.trim()) {
       throw new Error('Email is required')
     }
@@ -23,21 +23,21 @@ export const globalApi: PagesGlobalContext = {
       throw new Error('Password is required')
     }
     const pb = globalApi.pb()
-    const user = pb.collection('users').create<User>({
+    const user = pb.collection(options?.collection ?? 'users').create<User>({
       email,
       password,
       passwordConfirm: password,
     })
     return user
   },
-  createAnonymousUser: () => {
+  createAnonymousUser: (options?: AuthOptions) => {
     const pb = globalApi.pb()
     const email = `anonymous-${$security.randomStringWithAlphabet(
       10,
       '123456789'
     )}@example.com`
     const password = $security.randomStringWithAlphabet(40, '123456789')
-    const user = pb.collection('users').create<User>({
+    const user = pb.collection(options?.collection ?? 'users').create<User>({
       email,
       password,
       passwordConfirm: password,

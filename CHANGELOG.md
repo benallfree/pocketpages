@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.12.2
+
+### Patch Changes
+
+- Feat: allow custom collection names for auth
+
 ## 0.12.1
 
 ### Patch Changes

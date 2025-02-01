@@ -15,13 +15,21 @@ PocketPages provides two helper functions for creating users:
 Creates a new user with the specified email and password.
 
 ```javascript
+// Create user in default 'users' collection
 const user = createUser('user@example.com', 'password123')
+
+// Create user in custom collection
+const user = createUser('user@example.com', 'password123', {
+  collection: 'customers',
+})
 ```
 
 ### Parameters
 
 - `email` (string): User's email address
 - `password` (string): User's password
+- `options` (optional): Authentication options
+  - `collection` (string): Collection name for the user (defaults to 'users')
 
 ### Returns
 
@@ -39,8 +47,19 @@ Throws an error if:
 Creates a user with randomly generated credentials.
 
 ```javascript
+// Create anonymous user in default 'users' collection
 const { user, email, password } = createAnonymousUser()
+
+// Create anonymous user in custom collection
+const { user, email, password } = createAnonymousUser({
+  collection: 'customers',
+})
 ```
+
+### Parameters
+
+- `options` (optional): Authentication options
+  - `collection` (string): Collection name for the user (defaults to 'users')
 
 ### Returns
 
@@ -61,6 +80,11 @@ Returns an object containing:
   } catch (e) {
     error('Failed to create user:', e)
   }
+
+  // Create user in custom collection
+  const user = createUser('test@example.com', 'password123', {
+    collection: 'customers'
+  })
 
   // Create anonymous user
   const { user: anonUser } = createAnonymousUser()
@@ -90,8 +114,18 @@ const { user, email, password } = createAnonymousUser()
 // Save email/password for later authentication
 ```
 
+3. **Custom Collections**
+
+```javascript
+// Use consistent collection names
+const options = { collection: 'customers' }
+const user = createUser(email, password, options)
+const anonUser = createAnonymousUser(options)
+```
+
 ## Security Notes
 
 - Passwords are automatically hashed by PocketBase
 - Anonymous users are real users with random credentials
 - Consider implementing cleanup for anonymous users
+- Collection permissions still apply to user creation

@@ -7553,7 +7553,7 @@ var globalApi = {
   env: (key) => process.env[key] ?? "",
   findRecordByFilter,
   findRecordsByFilter,
-  createUser: (email, password) => {
+  createUser: (email, password, options2) => {
     if (!email.trim()) {
       throw new Error("Email is required");
     }
@@ -7561,21 +7561,21 @@ var globalApi = {
       throw new Error("Password is required");
     }
     const pb = globalApi.pb();
-    const user = pb.collection("users").create({
+    const user = pb.collection(options2?.collection ?? "users").create({
       email,
       password,
       passwordConfirm: password
     });
     return user;
   },
-  createAnonymousUser: () => {
+  createAnonymousUser: (options2) => {
     const pb = globalApi.pb();
     const email = `anonymous-${$security.randomStringWithAlphabet(
       10,
       "123456789"
     )}@example.com`;
     const password = $security.randomStringWithAlphabet(40, "123456789");
-    const user = pb.collection("users").create({
+    const user = pb.collection(options2?.collection ?? "users").create({
       email,
       password,
       passwordConfirm: password
@@ -10681,17 +10681,17 @@ var MiddlewareHandler = (request, response, next) => {
       },
       meta: mkMeta(),
       resolve: mkResolve($filepath.dir(absolutePath)),
-      registerWithPassword: (email, password) => {
-        const user = globalApi.createUser(email, password);
-        const authData = api.signInWithPassword(email, password);
+      registerWithPassword: (email, password, options2) => {
+        const user = globalApi.createUser(email, password, options2);
+        const authData = api.signInWithPassword(email, password, options2);
         return authData;
       },
-      signInWithPassword: (email, password) => {
-        const authData = globalApi.pb().collection("users").authWithPassword(email, password);
+      signInWithPassword: (email, password, options2) => {
+        const authData = globalApi.pb().collection(options2?.collection ?? "users").authWithPassword(email, password);
         api.signInWithToken(authData.token);
         return authData;
       },
-      signInAnonymously: () => {
+      signInAnonymously: (options2) => {
         const { user, email, password } = globalApi.createAnonymousUser();
         const authData = api.signInWithPassword(email, password);
         return authData;

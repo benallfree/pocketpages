@@ -82,6 +82,9 @@ type AuthData = {
 type PageDataLoaderFunc<TData = any> = (api: Omit<PagesRequestContext<TData>, 'data'>) => object;
 type MiddlewareLoaderFunc<TData = any> = (api: Omit<PagesRequestContext<TData>, 'data'>) => object;
 type PagesParams<T = string> = Record<string, T | null | Array<T | null>>;
+type AuthOptions = {
+    collection: string;
+};
 type PagesGlobalContext = {
     stringify: typeof stringify;
     forEach: typeof forEach;
@@ -92,8 +95,8 @@ type PagesGlobalContext = {
     env: (key: string) => string;
     findRecordByFilter: typeof findRecordByFilter;
     findRecordsByFilter: typeof findRecordsByFilter;
-    createUser: (email: string, password: string) => User;
-    createAnonymousUser: () => {
+    createUser: (email: string, password: string, options?: AuthOptions) => User;
+    createAnonymousUser: (options?: AuthOptions) => {
         user: User;
         email: string;
         password: string;
@@ -118,9 +121,9 @@ type PagesRequestContext<TData = any> = {
     response: PagesResponse;
     slot: string;
     slots: Record<string, string>;
-    signInWithPassword: (email: string, password: string) => AuthData;
-    registerWithPassword: (email: string, password: string) => AuthData;
-    signInAnonymously: () => AuthData;
+    signInWithPassword: (email: string, password: string, options?: AuthOptions) => AuthData;
+    registerWithPassword: (email: string, password: string, options?: AuthOptions) => AuthData;
+    signInAnonymously: (options?: AuthOptions) => AuthData;
     signOut: () => void;
     signInWithToken: (token: string) => void;
 } & PagesGlobalContext;
@@ -140,4 +143,4 @@ declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
-export { AfterBootstrapHandler, type AuthData, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
+export { AfterBootstrapHandler, type AuthData, type AuthOptions, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
