@@ -8,6 +8,7 @@ export type PagesRequest = {
   method: PagesMethods
   url: URLParse<string>
   formData: () => Record<string, any>
+  body: () => Record<string, any> | string
   header: (name: string) => string
   cookies: (name: string) => string | undefined
 }

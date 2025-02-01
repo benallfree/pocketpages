@@ -32,8 +32,8 @@ description: Access HTTP request details including method, headers, and query pa
 
 ### `body()`
 
-- Type: `() => any`
-- Description: Function that returns the raw request body
+- Type: `() => Record<string, any> | string`
+- Description: Function that returns request body as an object (if JSON) or string (if form data)
 
 ### `header()`
 
