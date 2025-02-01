@@ -1,5 +1,18 @@
 # pocketpages
 
+## 0.12.0
+
+### Minor Changes
+
+- b6163fc: Feat: MPA authentication methods and docs
+
+### Patch Changes
+
+- 70f1eda: Enh: capitalize request method names
+- eb2717f: Feat: handle auth headers and cookies
+- 1d55b8e: Feat: cookie() and header() support in Request and Response objects
+- 3ddce12: Feat: support body() in request object
+
 ## 0.11.9
 
 ### Patch Changes
