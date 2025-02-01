@@ -13,10 +13,12 @@
 - [Markdown](/docs/markdown)
 - [Middleware](/docs/middleware)
 
-# Data
+# Data & Security
 
 - [Loading Data](/docs/loading-data)
 - [JSON](/docs/json)
+- [Managing Secrets](/docs/secrets)
+- [Authentication](/docs/authentication)
 
 # Templates & Layouts
 
@@ -31,7 +33,6 @@
 
 # Going Live
 
-- [Managing Secrets](/docs/secrets)
 - [Going Live](/docs/deploying)
 - [Runtime Configuration](/docs/config)
 - [Caching](/docs/caching)
@@ -49,6 +50,7 @@
 # Context API
 
 - [Overview](/docs/context-api)
+- [`auth`](/docs/context-api/auth)
 - [`api`](/docs/context-api/api)
 - [`asset`](/docs/context-api/asset)
 - [`body`](/docs/context-api/body)

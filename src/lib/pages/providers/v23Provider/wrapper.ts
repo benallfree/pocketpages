@@ -1,4 +1,5 @@
 import * as cookie from 'cookie'
+import { setAuthFromHeaderOrCookie } from 'src/lib/auth'
 import { default as parse } from 'url-parse'
 import type {
   PagesMethods,
@@ -75,6 +76,8 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
       return serialized
     },
   }
+
+  setAuthFromHeaderOrCookie(request)
 
   require(`${__hooks}/pocketpages.pb`).MiddlewareHandler(
     request,
