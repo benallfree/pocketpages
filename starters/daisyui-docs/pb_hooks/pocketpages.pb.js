@@ -10711,7 +10711,7 @@ var MiddlewareHandler = (request, response, next) => {
       data = merge(data, require(maybeMiddleware)({ ...api, data }));
     });
     {
-      const methods = ["load", method];
+      const methods = ["load", method.toLowerCase()];
       forEach(methods, (method2) => {
         const loaderFname = route.loaders[method2];
         if (!loaderFname) return;

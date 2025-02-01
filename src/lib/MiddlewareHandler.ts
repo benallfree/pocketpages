@@ -128,7 +128,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
 
     // Execute loaders
     {
-      const methods = ['load', method]
+      const methods = ['load', method.toLowerCase()]
       forEach(methods, (method) => {
         const loaderFname = route.loaders[method as keyof typeof route.loaders]
         if (!loaderFname) return

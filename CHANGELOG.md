@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.12.1
+
+### Patch Changes
+
+- Fix: method-specific middleware was not executing
+
 ## 0.12.0
 
 ### Minor Changes
