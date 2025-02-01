@@ -9,9 +9,14 @@ description: Pre-configured PocketPages templates including minimal setup, Daisy
 
 - [minimal](#minimal)
 - [daisyui](#daisyui)
-- [lib](#lib)
-- [deploy-pockethost](#deploy-pockethost)
-- [deploy-fly](#deploy-fly)
+- [deploy-pockethost-manual](#deploy-pockethost-manual)
+- [deploy-pockethost-ga](#deploy-pockethost-ga)
+- [deploy-fly-manual](#deploy-fly-manual)
+- [deploy-fly-ga](#deploy-fly-ga)
+- [htmx](#htmx)
+- [vscode/cursor](#vscodecursor)
+- [mvp](#mvp)
+- [auth](#auth)
 
 <!-- /TOC -->
 
@@ -22,9 +27,10 @@ The easiest way to get started with PocketPages is to use one of the starter kit
 The Minimal starter kit creates the absolute most minimal PocketPages app: a single `index.ejs` home page.
 
 ```bash
-bunx pocketpages new myapp --template=minimal
-cd myapp
-bun dev # or npm,yarn,pnpm...
+npx tiged benallfree/pocketpages/starters/minimal .
+cd minimal
+npm i
+pocketbase --dir=pb_data --dev serve
 ```
 
 Browse to `http://localhost:8090` and with any luck at all, you'll see:
@@ -46,9 +52,10 @@ For more detail, see https://github.com/benallfree/pocketpages/blob/master/start
 The `daisyui` starter kit incorporates Daisy UI and Tailwind.
 
 ```bash
-bunx pocketpages new myapp --template=daisyui
-cd myapp
-bun dev # or npm,yarn,pnpm...
+npx tiged benallfree/pocketpages/starters/daisyui .
+cd daisyui
+npm i
+pocketbase --dir=pb_data --dev serve
 ```
 
 For more detail, see https://github.com/benallfree/pocketpages/blob/master/starters/daisyui
@@ -73,10 +80,45 @@ This kit helps you deploy via Github Action to fly.io. It requires `deploy-fly-m
 
 This kit helps you get started with the [htmx](https://htmx.org/) project. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/htmx/README.md) for more details.
 
+```bash
+npx tiged benallfree/pocketpages/starters/htmx .
+cd htmx
+npm i
+pocketbase --dir=pb_data --dev serve
+```
+
 ## vscode/cursor
 
 This kit provides a VSCode/Cursor configuration for PocketPages. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/vscode/README.md) for more details.
 
-## mvp.css
+## mvp
 
-This kit provides a starter kit for the [mvp.css](https://andybrewer.github.io/mvp/#docs) project. MVP.css is a minimal styling for building fast, modern web apps. It takes all the guesswork out of styling your project, leaving you to focus on features and functionality. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/mvp.css/README.md) for more details.
+This kit provides a starter kit based on the [MVP.css](https://andybrewer.github.io/mvp/) project. MVP.css is a minimal styling solution for building fast, modern web apps. It takes all the guesswork out of styling your project, leaving you to focus on features and functionality.
+
+```bash
+npx tiged benallfree/pocketpages/starters/mvp .
+cd mvp
+npm i
+pocketbase --dir=pb_data --dev serve
+```
+
+For more detail, see the [MVP starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/mvp/README.md).
+
+## auth
+
+This kit demonstrates Multi Page App (MPA) authentication using PocketPages. It includes:
+
+- User registration and login flows
+- Password reset functionality
+- Email verification
+- Email change confirmation
+- Local mail testing setup with MailDev
+
+```bash
+npx tiged benallfree/pocketpages/starters/auth .
+cd auth
+npm i
+pocketbase --dir=pb_data --dev serve
+```
+
+For more detail, see the [auth starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/auth/README.md).

@@ -63,6 +63,10 @@ function processData(data) {
 
 The Global API provides several utility functions:
 
+- **PocketBase JS SDKClient**
+
+  - `pb()` - Get configured PocketBase SDK client
+
 - **Logging**
 
   - `dbg()` - Debug level logging
@@ -79,6 +83,11 @@ The Global API provides several utility functions:
 
   - `findRecordByFilter()` - Find single record
   - `findRecordsByFilter()` - Find multiple records
+
+- **User Management**
+
+  - `createUser()` - Create a regular user
+  - `createAnonymousUser()` - Create an anonymous user
 
 - **Micro-dash Utilities**
   - `forEach()` - Array iteration

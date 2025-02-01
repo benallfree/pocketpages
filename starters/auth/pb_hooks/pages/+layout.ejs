@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>PocketPages MPA Auth</title>
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+</head>
+
+<body>
+  <main>
+    <h1>PocketPages MPA Auth Demo</h1>
+    <hr />
+    <% if (auth) { %>
+    <p>Logged in as <%= auth.get('email') %></p>
+    <a href="/account">Account</a>
+    <a href="/auth/logout">Logout</a>
+    <% } else { %>
+    <a href="/auth/login">Login</a> or <a href="/auth/register">Register</a>
+    <% } %>
+    <div>
+      <%- slot %>
+    </div>
+  </main>
+</body>
+
+</html>

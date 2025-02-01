@@ -1,9 +1,29 @@
 import { forEach, keys, merge, shuffle, values } from '@s-libs/micro-dash'
+import PocketBase from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { Route } from './AfterBootstrapHandler'
 import { findRecordByFilter, findRecordsByFilter } from './db'
 import { PagesRequest, PagesResponse } from './pages'
+
+export type User = {
+  avatar: string
+  collectionId: string
+  collectionName: string
+  created: string
+  emailVisibility: boolean
+  email: string
+  id: string
+  name: string
+  updated: string
+  username: string
+  verified: boolean
+}
+
+export type AuthData = {
+  token: string
+  record: User
+}
 
 export type PageDataLoaderFunc<TData = any> = (
   api: Omit<PagesRequestContext<TData>, 'data'>
@@ -25,6 +45,13 @@ export type PagesGlobalContext = {
   env: (key: string) => string
   findRecordByFilter: typeof findRecordByFilter
   findRecordsByFilter: typeof findRecordsByFilter
+  createUser: (email: string, password: string) => User
+  createAnonymousUser: () => {
+    user: User
+    email: string
+    password: string
+  }
+  pb: () => PocketBase
 } & typeof log
 
 export type ResolveOptions = {
@@ -46,11 +73,17 @@ export type PagesRequestContext<TData = any> = {
   response: PagesResponse
   slot: string
   slots: Record<string, string>
+  signInWithPassword: (email: string, password: string) => AuthData
+  registerWithPassword: (email: string, password: string) => AuthData
+  signInAnonymously: () => AuthData
+  signOut: () => void
+  signInWithToken: (token: string) => void
 } & PagesGlobalContext
 
 export type PagesConfig = {
   preprocessorExts: string[]
   debug: boolean
+  host: string
 }
 
 export type Cache = { routes: Route[]; config: PagesConfig }

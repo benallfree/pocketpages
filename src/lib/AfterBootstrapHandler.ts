@@ -47,6 +47,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
   const config: PagesConfig = {
     preprocessorExts: ['.ejs', '.md'],
     debug: false,
+    host: 'http://localhost:8090',
     ...(() => {
       try {
         return require(configPath) as Partial<PagesConfig>

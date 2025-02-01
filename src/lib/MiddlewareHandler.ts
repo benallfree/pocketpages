@@ -8,7 +8,7 @@ import { echo, mkMeta, mkResolve, pagesRoot } from './helpers'
 import { marked } from './marked'
 import { PagesMiddlewareFunc } from './pages'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
-import { Cache, PagesRequestContext } from './types'
+import { AuthData, Cache, PagesRequestContext } from './types'
 
 export const MiddlewareHandler: PagesMiddlewareFunc = (
   request,
@@ -90,6 +90,34 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
       },
       meta: mkMeta(),
       resolve: mkResolve($filepath.dir(absolutePath)),
+      registerWithPassword: (email: string, password: string) => {
+        const user = globalApi.createUser(email, password)
+        const authData = api.signInWithPassword(email, password)
+        return authData
+      },
+      signInWithPassword: (email: string, password: string) => {
+        const authData = globalApi
+          .pb()
+          .collection('users')
+          .authWithPassword(email, password) as AuthData
+
+        api.signInWithToken(authData.token)
+        return authData
+      },
+      signInAnonymously: () => {
+        const { user, email, password } = globalApi.createAnonymousUser()
+
+        const authData = api.signInWithPassword(email, password)
+        return authData
+      },
+      signOut: () => {
+        response.cookie(`pb_auth`, '', { path: `/` })
+      },
+      signInWithToken: (token: string) => {
+        response.cookie(`pb_auth`, token, {
+          path: '/',
+        })
+      },
     }
 
     let data = {}

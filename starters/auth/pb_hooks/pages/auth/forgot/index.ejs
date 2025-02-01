@@ -1,0 +1,9 @@
+<h2>Forgot Password</h2>
+<% if (data.error) { %>
+<mark><%= data.error %></mark>
+<% } %>
+<form method="post">
+  <label>Login</label>
+  <input name="identity" value="<%= data.identity %>" />
+  <button type="submit">Send Reset Email</button>
+</form>

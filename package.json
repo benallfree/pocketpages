@@ -29,6 +29,7 @@
     "build:copy:daisyui": "cp dist/pocketpages.pb.js starters/daisyui/pb_hooks",
     "build:copy:daisyui-docs": "cp dist/pocketpages.pb.js starters/daisyui-docs/pb_hooks",
     "build:copy:docs": "cp dist/pocketpages.pb.js docs/pb_hooks",
+    "build:copy:auth": "cp dist/pocketpages.pb.js starters/auth/pb_hooks",
     "watch": "rimraf dist && chokidar 'src/**/*' -c 'bun run build'"
   },
   "devDependencies": {
@@ -41,6 +42,7 @@
     "front-matter": "^4.0.2",
     "marked": "^14.1.2",
     "pocketbase-ejs": "^3.1.10005",
+    "pocketbase-js-sdk-jsvm": "^0.25.10002",
     "pocketbase-jsvm": "^0.23.10002",
     "pocketbase-log": "^0.0.2",
     "pocketbase-node": "^0.0.3",

@@ -1,0 +1,11 @@
+<h2>Change Email</h2>
+
+<div>
+  Current email: <%= auth.get('email') %>
+</div>
+
+
+<form action="/account/change-email" method="post">
+  <input type="email" name="email" placeholder="New email address" value="<%= data.email %>" />
+  <button type="submit">Change email</button>
+</form>

@@ -1,11 +1,12 @@
 import { forEach, keys, values, merge, shuffle } from '@s-libs/micro-dash';
+import PocketBase from 'pocketbase-js-sdk-jsvm';
 import * as log from 'pocketbase-log';
 export { log };
 import { stringify } from 'pocketbase-stringify';
 export { stringify } from 'pocketbase-stringify';
 import URLParse from 'url-parse';
 
-type PagesMethods = 'get' | 'post' | 'put' | 'delete';
+type PagesMethods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 type PagesRequest = {
     auth?: core.Record;
     method: PagesMethods;
@@ -21,7 +22,7 @@ type PagesResponse = {
     redirect: (path: string, status?: number) => void;
     json: (status: number, data: any) => void;
     html: (status: number, data: string) => void;
-    header: (name: string, value: string) => void;
+    header: (name: string, value?: string) => void;
     cookie: (name: string, value: string, options?: any) => void;
 };
 type PagesInitializerFunc = () => void;
@@ -67,11 +68,16 @@ type User = {
     collectionName: string;
     created: string;
     emailVisibility: boolean;
+    email: string;
     id: string;
     name: string;
     updated: string;
     username: string;
     verified: boolean;
+};
+type AuthData = {
+    token: string;
+    record: User;
 };
 type PageDataLoaderFunc<TData = any> = (api: Omit<PagesRequestContext<TData>, 'data'>) => object;
 type MiddlewareLoaderFunc<TData = any> = (api: Omit<PagesRequestContext<TData>, 'data'>) => object;
@@ -86,8 +92,13 @@ type PagesGlobalContext = {
     env: (key: string) => string;
     findRecordByFilter: typeof findRecordByFilter;
     findRecordsByFilter: typeof findRecordsByFilter;
-    createUser: (email: string, password: string, dao?: typeof $app) => core.Record;
-    createAnonymousUser: (dao?: typeof $app) => core.Record;
+    createUser: (email: string, password: string) => User;
+    createAnonymousUser: () => {
+        user: User;
+        email: string;
+        password: string;
+    };
+    pb: () => PocketBase;
 } & typeof log;
 type ResolveOptions = {
     mode: 'raw' | 'require' | 'script' | 'style';
@@ -107,13 +118,16 @@ type PagesRequestContext<TData = any> = {
     response: PagesResponse;
     slot: string;
     slots: Record<string, string>;
-    signInUserWithPassword: (email: string, password: string, dao?: typeof $app) => core.Record;
-    signOutUser: () => void;
-    signInUser: (user: core.Record) => void;
+    signInWithPassword: (email: string, password: string) => AuthData;
+    registerWithPassword: (email: string, password: string) => AuthData;
+    signInAnonymously: () => AuthData;
+    signOut: () => void;
+    signInWithToken: (token: string) => void;
 } & PagesGlobalContext;
 type PagesConfig = {
     preprocessorExts: string[];
     debug: boolean;
+    host: string;
 };
 type Cache = {
     routes: Route[];
@@ -126,4 +140,4 @@ declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
-export { AfterBootstrapHandler, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
+export { AfterBootstrapHandler, type AuthData, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };

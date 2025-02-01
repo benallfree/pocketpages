@@ -21,6 +21,7 @@ Here is an example of a basic `+config.js` file:
 module.exports = {
   preprocessorExts: ['.md', '.ejs'],
   debug: false,
+  host: 'http://127.0.0.1:8090',
 }
 ```
 
@@ -29,6 +30,8 @@ module.exports = {
 - **`preprocessorExts`**: An array that specifies which file extensions should be passed through the EJS preprocessor. Files with these extensions will be processed by EJS before being served. Any other file types not listed in this array will be served as static files.
 
 - **`debug`**: A boolean that enables internal PocketPages debugging output to the console. When set to `true`, it will output information about routes, parameters, and other internal details that are helpful for troubleshooting. Defaults to `false`.
+
+- **`host`**: A string that specifies the base URL of your PocketBase server. This is used internally to make REST API calls back into PocketBase as is sometimes more convenient than using the PocketBase JSVM API. Defaults to `'http://127.0.0.1:8090'`.
 
 ## File Routing Rules
 
