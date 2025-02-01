@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.12.3
+
+### Patch Changes
+
+- 856b51d: Fix: post-process with markdown after EJS has been recursively parsed
+
 ## 0.12.2
 
 ### Patch Changes
