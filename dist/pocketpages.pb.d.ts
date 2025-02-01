@@ -11,7 +11,9 @@ type PagesRequest = {
     method: PagesMethods;
     url: URLParse<string>;
     formData: () => Record<string, any>;
-    body: () => any;
+    body: () => Record<string, any> | string;
+    header: (name: string) => string;
+    cookies: (name: string) => string | undefined;
 };
 type PagesResponse = {
     file: (path: string) => void;
@@ -20,7 +22,7 @@ type PagesResponse = {
     json: (status: number, data: any) => void;
     html: (status: number, data: string) => void;
     header: (name: string, value: string) => void;
-    cookie: (name: string, value: string, options: any) => void;
+    cookie: (name: string, value: string, options?: any) => void;
 };
 type PagesInitializerFunc = () => void;
 type PagesNextFunc = () => void;
@@ -59,6 +61,18 @@ type FilterOptions = {
 declare const findRecordByFilter: (collection: string, options?: Partial<FilterOptions>, dao?: any) => any;
 declare const findRecordsByFilter: (collection: string, options?: Partial<FilterOptions>, dao?: any) => any;
 
+type User = {
+    avatar: string;
+    collectionId: string;
+    collectionName: string;
+    created: string;
+    emailVisibility: boolean;
+    id: string;
+    name: string;
+    updated: string;
+    username: string;
+    verified: boolean;
+};
 type PageDataLoaderFunc<TData = any> = (api: Omit<PagesRequestContext<TData>, 'data'>) => object;
 type MiddlewareLoaderFunc<TData = any> = (api: Omit<PagesRequestContext<TData>, 'data'>) => object;
 type PagesParams<T = string> = Record<string, T | null | Array<T | null>>;
@@ -72,6 +86,8 @@ type PagesGlobalContext = {
     env: (key: string) => string;
     findRecordByFilter: typeof findRecordByFilter;
     findRecordsByFilter: typeof findRecordsByFilter;
+    createUser: (email: string, password: string, dao?: typeof $app) => core.Record;
+    createAnonymousUser: (dao?: typeof $app) => core.Record;
 } & typeof log;
 type ResolveOptions = {
     mode: 'raw' | 'require' | 'script' | 'style';
@@ -82,6 +98,7 @@ type PagesRequestContext<TData = any> = {
     data?: TData;
     echo: (...args: any[]) => string;
     formData: Record<string, any>;
+    body: () => Record<string, any> | string;
     meta: (key: string, value?: string) => string | undefined;
     params: PagesParams;
     redirect: (path: string, status?: number) => void;
@@ -90,6 +107,9 @@ type PagesRequestContext<TData = any> = {
     response: PagesResponse;
     slot: string;
     slots: Record<string, string>;
+    signInUserWithPassword: (email: string, password: string, dao?: typeof $app) => core.Record;
+    signOutUser: () => void;
+    signInUser: (user: core.Record) => void;
 } & PagesGlobalContext;
 type PagesConfig = {
     preprocessorExts: string[];
@@ -106,4 +126,4 @@ declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
-export { AfterBootstrapHandler, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type ResolveOptions, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
+export { AfterBootstrapHandler, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };

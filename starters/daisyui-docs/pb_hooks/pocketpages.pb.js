@@ -297,7 +297,7 @@ var require_dist3 = __commonJS({
       isAbsolute: () => isAbsolute,
       join: () => join,
       normalize: () => normalize,
-      parse: () => parse3,
+      parse: () => parse4,
       relative: () => relative,
       resolve: () => resolve,
       sep: () => sep,
@@ -611,7 +611,7 @@ var require_dist3 = __commonJS({
       }
       return _format("/", pathObject);
     }
-    function parse3(path3) {
+    function parse4(path3) {
       assertPath(path3);
       var ret = { root: "", dir: "", base: "", ext: "", name: "" };
       if (path3.length === 0) return ret;
@@ -912,7 +912,7 @@ var require_url_parse = __commonJS({
       if (!(this instanceof Url)) {
         return new Url(address, location, parser2);
       }
-      var relative, extracted, parse3, instruction, index, key, instructions = rules.slice(), type = typeof location, url = this, i = 0;
+      var relative, extracted, parse4, instruction, index, key, instructions = rules.slice(), type = typeof location, url = this, i = 0;
       if ("object" !== type && "string" !== type) {
         parser2 = location;
         location = null;
@@ -933,12 +933,12 @@ var require_url_parse = __commonJS({
           address = instruction(address, url);
           continue;
         }
-        parse3 = instruction[0];
+        parse4 = instruction[0];
         key = instruction[1];
-        if (parse3 !== parse3) {
+        if (parse4 !== parse4) {
           url[key] = address;
-        } else if ("string" === typeof parse3) {
-          index = parse3 === "@" ? address.lastIndexOf(parse3) : address.indexOf(parse3);
+        } else if ("string" === typeof parse4) {
+          index = parse4 === "@" ? address.lastIndexOf(parse4) : address.indexOf(parse4);
           if (~index) {
             if ("number" === typeof instruction[2]) {
               url[key] = address.slice(0, index);
@@ -948,7 +948,7 @@ var require_url_parse = __commonJS({
               address = address.slice(0, index);
             }
           }
-        } else if (index = parse3.exec(address)) {
+        } else if (index = parse4.exec(address)) {
           url[key] = index[1];
           address = address.slice(0, index.index);
         }
@@ -1194,7 +1194,7 @@ var require_dist4 = __commonJS({
       isAbsolute: () => isAbsolute,
       join: () => join,
       normalize: () => normalize,
-      parse: () => parse3,
+      parse: () => parse4,
       relative: () => relative,
       resolve: () => resolve,
       sep: () => sep,
@@ -1508,7 +1508,7 @@ var require_dist4 = __commonJS({
       }
       return _format("/", pathObject);
     }
-    function parse3(path3) {
+    function parse4(path3) {
       assertPath(path3);
       var ret = { root: "", dir: "", base: "", ext: "", name: "" };
       if (path3.length === 0) return ret;
@@ -5185,7 +5185,7 @@ var require_front_matter = __commonJS({
       options2.allowUnsafe = Boolean(options2.allowUnsafe);
       var lines = string.split(/(\r?\n)/);
       if (lines[0] && /= yaml =|---/.test(lines[0])) {
-        return parse3(string, options2.allowUnsafe);
+        return parse4(string, options2.allowUnsafe);
       } else {
         return {
           attributes: {},
@@ -5207,7 +5207,7 @@ var require_front_matter = __commonJS({
       }
       return line;
     }
-    function parse3(string, allowUnsafe) {
+    function parse4(string, allowUnsafe) {
       var match = regex.exec(string);
       if (!match) {
         return {
@@ -5231,6 +5231,166 @@ var require_front_matter = __commonJS({
     function test(string) {
       string = string || "";
       return regex.test(string);
+    }
+  }
+});
+
+// node_modules/cookie/dist/index.js
+var require_dist5 = __commonJS({
+  "node_modules/cookie/dist/index.js"(exports2) {
+    "use strict";
+    init_cjs_shims();
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.parse = parse4;
+    exports2.serialize = serialize2;
+    var cookieNameRegExp = /^[\u0021-\u003A\u003C\u003E-\u007E]+$/;
+    var cookieValueRegExp = /^[\u0021-\u003A\u003C-\u007E]*$/;
+    var domainValueRegExp = /^([.]?[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)([.][a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/i;
+    var pathValueRegExp = /^[\u0020-\u003A\u003D-\u007E]*$/;
+    var __toString = Object.prototype.toString;
+    var NullObject = /* @__PURE__ */ (() => {
+      const C = function() {
+      };
+      C.prototype = /* @__PURE__ */ Object.create(null);
+      return C;
+    })();
+    function parse4(str, options2) {
+      const obj = new NullObject();
+      const len = str.length;
+      if (len < 2)
+        return obj;
+      const dec = options2?.decode || decode3;
+      let index = 0;
+      do {
+        const eqIdx = str.indexOf("=", index);
+        if (eqIdx === -1)
+          break;
+        const colonIdx = str.indexOf(";", index);
+        const endIdx = colonIdx === -1 ? len : colonIdx;
+        if (eqIdx > endIdx) {
+          index = str.lastIndexOf(";", eqIdx - 1) + 1;
+          continue;
+        }
+        const keyStartIdx = startIndex(str, index, eqIdx);
+        const keyEndIdx = endIndex(str, eqIdx, keyStartIdx);
+        const key = str.slice(keyStartIdx, keyEndIdx);
+        if (obj[key] === void 0) {
+          let valStartIdx = startIndex(str, eqIdx + 1, endIdx);
+          let valEndIdx = endIndex(str, endIdx, valStartIdx);
+          const value = dec(str.slice(valStartIdx, valEndIdx));
+          obj[key] = value;
+        }
+        index = endIdx + 1;
+      } while (index < len);
+      return obj;
+    }
+    function startIndex(str, index, max) {
+      do {
+        const code = str.charCodeAt(index);
+        if (code !== 32 && code !== 9)
+          return index;
+      } while (++index < max);
+      return max;
+    }
+    function endIndex(str, index, min) {
+      while (index > min) {
+        const code = str.charCodeAt(--index);
+        if (code !== 32 && code !== 9)
+          return index + 1;
+      }
+      return min;
+    }
+    function serialize2(name, val, options2) {
+      const enc = options2?.encode || encodeURIComponent;
+      if (!cookieNameRegExp.test(name)) {
+        throw new TypeError(`argument name is invalid: ${name}`);
+      }
+      const value = enc(val);
+      if (!cookieValueRegExp.test(value)) {
+        throw new TypeError(`argument val is invalid: ${val}`);
+      }
+      let str = name + "=" + value;
+      if (!options2)
+        return str;
+      if (options2.maxAge !== void 0) {
+        if (!Number.isInteger(options2.maxAge)) {
+          throw new TypeError(`option maxAge is invalid: ${options2.maxAge}`);
+        }
+        str += "; Max-Age=" + options2.maxAge;
+      }
+      if (options2.domain) {
+        if (!domainValueRegExp.test(options2.domain)) {
+          throw new TypeError(`option domain is invalid: ${options2.domain}`);
+        }
+        str += "; Domain=" + options2.domain;
+      }
+      if (options2.path) {
+        if (!pathValueRegExp.test(options2.path)) {
+          throw new TypeError(`option path is invalid: ${options2.path}`);
+        }
+        str += "; Path=" + options2.path;
+      }
+      if (options2.expires) {
+        if (!isDate(options2.expires) || !Number.isFinite(options2.expires.valueOf())) {
+          throw new TypeError(`option expires is invalid: ${options2.expires}`);
+        }
+        str += "; Expires=" + options2.expires.toUTCString();
+      }
+      if (options2.httpOnly) {
+        str += "; HttpOnly";
+      }
+      if (options2.secure) {
+        str += "; Secure";
+      }
+      if (options2.partitioned) {
+        str += "; Partitioned";
+      }
+      if (options2.priority) {
+        const priority = typeof options2.priority === "string" ? options2.priority.toLowerCase() : void 0;
+        switch (priority) {
+          case "low":
+            str += "; Priority=Low";
+            break;
+          case "medium":
+            str += "; Priority=Medium";
+            break;
+          case "high":
+            str += "; Priority=High";
+            break;
+          default:
+            throw new TypeError(`option priority is invalid: ${options2.priority}`);
+        }
+      }
+      if (options2.sameSite) {
+        const sameSite = typeof options2.sameSite === "string" ? options2.sameSite.toLowerCase() : options2.sameSite;
+        switch (sameSite) {
+          case true:
+          case "strict":
+            str += "; SameSite=Strict";
+            break;
+          case "lax":
+            str += "; SameSite=Lax";
+            break;
+          case "none":
+            str += "; SameSite=None";
+            break;
+          default:
+            throw new TypeError(`option sameSite is invalid: ${options2.sameSite}`);
+        }
+      }
+      return str;
+    }
+    function decode3(str) {
+      if (str.indexOf("%") === -1)
+        return str;
+      try {
+        return decodeURIComponent(str);
+      } catch (e) {
+        return str;
+      }
+    }
+    function isDate(val) {
+      return __toString.call(val) === "[object Date]";
     }
   }
 });
@@ -5308,7 +5468,6 @@ var v23Provider = () => ({
 });
 
 // src/lib/pages/index.ts
-var is22 = `refreshSettings` in $app;
 var getPagesProvider = () => v23Provider();
 
 // src/lib/types.ts
@@ -5491,6 +5650,22 @@ var globalApi = {
   env: (key) => process.env[key] ?? "",
   findRecordByFilter,
   findRecordsByFilter,
+  createUser: (email, password, dao = $app) => {
+    const usersCollection = dao.findCollectionByNameOrId("users");
+    const user = new Record(usersCollection);
+    user.set(`email`, email);
+    user.setPassword(password);
+    dao.save(user);
+    return user;
+  },
+  createAnonymousUser: (dao = $app) => {
+    const usersCollection = dao.findCollectionByNameOrId("users");
+    const user = new Record(usersCollection);
+    const password = $security.randomStringWithAlphabet(40, "123456789");
+    user.setPassword(password);
+    dao.save(user);
+    return user;
+  },
   ...log
 };
 
@@ -7701,7 +7876,7 @@ var Marked = class {
     return _Parser.parse(tokens, options2 ?? this.defaults);
   }
   parseMarkdown(blockType) {
-    const parse3 = (src, options2) => {
+    const parse4 = (src, options2) => {
       const origOpt = { ...options2 };
       const opt = { ...this.defaults, ...origOpt };
       const throwError = this.onError(!!opt.silent, !!opt.async);
@@ -7743,7 +7918,7 @@ var Marked = class {
         return throwError(e);
       }
     };
-    return parse3;
+    return parse4;
   }
   onError(silent, async) {
     return (e) => {
@@ -8553,6 +8728,7 @@ var MiddlewareHandler = (request, response, next) => {
         return s;
       },
       formData: request.formData,
+      body: request.body,
       auth: request.auth,
       request,
       response,
@@ -8577,7 +8753,29 @@ var MiddlewareHandler = (request, response, next) => {
         return fingerprint(shortAssetPath, assetRoute.route.fingerprint);
       },
       meta: mkMeta(),
-      resolve: mkResolve($filepath.dir(absolutePath))
+      resolve: mkResolve($filepath.dir(absolutePath)),
+      signInUserWithPassword: (email, password, dao = $app) => {
+        let user = null;
+        try {
+          user = dao.findAuthRecordByEmail(`users`, email);
+          if (!user.validatePassword(password)) {
+            throw new Error(`Invalid password`);
+          }
+        } catch (e) {
+          throw new Error(`Invalid username or password`);
+        }
+        api.signInUser(user);
+        return user;
+      },
+      signOutUser: () => {
+        response.cookie(`pb_auth`, "");
+      },
+      signInUser: (user) => {
+        const token2 = user.newAuthToken();
+        response.cookie(`pb_auth`, token2, {
+          path: "/"
+        });
+      }
     };
     let data = {};
     route.middlewares.forEach((maybeMiddleware) => {
@@ -8642,6 +8840,22 @@ ${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pages
 
 // src/lib/pages/providers/v23Provider/wrapper.ts
 init_cjs_shims();
+var cookie = __toESM(require_dist5());
+
+// src/lib/auth.ts
+init_cjs_shims();
+var setAuthFromHeaderOrCookie = (request) => {
+  const token2 = request.header("Authorization") || request.cookies("pb_auth");
+  if (token2) {
+    const cleanToken = token2.replace(/^Bearer\s+/i, "");
+    try {
+      request.auth = $app.findAuthRecordByToken(cleanToken, "auth");
+    } catch (e) {
+    }
+  }
+};
+
+// src/lib/pages/providers/v23Provider/wrapper.ts
 var import_url_parse2 = __toESM(require_url_parse());
 var v23MiddlewareWrapper = (e) => {
   const next = () => {
@@ -8664,7 +8878,19 @@ var v23MiddlewareWrapper = (e) => {
     method: method.toLowerCase(),
     url: (0, import_url_parse2.default)(url.string()),
     formData: () => e.requestInfo().body,
-    body: () => e.requestInfo().body
+    body: () => e.requestInfo().body,
+    header: (name) => {
+      return e.request?.header.get(name) || "";
+    },
+    cookies: /* @__PURE__ */ (() => {
+      let parsed;
+      return (name) => {
+        if (!parsed) {
+          parsed = cookie.parse(request.header(`Cookie`));
+        }
+        return parsed[name];
+      };
+    })()
   };
   const response = {
     file: (path3) => {
@@ -8683,12 +8909,19 @@ var v23MiddlewareWrapper = (e) => {
       e.html(status, data);
     },
     header: (name, value) => {
+      if (value === void 0) {
+        return e.response.header().get(name) || "";
+      }
       e.response.header().set(name, value);
+      return value;
     },
     cookie: (name, value, options2) => {
-      response.header("Set-Cookie", `${name}=${value}; Path=/`);
+      const serialized = cookie.serialize(name, value, options2);
+      response.header(`Set-Cookie`, serialized);
+      return serialized;
     }
   };
+  setAuthFromHeaderOrCookie(request);
   require(`${__hooks}/pocketpages.pb`).MiddlewareHandler(
     request,
     response,
