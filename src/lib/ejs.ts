@@ -1,4 +1,4 @@
-import { forEach, pick } from '@s-libs/micro-dash'
+import { pick } from '@s-libs/micro-dash'
 import ejs from 'pocketbase-ejs'
 import { fs, path } from 'pocketbase-node'
 import { stringify } from 'pocketbase-stringify'
@@ -67,6 +67,20 @@ ejs.resolveInclude = function (
   throw new Error(`No partial '${includePath}' found in any _private directory`)
 }
 
+const oldIncludeFile = ejs.includeFile
+ejs.includeFile = function (path: string, options: any) {
+  console.log(`***custom includeFile`, { path, options })
+  const renderFunc = oldIncludeFile(path, options)
+  return (data: any) => {
+    const rendered = renderFunc(data)
+    if ($filepath.ext(path) === '.md') {
+      const res = marked(rendered, options)
+      return res.content
+    }
+    return rendered
+  }
+}
+
 export const parseSlots = (input: string) => {
   const regex = /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g
   const slots: Record<string, string> = {}
@@ -116,20 +130,6 @@ export const renderFile = (fname: string, api: PagesRequestContext<any>) => {
       compileDebug: true,
       async: false,
       cache: false, // !$app.isDev(),
-      includer: (path: string, filename: string) => {
-        dbg(`includer`, { path, filename })
-        if ($filepath.ext(filename) === '.md') {
-          const markdown = fs.readFileSync(filename, 'utf8')
-          const res = marked(markdown, api)
-          forEach(res.frontmatter, (v, k) => {
-            api.meta(k, v)
-          })
-          return {
-            template: res.content,
-          }
-        }
-        return { filename }
-      },
     }
   )
   dbg(`renderFile end`, {

@@ -1739,7 +1739,7 @@ var require_package = __commonJS({
         "engine",
         "ejs"
       ],
-      version: "3.1.10005",
+      version: "3.1.10006",
       author: "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
       license: "Apache-2.0",
       main: "./lib/ejs.js",
@@ -1890,7 +1890,7 @@ var require_ejs = __commonJS({
     function fileLoader(filePath) {
       return exports2.fileLoader(filePath);
     }
-    function includeFile(path4, options2) {
+    exports2.includeFile = function includeFile(path4, options2) {
       var opts = utils.shallowCopy(utils.createNullProtoObjWherePossible(), options2);
       opts.filename = getIncludePath(path4, opts);
       if (typeof options2.includer === "function") {
@@ -1905,7 +1905,7 @@ var require_ejs = __commonJS({
         }
       }
       return handleCache(opts);
-    }
+    };
     function extractLineAndCol(stack) {
       const match = stack.match(/anonymous \(<eval>:(\d+):(\d+)/);
       if (match) {
@@ -2010,6 +2010,7 @@ var require_ejs = __commonJS({
       this.truncate = false;
       this.currentLine = 1;
       this.source = "";
+      options2.includeFile = opts.includeFile || exports2.includeFile;
       options2.prepend = opts.prepend || "";
       options2.client = opts.client || false;
       options2.escapeFunction = opts.escape || opts.escapeFunction || utils.escapeXML;
@@ -2156,7 +2157,7 @@ var require_ejs = __commonJS({
             if (includeData) {
               d = utils.shallowCopy(d, includeData);
             }
-            return includeFile(path4, opts)(d);
+            return opts.includeFile(path4, opts)(d);
           };
           return fn.apply(
             opts.context,
@@ -9978,6 +9979,19 @@ import_pocketbase_ejs.default.resolveInclude = function(includePath, templatePat
   }
   throw new Error(`No partial '${includePath}' found in any _private directory`);
 };
+var oldIncludeFile = import_pocketbase_ejs.default.includeFile;
+import_pocketbase_ejs.default.includeFile = function(path3, options2) {
+  console.log(`***custom includeFile`, { path: path3, options: options2 });
+  const renderFunc = oldIncludeFile(path3, options2);
+  return (data) => {
+    const rendered = renderFunc(data);
+    if ($filepath.ext(path3) === ".md") {
+      const res = marked2(rendered, options2);
+      return res.content;
+    }
+    return rendered;
+  };
+};
 var parseSlots = (input) => {
   const regex = /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g;
   const slots = {};
@@ -10021,22 +10035,8 @@ var renderFile = (fname, api) => {
       `,
       compileDebug: true,
       async: false,
-      cache: false,
+      cache: false
       // !$app.isDev(),
-      includer: (path3, filename) => {
-        dbg2(`includer`, { path: path3, filename });
-        if ($filepath.ext(filename) === ".md") {
-          const markdown = import_pocketbase_node3.fs.readFileSync(filename, "utf8");
-          const res = marked2(markdown, api);
-          forEach(res.frontmatter, (v, k) => {
-            api.meta(k, v);
-          });
-          return {
-            template: res.content
-          };
-        }
-        return { filename };
-      }
     }
   );
   dbg2(`renderFile end`, {
