@@ -40,10 +40,12 @@
 # Global API
 
 - [Overview](/docs/global-api)
+- [`createUser/createAnonymousUser`](/docs/global-api/users)
 - [`dbg/info/warn/error`](/docs/global-api/log)
 - [`env`](/docs/global-api/env)
 - [`findRecord(s)ByFilter`](/docs/global-api/db)
 - [`micro-dash`](/docs/global-api/micro-dash)
+- [`pb` (PocketBase JS SDK)](/docs/global-api/pb)
 - [`stringify`](/docs/global-api/stringify)
 - [`url`](/docs/global-api/url)
 
