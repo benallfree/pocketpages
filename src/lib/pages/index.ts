@@ -1,7 +1,7 @@
 import URLParse from 'url-parse'
 import { v23Provider } from './providers/v23Provider'
 
-export type PagesMethods = 'get' | 'post' | 'put' | 'delete'
+export type PagesMethods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 export type PagesRequest = {
   auth?: core.Record

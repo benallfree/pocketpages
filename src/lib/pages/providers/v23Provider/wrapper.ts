@@ -29,7 +29,7 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
 
   const request: PagesRequest = {
     auth: e.auth,
-    method: method.toLowerCase() as PagesMethods,
+    method: method.toUpperCase() as PagesMethods,
     url: parse(url.string()),
     formData: () => e.requestInfo().body,
     body: () => e.requestInfo().body,

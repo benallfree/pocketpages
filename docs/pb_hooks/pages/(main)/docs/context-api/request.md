@@ -17,7 +17,7 @@ description: Access HTTP request details including method, headers, and query pa
 
 ### `method`
 
-- Type: `'get' | 'post' | 'put' | 'delete'`
+- Type: `'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'`
 - Description: The HTTP method of the request
 
 ### `url`
