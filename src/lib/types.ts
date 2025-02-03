@@ -63,6 +63,13 @@ export type PagesGlobalContext = {
     email: string
     password: string
   }
+  createPaswordlessUser: (
+    email: string,
+    options?: Partial<AuthOptions>
+  ) => {
+    user: User
+    password: string
+  }
   pb: () => PocketBase
 } & typeof log
 

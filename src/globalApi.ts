@@ -41,13 +41,18 @@ export const globalApi: PagesGlobalContext = {
       10,
       '123456789'
     )}@example.com`
+    return { email, ...globalApi.createPaswordlessUser(email, options) }
+  },
+  createPaswordlessUser: (email: string, options?: Partial<AuthOptions>) => {
+    const pb = globalApi.pb()
     const password = $security.randomStringWithAlphabet(40, '123456789')
     const user = pb.collection(options?.collection ?? 'users').create<User>({
       email,
       password,
       passwordConfirm: password,
     })
-    return { user, email, password }
+    return { user, password }
+  },
   },
   pb: (() => {
     // rebuild

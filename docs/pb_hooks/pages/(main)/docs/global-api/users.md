@@ -9,6 +9,7 @@ PocketPages provides two helper functions for creating users:
 
 - `createUser()` - Create a regular user account
 - `createAnonymousUser()` - Create an anonymous user account
+- `createPasswordlessUser()` - Create a passwordless user account
 
 ## createUser()
 
@@ -67,6 +68,33 @@ Returns an object containing:
 
 - `user`: The created user object
 - `email`: Generated email (format: `anonymous-[numbers]@example.com`)
+- `password`: Generated password
+
+## createPasswordlessUser()
+
+Creates the specified user with randomly generated password.
+
+```javascript
+// Create passwordless user in default 'users' collection
+const { user, password } = createPasswordlessUser(`user@example.com`)
+
+// Create passwordless user in custom collection
+const { user, password } = createPasswordlessUser(`user@example.com`, {
+  collection: 'customers',
+})
+```
+
+### Parameters
+
+- `email` (string): User's email address
+- `options` (optional): Authentication options
+  - `collection` (string): Collection name for the user (defaults to 'users')
+
+### Returns
+
+Returns an object containing:
+
+- `user`: The created user object
 - `password`: Generated password
 
 ## Template Usage

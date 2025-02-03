@@ -44,8 +44,13 @@
 # Global API
 
 - [Overview](/docs/global-api)
-- [`createUser/createAnonymousUser`](/docs/global-api/users)
-- [`dbg/info/warn/error`](/docs/global-api/log)
+- [`createUser`](/docs/global-api/users)
+- [`createAnonymousUser`](/docs/global-api/users)
+- [`createPasswordlessUser`](/docs/global-api/users)
+- [`dbg`](/docs/global-api/log)
+- [`info`](/docs/global-api/log)
+- [`warn`](/docs/global-api/log)
+- [`error`](/docs/global-api/log)
 - [`env`](/docs/global-api/env)
 - [`findRecord(s)ByFilter`](/docs/global-api/db)
 - [`micro-dash`](/docs/global-api/micro-dash)
