@@ -13,6 +13,11 @@
 - [Markdown](/docs/markdown)
 - [Middleware](/docs/middleware)
 
+# Runtime Configuration
+
+- [`+config.js`](/docs/config)
+- [Boot Process](/docs/boot)
+
 # Data & Security
 
 - [Loading Data](/docs/loading-data)
@@ -34,7 +39,6 @@
 # Going Live
 
 - [Going Live](/docs/deploying)
-- [Runtime Configuration](/docs/config)
 - [Caching](/docs/caching)
 
 # Global API

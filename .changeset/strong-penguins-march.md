@@ -1,0 +1,5 @@
+---
+'pocketpages': patch
+---
+
+Feat: boot()

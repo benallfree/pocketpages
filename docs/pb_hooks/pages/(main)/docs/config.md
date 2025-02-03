@@ -22,6 +22,11 @@ module.exports = {
   preprocessorExts: ['.md', '.ejs'],
   debug: false,
   host: 'http://127.0.0.1:8090',
+  boot: (api) => {
+    // Execute code during PocketPages startup
+    // Note: Only global API methods are available here
+    api.dbg('Starting up...')
+  },
 }
 ```
 
@@ -32,6 +37,8 @@ module.exports = {
 - **`debug`**: A boolean that enables internal PocketPages debugging output to the console. When set to `true`, it will output information about routes, parameters, and other internal details that are helpful for troubleshooting. Defaults to `false`.
 
 - **`host`**: A string that specifies the base URL of your PocketBase server. This is used internally to make REST API calls back into PocketBase as is sometimes more convenient than using the PocketBase JSVM API. Defaults to `'http://127.0.0.1:8090'`.
+
+- **`boot`**: A function that runs during PocketPages initialization. It receives the global API object (not the context API) as its argument, giving you access to core functionality like logging, database queries, and user management. This function runs before any routes are processed and is useful for startup tasks like environment validation or database initialization. See [Boot Process](/docs/boot) for detailed documentation.
 
 ## File Routing Rules
 

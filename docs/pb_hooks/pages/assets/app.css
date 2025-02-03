@@ -1803,29 +1803,6 @@ html {
   justify-self: end;
 }
 
-.mockup-code {
-  position: relative;
-  overflow: hidden;
-  overflow-x: auto;
-  min-width: 18rem;
-  border-radius: var(--rounded-box, 1rem);
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-  --tw-text-opacity: 1;
-  color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)));
-  direction: ltr;
-}
-
-.mockup-code pre[data-prefix]:before {
-  content: attr(data-prefix);
-  display: inline-block;
-  text-align: right;
-  width: 2rem;
-  opacity: 0.5;
-}
-
 .mockup-browser {
   position: relative;
   overflow: hidden;
@@ -2544,28 +2521,6 @@ input.tab:checked + .tab-content,
 .menu :where(li > .menu-dropdown-toggle.menu-dropdown-show):after {
   transform: rotate(225deg);
   margin-top: 0;
-}
-
-.mockup-code:before {
-  content: "";
-  margin-bottom: 1rem;
-  display: block;
-  height: 0.75rem;
-  width: 0.75rem;
-  border-radius: 9999px;
-  opacity: 0.3;
-  box-shadow: 1.4em 0,
-        2.8em 0,
-        4.2em 0;
-}
-
-.mockup-code pre {
-  padding-right: 1.25rem;
-}
-
-.mockup-code pre:before {
-  content: "";
-  margin-right: 2ch;
 }
 
 .mockup-phone .display {
@@ -3567,18 +3522,6 @@ pre {
   width: 100%;
 }
 
-.w-40 {
-  width: 10rem;
-}
-
-.w-\[200px\] {
-  width: 200px;
-}
-
-.w-\[100\%\] {
-  width: 100%;
-}
-
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -3597,14 +3540,6 @@ pre {
 
 .max-w-xs {
   max-width: 20rem;
-}
-
-.max-w-\[100\%\] {
-  max-width: 100%;
-}
-
-.max-w-\[200px\] {
-  max-width: 200px;
 }
 
 .flex-1 {
@@ -3637,10 +3572,6 @@ pre {
 
 .overflow-x-auto {
   overflow-x: auto;
-}
-
-.text-nowrap {
-  text-wrap: nowrap;
 }
 
 .rounded-md {
@@ -3691,21 +3622,12 @@ pre {
   background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
 }
 
-.bg-neutral-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(115 115 115 / var(--tw-bg-opacity));
-}
-
 .stroke-current {
   stroke: currentColor;
 }
 
 .p-4 {
   padding: 1rem;
-}
-
-.p-2 {
-  padding: 0.5rem;
 }
 
 .px-2 {
@@ -3733,10 +3655,6 @@ pre {
 
 .text-center {
   text-align: center;
-}
-
-.font-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .text-2xl {
@@ -3882,10 +3800,6 @@ blockquote p:last-of-type::after {
 @media (min-width: 640px) {
   .sm\:block {
     display: block;
-  }
-
-  .sm\:w-full {
-    width: 100%;
   }
 
   .sm\:max-w-full {
