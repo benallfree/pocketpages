@@ -108,16 +108,16 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
       registerWithPassword: (
         email: string,
         password: string,
-        options?: AuthOptions
+        options?: Partial<AuthOptions>
       ) => {
-        const user = globalApi.createUser(email, password, options)
+        globalApi.createUser(email, password, options)
         const authData = api.signInWithPassword(email, password, options)
         return authData
       },
       signInWithPassword: (
         email: string,
         password: string,
-        options?: AuthOptions
+        options?: Partial<AuthOptions>
       ) => {
         const authData = globalApi
           .pb()
@@ -127,10 +127,10 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
         api.signInWithToken(authData.token)
         return authData
       },
-      signInAnonymously: (options?: AuthOptions) => {
+      signInAnonymously: (options?: Partial<AuthOptions>) => {
         const { user, email, password } = globalApi.createAnonymousUser()
 
-        const authData = api.signInWithPassword(email, password)
+        const authData = api.signInWithPassword(email, password, options)
         return authData
       },
       signOut: () => {

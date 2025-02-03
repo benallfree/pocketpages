@@ -49,8 +49,12 @@ export type PagesGlobalContext = {
   env: (key: string) => string
   findRecordByFilter: typeof findRecordByFilter
   findRecordsByFilter: typeof findRecordsByFilter
-  createUser: (email: string, password: string, options?: AuthOptions) => User
-  createAnonymousUser: (options?: AuthOptions) => {
+  createUser: (
+    email: string,
+    password: string,
+    options?: Partial<CreateUserOptions>
+  ) => User
+  createAnonymousUser: (options?: Partial<AuthOptions>) => {
     user: User
     email: string
     password: string
@@ -85,12 +89,14 @@ export type PagesRequestContext<TData = any> = {
   signInWithPassword: (
     email: string,
     password: string,
-    options?: AuthOptions
+    options?: Partial<AuthOptions>
   ) => AuthData
   registerWithPassword: (
     email: string,
     password: string,
-    options?: AuthOptions
+    options?: Partial<CreateUserOptions>
+  ) => AuthData
+  signInAnonymously: (options?: Partial<AuthOptions>) => AuthData
   ) => AuthData
   signInAnonymously: (options?: AuthOptions) => AuthData
   signOut: () => void

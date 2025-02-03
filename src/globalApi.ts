@@ -15,7 +15,11 @@ export const globalApi: PagesGlobalContext = {
   env: (key: string) => process.env[key] ?? '',
   findRecordByFilter,
   findRecordsByFilter,
-  createUser: (email: string, password: string, options?: AuthOptions) => {
+  createUser: (
+    email: string,
+    password: string,
+    options?: Partial<CreateUserOptions>
+  ) => {
     if (!email.trim()) {
       throw new Error('Email is required')
     }
@@ -30,7 +34,7 @@ export const globalApi: PagesGlobalContext = {
     })
     return user
   },
-  createAnonymousUser: (options?: AuthOptions) => {
+  createAnonymousUser: (options?: Partial<AuthOptions>) => {
     const pb = globalApi.pb()
     const email = `anonymous-${$security.randomStringWithAlphabet(
       10,
