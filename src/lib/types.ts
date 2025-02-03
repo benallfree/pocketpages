@@ -1,5 +1,5 @@
 import { forEach, keys, merge, shuffle, values } from '@s-libs/micro-dash'
-import PocketBase from 'pocketbase-js-sdk-jsvm'
+import PocketBase, { OTPResponse } from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as parse } from 'url-parse'
@@ -76,6 +76,7 @@ export type PagesGlobalContext = {
   }
   requestVerification: (email: string, options?: Partial<AuthOptions>) => void
   confirmVerification: (token: string, options?: Partial<AuthOptions>) => void
+  requestOTP: (email: string, options?: Partial<AuthOptions>) => OTPResponse
   pb: () => PocketBase
 } & typeof log
 
@@ -114,8 +115,11 @@ export type PagesRequestContext<TData = any> = {
     options?: Partial<CreateUserOptions>
   ) => AuthData
   signInAnonymously: (options?: Partial<AuthOptions>) => AuthData
+  signInWithOTP: (
+    otpId: string,
+    password: string,
+    options?: Partial<AuthOptions>
   ) => AuthData
-  signInAnonymously: (options?: AuthOptions) => AuthData
   signOut: () => void
   signInWithToken: (token: string) => void
 } & PagesGlobalContext

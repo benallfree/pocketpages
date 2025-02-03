@@ -87,6 +87,16 @@ export const globalApi: PagesGlobalContext = {
     const pb = globalApi.pb()
     pb.collection(options?.collection ?? 'users').confirmVerification(token)
   },
+  requestOTP: (email: string, options?: Partial<AuthOptions>) => {
+    const pb = globalApi.pb()
+    try {
+      const { user, password } = globalApi.createPaswordlessUser(email, options)
+    } catch (e) {
+      // User likely already exists
+    }
+    const res = pb.collection(options?.collection ?? 'users').requestOTP(email)
+    return res
+  },
 
   ...log,
 }

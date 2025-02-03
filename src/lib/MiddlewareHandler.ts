@@ -133,6 +133,19 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
         const authData = api.signInWithPassword(email, password, options)
         return authData
       },
+      signInWithOTP: (
+        otpId: string,
+        password: string,
+        options?: Partial<AuthOptions>
+      ) => {
+        const pb = globalApi.pb()
+        const authData = pb
+          .collection(options?.collection ?? 'users')
+          .authWithOTP(otpId, password.toString())
+        api.signInWithToken(authData.token)
+        // TODO set user to verfied
+        return authData as AuthData
+      },
       signOut: () => {
         response.cookie(`pb_auth`, '', { path: `/` })
       },

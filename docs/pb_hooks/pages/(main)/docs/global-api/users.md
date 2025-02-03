@@ -12,6 +12,7 @@ PocketPages provides two helper functions for creating users:
 - `createPasswordlessUser()` - Create a passwordless user account
 - `requestVerification()` - Request email verification for a user
 - `confirmVerification()` - Confirm email verification for a user
+- `requestOTP()` - Request a one-time password for a user
 
 ## createUser()
 
@@ -158,6 +159,30 @@ confirmVerification('VERIFICATION_TOKEN', {
 ### Returns
 
 Void - verifies the user's email if token is valid
+
+## requestOTP()
+
+Requests a one-time password for the specified email address. If the user doesn't exist, creates a passwordless user first.
+
+```javascript
+// Request OTP for user in default 'users' collection
+requestOTP('user@example.com')
+
+// Request OTP for user in custom collection
+requestOTP('user@example.com', {
+  collection: 'customers',
+})
+```
+
+### Parameters
+
+- `email` (string): User's email address
+- `options` (optional): Authentication options
+  - `collection` (string): Collection name for the user (defaults to 'users')
+
+### Returns
+
+Returns the OTP request response from PocketBase.
 
 ## Template Usage
 

@@ -76,6 +76,7 @@
 - [`response`](/docs/context-api/response)
 - [`signInWithPassword`](/docs/context-api/sign-in-with-password)
 - [`signInWithToken`](/docs/context-api/sign-in-with-token)
+- [`signInWithOTP`](/docs/context-api/sign-in-with-otp)
 - [`signInAnonymously`](/docs/context-api/sign-in-anonymously)
 - [`signOut`](/docs/context-api/sign-out)
 - [`registerWithPassword`](/docs/context-api/register-with-password)
