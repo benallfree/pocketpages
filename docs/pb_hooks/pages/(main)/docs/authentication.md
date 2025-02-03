@@ -36,18 +36,18 @@ fetch('/api/protected', {
 
 ## Cookie-Based Authentication
 
-PocketPages also supports authentication via the `pb_auth` cookie:
+PocketPages manages authentication via the `pb_auth` cookie through several built-in methods:
 
 ```javascript
-// Example setting auth cookie
-document.cookie = 'pb_auth=eyJhbGciOiJIUzI1...; path=/;'
+// The context API provides methods to manage authentication
+context.signInWithPassword(email, password)
+context.signInWithToken(token)
+context.signInWithOTP(otpId, password)
+context.signInAnonymously()
+context.signOut()
 ```
 
-**Important:** PocketPages only reads the `pb_auth` cookie - it does not automatically set or manage this cookie. Your application code is responsible for:
-
-- Setting the cookie after successful authentication
-- Removing the cookie during logout
-- Managing cookie expiration
+Each of these methods (except `signOut`) will automatically set the `pb_auth` cookie upon successful authentication. The `signOut` method will clear the cookie.
 
 ## Working with Auth Records
 
@@ -81,7 +81,7 @@ Common `core.Record` methods for auth:
 
 ## Example Login Flow
 
-Here's a complete example of a login form that handles both cookie and header-based auth:
+Here's a complete example of a login form using PocketPages' authentication methods:
 
 ```ejs
 <form id="loginForm" onsubmit="handleLogin(event)">
@@ -106,16 +106,24 @@ async function handleLogin(e) {
   })
 
   if (response.ok) {
-    const { token } = await response.json()
-
-    // Option 1: Set as cookie
-    document.cookie = `pb_auth=${token}; path=/`
-
-    // Option 2: Store in memory for header usage
-    localStorage.setItem('auth_token', token)
-
     window.location.href = '/dashboard'
   }
 }
 </script>
 ```
+
+Note that you don't need to manually manage the `pb_auth` cookie - PocketPages will handle this automatically when using its authentication methods.
+
+## Client-Side Usage
+
+If you're using the PocketBase JavaScript SDK in your client-side code, you'll need to explicitly load the auth state from the cookie that PocketPages manages:
+
+```javascript
+// Initialize PocketBase client
+const pb = new PocketBase('http://127.0.0.1:8090')
+
+// Load auth state from pb_auth cookie
+pb.authStore.loadFromCookie('pb_auth')
+```
+
+This ensures the SDK's auth store stays in sync with the server-side authentication state managed by PocketPages.

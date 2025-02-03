@@ -12,6 +12,7 @@
 - [Accessing Parameters](/docs/parameters)
 - [Markdown](/docs/markdown)
 - [Middleware](/docs/middleware)
+- [Authentication](/docs/authentication)
 
 # Runtime Configuration
 
@@ -23,7 +24,6 @@
 - [Loading Data](/docs/loading-data)
 - [JSON](/docs/json)
 - [Managing Secrets](/docs/secrets)
-- [Authentication](/docs/authentication)
 
 # Templates & Layouts
 

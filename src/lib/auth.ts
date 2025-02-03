@@ -1,3 +1,4 @@
+import { globalApi } from 'src/globalApi'
 import { PagesRequest } from './pages'
 
 export const setAuthFromHeaderOrCookie = (request: PagesRequest) => {
@@ -11,6 +12,29 @@ export const setAuthFromHeaderOrCookie = (request: PagesRequest) => {
   if (token) {
     // Remove 'Bearer ' prefix if present
     const cleanToken = token.replace(/^Bearer\s+/i, '')
+
+    let data: { [key: string]: any } = {}
+    try {
+      data = JSON.parse(cleanToken)
+      // normalize
+      if (
+        typeof data === null ||
+        typeof data !== 'object' ||
+        Array.isArray(data)
+      ) {
+        data = {}
+      }
+    } catch (_) {}
+
+    const pb = globalApi.pb()
+    pb.authStore.save(data.token || '', data.record || data.model || null)
+    try {
+      // get an up-to-date auth store state by veryfing and refreshing the loaded auth model (if any)
+      pb.authStore.isValid && pb.collection('users').authRefresh()
+    } catch (_) {
+      // clear the auth store on failed refresh
+      pb.authStore.clear()
+    }
 
     try {
       request.auth = $app.findAuthRecordByToken(cleanToken, 'auth')
