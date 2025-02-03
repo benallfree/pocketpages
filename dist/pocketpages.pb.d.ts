@@ -1,5 +1,5 @@
 import { forEach, keys, values, merge, shuffle } from '@s-libs/micro-dash';
-import PocketBase from 'pocketbase-js-sdk-jsvm';
+import PocketBase, { OTPResponse } from 'pocketbase-js-sdk-jsvm';
 import * as log from 'pocketbase-log';
 export { log };
 import { stringify } from 'pocketbase-stringify';
@@ -85,7 +85,11 @@ type PagesParams<T = string> = Record<string, T | null | Array<T | null>>;
 type AuthOptions = {
     collection: string;
 };
+type CreateUserOptions = {
+    sendVerificationEmail: boolean;
+} & AuthOptions;
 type PagesGlobalContext = {
+    url: (path: string) => ReturnType<typeof URLParse<Record<string, string | undefined>>>;
     stringify: typeof stringify;
     forEach: typeof forEach;
     keys: typeof keys;
@@ -95,16 +99,27 @@ type PagesGlobalContext = {
     env: (key: string) => string;
     findRecordByFilter: typeof findRecordByFilter;
     findRecordsByFilter: typeof findRecordsByFilter;
-    createUser: (email: string, password: string, options?: AuthOptions) => User;
-    createAnonymousUser: (options?: AuthOptions) => {
+    createUser: (email: string, password: string, options?: Partial<CreateUserOptions>) => User;
+    createAnonymousUser: (options?: Partial<AuthOptions>) => {
         user: User;
         email: string;
         password: string;
     };
+    createPaswordlessUser: (email: string, options?: Partial<AuthOptions>) => {
+        user: User;
+        password: string;
+    };
+    requestVerification: (email: string, options?: Partial<AuthOptions>) => void;
+    confirmVerification: (token: string, options?: Partial<AuthOptions>) => void;
+    requestOTP: (email: string, options?: Partial<AuthOptions>) => OTPResponse;
     pb: () => PocketBase;
 } & typeof log;
 type ResolveOptions = {
     mode: 'raw' | 'require' | 'script' | 'style';
+};
+type RedirectOptions = {
+    status: number;
+    message: string;
 };
 type PagesRequestContext<TData = any> = {
     asset: (path: string) => string;
@@ -115,15 +130,16 @@ type PagesRequestContext<TData = any> = {
     body: () => Record<string, any> | string;
     meta: (key: string, value?: string) => string | undefined;
     params: PagesParams;
-    redirect: (path: string, status?: number) => void;
+    redirect: (path: string, options?: Partial<RedirectOptions>) => void;
     request: PagesRequest;
     resolve: (path: string, options?: Partial<ResolveOptions>) => any;
     response: PagesResponse;
     slot: string;
     slots: Record<string, string>;
-    signInWithPassword: (email: string, password: string, options?: AuthOptions) => AuthData;
-    registerWithPassword: (email: string, password: string, options?: AuthOptions) => AuthData;
-    signInAnonymously: (options?: AuthOptions) => AuthData;
+    signInWithPassword: (email: string, password: string, options?: Partial<AuthOptions>) => AuthData;
+    registerWithPassword: (email: string, password: string, options?: Partial<CreateUserOptions>) => AuthData;
+    signInAnonymously: (options?: Partial<AuthOptions>) => AuthData;
+    signInWithOTP: (otpId: string, password: string, options?: Partial<AuthOptions>) => AuthData;
     signOut: () => void;
     signInWithToken: (token: string) => void;
 } & PagesGlobalContext;
@@ -131,6 +147,7 @@ type PagesConfig = {
     preprocessorExts: string[];
     debug: boolean;
     host: string;
+    boot: (globalApi: PagesGlobalContext) => void;
 };
 type Cache = {
     routes: Route[];
@@ -143,4 +160,4 @@ declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
-export { AfterBootstrapHandler, type AuthData, type AuthOptions, type Cache, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
+export { AfterBootstrapHandler, type AuthData, type AuthOptions, type Cache, type CreateUserOptions, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type RedirectOptions, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
