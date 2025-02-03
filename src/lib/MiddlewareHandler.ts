@@ -8,7 +8,13 @@ import { echo, mkMeta, mkResolve, pagesRoot } from './helpers'
 import { marked } from './marked'
 import { PagesMiddlewareFunc } from './pages'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
-import { AuthData, AuthOptions, Cache, PagesRequestContext } from './types'
+import {
+  AuthData,
+  AuthOptions,
+  Cache,
+  PagesRequestContext,
+  RedirectOptions,
+} from './types'
 
 export const MiddlewareHandler: PagesMiddlewareFunc = (
   request,
@@ -64,7 +70,16 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
       auth: request.auth,
       request,
       response,
-      redirect: response.redirect,
+      redirect: (path, _options) => {
+        const options: RedirectOptions = {
+          status: 302,
+          message: '',
+          ..._options,
+        }
+        const parsed = globalApi.url(path)
+        parsed.query.__flash = options.message
+        response.redirect(parsed.toString(), options.status)
+      },
       slot: '',
       slots: {},
       asset: (path) => {

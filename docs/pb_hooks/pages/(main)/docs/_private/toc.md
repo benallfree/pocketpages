@@ -65,7 +65,7 @@
 - [`formData`](/docs/context-api/form-data)
 - [`meta`](/docs/context-api/meta)
 - [`params`](/docs/context-api/params)
-- [`redirect`](/docs/context-api/redirect)
+- [`redirect`/flash](/docs/context-api/redirect)
 - [`request`](/docs/context-api/request)
 - [`resolve`](/docs/context-api/resolve)
 - [`response`](/docs/context-api/response)

@@ -62,6 +62,11 @@ export type ResolveOptions = {
   mode: 'raw' | 'require' | 'script' | 'style'
 }
 
+export type RedirectOptions = {
+  status: number
+  message: string
+}
+
 export type PagesRequestContext<TData = any> = {
   asset: (path: string) => string
   auth?: core.Record
@@ -71,7 +76,7 @@ export type PagesRequestContext<TData = any> = {
   body: () => Record<string, any> | string
   meta: (key: string, value?: string) => string | undefined
   params: PagesParams
-  redirect: (path: string, status?: number) => void
+  redirect: (path: string, options?: Partial<RedirectOptions>) => void
   request: PagesRequest
   resolve: (path: string, options?: Partial<ResolveOptions>) => any
   response: PagesResponse
