@@ -3,6 +3,13 @@ import PocketBase from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { findRecordByFilter, findRecordsByFilter } from 'src/lib/db'
+import {
+  AuthOptions,
+  Cache,
+  CreateUserOptions,
+  PagesGlobalContext,
+  User,
+} from 'src/lib/types'
 import { default as parse } from 'url-parse'
 
 export const globalApi: PagesGlobalContext = {
@@ -33,25 +40,33 @@ export const globalApi: PagesGlobalContext = {
       password,
       passwordConfirm: password,
     })
+    if (
+      options?.sendVerificationEmail === undefined ||
+      options.sendVerificationEmail
+    ) {
+      globalApi.requestVerification(email, options)
+    }
     return user
   },
   createAnonymousUser: (options?: Partial<AuthOptions>) => {
-    const pb = globalApi.pb()
     const email = `anonymous-${$security.randomStringWithAlphabet(
       10,
       '123456789'
     )}@example.com`
-    return { email, ...globalApi.createPaswordlessUser(email, options) }
-  },
-  createPaswordlessUser: (email: string, options?: Partial<AuthOptions>) => {
-    const pb = globalApi.pb()
-    const password = $security.randomStringWithAlphabet(40, '123456789')
-    const user = pb.collection(options?.collection ?? 'users').create<User>({
+    return {
       email,
-      password,
-      passwordConfirm: password,
-    })
-    return { user, password }
+      ...globalApi.createPaswordlessUser(email, {
+        ...options,
+        sendVerificationEmail: false,
+      }),
+    }
+  },
+  createPaswordlessUser: (
+    email: string,
+    options?: Partial<CreateUserOptions>
+  ) => {
+    const password = $security.randomStringWithAlphabet(40, '123456789')
+    return { password, user: globalApi.createUser(email, password, options) }
   },
   requestVerification: (email: string, options?: Partial<AuthOptions>) => {
     const pb = globalApi.pb()

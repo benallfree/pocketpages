@@ -25,14 +25,20 @@ const user = createUser('user@example.com', 'password123')
 const user = createUser('user@example.com', 'password123', {
   collection: 'customers',
 })
+
+// Create user without sending verification email
+const user = createUser('user@example.com', 'password123', {
+  sendVerificationEmail: false,
+})
 ```
 
 ### Parameters
 
 - `email` (string): User's email address
 - `password` (string): User's password
-- `options` (optional): Authentication options
+- `options` (optional): User creation options
   - `collection` (string): Collection name for the user (defaults to 'users')
+  - `sendVerificationEmail` (boolean): Whether to send verification email (defaults to true)
 
 ### Returns
 
@@ -78,19 +84,25 @@ Creates the specified user with randomly generated password.
 
 ```javascript
 // Create passwordless user in default 'users' collection
-const { user, password } = createPasswordlessUser(`user@example.com`)
+const { user, password } = createPasswordlessUser('user@example.com')
 
 // Create passwordless user in custom collection
-const { user, password } = createPasswordlessUser(`user@example.com`, {
+const { user, password } = createPasswordlessUser('user@example.com', {
   collection: 'customers',
+})
+
+// Create passwordless user without sending verification email
+const { user, password } = createPasswordlessUser('user@example.com', {
+  sendVerificationEmail: false,
 })
 ```
 
 ### Parameters
 
 - `email` (string): User's email address
-- `options` (optional): Authentication options
+- `options` (optional): User creation options
   - `collection` (string): Collection name for the user (defaults to 'users')
+  - `sendVerificationEmail` (boolean): Whether to send verification email (defaults to true)
 
 ### Returns
 

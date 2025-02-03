@@ -40,6 +40,10 @@ export type AuthOptions = {
   collection: string
 }
 
+export type CreateUserOptions = {
+  sendVerificationEmail: boolean
+} & AuthOptions
+
 export type PagesGlobalContext = {
   url: (
     path: string
@@ -65,7 +69,7 @@ export type PagesGlobalContext = {
   }
   createPaswordlessUser: (
     email: string,
-    options?: Partial<AuthOptions>
+    options?: Partial<CreateUserOptions>
   ) => {
     user: User
     password: string
