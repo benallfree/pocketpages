@@ -7,6 +7,5 @@ This starter kit is based on the [MVP.css](https://andybrewer.github.io/mvp/) pr
 ```bash
 npx tiged benallfree/pocketpages/starters/mvp .
 cd mvp
-npm i
 pocketbase --dir=pb_data --dev serve
 ```
