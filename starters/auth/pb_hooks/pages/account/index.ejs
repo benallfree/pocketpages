@@ -1,5 +1,6 @@
 <h2>Account</h2>
 <p>Welcome, <%= auth.get('email') %></p>
+<p>Status: <%= auth.verified() ? 'verified' : 'unverified' %></p>
 <div>Account tools</div>
 <ul>
   <li><a href="/account/change-email">Change email address</a></li>

@@ -6,7 +6,7 @@
       password
     } = body()
     try {
-      const user = registerWithPassword(identity, password)
+      registerWithPassword(identity, password)
       redirect(`/`)
     } catch (e) {
       error = `Error registering user: ${e.message}`
@@ -15,7 +15,7 @@
 </script>
 <h2>Register</h2>
 <% if (error) { %>
-<div class="error"><%= error %></div>
+<div><mark><%= error %></mark></div>
 <% } %>
 <form method="post">
   <label>Username</label>

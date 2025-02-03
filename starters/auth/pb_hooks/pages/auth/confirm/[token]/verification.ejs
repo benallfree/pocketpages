@@ -1,0 +1,11 @@
+<script server>
+  const {
+    token
+  } = params
+
+  confirmVerification(token)
+  redirect('/', {
+    message: 'Your account has been verified.',
+  })
+</script>
+<mark>Your account has been verified.</mark>

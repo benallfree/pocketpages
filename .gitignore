@@ -1,7 +1,7 @@
 node_modules
 .DS_Store
 *.tgz
-pb_*
+pb_data
 !docs/pb_hooks
 .env
 docs/.cache

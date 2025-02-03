@@ -6,6 +6,7 @@
     "dev:pocketbase": "pocketbase serve --dir=pb_data --dev"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "pocketbase-jsvm": "^0.23.10002"
   }
 }

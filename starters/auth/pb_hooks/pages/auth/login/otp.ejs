@@ -1,0 +1,55 @@
+<script server>
+  let error = null
+  let otpId = request.body().otpId || null
+  const {
+    mode,
+    otpCode,
+    identity
+  } = {
+    mode: 'otp-request',
+    ...request.body()
+  }
+  if (request.method === 'POST') {
+    switch (mode || 'otp-request') {
+      case 'otp-request':
+        try {
+          const res = requestOTP(identity)
+          otpId = res.otpId
+        } catch (e) {
+          error = e.message
+        }
+        break
+
+      case 'otp-confirm':
+        try {
+          const res = signInWithOTP(otpId, otpCode)
+          redirect(`/`, {
+            message: 'Login successful'
+          })
+        } catch (e) {
+          error = e.message
+        }
+        break
+    }
+  }
+</script>
+
+<%=error%>
+<% if (error) { %>
+<mark><%= error %></mark>
+<% } %>
+
+<h1>We have sent you an OTP code</h1>
+<p>Please check your email for the OTP code and enter it below.</p>
+<form method="post">
+  <input type="hidden" name="mode" value="otp-confirm" />
+  <input type="hidden" name="otpId" value="<%= otpId %>" />
+  <input type="hidden" name="identity" value="<%= identity %>" />
+  <input type="text" name="otpCode" placeholder="OTP code" />
+  <button type="submit">Login</button>
+</form>
+<form method="post">
+  <input type="hidden" name="mode" value="otp-request" />
+  <input type="text" name="identity" placeholder="Email" value="<%= identity %>" />
+  Didn't receive an OTP code? <button type="submit">Resend OTP code</button>
+</form>

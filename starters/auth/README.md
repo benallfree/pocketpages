@@ -9,23 +9,38 @@ npx tiged benallfree/pocketpages/starters/auth .
 cd auth
 npm i
 pocketbase --dir=pb_data --dev serve
+bunx maildev
 ```
 
 ## Notes
+
+### Anonymous Login
+
+Anonymous login only works if Password login is enabled.
+
+### Password Login
+
+Password login is enabled by default in PocketBase.
+
+### OTP Login
+
+OTP login requires a verified email address.
 
 ### Using Password Reset
 
 Password Reset requires PocketBase's mail to be configured. The simplest localhost test is as follows:
 
 ```
-bunx maildev
+http://localhost:3000/reset-password
 ```
 
-#### Configure PocketBase Mail for Testing
+## App Configuration
+
+> This starter kit is already configured. In your own app, you'll need to update these settings
 
 **Step 1: Configure Mail Settings**
 
-In the PocketBase admin panel, navitate to `Settings > Mail Settings` and set the mail provider info to:
+In the PocketBase admin panel, navigate to `Settings > Mail Settings` and set the mail provider info to:
 
 Host: `localhost`
 Port: `1025`
@@ -39,7 +54,3 @@ In the PocketBase admin panel, navigate to `Collections > Users > Edit > Options
 1. Verification template: `{APP_URL}/auth/confirm/{TOKEN}/verification`
 2. Reset Password template: `{APP_URL}/auth/confirm/{TOKEN}/password-reset`
 3. Confirm email reset template: `{APP_URL}/auth/confirm/{TOKEN}/email-change`
-
-```
-http://localhost:3000/reset-password
-```

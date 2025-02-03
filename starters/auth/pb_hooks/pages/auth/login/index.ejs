@@ -1,5 +1,8 @@
 <script server>
   const methods = pb().collection('users').listAuthMethods();
+  dbg({
+    methods
+  })
 
   let error = null
 
@@ -12,19 +15,34 @@
     } = body()
 
     try {
-      if (mode === 'password') {
-        const user = signInWithPassword(identity, password)
-        dbg({
-          user
-        })
+      switch (mode) {
+        case 'password': {
+          const user = signInWithPassword(identity, password)
+          dbg({
+            user
+          })
+          redirect(`/`)
+          break
+        }
+        case 'anonymous': {
+          const user = signInAnonymously()
+          dbg({
+            user
+          })
+          redirect(`/`)
+          break
+        }
+        case 'oauth2': {
+          const user = signInWithOAuth2(identity, password)
+          dbg({
+            user
+          })
+          redirect(`/`)
+          break
+        }
+        default:
+          throw new Error(`Invalid mode: ${mode}`)
       }
-      if (mode === 'anonymous') {
-        const user = signInAnonymously()
-        dbg({
-          user
-        })
-      }
-      redirect(`/`)
     } catch (e) {
       console.error(`**error`, JSON.stringify(e, null, 2))
       error = e.message
@@ -36,27 +54,59 @@
 <mark><%= error %></mark>
 <% } %>
 
-<% if (methods.password.enabled) { %>
-<div>
-  <h3>Anonymous Login</h3>
-  <form method="post">
-    <input type="hidden" name="mode" value="anonymous" />
-    <button type="submit">Login</button>
-  </form>
-</div>
-<div>
-  <h3>Password Login</h3>
-  <form method="post">
-    <input type="hidden" name="mode" value="password" />
-    <label>Login</label>
-    <input name="identity" value="<%= data.identity %>" />
-    <label>Password</label>
-    <input name="password" type="password" />
-    <button type="submit">Login</button>
-  </form>
-</div>
-
+<hr />
+<h3>Anonymous Login</h3>
+<% if (!methods.password.enabled) { %>
+<mark>Anonymous login is disabled. See README.md for details.</mark>
 <% } %>
-<div>
+<form method="post">
+  <input type="hidden" name="mode" value="anonymous" />
+  <button type="submit">Login</button>
+</form>
+
+<hr />
+<h3>Password Login</h3>
+<% if (!methods.password.enabled) { %>
+<mark>Password login is disabled. See README.md for details.</mark>
+<% } %>
+<form method="post">
+  <input type="hidden" name="mode" value="password" />
+  <label>Email</label>
+  <input name="identity" value="<%= data.identity %>" />
+  <label>Password</label>
+  <input name="password" type="password" />
+  <button type="submit">Login</button>
   <a href="/auth/forgot">Forgot Password</a>
-</div>
+
+</form>
+
+
+<hr />
+<h3>OTP Login</h3>
+<% if (!methods.otp.enabled) { %>
+<mark>OTP login is disabled. See README.md for details.</mark>
+<% } %>
+<form method="post" action="/auth/login/otp">
+  <input type="hidden" name="mode" value="otp-request" />
+  <label>Email</label>
+  <input name="identity" value="<%= data.identity %>" />
+  <button type="submit">Send OTP Code</button>
+</form>
+
+<hr />
+<h3>OAuth2 Login</h3>
+<% if (!methods.oauth2.enabled) { %>
+<mark>OAuth2 login is disabled. See README.md for details.</mark>
+<% } %>
+<form method="post">
+  <input type="hidden" name="mode" value="oauth2" />
+  <label>Login</label>
+  <input name="identity" value="<%= data.identity %>" />
+  <button type="submit">Login</button>
+</form>
+
+<hr />
+<h3>MFA Login</h3>
+<% if (!methods.mfa.enabled) { %>
+<mark>MFA Login is disabled. See README.md for details.</mark>
+<% } %>
