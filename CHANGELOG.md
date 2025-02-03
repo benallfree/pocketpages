@@ -1,5 +1,20 @@
 # pocketpages
 
+## 0.12.4
+
+### Patch Changes
+
+- e130735: Feat: requestVerification and confirmVerification
+- e15e844: starter: added auth starter
+- 8f85d48: Fix: allow partial options in signin methods
+- 18402c1: Enh: redirect flash messages
+- 14af14d: Feat: signInWithOTP
+- 8cded65: Fix: added url() to global to match doccumentation
+- 22af846: Enh: added option to automatically send verification email when a new user is created
+- a5d9329: Feat: createPasswordlessUser
+- 8a00a77: Enh: PocketBase JS client now automatically pulls auth info from Authorization header or pb_auth cookie
+- 08be5d9: Feat: boot()
+
 ## 0.12.3
 
 ### Patch Changes
