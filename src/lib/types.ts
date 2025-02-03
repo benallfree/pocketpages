@@ -70,6 +70,8 @@ export type PagesGlobalContext = {
     user: User
     password: string
   }
+  requestVerification: (email: string, options?: Partial<AuthOptions>) => void
+  confirmVerification: (token: string, options?: Partial<AuthOptions>) => void
   pb: () => PocketBase
 } & typeof log
 

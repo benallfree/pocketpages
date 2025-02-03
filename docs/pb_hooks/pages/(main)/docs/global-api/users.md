@@ -10,6 +10,8 @@ PocketPages provides two helper functions for creating users:
 - `createUser()` - Create a regular user account
 - `createAnonymousUser()` - Create an anonymous user account
 - `createPasswordlessUser()` - Create a passwordless user account
+- `requestVerification()` - Request email verification for a user
+- `confirmVerification()` - Confirm email verification for a user
 
 ## createUser()
 
@@ -97,6 +99,54 @@ Returns an object containing:
 - `user`: The created user object
 - `password`: Generated password
 
+## requestVerification()
+
+Sends a verification email to the specified user's email address.
+
+```javascript
+// Request verification for user in default 'users' collection
+requestVerification('user@example.com')
+
+// Request verification for user in custom collection
+requestVerification('user@example.com', {
+  collection: 'customers',
+})
+```
+
+### Parameters
+
+- `email` (string): User's email address
+- `options` (optional): Authentication options
+  - `collection` (string): Collection name for the user (defaults to 'users')
+
+### Returns
+
+Void - sends verification email to the specified address
+
+## confirmVerification()
+
+Confirms a user's email verification using the provided token.
+
+```javascript
+// Confirm verification for user in default 'users' collection
+confirmVerification('VERIFICATION_TOKEN')
+
+// Confirm verification for user in custom collection
+confirmVerification('VERIFICATION_TOKEN', {
+  collection: 'customers',
+})
+```
+
+### Parameters
+
+- `token` (string): Verification token received via email
+- `options` (optional): Authentication options
+  - `collection` (string): Collection name for the user (defaults to 'users')
+
+### Returns
+
+Void - verifies the user's email if token is valid
+
 ## Template Usage
 
 ```ejs
@@ -117,6 +167,22 @@ Returns an object containing:
   // Create anonymous user
   const { user: anonUser } = createAnonymousUser()
   info('Created anonymous user:', anonUser.id)
+
+  // Request email verification
+  try {
+    requestVerification('user@example.com')
+    info('Verification email sent')
+  } catch (e) {
+    error('Failed to send verification:', e)
+  }
+
+  // Confirm verification
+  try {
+    confirmVerification(token)
+    info('Email verified successfully')
+  } catch (e) {
+    error('Failed to verify email:', e)
+  }
 %>
 ```
 

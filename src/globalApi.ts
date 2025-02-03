@@ -53,6 +53,9 @@ export const globalApi: PagesGlobalContext = {
     })
     return { user, password }
   },
+  requestVerification: (email: string, options?: Partial<AuthOptions>) => {
+    const pb = globalApi.pb()
+    pb.collection(options?.collection ?? 'users').requestVerification(email)
   },
   pb: (() => {
     // rebuild
@@ -65,6 +68,10 @@ export const globalApi: PagesGlobalContext = {
       return pb
     }
   })(),
+  confirmVerification: (token: string, options?: Partial<AuthOptions>) => {
+    const pb = globalApi.pb()
+    pb.collection(options?.collection ?? 'users').confirmVerification(token)
+  },
 
   ...log,
 }
