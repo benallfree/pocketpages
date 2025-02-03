@@ -2,6 +2,7 @@ import { forEach, keys, merge, shuffle, values } from '@s-libs/micro-dash'
 import PocketBase from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
+import { default as parse } from 'url-parse'
 import { Route } from './AfterBootstrapHandler'
 import { findRecordByFilter, findRecordsByFilter } from './db'
 import { PagesRequest, PagesResponse } from './pages'
@@ -40,6 +41,9 @@ export type AuthOptions = {
 }
 
 export type PagesGlobalContext = {
+  url: (
+    path: string
+  ) => ReturnType<typeof parse<Record<string, string | undefined>>>
   stringify: typeof stringify
   forEach: typeof forEach
   keys: typeof keys
