@@ -10,7 +10,7 @@
   <meta property="og:description" content="<%=meta('description') || 'htmx starter kit'%>" />
   <meta property="og:image" content="<%=meta('image') || '/android-chrome-512x512.png'%>" />
   <meta property="og:url" content="<%=meta('path') ? `${meta('path')}` : meta('url') || `${ctx.request.url}`%>" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mvp.css/1.16.0/mvp.min.css" integrity="sha512-jpAA/iIi8VCSS32SIiI0/PV7KULveoqtZirvKdjcbAbwRGuxPbM8UG9gHd3l8T6flbx6F6mdmWKmCVvYg51kKQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.3/htmx.min.js" integrity="sha512-dQu3OKLMpRu85mW24LA1CUZG67BgLPR8Px3mcxmpdyijgl1UpCM1RtJoQP6h8UkufSnaHVRTUx98EQT9fcKohw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <%- slots.head %>
 </head>

@@ -2,10 +2,6 @@
   "name": "htmx",
   "scripts": {
     "serve": "pocketbase serve --dir=pb_data",
-    "dev": "concurrently \"npm:dev:*\"",
-    "dev:pocketbase": "pocketbase serve --dir=pb_data --dev"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
+    "dev": "pocketbase serve --dir=pb_data --dev"
   }
 }
