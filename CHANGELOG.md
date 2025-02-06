@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.12.5
+
+### Patch Changes
+
+- fcb8ed6: Improved require() error messaging
+
 ## 0.12.4
 
 ### Patch Changes
