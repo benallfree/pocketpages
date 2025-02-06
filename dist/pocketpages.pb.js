@@ -5405,6 +5405,7 @@ __export(src_exports, {
   findRecordsByFilter: () => findRecordsByFilter,
   globalApi: () => globalApi,
   log: () => log3,
+  moduleExists: () => moduleExists,
   stringify: () => import_pocketbase_stringify5.stringify,
   v23MiddlewareWrapper: () => v23MiddlewareWrapper
 });
@@ -5422,21 +5423,17 @@ var v23Provider = () => ({
       e.next();
       if (!require.isOverridden) {
         const oldRequire = require;
+        const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
+          `${__hooks}/pocketpages.pb`
+        );
         require = (path3) => {
-          try {
-            if (path3 === "pocketpages") {
-              return require(`${__hooks}/pocketpages.pb`).globalApi;
-            }
-            return oldRequire(path3);
-          } catch (e2) {
-            const errorMsg = `${e2}`;
-            if (errorMsg.includes("Invalid module")) {
-              throw new Error(
-                `${path3} is not a valid module. Did you mean resolve()?`
-              );
-            }
-            throw e2;
+          if (path3 === "pocketpages") {
+            return globalApi2;
           }
+          if (!moduleExists2(path3)) {
+            throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
+          }
+          return oldRequire(path3);
         };
         require.isOverridden = true;
       }
@@ -5445,21 +5442,17 @@ var v23Provider = () => ({
     routerUse((e) => {
       if (!require.isOverridden) {
         const oldRequire = require;
+        const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
+          `${__hooks}/pocketpages.pb`
+        );
         require = (path3) => {
-          try {
-            if (path3 === "pocketpages") {
-              return require(`${__hooks}/pocketpages.pb`).globalApi;
-            }
-            return oldRequire(path3);
-          } catch (e2) {
-            const errorMsg = `${e2}`;
-            if (errorMsg.includes("Invalid module")) {
-              throw new Error(
-                `${path3} is not a valid module. Did you mean resolve()?`
-              );
-            }
-            throw e2;
+          if (path3 === "pocketpages") {
+            return globalApi2;
           }
+          if (!moduleExists2(path3)) {
+            throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
+          }
+          return oldRequire(path3);
         };
         require.isOverridden = true;
       }
@@ -7575,22 +7568,21 @@ var globalApi = {
     return user;
   },
   createAnonymousUser: (options2) => {
-    const pb = globalApi.pb();
     const email = `anonymous-${$security.randomStringWithAlphabet(
       10,
       "123456789"
     )}@example.com`;
-    return { email, ...globalApi.createPaswordlessUser(email, options2) };
+    return {
+      email,
+      ...globalApi.createPaswordlessUser(email, {
+        ...options2,
+        sendVerificationEmail: false
+      })
+    };
   },
   createPaswordlessUser: (email, options2) => {
-    const pb = globalApi.pb();
     const password = $security.randomStringWithAlphabet(40, "123456789");
-    const user = pb.collection(options2?.collection ?? "users").create({
-      email,
-      password,
-      passwordConfirm: password
-    });
-    return { user, password };
+    return { password, user: globalApi.createUser(email, password, options2) };
   },
   requestVerification: (email, options2) => {
     const pb = globalApi.pb();
@@ -7643,6 +7635,14 @@ var import_pocketbase_stringify3 = __toESM(require_dist());
 var pagesRoot = $filepath.join(__hooks, `pages`);
 var SAFE_HEADER = `if (typeof module === 'undefined') { module = { exports: {} } };`;
 var exts = ["", ".js", ".json"];
+var moduleExists = (path3) => {
+  for (let i = 0; i < exts.length; i++) {
+    if (import_pocketbase_node.fs.existsSync(path3 + exts[i])) {
+      return true;
+    }
+  }
+  return false;
+};
 var simulateRequire = (path3) => {
   for (let i = 0; i < exts.length; i++) {
     try {
@@ -7653,8 +7653,17 @@ var simulateRequire = (path3) => {
   }
   throw new Error(`No module '${path3}' found`);
 };
+var NotFoundError = class extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "NotFoundError";
+  }
+};
 var mkResolve = (rootPath) => (path3, options2) => {
   const _require = (path4) => {
+    if (!moduleExists(path4)) {
+      throw new NotFoundError(`No module '${path4}' found`);
+    }
     switch (options2?.mode || "require") {
       case "raw":
         return simulateRequire(path4);
@@ -7682,8 +7691,13 @@ ${simulateRequire(path4)}
   let currentPath = rootPath;
   while (currentPath.length >= pagesRoot.length) {
     try {
-      return _require($filepath.join(currentPath, "_private", path3));
+      const finalPath = $filepath.join(currentPath, "_private", path3);
+      return _require(finalPath);
     } catch (e) {
+      const errorMsg = `${e}`;
+      if (!(e instanceof NotFoundError)) {
+        throw e;
+      }
       if (currentPath === pagesRoot) {
         throw new Error(
           `No module '${path3}' found in _private directories from ${rootPath} up to ${pagesRoot}`
@@ -7692,9 +7706,7 @@ ${simulateRequire(path4)}
       currentPath = $filepath.dir(currentPath);
     }
   }
-  throw new Error(
-    `No module '${path3}' found in any parent _private directory`
-  );
+  throw new Error(`Unreachable code reached`);
 };
 var mkMeta = () => {
   const metaData = {};
@@ -10736,7 +10748,6 @@ var MiddlewareHandler = (request, response, next) => {
       },
       signInWithOTP: (otpId, password, options2) => {
         const pb = globalApi.pb();
-        dbg2({ otpId, password });
         const authData = pb.collection(options2?.collection ?? "users").authWithOTP(otpId, password.toString());
         api.signInWithToken(authData.token);
         return authData;
@@ -10931,6 +10942,7 @@ if (isBooting) {
   findRecordsByFilter,
   globalApi,
   log,
+  moduleExists,
   stringify,
   v23MiddlewareWrapper
 });

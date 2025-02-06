@@ -7,21 +7,20 @@ export const v23Provider = (): IPagesProvider => ({
       // Only override require once
       if (!(require as any).isOverridden) {
         const oldRequire = require
+        const { globalApi, moduleExists } = oldRequire(
+          `${__hooks}/pocketpages.pb`
+        )
         require = (path) => {
-          try {
-            if (path === 'pocketpages') {
-              return require(`${__hooks}/pocketpages.pb`).globalApi
-            }
-            return oldRequire(path)
-          } catch (e) {
-            const errorMsg = `${e}`
-            if (errorMsg.includes('Invalid module')) {
-              throw new Error(
-                `${path} is not a valid module. Did you mean resolve()?`
-              )
-            }
-            throw e
+          // console.log(`bootstrap require called with ${path}`)
+          if (path === 'pocketpages') {
+            return globalApi
           }
+          // console.log(`checking ${path}`)
+          if (!moduleExists(path)) {
+            // console.log(`not found`)
+            throw new Error(`Module ${path} not found. Did you mean resolve()?`)
+          }
+          return oldRequire(path)
         }
         // Set the flag on the new require function
         ;(require as any).isOverridden = true
@@ -33,25 +32,25 @@ export const v23Provider = (): IPagesProvider => ({
       // Only override require once
       if (!(require as any).isOverridden) {
         const oldRequire = require
+        const { globalApi, moduleExists } = oldRequire(
+          `${__hooks}/pocketpages.pb`
+        )
         require = (path) => {
-          try {
-            if (path === 'pocketpages') {
-              return require(`${__hooks}/pocketpages.pb`).globalApi
-            }
-            return oldRequire(path)
-          } catch (e) {
-            const errorMsg = `${e}`
-            if (errorMsg.includes('Invalid module')) {
-              throw new Error(
-                `${path} is not a valid module. Did you mean resolve()?`
-              )
-            }
-            throw e
+          // console.log(`router require called with ${path}`)
+          if (path === 'pocketpages') {
+            return globalApi
           }
+          // console.log(`checking ${path}`)
+          if (!moduleExists(path)) {
+            // console.log(`not found`)
+            throw new Error(`Module ${path} not found. Did you mean resolve()?`)
+          }
+          return oldRequire(path)
         }
         // Set the flag on the new require function
         ;(require as any).isOverridden = true
       }
+      // console.log(`calling v23MiddlewareWrapper with overridden require`)
       return require(`${__hooks}/pocketpages.pb`).v23MiddlewareWrapper(e)
     })
   },

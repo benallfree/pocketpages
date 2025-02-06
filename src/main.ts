@@ -7,5 +7,6 @@ export {
   findRecordsByFilter,
   type FilterOptions,
 } from './lib/db'
+export { moduleExists } from './lib/helpers'
 export { MiddlewareHandler } from './lib/MiddlewareHandler'
 export { v23MiddlewareWrapper } from './lib/pages/providers/v23Provider/wrapper'

@@ -7,6 +7,16 @@ export const pagesRoot = $filepath.join(__hooks, `pages`)
 
 const SAFE_HEADER = `if (typeof module === 'undefined') { module = { exports: {} } };`
 const exts = ['', '.js', '.json']
+
+export const moduleExists = (path: string) => {
+  for (let i = 0; i < exts.length; i++) {
+    if (fs.existsSync(path + exts[i])) {
+      return true
+    }
+  }
+  return false
+}
+
 const simulateRequire = (path: string) => {
   for (let i = 0; i < exts.length; i++) {
     try {
@@ -18,9 +28,19 @@ const simulateRequire = (path: string) => {
   throw new Error(`No module '${path}' found`)
 }
 
+class NotFoundError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'NotFoundError'
+  }
+}
+
 export const mkResolve =
   (rootPath: string) => (path: string, options?: Partial<ResolveOptions>) => {
     const _require = (path: string) => {
+      if (!moduleExists(path)) {
+        throw new NotFoundError(`No module '${path}' found`)
+      }
       switch (options?.mode || 'require') {
         case 'raw':
           return simulateRequire(path)
@@ -47,8 +67,16 @@ export const mkResolve =
     let currentPath = rootPath
     while (currentPath.length >= pagesRoot.length) {
       try {
-        return _require($filepath.join(currentPath, '_private', path))
+        const finalPath = $filepath.join(currentPath, '_private', path)
+        // console.log(`finalPath`, finalPath)
+        return _require(finalPath)
       } catch (e) {
+        const errorMsg = `${e}`
+        // console.log(`errorMsg`, errorMsg)
+
+        if (!(e instanceof NotFoundError)) {
+          throw e
+        }
         // If we're at pagesRoot and still haven't found it, throw error
         if (currentPath === pagesRoot) {
           throw new Error(
@@ -60,10 +88,7 @@ export const mkResolve =
       }
     }
 
-    // This should never be reached due to the while condition, but TypeScript might want it
-    throw new Error(
-      `No module '${path}' found in any parent _private directory`
-    )
+    throw new Error(`Unreachable code reached`)
   }
 
 export const mkMeta = () => {

@@ -105,7 +105,7 @@ type PagesGlobalContext = {
         email: string;
         password: string;
     };
-    createPaswordlessUser: (email: string, options?: Partial<AuthOptions>) => {
+    createPaswordlessUser: (email: string, options?: Partial<CreateUserOptions>) => {
         user: User;
         password: string;
     };
@@ -156,8 +156,10 @@ type Cache = {
 
 declare const globalApi: PagesGlobalContext;
 
+declare const moduleExists: (path: string) => boolean;
+
 declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
-export { AfterBootstrapHandler, type AuthData, type AuthOptions, type Cache, type CreateUserOptions, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type RedirectOptions, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, v23MiddlewareWrapper };
+export { AfterBootstrapHandler, type AuthData, type AuthOptions, type Cache, type CreateUserOptions, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type RedirectOptions, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, moduleExists, v23MiddlewareWrapper };
