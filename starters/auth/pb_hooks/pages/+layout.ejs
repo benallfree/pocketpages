@@ -4,39 +4,27 @@
 <head>
   <meta charset="UTF-8" />
   <title>PocketPages MPA Auth</title>
-  <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico/css/pico.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    header {
-      padding-bottom: 0px
-    }
-
-    nav {
-      margin-bottom: 0px
-    }
-
-
-
-    main {
-      padding-top: 0px
-    }
-  </style>
 </head>
 
 <body>
-  <header>
+  <header class="container">
 
     <nav>
-      <a href="/"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="70" viewBox="0 0 48 48">
-          <path fill="#E8EAF6" d="M42 39L6 39 6 23 24 6 42 23z"></path>
-          <path fill="#C5CAE9" d="M39 21L34 16 34 9 39 9zM6 39H42V44H6z"></path>
-          <path fill="#B71C1C" d="M24 4.3L4 22.9 6 25.1 24 8.4 42 25.1 44 22.9z"></path>
-          <path fill="#D84315" d="M18 28H30V44H18z"></path>
-          <path fill="#01579B" d="M21 17H27V23H21z"></path>
-          <path fill="#FF8A65" d="M27.5,35.5c-0.3,0-0.5,0.2-0.5,0.5v2c0,0.3,0.2,0.5,0.5,0.5S28,38.3,28,38v-2C28,35.7,27.8,35.5,27.5,35.5z"></path>
-        </svg></a>
       <ul>
-        <li><a href="/">Home</a></li>
+        <li>
+          <a data-tooltip="home" href="/"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="70" viewBox="0 0 48 48">
+              <path fill="#E8EAF6" d="M42 39L6 39 6 23 24 6 42 23z"></path>
+              <path fill="#C5CAE9" d="M39 21L34 16 34 9 39 9zM6 39H42V44H6z"></path>
+              <path fill="#B71C1C" d="M24 4.3L4 22.9 6 25.1 24 8.4 42 25.1 44 22.9z"></path>
+              <path fill="#D84315" d="M18 28H30V44H18z"></path>
+              <path fill="#01579B" d="M21 17H27V23H21z"></path>
+              <path fill="#FF8A65" d="M27.5,35.5c-0.3,0-0.5,0.2-0.5,0.5v2c0,0.3,0.2,0.5,0.5,0.5S28,38.3,28,38v-2C28,35.7,27.8,35.5,27.5,35.5z"></path>
+            </svg></a>
+        </li>
+      </ul>
+      <ul>
         <% if (auth) { %>
         <li><a href="/account">Account</a></li>
         <li><a href="/auth/logout">Logout</a></li>
@@ -57,7 +45,8 @@
     </div>
     <% } %>
   </header>
-  <main>
+
+  <main class="container">
     <hr />
     <%- slot %>
   </main>
