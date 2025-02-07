@@ -10,7 +10,7 @@ The `pb()` function returns a configured PocketBase client instance that is read
 ## Basic Usage
 
 ```javascript
-const pb = globalApi.pb()
+const pb = require('pocketpages').pb()
 
 // Use any PocketBase SDK method
 const users = pb.collection('users').getFullList()
@@ -48,7 +48,7 @@ While using the raw JSVM API might be slightly more efficient, the PocketBase RE
 ## Example Usage
 
 ```javascript
-const pb = globalApi.pb()
+const pb = require('pocketpages').pb()
 
 // Create a record
 const post = pb.collection('posts').create({
@@ -72,7 +72,7 @@ pb.collection('posts').update(post.id, {
 
 ```ejs
 <%%
-  const pb = globalApi.pb()
+  const pb = require('pocketpages').pb()
 
   // Get recent posts
   const posts = pb.collection('posts').getFullList({
@@ -96,3 +96,38 @@ pb.collection('posts').update(post.id, {
 - Real-time features are not available in the JSVM version
 - AsyncAuthStore is not supported
 - The client is cached after first initialization
+
+## Realtime Events
+
+When using PocketBase in hooks (server-side), you cannot subscribe to realtime events since it runs in an isolated JSVM environment. However, you can send realtime events from hooks to connected clients using the subscriptions broker:
+
+```js
+// Send a custom event to specific subscribers
+function pushCustomEvent(channel, data, filterFn = (client) => true) {
+  const message = new SubscriptionMessage({
+    name: channel,
+    data: JSON.stringify(data)
+  });
+
+  // Get all connected clients
+  const clients = $app.subscriptionsBroker().clients();
+
+  // Filter clients that are subscribed to this channel
+  const filteredClients = Object.entries(clients).filter(
+    ([id, client]) => client.hasSubscription(channel) && filterFn(client)
+  );
+
+  // Send message to filtered clients
+  filteredClients.forEach(([id, client]) => {
+    client.send(message);
+  });
+}
+
+// Example usage:
+pushCustomEvent("rooms/123/delta", {
+  type: "update",
+  changes: { ... }
+});
+```
+
+Note that client-side usage of the PocketBase SDK (in browsers) maintains full realtime subscription capabilities as normal.

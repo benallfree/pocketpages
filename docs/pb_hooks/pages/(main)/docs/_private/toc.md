@@ -13,6 +13,7 @@
 - [Markdown](/docs/markdown)
 - [Middleware](/docs/middleware)
 - [Authentication](/docs/authentication)
+- [Realtime](/docs/realtime)
 
 # Runtime Configuration
 
