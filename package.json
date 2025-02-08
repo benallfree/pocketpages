@@ -60,6 +60,9 @@
     "unified": "^11.0.5",
     "url-parse": "^1.5.10"
   },
+  "dependencies": {
+    "pocketbase-jsvm": "^0.25.10001"
+  },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "es5",
