@@ -13,10 +13,10 @@ The context API provides two main methods for OAuth2 authentication:
 
 ```javascript
 // Start OAuth2 flow
-const authUrl = context.requestOAuth2Login('google')
+const authUrl = api.requestOAuth2Login('google')
 
 // Complete OAuth2 flow
-const authData = context.signInWithOAuth2(state, code)
+const authData = api.signInWithOAuth2(state, code)
 ```
 
 ## Implementation Example

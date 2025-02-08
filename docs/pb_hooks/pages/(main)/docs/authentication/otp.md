@@ -13,10 +13,10 @@ The context API provides two main methods for OTP authentication:
 
 ```javascript
 // Request an OTP code
-const otpData = context.requestOTP(email)
+const otpData = api.requestOTP(email)
 
 // Sign in with the OTP code
-const authData = context.signInWithOTP(otpData.otpId, code)
+const authData = api.signInWithOTP(otpData.otpId, code)
 ```
 
 ## Implementation Example

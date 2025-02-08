@@ -12,7 +12,7 @@ Token authentication allows you to manually set authentication state using JWT t
 The context API provides a simple method for token authentication:
 
 ```javascript
-context.signInWithToken(token)
+api.signInWithToken(token)
 ```
 
 ## Implementation Example

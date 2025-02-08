@@ -14,7 +14,7 @@ PocketPages provides several authentication methods to help you implement user a
 Traditional email/password authentication:
 
 ```javascript
-const authData = context.signInWithPassword(email, password)
+const authData = api.signInWithPassword(email, password)
 ```
 
 Best for:
@@ -30,7 +30,7 @@ Best for:
 Social login with providers like Google, GitHub, etc:
 
 ```javascript
-const authUrl = context.requestOAuth2Login('google')
+const authUrl = api.requestOAuth2Login('google')
 ```
 
 Best for:
@@ -46,7 +46,7 @@ Best for:
 Passwordless email authentication:
 
 ```javascript
-const otpData = context.requestOTP(email)
+const otpData = api.requestOTP(email)
 ```
 
 Best for:
@@ -62,7 +62,7 @@ Best for:
 Guest access with persistent identity:
 
 ```javascript
-const authData = context.signInAnonymously()
+const authData = api.signInAnonymously()
 ```
 
 Best for:
@@ -78,7 +78,7 @@ Best for:
 Manual token management:
 
 ```javascript
-context.signInWithToken(token)
+api.signInWithToken(token)
 ```
 
 Best for:
@@ -95,7 +95,7 @@ All authentication methods in PocketPages share these characteristics:
 
 1. **Cookie-Based**: Authentication state is maintained via the `pb_auth` cookie
 2. **Automatic Headers**: Auth tokens are automatically included in requests
-3. **Context Access**: Authentication state is available via `context.auth`
+3. **Context Access**: Authentication state is available via `api.auth`
 4. **Type Safety**: All methods return strongly typed `AuthData`
 
 ## Authentication Flow
@@ -124,7 +124,7 @@ All authentication methods in PocketPages share these characteristics:
 All authentication methods can use the common sign-out function:
 
 ```javascript
-context.signOut()
+api.signOut()
 ```
 
 ## Security Best Practices

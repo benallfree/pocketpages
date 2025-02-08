@@ -40,11 +40,11 @@ PocketPages manages authentication via the `pb_auth` cookie through several buil
 
 ```javascript
 // The context API provides methods to manage authentication
-context.signInWithPassword(email, password)
-context.signInWithToken(token)
-context.signInWithOTP(otpId, password)
-context.signInAnonymously()
-context.signOut()
+api.signInWithPassword(email, password)
+api.signInWithToken(token)
+api.signInWithOTP(otpId, password)
+api.signInAnonymously()
+api.signOut()
 ```
 
 Each of these methods (except `signOut`) will automatically set the `pb_auth` cookie upon successful authentication. The `signOut` method will clear the cookie.

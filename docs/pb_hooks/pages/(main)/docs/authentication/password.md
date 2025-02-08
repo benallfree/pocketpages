@@ -13,10 +13,10 @@ The context API provides two main methods for password authentication:
 
 ```javascript
 // Sign in an existing user
-const authData = context.signInWithPassword(email, password)
+const authData = api.signInWithPassword(email, password)
 
 // Register and sign in a new user
-const authData = context.registerWithPassword(email, password)
+const authData = api.registerWithPassword(email, password)
 ```
 
 Both methods return an `AuthData` object containing the authentication token and user record:

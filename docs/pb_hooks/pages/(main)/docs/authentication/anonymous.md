@@ -12,7 +12,7 @@ Anonymous authentication allows users to access your application without providi
 The context API provides a single method for anonymous authentication:
 
 ```javascript
-const authData = context.signInAnonymously()
+const authData = api.signInAnonymously()
 ```
 
 This returns an `AuthData` object containing the authentication token and user record:
