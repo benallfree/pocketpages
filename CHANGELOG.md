@@ -1,5 +1,19 @@
 # pocketpages
 
+## 0.13.0
+
+### Minor Changes
+
+- 8c42876: Feat: authentication
+
+### Patch Changes
+
+- 788a17c: Enh: cookie paths now default to '/'
+- 03e045d: Enh: request.cookies() now returns all cookies. Cookies automatically handle JSON in both directions
+- c3b732c: Fix: Multiple <script server> now supported
+- 1379e23: Enh: Added generic <T> to cookie()
+- 6b911ce: Feat: added pick() to global API
+
 ## 0.12.5
 
 ### Patch Changes
