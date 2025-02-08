@@ -6,7 +6,8 @@
     "name": "Ben Allfree",
     "github": "benallfree"
   },
-  "types": "dist/main.d.ts",
+  "main": "dist/pocketpages.pb.js",
+  "types": "dist/pocketpages.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
