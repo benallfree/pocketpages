@@ -11,7 +11,10 @@ export type PagesRequest = {
   formData: () => Record<string, any>
   body: () => Record<string, any> | string
   header: (name: string) => string
-  cookies: (name: string) => string | undefined
+  cookies: {
+    (): Record<string, string | undefined>
+    (name: string): string | undefined
+  }
 }
 
 export type PagesResponse = {

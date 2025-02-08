@@ -1,5 +1,6 @@
 import type { SerializeOptions } from 'cookie'
 import * as cookie from 'cookie'
+import { stringify } from 'pocketbase-stringify'
 import { setAuthFromHeaderOrCookie } from 'src/lib/auth'
 import { default as parse } from 'url-parse'
 import type {
@@ -38,12 +39,39 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
       return e.request?.header.get(name) || ''
     },
     cookies: (() => {
-      let parsed: Record<string, string | undefined>
-      return (name: string) => {
+      let parsed: Record<string, any>
+
+      const tryParseJson = (value: string | undefined) => {
+        if (!value) return value
+        try {
+          return JSON.parse(value)
+        } catch {
+          return value
+        }
+      }
+
+      const cookieFunc = (name?: string) => {
         if (!parsed) {
-          parsed = cookie.parse(request.header(`Cookie`))
+          const cookieHeader = request.header('Cookie')
+          const rawParsed = cookie.parse(cookieHeader || '')
+          // Parse all values once during initialization
+          parsed = Object.fromEntries(
+            Object.entries(rawParsed).map(([key, value]) => [
+              key,
+              tryParseJson(value),
+            ])
+          )
+        }
+
+        if (name === undefined) {
+          return parsed
         }
         return parsed[name]
+      }
+
+      return cookieFunc as {
+        (): Record<string, any>
+        (name: string): any
       }
     })(),
   }
@@ -80,7 +108,13 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
         path: '/',
         ...options,
       }
-      const serialized = cookie.serialize(name, value, _options)
+      const stringifiedValue = (() => {
+        if (typeof value !== 'string') {
+          return stringify(value)
+        }
+        return value
+      })()
+      const serialized = cookie.serialize(name, stringifiedValue, _options)
       response.header(`Set-Cookie`, serialized)
       return serialized
     },

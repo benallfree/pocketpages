@@ -42,8 +42,27 @@ description: Access HTTP request details including method, headers, and query pa
 
 ### `cookies()`
 
-- Type: `(name: string) => string | undefined`
-- Description: Function that returns the value of the specified cookie
+- Type:
+  ```typescript
+  {
+    (): Record<string, any>
+    (name: string): any
+  }
+  ```
+- Description: Function that returns cookie values, automatically parsing JSON when possible. When called with no arguments, returns all cookies as an object. When called with a name, returns that specific cookie's value.
+
+Example usage:
+
+```ejs
+<%%
+// Get a specific cookie (automatically JSON parsed if possible)
+const userPrefs = request.cookies('preferences') // Returns parsed JSON if valid
+const theme = request.cookies('theme') // Returns string if not JSON
+
+// Get all cookies (with JSON parsing)
+const allCookies = request.cookies()
+%>
+```
 
 ## Example Usage
 
@@ -111,8 +130,12 @@ if (request.method === 'post') {
 const userAgent = request.header('User-Agent')
 const contentType = request.header('Content-Type')
 
-// Access cookies
-const sessionId = request.cookies('sessionId')
-const theme = request.cookies('theme')
+// Working with cookies
+const sessionData = request.cookies('session') // Returns parsed JSON if valid
+const rawTheme = request.cookies('theme') // Returns string if not JSON
+
+// Get all cookies with automatic JSON parsing
+const allCookies = request.cookies()
+const { session, theme, preferences } = allCookies
 %>
 ```

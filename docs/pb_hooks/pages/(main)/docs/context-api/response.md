@@ -83,9 +83,9 @@ const contentType = response.header('Content-Type')
 %>
 ```
 
-### `cookie(name: string, value: string, options?: SerializeOptions)`
+### `cookie(name: string, value: any, options?: SerializeOptions)`
 
-Sets a cookie in the response. Returns the serialized cookie string.
+Sets a cookie in the response. Non-string values are automatically stringified as JSON. Returns the serialized cookie string.
 
 The `options` parameter supports the following properties:
 
@@ -101,20 +101,31 @@ The `options` parameter supports the following properties:
 
 ```ejs
 <%%
-// Set a simple cookie
-response.cookie('user_id', '123')
+// Set a simple string cookie
+response.cookie('theme', 'dark')
+
+// Set a cookie with an object (automatically JSON stringified)
+response.cookie('preferences', {
+    theme: 'dark',
+    fontSize: 14,
+    notifications: true
+})
 
 // Set a cookie with options
-response.cookie('session', 'abc123', {
+response.cookie('session', { userId: 123, role: 'admin' }, {
     httpOnly: true,
     secure: true,
     maxAge: 3600,
     path: '/',
-    sameSite: 'strict',
-    domain: '.example.com'
+    sameSite: 'strict'
 })
+
+// Arrays are also automatically stringified
+response.cookie('recentItems', [1, 2, 3, 4, 5])
 %>
 ```
+
+Note: When reading these cookies back using `request.cookies()`, the JSON values will be automatically parsed back into their original form.
 
 ## Example Usage
 
