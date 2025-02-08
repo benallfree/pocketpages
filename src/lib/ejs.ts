@@ -69,7 +69,6 @@ ejs.resolveInclude = function (
 
 const oldIncludeFile = ejs.includeFile
 ejs.includeFile = function (path: string, options: any) {
-  console.log(`***custom includeFile`, { path, options })
   const renderFunc = oldIncludeFile(path, options)
   return (data: any) => {
     const rendered = renderFunc(data)
