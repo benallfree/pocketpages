@@ -1,10 +1,11 @@
-import { forEach, keys, values, merge, shuffle } from '@s-libs/micro-dash';
+import { forEach, keys, values, merge, shuffle, pick } from '@s-libs/micro-dash';
 import PocketBase, { OTPResponse } from 'pocketbase-js-sdk-jsvm';
 import * as log from 'pocketbase-log';
 export { log };
 import { stringify } from 'pocketbase-stringify';
 export { stringify } from 'pocketbase-stringify';
 import URLParse from 'url-parse';
+import { SerializeOptions } from 'cookie';
 
 type PagesMethods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 type PagesRequest = {
@@ -14,7 +15,10 @@ type PagesRequest = {
     formData: () => Record<string, any>;
     body: () => Record<string, any> | string;
     header: (name: string) => string;
-    cookies: (name: string) => string | undefined;
+    cookies: {
+        (): Record<string, string | undefined>;
+        <T>(name: string): T | undefined;
+    };
 };
 type PagesResponse = {
     file: (path: string) => void;
@@ -23,7 +27,7 @@ type PagesResponse = {
     json: (status: number, data: any) => void;
     html: (status: number, data: string) => void;
     header: (name: string, value?: string) => void;
-    cookie: (name: string, value: string, options?: any) => void;
+    cookie: <T>(name: string, value: T, options?: Partial<SerializeOptions>) => void;
 };
 type PagesInitializerFunc = () => void;
 type PagesNextFunc = () => void;
@@ -85,6 +89,14 @@ type PagesParams<T = string> = Record<string, T | null | Array<T | null>>;
 type AuthOptions = {
     collection: string;
 };
+type OAuth2RequestOptions = {
+    cookieName: string;
+    redirectPath: string;
+    autoRedirect: boolean;
+} & AuthOptions;
+type OAuth2SignInOptions = {
+    cookieName: string;
+} & AuthOptions;
 type CreateUserOptions = {
     sendVerificationEmail: boolean;
 } & AuthOptions;
@@ -96,6 +108,7 @@ type PagesGlobalContext = {
     values: typeof values;
     merge: typeof merge;
     shuffle: typeof shuffle;
+    pick: typeof pick;
     env: (key: string) => string;
     findRecordByFilter: typeof findRecordByFilter;
     findRecordsByFilter: typeof findRecordsByFilter;
@@ -121,6 +134,13 @@ type RedirectOptions = {
     status: number;
     message: string;
 };
+type OAuth2ProviderInfo = {
+    name: string;
+    state: string;
+    codeChallenge: string;
+    codeVerifier: string;
+    redirectUrl: string;
+};
 type PagesRequestContext<TData = any> = {
     asset: (path: string) => string;
     auth?: core.Record;
@@ -140,6 +160,8 @@ type PagesRequestContext<TData = any> = {
     registerWithPassword: (email: string, password: string, options?: Partial<CreateUserOptions>) => AuthData;
     signInAnonymously: (options?: Partial<AuthOptions>) => AuthData;
     signInWithOTP: (otpId: string, password: string, options?: Partial<AuthOptions>) => AuthData;
+    requestOAuth2Login: (providerName: string, options?: Partial<OAuth2RequestOptions>) => string;
+    signInWithOAuth2: (state: string, code: string, options?: Partial<OAuth2SignInOptions>, storedProviderInfo?: OAuth2ProviderInfo) => AuthData;
     signOut: () => void;
     signInWithToken: (token: string) => void;
 } & PagesGlobalContext;
@@ -162,4 +184,4 @@ declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
-export { AfterBootstrapHandler, type AuthData, type AuthOptions, type Cache, type CreateUserOptions, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type RedirectOptions, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, moduleExists, v23MiddlewareWrapper };
+export { AfterBootstrapHandler, type AuthData, type AuthOptions, type Cache, type CreateUserOptions, type FilterOptions, MiddlewareHandler, type MiddlewareLoaderFunc, type OAuth2ProviderInfo, type OAuth2RequestOptions, type OAuth2SignInOptions, type PageDataLoaderFunc, type PagesConfig, type PagesGlobalContext, type PagesParams, type PagesRequestContext, type RedirectOptions, type ResolveOptions, type User, findRecordByFilter, findRecordsByFilter, globalApi, moduleExists, v23MiddlewareWrapper };

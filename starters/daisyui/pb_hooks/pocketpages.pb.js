@@ -66,7 +66,7 @@ var require_dist = __commonJS({
     var src_exports2 = {};
     __export2(src_exports2, {
       defaultReplacer: () => defaultReplacer,
-      stringify: () => stringify7
+      stringify: () => stringify8
     });
     module2.exports = __toCommonJS2(src_exports2);
     var defaultReplacer = (k, v) => {
@@ -81,7 +81,7 @@ var require_dist = __commonJS({
       }
       return v;
     };
-    var stringify7 = (obj, replacer = defaultReplacer, space = 0) => {
+    var stringify8 = (obj, replacer = defaultReplacer, space = 0) => {
       const seen = /* @__PURE__ */ new WeakSet();
       return JSON.stringify(
         obj,
@@ -131,7 +131,7 @@ var require_dist2 = __commonJS({
       warn: () => warn
     });
     module2.exports = __toCommonJS2(src_exports2);
-    var import_pocketbase_stringify6 = require_dist();
+    var import_pocketbase_stringify7 = require_dist();
     var replacer = (k, v) => {
       if (v instanceof Error) {
         return `${v}
@@ -157,7 +157,7 @@ ${v.stack}`;
           return o.toString();
         }
         if (typeof o === "object") {
-          return (0, import_pocketbase_stringify6.stringify)(o, replacer, 2);
+          return (0, import_pocketbase_stringify7.stringify)(o, replacer, 2);
         }
         return o;
       });
@@ -543,8 +543,8 @@ var require_url_parse = __commonJS({
       url.href = url.toString();
       return url;
     }
-    function toString2(stringify7) {
-      if (!stringify7 || "function" !== typeof stringify7) stringify7 = qs.stringify;
+    function toString2(stringify8) {
+      if (!stringify8 || "function" !== typeof stringify8) stringify8 = qs.stringify;
       var query, url = this, host = url.host, protocol = url.protocol;
       if (protocol && protocol.charAt(protocol.length - 1) !== ":") protocol += ":";
       var result = protocol + (url.protocol && url.slashes || isSpecial(url.protocol) ? "//" : "");
@@ -562,7 +562,7 @@ var require_url_parse = __commonJS({
         host += ":";
       }
       result += host + url.pathname;
-      query = "object" === typeof url.query ? stringify7(url.query) : url.query;
+      query = "object" === typeof url.query ? stringify8(url.query) : url.query;
       if (query) result += "?" !== query.charAt(0) ? "?" + query : query;
       if (url.hash) result += url.hash;
       return result;
@@ -5406,7 +5406,7 @@ __export(src_exports, {
   globalApi: () => globalApi,
   log: () => log3,
   moduleExists: () => moduleExists,
-  stringify: () => import_pocketbase_stringify5.stringify,
+  stringify: () => import_pocketbase_stringify6.stringify,
   v23MiddlewareWrapper: () => v23MiddlewareWrapper
 });
 module.exports = __toCommonJS(src_exports);
@@ -5470,7 +5470,7 @@ init_cjs_shims();
 // src/main.ts
 init_cjs_shims();
 var log3 = __toESM(require_dist2());
-var import_pocketbase_stringify5 = __toESM(require_dist());
+var import_pocketbase_stringify6 = __toESM(require_dist());
 
 // src/globalApi.ts
 init_cjs_shims();
@@ -7546,6 +7546,7 @@ var globalApi = {
   values,
   merge,
   shuffle,
+  pick,
   env: (key) => process.env[key] ?? "",
   findRecordByFilter,
   findRecordsByFilter,
@@ -9994,8 +9995,8 @@ import_pocketbase_ejs.default.cache = {
 };
 var oldCompile = import_pocketbase_ejs.default.compile;
 import_pocketbase_ejs.default.compile = function(template, options2) {
-  const newTemplate = template.replace(
-    /<script\s+server>([\s\S]*?)<\/script>/,
+  const newTemplate = template.replaceAll(
+    /<script\s+server>([\s\S]*?)<\/script>/g,
     "<% $1 %>"
   );
   return oldCompile(newTemplate, { ...options2 });
@@ -10022,7 +10023,6 @@ import_pocketbase_ejs.default.resolveInclude = function(includePath, templatePat
 };
 var oldIncludeFile = import_pocketbase_ejs.default.includeFile;
 import_pocketbase_ejs.default.includeFile = function(path3, options2) {
-  console.log(`***custom includeFile`, { path: path3, options: options2 });
   const renderFunc = oldIncludeFile(path3, options2);
   return (data) => {
     const rendered = renderFunc(data);
@@ -10752,13 +10752,59 @@ var MiddlewareHandler = (request, response, next) => {
         api.signInWithToken(authData.token);
         return authData;
       },
+      requestOAuth2Login: (providerName, options2) => {
+        const pb = globalApi.pb();
+        const methods = pb.collection(options2?.collection ?? "users").listAuthMethods();
+        const { providers } = methods.oauth2;
+        const provider = providers.find((p) => p.name === providerName);
+        if (!provider) {
+          throw new Error(`Provider ${providerName} not found`);
+        }
+        const redirectUrl = `${$app.settings().meta.appURL}${options2?.redirectPath ?? "/auth/oauth/confirm"}`;
+        const authUrl = provider.authURL + redirectUrl;
+        response.cookie(options2?.cookieName ?? "pp_oauth_state", {
+          ...globalApi.pick(
+            provider,
+            "name",
+            "state",
+            "codeChallenge",
+            "codeVerifier"
+          ),
+          redirectUrl
+        });
+        if (options2?.autoRedirect ?? true) {
+          response.redirect(authUrl);
+        }
+        return authUrl;
+      },
+      signInWithOAuth2: (state, code, options2, _storedProviderInfo) => {
+        const storedProvider = _storedProviderInfo ?? api.request.cookies(
+          options2?.cookieName ?? "pp_oauth_state"
+        );
+        if (!storedProvider) {
+          throw new Error("No stored provider info found");
+        }
+        if (storedProvider.state !== state) {
+          throw new Error(`State parameters don't match.`);
+        }
+        const authData = globalApi.pb().collection(options2?.collection ?? "users").authWithOAuth2Code(
+          storedProvider.name,
+          code,
+          storedProvider.codeVerifier,
+          storedProvider.redirectUrl,
+          // pass any optional user create data
+          {
+            emailVisibility: false
+          }
+        );
+        api.signInWithToken(authData.token);
+        return authData;
+      },
       signOut: () => {
-        response.cookie(`pb_auth`, "", { path: `/` });
+        response.cookie(`pb_auth`, "");
       },
       signInWithToken: (token2) => {
-        response.cookie(`pb_auth`, token2, {
-          path: "/"
-        });
+        response.cookie(`pb_auth`, token2);
       }
     };
     let data = {};
@@ -10825,6 +10871,7 @@ ${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pages
 // src/lib/pages/providers/v23Provider/wrapper.ts
 init_cjs_shims();
 var cookie = __toESM(require_dist5());
+var import_pocketbase_stringify5 = __toESM(require_dist());
 
 // src/lib/auth.ts
 init_cjs_shims();
@@ -10883,12 +10930,31 @@ var v23MiddlewareWrapper = (e) => {
     },
     cookies: /* @__PURE__ */ (() => {
       let parsed;
-      return (name) => {
+      const tryParseJson = (value) => {
+        if (!value) return value;
+        try {
+          return JSON.parse(value);
+        } catch {
+          return value;
+        }
+      };
+      const cookieFunc = (name) => {
         if (!parsed) {
-          parsed = cookie.parse(request.header(`Cookie`));
+          const cookieHeader = request.header("Cookie");
+          const rawParsed = cookie.parse(cookieHeader || "");
+          parsed = Object.fromEntries(
+            Object.entries(rawParsed).map(([key, value]) => [
+              key,
+              tryParseJson(value)
+            ])
+          );
+        }
+        if (name === void 0) {
+          return parsed;
         }
         return parsed[name];
       };
+      return cookieFunc;
     })()
   };
   const response = {
@@ -10914,8 +10980,18 @@ var v23MiddlewareWrapper = (e) => {
       e.response.header().set(name, value);
       return value;
     },
-    cookie: (name, value, options2) => {
-      const serialized = cookie.serialize(name, value, options2);
+    cookie: (name, value, options2 = {}) => {
+      const _options = {
+        path: "/",
+        ...options2
+      };
+      const stringifiedValue = (() => {
+        if (typeof value !== "string") {
+          return (0, import_pocketbase_stringify5.stringify)(value);
+        }
+        return value;
+      })();
+      const serialized = cookie.serialize(name, stringifiedValue, _options);
       response.header(`Set-Cookie`, serialized);
       return serialized;
     }

@@ -10023,7 +10023,6 @@ import_pocketbase_ejs.default.resolveInclude = function(includePath, templatePat
 };
 var oldIncludeFile = import_pocketbase_ejs.default.includeFile;
 import_pocketbase_ejs.default.includeFile = function(path3, options2) {
-  console.log(`***custom includeFile`, { path: path3, options: options2 });
   const renderFunc = oldIncludeFile(path3, options2);
   return (data) => {
     const rendered = renderFunc(data);
@@ -10750,6 +10749,54 @@ var MiddlewareHandler = (request, response, next) => {
       signInWithOTP: (otpId, password, options2) => {
         const pb = globalApi.pb();
         const authData = pb.collection(options2?.collection ?? "users").authWithOTP(otpId, password.toString());
+        api.signInWithToken(authData.token);
+        return authData;
+      },
+      requestOAuth2Login: (providerName, options2) => {
+        const pb = globalApi.pb();
+        const methods = pb.collection(options2?.collection ?? "users").listAuthMethods();
+        const { providers } = methods.oauth2;
+        const provider = providers.find((p) => p.name === providerName);
+        if (!provider) {
+          throw new Error(`Provider ${providerName} not found`);
+        }
+        const redirectUrl = `${$app.settings().meta.appURL}${options2?.redirectPath ?? "/auth/oauth/confirm"}`;
+        const authUrl = provider.authURL + redirectUrl;
+        response.cookie(options2?.cookieName ?? "pp_oauth_state", {
+          ...globalApi.pick(
+            provider,
+            "name",
+            "state",
+            "codeChallenge",
+            "codeVerifier"
+          ),
+          redirectUrl
+        });
+        if (options2?.autoRedirect ?? true) {
+          response.redirect(authUrl);
+        }
+        return authUrl;
+      },
+      signInWithOAuth2: (state, code, options2, _storedProviderInfo) => {
+        const storedProvider = _storedProviderInfo ?? api.request.cookies(
+          options2?.cookieName ?? "pp_oauth_state"
+        );
+        if (!storedProvider) {
+          throw new Error("No stored provider info found");
+        }
+        if (storedProvider.state !== state) {
+          throw new Error(`State parameters don't match.`);
+        }
+        const authData = globalApi.pb().collection(options2?.collection ?? "users").authWithOAuth2Code(
+          storedProvider.name,
+          code,
+          storedProvider.codeVerifier,
+          storedProvider.redirectUrl,
+          // pass any optional user create data
+          {
+            emailVisibility: false
+          }
+        );
         api.signInWithToken(authData.token);
         return authData;
       },
