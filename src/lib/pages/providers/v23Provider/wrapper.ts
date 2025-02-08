@@ -1,7 +1,6 @@
 import type { SerializeOptions } from 'cookie'
 import * as cookie from 'cookie'
 import { stringify } from 'pocketbase-stringify'
-import { setAuthFromHeaderOrCookie } from 'src/lib/auth'
 import { default as parse } from 'url-parse'
 import type {
   PagesMethods,
@@ -9,6 +8,7 @@ import type {
   PagesRequest,
   PagesResponse,
 } from '../..'
+import { setAuthFromHeaderOrCookie } from '../../../auth'
 import { dbg } from '../../../debug'
 
 export const v23MiddlewareWrapper = (e: core.RequestEvent) => {

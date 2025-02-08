@@ -2,15 +2,15 @@ import { forEach, keys, merge, pick, shuffle, values } from '@s-libs/micro-dash'
 import PocketBase from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
-import { findRecordByFilter, findRecordsByFilter } from 'src/lib/db'
+import { default as parse } from 'url-parse'
+import { findRecordByFilter, findRecordsByFilter } from './lib/db'
 import {
   AuthOptions,
   Cache,
   CreateUserOptions,
   PagesGlobalContext,
   User,
-} from 'src/lib/types'
-import { default as parse } from 'url-parse'
+} from './lib/types'
 
 export const globalApi: PagesGlobalContext = {
   url: (path: string) => parse(path, true),
