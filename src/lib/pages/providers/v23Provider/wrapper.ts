@@ -50,7 +50,7 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
         }
       }
 
-      const cookieFunc = (name?: string) => {
+      const cookieFunc = <T = Record<string, any>>(name?: string): T => {
         if (!parsed) {
           const cookieHeader = request.header('Cookie')
           const rawParsed = cookie.parse(cookieHeader || '')
@@ -64,14 +64,14 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
         }
 
         if (name === undefined) {
-          return parsed
+          return parsed as T
         }
-        return parsed[name]
+        return parsed[name] as T
       }
 
       return cookieFunc as {
-        (): Record<string, any>
-        (name: string): any
+        <T = Record<string, any>>(): T
+        <T>(name: string): T
       }
     })(),
   }
@@ -99,9 +99,9 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
       e.response.header().set(name, value)
       return value
     },
-    cookie: (
+    cookie: <T>(
       name: string,
-      value: string,
+      value: T,
       options: Partial<SerializeOptions> = {}
     ) => {
       const _options = {

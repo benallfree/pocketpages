@@ -13,7 +13,7 @@ export type PagesRequest = {
   header: (name: string) => string
   cookies: {
     (): Record<string, string | undefined>
-    (name: string): string | undefined
+    <T>(name: string): T | undefined
   }
 }
 
@@ -24,9 +24,9 @@ export type PagesResponse = {
   json: (status: number, data: any) => void
   html: (status: number, data: string) => void
   header: (name: string, value?: string) => void
-  cookie: (
+  cookie: <T>(
     name: string,
-    value: string,
+    value: T,
     options?: Partial<SerializeOptions>
   ) => void
 }

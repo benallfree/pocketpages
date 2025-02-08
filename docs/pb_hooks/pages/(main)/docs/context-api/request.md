@@ -40,27 +40,89 @@ description: Access HTTP request details including method, headers, and query pa
 - Type: `(name: string) => string`
 - Description: Function that returns the value of the specified request header
 
-### `cookies()`
+### `cookies`
 
 - Type:
   ```typescript
   {
-    (): Record<string, any>
-    (name: string): any
+    <T = Record<string, any>>(): T
+    <T>(name: string): T
   }
   ```
-- Description: Function that returns cookie values, automatically parsing JSON when possible. When called with no arguments, returns all cookies as an object. When called with a name, returns that specific cookie's value.
+- Description: Function that returns cookie values with type safety. When called with no arguments, returns all cookies as the specified type (defaults to `Record<string, any>`). When called with a name, returns that specific cookie's value with the specified type.
 
 Example usage:
 
 ```ejs
 <%%
-// Get a specific cookie (automatically JSON parsed if possible)
-const userPrefs = request.cookies('preferences') // Returns parsed JSON if valid
-const theme = request.cookies('theme') // Returns string if not JSON
+// Get a specific cookie with type
+interface UserPreferences {
+  theme: string
+  fontSize: number
+}
+const userPrefs = request.cookies<UserPreferences>('preferences')
+// TypeScript knows these properties exist
+const theme = userPrefs.theme
+const fontSize = userPrefs.fontSize
 
-// Get all cookies (with JSON parsing)
-const allCookies = request.cookies()
+// Get a simple string cookie
+const theme = request.cookies<string>('theme')
+
+// Get all cookies with type
+interface AllCookies {
+  theme: string
+  preferences: UserPreferences
+  session: { id: string }
+}
+const allCookies = request.cookies<AllCookies>()
+// TypeScript knows the shape of all cookies
+const sessionId = allCookies.session.id
+%>
+```
+
+### Type-Safe Cookie Examples
+
+```ejs
+<%%
+// Define your cookie types
+interface SessionData {
+  userId: number
+  role: string
+  lastAccess: string
+}
+
+interface CartData {
+  items: number[]
+  total: number
+}
+
+// Get typed cookies
+const session = request.cookies<SessionData>('session')
+// TypeScript knows these are the correct types
+const userId: number = session.userId
+const role: string = session.role
+
+const cart = request.cookies<CartData>('cart')
+// Array methods available because TypeScript knows items is number[]
+const itemCount = cart.items.length
+const total: number = cart.total
+
+// Arrays with explicit type
+const recentItems = request.cookies<number[]>('recentItems')
+// TypeScript knows this is a number array
+const lastItem = recentItems[recentItems.length - 1]
+
+// Get all cookies with a defined structure
+interface CookieStore {
+  session: SessionData
+  cart: CartData
+  recentItems: number[]
+  theme: string
+}
+const store = request.cookies<CookieStore>()
+// Full type safety on all cookie access
+const cartTotal = store.cart.total
+const currentTheme = store.theme
 %>
 ```
 
