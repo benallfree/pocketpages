@@ -12,8 +12,16 @@
 - [Accessing Parameters](/docs/parameters)
 - [Markdown](/docs/markdown)
 - [Middleware](/docs/middleware)
-- [Authentication](/docs/authentication)
 - [Realtime](/docs/realtime)
+
+# Authentication
+
+- [Overview](/docs/authentication/overview)
+- [Password Authentication](/docs/authentication/password)
+- [OAuth2 Authentication](/docs/authentication/oauth2)
+- [One-Time Password](/docs/authentication/otp)
+- [Anonymous Authentication](/docs/authentication/anonymous)
+- [Token Authentication](/docs/authentication/token)
 
 # Runtime Configuration
 

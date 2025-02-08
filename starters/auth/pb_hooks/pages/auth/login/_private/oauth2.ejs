@@ -1,0 +1,52 @@
+<script server>
+  let error = null
+  const methods = pb().collection('users').listAuthMethods();
+  dbg({
+    methods
+  })
+
+  const {
+    providers
+  } = methods.oauth2
+  const redirectUrl = `http://127.0.0.1:8090/auth/confirm/oauth2`
+
+  if (request.method === 'POST' && body().mode === 'oauth2') {
+    dbg(body())
+    const {
+      identity,
+      password,
+      mode
+    } = body()
+
+    try {
+      const user = signInWithOAuth2(identity, password)
+      dbg({
+        user
+      })
+      redirect(`/`)
+    } catch (e) {
+      console.error(`**error`, JSON.stringify(e, null, 2))
+      error = e.message
+    }
+  }
+</script>
+
+
+<h3>OAuth2 Login</h3>
+<% if (error) { %>
+<mark><%= error %></mark>
+<% } %>
+
+<% if (!methods.oauth2.enabled) { %>
+<mark>OAuth2 login is disabled. See README.md for details.</mark>
+<% } else {%>
+<% providers.forEach(provider => { %>
+<form method="POST" action="/auth/oauth/login">
+  <input type="hidden" name="provider" value="<%=provider.name%>">
+  <button type="submit">Log in with <%=provider.displayName%></button>
+</form>
+<% }) %>
+<% if (providers.length === 0) { %>
+<mark>No OAuth2 providers enabled. See README.md for details.</mark>
+<% } %>
+<% } %>

@@ -40,6 +40,16 @@ export type AuthOptions = {
   collection: string
 }
 
+export type OAuth2RequestOptions = {
+  cookieName: string
+  redirectPath: string
+  autoRedirect: boolean
+} & AuthOptions
+
+export type OAuth2SignInOptions = {
+  cookieName: string
+} & AuthOptions
+
 export type CreateUserOptions = {
   sendVerificationEmail: boolean
 } & AuthOptions
@@ -90,6 +100,14 @@ export type RedirectOptions = {
   message: string
 }
 
+export type OAuth2ProviderInfo = {
+  name: string
+  state: string
+  codeChallenge: string
+  codeVerifier: string
+  redirectUrl: string
+}
+
 export type PagesRequestContext<TData = any> = {
   asset: (path: string) => string
   auth?: core.Record
@@ -120,6 +138,16 @@ export type PagesRequestContext<TData = any> = {
     otpId: string,
     password: string,
     options?: Partial<AuthOptions>
+  ) => AuthData
+  requestOAuth2Login: (
+    providerName: string,
+    options?: Partial<OAuth2RequestOptions>
+  ) => string
+  signInWithOAuth2: (
+    state: string,
+    code: string,
+    options?: Partial<OAuth2SignInOptions>,
+    storedProviderInfo?: OAuth2ProviderInfo
   ) => AuthData
   signOut: () => void
   signInWithToken: (token: string) => void

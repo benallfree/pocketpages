@@ -1,0 +1,15 @@
+<script server>
+  let error = null
+  const methods = pb().collection('users').listAuthMethods();
+  dbg({
+    methods
+  })
+</script>
+
+<h3>MFA Login</h3>
+<% if (error) { %>
+<mark><%= error %></mark>
+<% } %>
+<% if (!methods.mfa.enabled) { %>
+<mark>MFA Login is disabled. See README.md for details.</mark>
+<% } %>

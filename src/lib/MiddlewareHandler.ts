@@ -12,6 +12,9 @@ import {
   AuthData,
   AuthOptions,
   Cache,
+  OAuth2ProviderInfo,
+  OAuth2RequestOptions,
+  OAuth2SignInOptions,
   PagesRequestContext,
   RedirectOptions,
 } from './types'
@@ -144,6 +147,80 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
           .authWithOTP(otpId, password.toString())
         api.signInWithToken(authData.token)
         // TODO set user to verfied
+        return authData as AuthData
+      },
+      requestOAuth2Login: (
+        providerName: string,
+        options?: Partial<OAuth2RequestOptions>
+      ) => {
+        const pb = globalApi.pb()
+        const methods = pb
+          .collection(options?.collection ?? 'users')
+          .listAuthMethods()
+
+        const { providers } = methods.oauth2
+
+        const provider = providers.find((p) => p.name === providerName)
+
+        if (!provider) {
+          throw new Error(`Provider ${providerName} not found`)
+        }
+
+        const redirectUrl = `${$app.settings().meta.appURL}${options?.redirectPath ?? '/auth/oauth/confirm'}`
+
+        const authUrl = provider.authURL + redirectUrl
+
+        response.cookie(options?.cookieName ?? 'pp_oauth_state', {
+          ...globalApi.pick(
+            provider,
+            'name',
+            'state',
+            'codeChallenge',
+            'codeVerifier'
+          ),
+          redirectUrl,
+        })
+
+        if (options?.autoRedirect ?? true) {
+          response.redirect(authUrl)
+        }
+        return authUrl
+      },
+      signInWithOAuth2: (
+        state: string,
+        code: string,
+        options?: Partial<OAuth2SignInOptions>,
+        _storedProviderInfo?: OAuth2ProviderInfo
+      ) => {
+        const storedProvider =
+          _storedProviderInfo ??
+          api.request.cookies<OAuth2ProviderInfo>(
+            options?.cookieName ?? 'pp_oauth_state'
+          )
+
+        if (!storedProvider) {
+          throw new Error('No stored provider info found')
+        }
+
+        if (storedProvider.state !== state) {
+          throw new Error(`State parameters don't match.`)
+        }
+
+        const authData = globalApi
+          .pb()
+          .collection(options?.collection ?? 'users')
+          .authWithOAuth2Code(
+            storedProvider.name,
+            code,
+            storedProvider.codeVerifier,
+            storedProvider.redirectUrl,
+            // pass any optional user create data
+            {
+              emailVisibility: false,
+            }
+          )
+
+        api.signInWithToken(authData.token)
         return authData as AuthData
       },
       signOut: () => {

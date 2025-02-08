@@ -1,0 +1,20 @@
+<script server>
+  const {
+    state,
+    code
+  } = params
+
+  let error = null
+  let authData = null
+  try {
+    authData = signInWithOAuth2(state, code)
+    response.redirect('/')
+  } catch (e) {
+    error = e.message
+  }
+</script>
+<% if (error) { %>
+<mark>
+  <%=error%>
+</mark>
+<% } %>

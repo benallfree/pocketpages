@@ -1,0 +1,17 @@
+<script server>
+  let error = null
+
+  if (request.method === 'POST') {
+    try {
+      const url = requestOAuth2Login(body().provider)
+      response.redirect(url)
+    } catch (error) {
+      error = error.message
+    }
+  }
+</script>
+<% if (error) { %>
+<mark>
+  <%=error%>
+</mark>
+<% } %>

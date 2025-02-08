@@ -1,0 +1,5 @@
+---
+'pocketpages': minor
+---
+
+Feat: authentication
