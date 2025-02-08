@@ -83,9 +83,21 @@ const contentType = response.header('Content-Type')
 %>
 ```
 
-### `cookie(name: string, value: string, options?: any)`
+### `cookie(name: string, value: string, options?: SerializeOptions)`
 
 Sets a cookie in the response. Returns the serialized cookie string.
+
+The `options` parameter supports the following properties:
+
+- `domain`: The domain name for the cookie
+- `encode`: Custom value encoder function
+- `expires`: Expiration date
+- `httpOnly`: Flags the cookie to be accessible only by the web server
+- `maxAge`: Maximum age in seconds
+- `path`: Cookie path (defaults to '/')
+- `priority`: Cookie priority ('low', 'medium', 'high')
+- `sameSite`: CSRF protection setting ('lax', 'strict', 'none')
+- `secure`: Flags the cookie to be used over HTTPS only
 
 ```ejs
 <%%
@@ -97,7 +109,9 @@ response.cookie('session', 'abc123', {
     httpOnly: true,
     secure: true,
     maxAge: 3600,
-    path: '/'
+    path: '/',
+    sameSite: 'strict',
+    domain: '.example.com'
 })
 %>
 ```

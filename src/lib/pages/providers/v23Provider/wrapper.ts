@@ -1,3 +1,4 @@
+import type { SerializeOptions } from 'cookie'
 import * as cookie from 'cookie'
 import { setAuthFromHeaderOrCookie } from 'src/lib/auth'
 import { default as parse } from 'url-parse'
@@ -70,8 +71,16 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
       e.response.header().set(name, value)
       return value
     },
-    cookie: (name: string, value: string, options?: any) => {
-      const serialized = cookie.serialize(name, value, options)
+    cookie: (
+      name: string,
+      value: string,
+      options: Partial<SerializeOptions> = {}
+    ) => {
+      const _options = {
+        path: '/',
+        ...options,
+      }
+      const serialized = cookie.serialize(name, value, _options)
       response.header(`Set-Cookie`, serialized)
       return serialized
     },

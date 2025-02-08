@@ -147,12 +147,10 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
         return authData as AuthData
       },
       signOut: () => {
-        response.cookie(`pb_auth`, '', { path: `/` })
+        response.cookie(`pb_auth`, '')
       },
       signInWithToken: (token: string) => {
-        response.cookie(`pb_auth`, token, {
-          path: '/',
-        })
+        response.cookie(`pb_auth`, token)
       },
     }
 
