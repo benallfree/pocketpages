@@ -68,6 +68,18 @@ merge(object, other)
 // => { a: [{ b: 2, c: 3 }, { d: 4, e: 5 }] }
 ```
 
+### pick
+
+Creates an object composed of the picked object properties.
+
+```js
+const { pick } = require('pocketpages')
+
+const object = { a: 1, b: 2, c: 3, d: 4 }
+pick(object, ['a', 'c'])
+// => { a: 1, c: 3 }
+```
+
 ## Using in Templates
 
 These functions are automatically available in EJS templates:
@@ -91,7 +103,7 @@ These functions are automatically available in EJS templates:
 Import the functions you need from the PocketPages package:
 
 ```js
-const { forEach, keys, values, merge } = require('pocketpages')
+const { forEach, keys, values, merge, pick } = require('pocketpages')
 
 function processObject(obj) {
   forEach(keys(obj), (key) => {

@@ -1,4 +1,4 @@
-import { forEach, keys, merge, shuffle, values } from '@s-libs/micro-dash'
+import { forEach, keys, merge, pick, shuffle, values } from '@s-libs/micro-dash'
 import PocketBase, { OTPResponse } from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
@@ -54,6 +54,7 @@ export type PagesGlobalContext = {
   values: typeof values
   merge: typeof merge
   shuffle: typeof shuffle
+  pick: typeof pick
   env: (key: string) => string
   findRecordByFilter: typeof findRecordByFilter
   findRecordsByFilter: typeof findRecordsByFilter

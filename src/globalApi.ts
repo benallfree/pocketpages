@@ -1,4 +1,4 @@
-import { forEach, keys, merge, shuffle, values } from '@s-libs/micro-dash'
+import { forEach, keys, merge, pick, shuffle, values } from '@s-libs/micro-dash'
 import PocketBase from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
@@ -20,6 +20,7 @@ export const globalApi: PagesGlobalContext = {
   values,
   merge,
   shuffle,
+  pick,
   env: (key: string) => process.env[key] ?? '',
   findRecordByFilter,
   findRecordsByFilter,
