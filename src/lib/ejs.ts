@@ -27,8 +27,8 @@ ejs.cache = {
 
 const oldCompile = ejs.compile
 ejs.compile = function (template: string, options: any) {
-  const newTemplate = template.replace(
-    /<script\s+server>([\s\S]*?)<\/script>/,
+  const newTemplate = template.replaceAll(
+    /<script\s+server>([\s\S]*?)<\/script>/g,
     '<% $1 %>'
   )
   return oldCompile(newTemplate, { ...options })
