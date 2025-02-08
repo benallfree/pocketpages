@@ -7509,6 +7509,7 @@ var Client = class {
 // src/globalApi.ts
 var log = __toESM(require_dist2());
 var import_pocketbase_stringify2 = __toESM(require_dist());
+var import_url_parse = __toESM(require_url_parse());
 
 // src/lib/db.ts
 init_cjs_shims();
@@ -7537,7 +7538,6 @@ var findRecordsByFilter = (collection, options2, dao = $app.dao()) => {
 };
 
 // src/globalApi.ts
-var import_url_parse = __toESM(require_url_parse());
 var globalApi = {
   url: (path3) => (0, import_url_parse.default)(path3, true),
   stringify: import_pocketbase_stringify2.stringify,
@@ -10872,6 +10872,7 @@ ${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pages
 init_cjs_shims();
 var cookie = __toESM(require_dist5());
 var import_pocketbase_stringify5 = __toESM(require_dist());
+var import_url_parse3 = __toESM(require_url_parse());
 
 // src/lib/auth.ts
 init_cjs_shims();
@@ -10902,7 +10903,6 @@ var setAuthFromHeaderOrCookie = (request) => {
 };
 
 // src/lib/pages/providers/v23Provider/wrapper.ts
-var import_url_parse3 = __toESM(require_url_parse());
 var v23MiddlewareWrapper = (e) => {
   const next = () => {
     e.next();
