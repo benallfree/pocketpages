@@ -5,7 +5,16 @@ export default defineConfig({
     'pocketpages.pb': 'src/index.ts',
   },
   format: ['cjs'],
-  dts: true,
+  dts: {
+    resolve: true,
+    compilerOptions: {
+      module: 'ESNext',
+      moduleResolution: 'bundler',
+      skipLibCheck: false,
+      types: ['pocketbase-jsvm'],
+    },
+    banner: '/// <reference types="pocketbase-jsvm" />',
+  },
   clean: false,
   outDir: 'dist',
   shims: true,
@@ -20,4 +29,12 @@ export default defineConfig({
   banner: {
     js: `if (typeof module === 'undefined') { module = { exports: {} } };`,
   },
+  noExternal: [
+    '@s-libs/micro-dash',
+    'pocketbase-js-sdk-jsvm',
+    'pocketbase-log',
+    'pocketbase-stringify',
+    'url-parse',
+    'pocketbase-jsvm',
+  ],
 })
