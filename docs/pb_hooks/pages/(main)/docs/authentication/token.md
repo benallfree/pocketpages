@@ -20,7 +20,7 @@ api.signInWithToken(token)
 Here's an example of implementing token authentication:
 
 ```ejs
-<script server>
+<<%='script server'%>>
   let error = null
 
   if (request.method === 'POST') {
@@ -72,7 +72,7 @@ PocketPages stores the authentication token in a cookie named `pb_auth`. This co
 ### API Integration
 
 ```ejs
-<script server>
+<<%='script server'%>>
   // Obtain token from external API
   const response = await fetch('https://api.example.com/auth', {
     method: 'POST',
@@ -88,7 +88,7 @@ PocketPages stores the authentication token in a cookie named `pb_auth`. This co
 ### Custom Authentication Flow
 
 ```ejs
-<script server>
+<<%='script server'%>>
   // Your custom auth logic
   const user = await authenticateUser(credentials)
   const token = generateToken(user)
@@ -101,7 +101,7 @@ PocketPages stores the authentication token in a cookie named `pb_auth`. This co
 ### Token Clearing
 
 ```ejs
-<script server>
+<<%='script server'%>>
   // Clear the auth token
   signInWithToken('')
 

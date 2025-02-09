@@ -33,7 +33,7 @@ This guide will walk you through setting up Google OAuth2 authentication for you
 1. Select "Web application" as the application type
 2. Configure your authorized origins and redirect URIs:
    - **Authorized JavaScript origins**: Your application domain (e.g., `http://localhost:8090`)
-   - **Authorized redirect URIs**: Your auth callback URL (e.g., `http://localhost:8090/auth/callback/google`)
+   - **Authorized redirect URIs**: Your auth callback URL (e.g., `http://localhost:8090/auth/oauth/confirm`)
 
 ![Selecting web application](2025-02-08-06-57-57.png)
 ![Configuring URIs](2025-02-08-07-00-42.png)
@@ -59,10 +59,12 @@ If you haven't set up a consent screen before, you'll need to configure it:
 ## 3. Configure PocketBase OAuth2
 
 1. Open your PocketBase Admin UI
-2. Navigate to Settings > Auth Providers
-3. Enable OAuth2 authentication
-4. Add Google as a new provider
+2. Make sure your site URL is set correctly. It must match the `redirect URL` domain you configured in the Google Cloud Console.
+3. Navigate to Settings > Auth Providers
+4. Enable OAuth2 authentication
+5. Add Google as a new provider
 
+![PocketBase site URL](2025-02-08-15-28-44.png)
 ![PocketBase user settings](2025-02-08-06-59-00.png)
 ![OAuth2 providers section](2025-02-08-06-59-09.png)
 ![Adding new provider](2025-02-08-06-59-17.png)
@@ -76,6 +78,18 @@ If you haven't set up a consent screen before, you'll need to configure it:
 
 ![Configuring Google provider](2025-02-08-06-59-32.png)
 ![Saving changes](2025-02-08-06-59-59.png)
+
+## Customizing the Return URL
+
+By default, PocketPages uses `/auth/oauth/confirm` as the OAuth2 return URL path. You can customize this when calling `requestOAuth2Login`:
+
+```javascript
+const url = requestOAuth2Login('google', {
+  redirectPath: '/custom/oauth/callback',
+})
+```
+
+Remember to update your Google OAuth2 configuration to include this custom redirect URL if you change it from the default.
 
 ## Implementation Guide
 

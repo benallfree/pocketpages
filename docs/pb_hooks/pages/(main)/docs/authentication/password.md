@@ -38,7 +38,7 @@ Both methods return an `AuthData` object containing the authentication token and
 Here's a complete login form implementation:
 
 ```ejs
-<script server>
+<<%='script server'%>>
   let error = null
 
   if (request.method === 'POST') {
@@ -73,7 +73,7 @@ Here's a complete login form implementation:
 Here's how to implement user registration:
 
 ```ejs
-<script server>
+<<%='script server'%>>
   let error = null
 
   if (request.method === 'POST') {
@@ -119,7 +119,7 @@ PocketPages integrates with PocketBase's email verification system. When enabled
 Create a verification handler at `/auth/confirm/[token]/verification.ejs`:
 
 ```ejs
-<script server>
+<<%='script server'%>>
   const { token } = params
   let error = null
 
@@ -143,7 +143,7 @@ Create a verification handler at `/auth/confirm/[token]/verification.ejs`:
 Allow users to request a new verification email:
 
 ```ejs
-<script server>
+<<%='script server'%>>
   let error = null
 
   if (request.method === 'POST') {

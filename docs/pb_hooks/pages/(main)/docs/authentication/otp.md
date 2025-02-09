@@ -24,7 +24,7 @@ const authData = api.signInWithOTP(otpData.otpId, code)
 Here's a complete OTP login implementation:
 
 ```ejs
-<script server>
+<<%='script server'%>>
   let error = null
   let otpId = request.body().otpId || null
   const { mode, otpCode, identity } = {

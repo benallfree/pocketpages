@@ -34,7 +34,7 @@ This returns an `AuthData` object containing the authentication token and user r
 Here's a complete anonymous login implementation:
 
 ```ejs
-<script server>
+<<%='script server'%>>
   let error = null
 
   if (request.method === 'POST' && body().mode === 'anonymous') {

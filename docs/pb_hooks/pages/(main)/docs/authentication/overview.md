@@ -5,7 +5,33 @@ description: Learn about the different authentication methods available in Pocke
 
 # Authentication Overview
 
-PocketPages provides several authentication methods to help you implement user authentication in your application. Each method is designed for specific use cases and can be used individually or in combination.
+PocketPages provides seamless integration with PocketBase's authentication system, supporting both header-based and cookie-based authentication methods. Each authentication method is designed for specific use cases and can be used individually or in combination.
+
+## Authentication Flow
+
+PocketPages automatically checks for authentication tokens in this order:
+
+1. `Authorization` header (highest priority)
+2. `pb_auth` cookie (fallback)
+
+When a token is found, PocketPages automatically populates the `request.auth` context with a `core.Record` instance containing the authenticated user's information.
+
+The complete authentication flow is:
+
+1. User initiates authentication
+2. Authentication method validates credentials
+3. PocketBase generates JWT token
+4. PocketPages sets `pb_auth` cookie
+5. Subsequent requests include authentication
+
+## Common Features
+
+All authentication methods in PocketPages share these characteristics:
+
+1. **Cookie-Based**: Authentication state is maintained via the `pb_auth` cookie
+2. **Automatic Headers**: Auth tokens are automatically included in requests
+3. **Context Access**: Authentication state is available via `request.auth`
+4. **Type Safety**: All methods return strongly typed `AuthData`
 
 ## Available Methods
 
@@ -89,35 +115,54 @@ Best for:
 
 [Learn more about Token Authentication](/docs/authentication/token)
 
-## Common Features
+## Working with Auth Records
 
-All authentication methods in PocketPages share these characteristics:
-
-1. **Cookie-Based**: Authentication state is maintained via the `pb_auth` cookie
-2. **Automatic Headers**: Auth tokens are automatically included in requests
-3. **Context Access**: Authentication state is available via `api.auth`
-4. **Type Safety**: All methods return strongly typed `AuthData`
-
-## Authentication Flow
-
-1. User initiates authentication
-2. Authentication method validates credentials
-3. PocketBase generates JWT token
-4. PocketPages sets `pb_auth` cookie
-5. Subsequent requests include authentication
-
-## Checking Authentication Status
+The `request.auth` context provides a `core.Record` instance with methods to access user data:
 
 ```ejs
-<% if (auth) { %>
-  <p>Welcome, <%= auth.email %></p>
-  <% if (auth.verified()) { %>
+<%% if (request.auth) { %>
+  <!-- Using Record methods -->
+  <p>Welcome, <%%= request.auth.get('email') %></p>
+  <p>Username: <%%= request.auth.get('username') %></p>
+
+  <!-- Check verification status -->
+  <%% if (request.auth.verified()) { %>
     <p>✓ Verified account</p>
-  <% } %>
-<% } else { %>
+  <%% } %>
+
+  <!-- Access custom fields -->
+  <p>Role: <%%= request.auth.get('role') %></p>
+<%% } else { %>
   <p>Please log in</p>
-<% } %>
+<%% } %>
 ```
+
+Common `core.Record` methods for auth:
+
+- `get(field)` - Get a field value
+- `email()` - Get the email address
+- `verified()` - Check if email is verified
+- `isSuperuser()` - Check if user is admin
+- `collection()` - Get the auth collection
+
+## Client-Side Integration
+
+When using the PocketBase JavaScript SDK alongside PocketPages, you'll need to synchronize the SDK's auth state with the cookie-based MPA approach:
+
+```javascript
+// Initialize PocketBase client
+const pb = new PocketBase('http://127.0.0.1:8090')
+
+// Load auth state from cookies
+pb.authStore.loadFromCookie(document.cookie)
+
+// Optional: Keep auth state in sync when cookie changes
+pb.authStore.onChange(() => {
+  document.cookie = pb.authStore.exportToCookie()
+})
+```
+
+This ensures the SDK's auth store stays in sync with the server-side authentication state managed by PocketPages.
 
 ## Signing Out
 
@@ -127,28 +172,30 @@ All authentication methods can use the common sign-out function:
 api.signOut()
 ```
 
-## Security Best Practices
+This will:
 
-1. Use HTTPS in production
-2. Implement rate limiting
-3. Enable email verification
-4. Set appropriate token expiration
-5. Monitor authentication events
+- Clear the `pb_auth` cookie
+- Remove the auth token
+- Reset the authentication state
 
 ## Choosing an Auth Method
 
 Consider these factors when choosing authentication methods:
 
 1. **User Experience**
+
    - Password: Familiar but requires remembering credentials
    - OAuth2: Quick but requires third-party account
    - OTP: Simple but requires email access
    - Anonymous: Frictionless but limited
+
 2. **Security Requirements**
+
    - Password: Strong with proper policies
    - OAuth2: Delegated to trusted providers
    - OTP: Time-limited, email-verified
    - Anonymous: Limited access scope
+
 3. **Implementation Complexity**
 
    - Password: Moderate (email verification, password reset)
@@ -161,6 +208,14 @@ Consider these factors when choosing authentication methods:
    - OAuth2: Provider API changes, token refresh
    - OTP: Email deliverability
    - Anonymous: Data cleanup policies
+
+## Security Best Practices
+
+1. Use HTTPS in production
+2. Implement rate limiting
+3. Enable email verification
+4. Set appropriate token expiration
+5. Monitor authentication events
 
 ## Auth Starter Kit
 

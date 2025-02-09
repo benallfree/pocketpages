@@ -7,6 +7,16 @@ description: Learn how to implement OAuth2 authentication in PocketPages
 
 OAuth2 authentication allows users to sign in using their accounts from providers like Google, GitHub, Facebook, etc.
 
+> Check out the [OAuth2 Google Speedrun](/docs/speedruns/google-oauth2)
+
+> **Note**: PocketPages provides an authentication starter kit that includes many pre-built integrations. You can get started quickly with:
+>
+> ```bash
+> npx tiged benallfree/pocketpages/starters/auth my-auth-app
+> cd my-auth-app
+> npm i
+> ```
+
 ## Basic Usage
 
 The context API provides two main methods for OAuth2 authentication:
@@ -25,7 +35,7 @@ Here's a complete OAuth2 implementation:
 
 ```ejs
 <!-- Start OAuth2 flow -->
-<script server>
+<<%='script server'%>>
   let error = null
 
   if (request.method === 'POST') {
@@ -54,7 +64,7 @@ Then create a callback handler at your redirect path:
 
 ```ejs
 <!-- /auth/oauth/confirm.ejs -->
-<script server>
+<<%='script server'%>>
   const { state, code } = params
   let error = null
 
