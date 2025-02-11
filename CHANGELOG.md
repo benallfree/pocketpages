@@ -1,5 +1,12 @@
 # pocketpages
 
+## 0.13.1
+
+### Patch Changes
+
+- cfadcd1: Feat: store() helper
+- 3b9a0a0: Fix: absolute path names for reesolve() and include()
+
 ## 0.13.0
 
 ### Minor Changes
