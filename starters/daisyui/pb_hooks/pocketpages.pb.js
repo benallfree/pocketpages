@@ -7612,6 +7612,12 @@ var globalApi = {
     const res = pb.collection(options2?.collection ?? "users").requestOTP(email);
     return res;
   },
+  store: (name, value) => {
+    if (value === void 0) {
+      return $app.store().get(name);
+    }
+    $app.store().set(name, value);
+  },
   ...log
 };
 
@@ -10004,8 +10010,8 @@ import_pocketbase_ejs.default.compile = function(template, options2) {
 var oldResolveInclude = import_pocketbase_ejs.default.resolveInclude;
 import_pocketbase_ejs.default.resolveInclude = function(includePath, templatePath, isDir) {
   dbg2(`resolveInclude`, { name: includePath, filename: templatePath, isDir });
-  if (includePath.startsWith("/")) {
-    return import_pocketbase_node3.path.resolve(pagesRoot, `_private`, includePath);
+  if (isDir) {
+    return import_pocketbase_node3.path.resolve(pagesRoot, includePath);
   }
   let currentPath = import_pocketbase_node3.path.dirname(templatePath);
   while (currentPath.length >= pagesRoot.length) {
@@ -10076,8 +10082,9 @@ var renderFile = (fname, api) => {
       `,
       compileDebug: true,
       async: false,
-      cache: false
+      cache: false,
       // !$app.isDev(),
+      root: pagesRoot
     }
   );
   dbg2(`renderFile end`, {

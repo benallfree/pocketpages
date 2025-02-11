@@ -1477,6 +1477,10 @@ type PagesGlobalContext = {
     confirmVerification: (token: string, options?: Partial<AuthOptions>) => void;
     requestOTP: (email: string, options?: Partial<AuthOptions>) => OTPResponse;
     pb: () => Client;
+    store: {
+        (name: string, value: any): void;
+        (name: string): any;
+    };
 } & typeof log$1;
 type ResolveOptions = {
     mode: 'raw' | 'require' | 'script' | 'style';
