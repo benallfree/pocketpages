@@ -92,6 +92,7 @@
 - [`signInAnonymously`](/docs/context-api/sign-in-anonymously)
 - [`signOut`](/docs/context-api/sign-out)
 - [`registerWithPassword`](/docs/context-api/register-with-password)
+- [`send`](/docs/context-api/send)
 
 # Guides
 

@@ -229,6 +229,29 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
       signInWithToken: (token: string) => {
         response.cookie(`pb_auth`, token)
       },
+      send: (
+        topic: string,
+        message: string,
+        filter = (clientId: string, client: any) =>
+          api.auth?.id ? client.get('auth')?.id === api.auth?.id : true
+      ) => {
+        const serializedState = message + Date.now()
+        const payload = new SubscriptionMessage({
+          name: topic,
+          data: serializedState,
+        })
+
+        const clients = $app.subscriptionsBroker().clients()
+
+        const filteredClients = Object.entries(clients).filter(
+          ([clientId, client]) =>
+            client.hasSubscription(topic) && filter(clientId, client)
+        )
+
+        filteredClients.forEach(([clientId, client]) => {
+          client.send(payload)
+        })
+      },
     }
 
     let data = {}

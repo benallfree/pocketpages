@@ -155,6 +155,11 @@ export type PagesRequestContext<TData = any> = {
   ) => AuthData
   signOut: () => void
   signInWithToken: (token: string) => void
+  send: (
+    topic: string,
+    message: string,
+    filter?: (clientId: string, client: any) => boolean
+  ) => void
 } & PagesGlobalContext
 
 export type PagesConfig = {
