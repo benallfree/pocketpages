@@ -98,6 +98,11 @@ export const globalApi: PagesGlobalContext = {
     const res = pb.collection(options?.collection ?? 'users').requestOTP(email)
     return res
   },
-
+  store: (name: string, value?: any) => {
+    if (value === undefined) {
+      return $app.store<any>().get(name)
+    }
+    $app.store<any>().set(name, value)
+  },
   ...log,
 }

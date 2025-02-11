@@ -89,6 +89,10 @@ export type PagesGlobalContext = {
   confirmVerification: (token: string, options?: Partial<AuthOptions>) => void
   requestOTP: (email: string, options?: Partial<AuthOptions>) => OTPResponse
   pb: () => PocketBase
+  store: {
+    (name: string, value: any): void
+    (name: string): any
+  }
 } & typeof log
 
 export type ResolveOptions = {
