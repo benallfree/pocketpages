@@ -1493,6 +1493,7 @@ type PagesRequestContext<TData = any> = {
     signInWithOAuth2: (state: string, code: string, options?: Partial<OAuth2SignInOptions>, storedProviderInfo?: OAuth2ProviderInfo) => AuthData;
     signOut: () => void;
     signInWithToken: (token: string) => void;
+    send: (topic: string, message: string, filter?: (clientId: string, client: any) => boolean) => void;
 } & PagesGlobalContext;
 type PagesConfig = {
     preprocessorExts: string[];

@@ -10804,6 +10804,20 @@ var MiddlewareHandler = (request, response, next) => {
       },
       signInWithToken: (token2) => {
         response.cookie(`pb_auth`, token2);
+      },
+      send: (topic, message, filter = (clientId, client) => api.auth?.id ? client.get("auth")?.id === api.auth?.id : true) => {
+        const serializedState = message + Date.now();
+        const payload = new SubscriptionMessage({
+          name: topic,
+          data: serializedState
+        });
+        const clients = $app.subscriptionsBroker().clients();
+        const filteredClients = Object.entries(clients).filter(
+          ([clientId, client]) => client.hasSubscription(topic) && filter(clientId, client)
+        );
+        filteredClients.forEach(([clientId, client]) => {
+          client.send(payload);
+        });
       }
     };
     let data = {};
