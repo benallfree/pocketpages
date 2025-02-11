@@ -5412,57 +5412,49 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 init_cjs_shims();
 
-// src/lib/pages/index.ts
+// src/lib/boot.ts
 init_cjs_shims();
-
-// src/lib/pages/providers/v23Provider/index.ts
-init_cjs_shims();
-var v23Provider = () => ({
-  boot: () => {
-    onBootstrap((e) => {
-      e.next();
-      if (!require.isOverridden) {
-        const oldRequire = require;
-        const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
-          `${__hooks}/pocketpages.pb`
-        );
-        require = (path3) => {
-          if (path3 === "pocketpages") {
-            return globalApi2;
-          }
-          if (!moduleExists2(path3)) {
-            throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
-          }
-          return oldRequire(path3);
-        };
-        require.isOverridden = true;
-      }
-      require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler();
-    });
-    routerUse((e) => {
-      if (!require.isOverridden) {
-        const oldRequire = require;
-        const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
-          `${__hooks}/pocketpages.pb`
-        );
-        require = (path3) => {
-          if (path3 === "pocketpages") {
-            return globalApi2;
-          }
-          if (!moduleExists2(path3)) {
-            throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
-          }
-          return oldRequire(path3);
-        };
-        require.isOverridden = true;
-      }
-      return require(`${__hooks}/pocketpages.pb`).v23MiddlewareWrapper(e);
-    });
-  }
-});
-
-// src/lib/pages/index.ts
-var getPagesProvider = () => v23Provider();
+var boot = () => {
+  onBootstrap((e) => {
+    e.next();
+    if (!require.isOverridden) {
+      const oldRequire = require;
+      const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
+        `${__hooks}/pocketpages.pb`
+      );
+      require = (path3) => {
+        if (path3 === "pocketpages") {
+          return globalApi2;
+        }
+        if (!moduleExists2(path3)) {
+          throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
+        }
+        return oldRequire(path3);
+      };
+      require.isOverridden = true;
+    }
+    require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler();
+  });
+  routerUse((e) => {
+    if (!require.isOverridden) {
+      const oldRequire = require;
+      const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
+        `${__hooks}/pocketpages.pb`
+      );
+      require = (path3) => {
+        if (path3 === "pocketpages") {
+          return globalApi2;
+        }
+        if (!moduleExists2(path3)) {
+          throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
+        }
+        return oldRequire(path3);
+      };
+      require.isOverridden = true;
+    }
+    return require(`${__hooks}/pocketpages.pb`).v23MiddlewareWrapper(e);
+  });
+};
 
 // src/lib/types.ts
 init_cjs_shims();
@@ -10875,7 +10867,7 @@ ${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pages
   }
 };
 
-// src/lib/pages/providers/v23Provider/wrapper.ts
+// src/lib/wrapper.ts
 init_cjs_shims();
 var cookie = __toESM(require_dist5());
 var import_pocketbase_stringify5 = __toESM(require_dist());
@@ -10909,7 +10901,7 @@ var setAuthFromHeaderOrCookie = (request) => {
   }
 };
 
-// src/lib/pages/providers/v23Provider/wrapper.ts
+// src/lib/wrapper.ts
 var v23MiddlewareWrapper = (e) => {
   const next = () => {
     e.next();
@@ -11014,8 +11006,7 @@ var v23MiddlewareWrapper = (e) => {
 // src/index.ts
 var isBooting = typeof onBootstrap !== "undefined";
 if (isBooting) {
-  const pagesProvider = getPagesProvider();
-  pagesProvider.boot();
+  boot();
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
