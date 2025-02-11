@@ -42,8 +42,8 @@ ejs.resolveInclude = function (
 ) {
   dbg(`resolveInclude`, { name: includePath, filename: templatePath, isDir })
   // Handle absolute paths (starting with /)
-  if (includePath.startsWith('/')) {
-    return path.resolve(pagesRoot, `_private`, includePath)
+  if (isDir) {
+    return path.resolve(pagesRoot, includePath)
   }
 
   // Handle relative paths by searching up the directory tree
@@ -129,6 +129,7 @@ export const renderFile = (fname: string, api: PagesRequestContext<any>) => {
       compileDebug: true,
       async: false,
       cache: false, // !$app.isDev(),
+      root: pagesRoot,
     }
   )
   dbg(`renderFile end`, {
