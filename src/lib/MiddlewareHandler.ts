@@ -1,5 +1,5 @@
 import { forEach, merge } from '@s-libs/micro-dash'
-import { error } from 'pocketbase-log'
+import { error, info } from 'pocketbase-log'
 import { globalApi } from 'src/globalApi'
 import { default as URL } from 'url-parse'
 import { dbg } from './debug'
@@ -18,6 +18,8 @@ import {
   PagesRequestContext,
   RedirectOptions,
 } from './types'
+
+export type SseFilter = (clientId: string, client: any) => boolean
 
 export const MiddlewareHandler: PagesMiddlewareFunc = (
   request,
@@ -59,6 +61,38 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     */
   try {
     dbg(`Found a matching route`, { parsedRoute })
+
+    const DefaultSseFilter: SseFilter = (clientId: string, client: any) => {
+      info('DefaultSseFilter', { clientId, client })
+      return api.auth?.id ? client.get('auth')?.id === api.auth?.id : true
+    }
+
+    const deferredSse = {
+      topic: '',
+      filter: DefaultSseFilter,
+    }
+
+    const _sseSend = (
+      name: string,
+      data: string,
+      filter: SseFilter = DefaultSseFilter
+    ) => {
+      const payload = new SubscriptionMessage({
+        name,
+        data,
+      })
+
+      const clients = $app.subscriptionsBroker().clients()
+
+      const filteredClients = Object.entries(clients).filter(
+        ([clientId, client]) =>
+          client.hasSubscription(name) && filter(clientId, client)
+      )
+
+      filteredClients.forEach(([clientId, client]) => {
+        client.send(payload)
+      })
+    }
 
     const api: PagesRequestContext<any> = {
       ...globalApi,
@@ -231,26 +265,17 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
       },
       send: (
         topic: string,
-        message: string,
-        filter = (clientId: string, client: any) =>
-          api.auth?.id ? client.get('auth')?.id === api.auth?.id : true
+        messageOrFilter: string | SseFilter = DefaultSseFilter,
+        filter: SseFilter = DefaultSseFilter
       ) => {
-        const serializedState = message + Date.now()
-        const payload = new SubscriptionMessage({
-          name: topic,
-          data: serializedState,
-        })
-
-        const clients = $app.subscriptionsBroker().clients()
-
-        const filteredClients = Object.entries(clients).filter(
-          ([clientId, client]) =>
-            client.hasSubscription(topic) && filter(clientId, client)
-        )
-
-        filteredClients.forEach(([clientId, client]) => {
-          client.send(payload)
-        })
+        const isDeferred = typeof messageOrFilter === 'function'
+        if (isDeferred) {
+          deferredSse.topic = topic
+          deferredSse.filter = messageOrFilter
+          info('Deferred SSE', { deferredSse })
+          return
+        }
+        return _sseSend(topic, messageOrFilter, filter)
       },
     }
 
@@ -317,6 +342,12 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
       api.slot = res.slots.default || res.content
       content = renderFile(layoutPath, api)
     })
+
+    if (deferredSse.topic) {
+      info('Sending deferred SSE', { deferredSse })
+      _sseSend(deferredSse.topic, JSON.stringify(content), deferredSse.filter)
+      return response.json(200, { sse: 'ok' })
+    }
 
     // dbg(`Final result`, str)
     return response.html(200, content)
