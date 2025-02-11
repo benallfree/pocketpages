@@ -4,8 +4,7 @@ import { fs } from 'pocketbase-node'
 import { globalApi } from 'src/globalApi'
 import { dbg } from './debug'
 import { pagesRoot } from './helpers'
-import { PagesInitializerFunc } from './pages'
-import { Cache, PagesConfig } from './types'
+import { Cache, PagesConfig, PagesInitializerFunc } from './types'
 
 export type Route = {
   relativePath: string

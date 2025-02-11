@@ -1,11 +1,9 @@
-import { getPagesProvider } from './lib/pages'
+import { boot } from './lib/boot'
 
 const isBooting = typeof onBootstrap !== 'undefined'
 
 if (isBooting) {
-  const pagesProvider = getPagesProvider()
-
-  pagesProvider.boot()
+  boot()
 }
 
 export * from './lib/types'

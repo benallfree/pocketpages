@@ -6,7 +6,6 @@ import { dbg } from './debug'
 import { parseSlots, renderFile } from './ejs'
 import { echo, mkMeta, mkResolve, pagesRoot } from './helpers'
 import { marked } from './marked'
-import { PagesMiddlewareFunc } from './pages'
 import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
 import {
   AuthData,
@@ -15,6 +14,7 @@ import {
   OAuth2ProviderInfo,
   OAuth2RequestOptions,
   OAuth2SignInOptions,
+  PagesMiddlewareFunc,
   PagesRequestContext,
   RedirectOptions,
 } from './types'
