@@ -126,7 +126,7 @@ var require_dist2 = __commonJS({
     __export2(src_exports2, {
       dbg: () => dbg3,
       error: () => error2,
-      info: () => info2,
+      info: () => info3,
       log: () => log4,
       warn: () => warn
     });
@@ -167,7 +167,7 @@ ${v.stack}`;
       const s = prepare(objs);
       $app.logger().debug(s);
     };
-    var info2 = (...objs) => {
+    var info3 = (...objs) => {
       const s = prepare(objs);
       $app.logger().info(s);
     };
@@ -10686,6 +10686,27 @@ var MiddlewareHandler = (request, response, next) => {
   }
   try {
     dbg2(`Found a matching route`, { parsedRoute });
+    const DefaultSseFilter = (clientId, client) => {
+      (0, import_pocketbase_log2.info)("DefaultSseFilter", { clientId, client });
+      return api.auth?.id ? client.get("auth")?.id === api.auth?.id : true;
+    };
+    const deferredSse = {
+      topic: "",
+      filter: DefaultSseFilter
+    };
+    const _sseSend = (name, data2, filter = DefaultSseFilter) => {
+      const payload = new SubscriptionMessage({
+        name,
+        data: data2
+      });
+      const clients = $app.subscriptionsBroker().clients();
+      const filteredClients = Object.entries(clients).filter(
+        ([clientId, client]) => client.hasSubscription(name) && filter(clientId, client)
+      );
+      filteredClients.forEach(([clientId, client]) => {
+        client.send(payload);
+      });
+    };
     const api = {
       ...globalApi,
       params,
@@ -10805,19 +10826,15 @@ var MiddlewareHandler = (request, response, next) => {
       signInWithToken: (token2) => {
         response.cookie(`pb_auth`, token2);
       },
-      send: (topic, message, filter = (clientId, client) => api.auth?.id ? client.get("auth")?.id === api.auth?.id : true) => {
-        const serializedState = message + Date.now();
-        const payload = new SubscriptionMessage({
-          name: topic,
-          data: serializedState
-        });
-        const clients = $app.subscriptionsBroker().clients();
-        const filteredClients = Object.entries(clients).filter(
-          ([clientId, client]) => client.hasSubscription(topic) && filter(clientId, client)
-        );
-        filteredClients.forEach(([clientId, client]) => {
-          client.send(payload);
-        });
+      send: (topic, messageOrFilter = DefaultSseFilter, filter = DefaultSseFilter) => {
+        const isDeferred = typeof messageOrFilter === "function";
+        if (isDeferred) {
+          deferredSse.topic = topic;
+          deferredSse.filter = messageOrFilter;
+          (0, import_pocketbase_log2.info)("Deferred SSE", { deferredSse });
+          return;
+        }
+        return _sseSend(topic, messageOrFilter, filter);
       }
     };
     let data = {};
@@ -10861,6 +10878,11 @@ var MiddlewareHandler = (request, response, next) => {
       api.slot = res.slots.default || res.content;
       content = renderFile(layoutPath, api);
     });
+    if (deferredSse.topic) {
+      (0, import_pocketbase_log2.info)("Sending deferred SSE", { deferredSse });
+      _sseSend(deferredSse.topic, JSON.stringify(content), deferredSse.filter);
+      return response.json(200, { sse: "ok" });
+    }
     return response.html(200, content);
   } catch (e) {
     (0, import_pocketbase_log2.error)(e);
