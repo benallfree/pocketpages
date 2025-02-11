@@ -12,6 +12,8 @@
   <meta property="og:url" content="<%=meta('path') ? `${meta('path')}` : meta('url') || `${request.url}`%>" />
   <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.3/htmx.min.js" integrity="sha512-dQu3OKLMpRu85mW24LA1CUZG67BgLPR8Px3mcxmpdyijgl1UpCM1RtJoQP6h8UkufSnaHVRTUx98EQT9fcKohw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://unpkg.com/pocketbase-htmx-ext-sse"></script>
   <%- slots.head %>
 </head>
 

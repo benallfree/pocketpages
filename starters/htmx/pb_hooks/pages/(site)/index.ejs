@@ -1,4 +1,16 @@
-<h1>htmx starter kit</h1>
-<p>This is a starter kit shows you how to use htmx.</p>
+<h1>htmx realtime demo</h1>
+<p>This is a demo shows you how to use htmx to build a realtime app.</p>
 
-Counter <button hx-get="/api/count"><%- include('count.ejs') %></button>
+<div hx-ext="pocketbase-sse">
+  <div sse-swap="chat" hx-swap="beforeend"></div>
+  <!-- Content from SSE will be appended here -->
+</div>
+
+<form hx-post="/api/chat" hx-swap="none">
+  <input type="text" name="message" />
+  <button type="submit">Send</button>
+</form>
+
+<div>
+  Counter <button hx-get="/api/count"><%- include('count.ejs') %></button>
+</div>
