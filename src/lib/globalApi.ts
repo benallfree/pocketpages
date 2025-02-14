@@ -3,14 +3,14 @@ import PocketBase from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as parse } from 'url-parse'
-import { findRecordByFilter, findRecordsByFilter } from './lib/db'
+import { findRecordByFilter, findRecordsByFilter } from './db'
 import {
   AuthOptions,
   Cache,
   CreateUserOptions,
   PagesGlobalContext,
   User,
-} from './lib/types'
+} from './types'
 
 export const globalApi: PagesGlobalContext = {
   url: (path: string) => parse(path, true),

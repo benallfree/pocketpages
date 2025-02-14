@@ -1,12 +1,12 @@
 import { forEach, merge } from '@s-libs/micro-dash'
 import { error, info } from 'pocketbase-log'
-import { globalApi } from 'src/globalApi'
+import { globalApi } from 'src/lib/globalApi'
 import { default as URL } from 'url-parse'
-import { dbg } from './debug'
-import { parseSlots, renderFile } from './ejs'
-import { echo, mkMeta, mkResolve, pagesRoot } from './helpers'
-import { marked } from './marked'
-import { fingerprint as applyFingerprint, parseRoute } from './parseRoute'
+import { dbg } from '../lib/debug'
+import { parseSlots, renderFile } from '../lib/ejs'
+import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
+import { marked } from '../lib/marked'
+import { fingerprint as applyFingerprint, parseRoute } from '../lib/parseRoute'
 import {
   AuthData,
   AuthOptions,
@@ -17,7 +17,7 @@ import {
   PagesMiddlewareFunc,
   PagesRequestContext,
   RedirectOptions,
-} from './types'
+} from '../lib/types'
 
 export type SseFilter = (clientId: string, client: any) => boolean
 
@@ -63,7 +63,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     dbg(`Found a matching route`, { parsedRoute })
 
     const DefaultSseFilter: SseFilter = (clientId: string, client: any) => {
-      info('DefaultSseFilter', { clientId, client })
       return api.auth?.id ? client.get('auth')?.id === api.auth?.id : true
     }
 
@@ -344,7 +343,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     })
 
     if (deferredSse.topic) {
-      info('Sending deferred SSE', { deferredSse })
       _sseSend(deferredSse.topic, JSON.stringify(content), deferredSse.filter)
       return response.json(200, { sse: 'ok' })
     }

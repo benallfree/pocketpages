@@ -1,6 +1,6 @@
 import queryString from 'query-string'
 import URLParse from 'url-parse'
-import { Route } from './AfterBootstrapHandler'
+import { Route } from '../handlers/AfterBootstrapHandler'
 import { dbg } from './debug'
 import { Cache, PagesParams } from './types'
 

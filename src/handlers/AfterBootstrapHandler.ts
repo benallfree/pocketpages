@@ -1,10 +1,10 @@
 import { forEach } from '@s-libs/micro-dash'
 import { info } from 'pocketbase-log'
 import { fs } from 'pocketbase-node'
-import { globalApi } from 'src/globalApi'
-import { dbg } from './debug'
-import { pagesRoot } from './helpers'
-import { Cache, PagesConfig, PagesInitializerFunc } from './types'
+import { globalApi } from 'src/lib/globalApi'
+import { dbg } from '../lib/debug'
+import { pagesRoot } from '../lib/helpers'
+import { Cache, PagesConfig, PagesInitializerFunc } from '../lib/types'
 
 export type Route = {
   relativePath: string

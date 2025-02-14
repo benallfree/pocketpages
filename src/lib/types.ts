@@ -4,7 +4,7 @@ import PocketBase, { OTPResponse } from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as parse } from 'url-parse'
-import { Route } from './AfterBootstrapHandler'
+import { Route } from '../handlers/AfterBootstrapHandler'
 import { findRecordByFilter, findRecordsByFilter } from './db'
 
 export type User = {

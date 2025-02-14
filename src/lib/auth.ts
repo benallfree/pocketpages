@@ -1,4 +1,4 @@
-import { globalApi } from 'src/globalApi'
+import { globalApi } from 'src/lib/globalApi'
 import { PagesRequest } from './types'
 
 export const setAuthFromHeaderOrCookie = (request: PagesRequest) => {
