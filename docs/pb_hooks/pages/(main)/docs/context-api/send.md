@@ -5,11 +5,21 @@ description: Send realtime messages to connected clients from PocketPages routes
 
 # `send` - Realtime Messaging
 
-- **Type**:
-  ```typescript
-  (topic: string, messageOrFilter?: string | Filter, filter?: Filter) => void
-  ```
+**Method Signatures**:
+
+```typescript
+type Filter = (clientId: string, client: subscriptions.Client) => boolean
+
+// Send a message to clients
+function send(topic: string, message: string, filter?: Filter): void
+
+// Capture and send rendered content
+function send(topic: string, filter?: Filter): void
+```
+
 - **Description**: Sends a realtime message to connected clients. Messages can be broadcast to all clients or filtered to specific recipients. By default, messages are filtered to only reach the current authenticated user.
+
+See [Client interface documentation](https://pocketbase.io/jsvm/interfaces/subscriptions.Client.html) for details about the available client methods. Note that `client.get('auth')` returns a [core.Record](https://pocketbase.io/docs/js-records/) auth record when the client is authenticated.
 
 ## Parameters
 
