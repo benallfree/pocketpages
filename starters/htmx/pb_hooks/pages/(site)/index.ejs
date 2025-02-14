@@ -1,15 +1,32 @@
 <h1>htmx realtime demo</h1>
 <p>This is a demo shows you how to use htmx to build a realtime app.</p>
 
-<div hx-ext="pocketbase-sse">
-  <div sse-swap="chat" hx-swap="beforeend"></div>
-  <!-- Content from SSE will be appended here -->
-</div>
+<section>
+  <aside>
+    <h2>Chat Connection #1</h2>
 
-<form hx-post="/api/chat" hx-swap="none">
-  <input type="text" name="message" />
-  <button type="submit">Send</button>
-</form>
+    <div hx-ext="pocketbase-sse">
+      <div sse-swap="chat" hx-swap="beforeend"></div>
+      <!-- Content from SSE will be appended here -->
+    </div>
+  </aside>
+  <aside>
+    <h2>Chat Connection #2</h2>
+
+    <div hx-ext="pocketbase-sse">
+      <div sse-swap="chat" hx-swap="beforeend"></div>
+      <!-- Content from SSE will be appended here -->
+    </div>
+  </aside>
+</section>
+
+<article>
+  <form hx-post="/api/chat" hx-swap="none" hx-on::after-request="if(event.detail.successful) { this.reset(); this.querySelector('input[name=message]').focus() }">
+    <input type="text" name="message" />
+    <button type="submit">Send</button>
+  </form>
+</article>
+
 
 <div>
   Counter <button hx-get="/api/count"><%- include('count.ejs') %></button>
