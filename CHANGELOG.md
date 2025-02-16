@@ -1,5 +1,12 @@
 # pocketpages
 
+## 0.13.2
+
+### Patch Changes
+
+- 2234146: Feat: realtime send()
+- 1dfaacc: Fix: Windows compat
+
 ## 0.13.1
 
 ### Patch Changes
