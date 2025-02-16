@@ -122,7 +122,7 @@ export const v23MiddlewareWrapper = (e: core.RequestEvent) => {
 
   setAuthFromHeaderOrCookie(request)
 
-  require(`${__hooks}/pocketpages.pb`).MiddlewareHandler(
+  require($filepath.join(__hooks, 'pocketpages.pb')).MiddlewareHandler(
     request,
     response,
     next

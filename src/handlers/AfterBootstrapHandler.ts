@@ -80,7 +80,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
     }
 
     // Check if any path segment is _private
-    const pathParts = f.split('/')
+    const pathParts = $filepath.toSlash(f).split('/')
     return !pathParts.some((part) => part === '_private')
   })
   dbg({ addressableFiles })
@@ -88,7 +88,10 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
   const routes: Route[] = addressableFiles
     .map((relativePath) => {
       dbg(`Examining route`, relativePath)
-      const parts = relativePath.split('/').filter((p) => !p.startsWith(`(`))
+      const parts = $filepath
+        .toSlash(relativePath)
+        .split('/')
+        .filter((p) => !p.startsWith(`(`))
       const absolutePath = $filepath.join(pagesRoot, relativePath)
       dbg({ relativePath, absolutePath, parts })
 
@@ -127,7 +130,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
        */
       {
         const pathParts = $filepath
-          .dir(relativePath)
+          .toSlash($filepath.dir(relativePath))
           .split(`/`)
           .filter((node) => node != '.')
           .filter((p) => !!p)
@@ -155,7 +158,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = () => {
        */
       {
         const pathParts = $filepath
-          .dir(relativePath)
+          .toSlash($filepath.dir(relativePath))
           .split(`/`)
           .filter((p) => !!p)
         const current = [pagesRoot]

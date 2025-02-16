@@ -21,7 +21,7 @@ if (isBooting) {
     if (!(require as any).isOverridden) {
       const oldRequire = require
       const { globalApi, moduleExists } = oldRequire(
-        `${__hooks}/pocketpages.pb`
+        $filepath.join(__hooks, 'pocketpages.pb')
       )
       require = (path) => {
         // console.log(`bootstrap require called with ${path}`)
@@ -38,7 +38,7 @@ if (isBooting) {
       // Set the flag on the new require function
       ;(require as any).isOverridden = true
     }
-    require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler()
+    require($filepath.join(__hooks, 'pocketpages.pb')).AfterBootstrapHandler()
   })
 
   routerUse((e) => {
@@ -46,7 +46,7 @@ if (isBooting) {
     if (!(require as any).isOverridden) {
       const oldRequire = require
       const { globalApi, moduleExists } = oldRequire(
-        `${__hooks}/pocketpages.pb`
+        $filepath.join(__hooks, 'pocketpages.pb')
       )
       require = (path) => {
         // console.log(`router require called with ${path}`)
@@ -64,6 +64,8 @@ if (isBooting) {
       ;(require as any).isOverridden = true
     }
     // console.log(`calling v23MiddlewareWrapper with overridden require`)
-    return require(`${__hooks}/pocketpages.pb`).v23MiddlewareWrapper(e)
+    return require(
+      $filepath.join(__hooks, 'pocketpages.pb')
+    ).v23MiddlewareWrapper(e)
   })
 }
