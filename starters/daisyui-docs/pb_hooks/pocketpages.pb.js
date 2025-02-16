@@ -164,25 +164,535 @@ ${v.stack}`;
       return parts.join(` `);
     };
     var dbg3 = (...objs) => {
-      const s = prepare(objs);
-      $app.logger().debug(s);
+      const s2 = prepare(objs);
+      $app.logger().debug(s2);
     };
     var info3 = (...objs) => {
-      const s = prepare(objs);
-      $app.logger().info(s);
+      const s2 = prepare(objs);
+      $app.logger().info(s2);
     };
     var warn = (...objs) => {
-      const s = prepare(objs);
-      $app.logger().warn(s);
+      const s2 = prepare(objs);
+      $app.logger().warn(s2);
     };
     var error2 = (...objs) => {
-      const s = prepare(objs);
-      $app.logger().error(s);
+      const s2 = prepare(objs);
+      $app.logger().error(s2);
     };
     var log4 = (...objs) => {
-      const s = prepare(objs);
-      console.log(s);
+      const s2 = prepare(objs);
+      console.log(s2);
     };
+  }
+});
+
+// node_modules/pocketbase-node/dist/index.js
+var require_dist3 = __commonJS({
+  "node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
+    "use strict";
+    init_cjs_shims();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var src_exports2 = {};
+    __export2(src_exports2, {
+      child_process: () => child_process_exports,
+      fs: () => fs_exports,
+      path: () => path_exports,
+      process: () => process_exports
+    });
+    module2.exports = __toCommonJS2(src_exports2);
+    var fs_exports = {};
+    __export2(fs_exports, {
+      existsSync: () => existsSync,
+      mkdirSync: () => mkdirSync,
+      readFileSync: () => readFileSync,
+      writeFileSync: () => writeFileSync
+    });
+    function byteArrayToUtf8(byteArray) {
+      let utf8String = "";
+      for (let i2 = 0; i2 < byteArray.length; i2++) {
+        utf8String += String.fromCharCode(byteArray[i2]);
+      }
+      return decodeURIComponent(escape(utf8String));
+    }
+    var readFileSync = (path3, options2) => {
+      if (typeof path3 !== "string") {
+        throw new Error("path must be a string");
+      }
+      const res = $os.readFile(path3);
+      if (typeof res === "string") {
+        return res;
+      }
+      const s2 = byteArrayToUtf8(res);
+      return s2;
+    };
+    var existsSync = (pathLike, fileType = "both") => {
+      const isDir = (() => {
+        try {
+          $os.readDir(pathLike);
+          return true;
+        } catch {
+          return false;
+        }
+      })();
+      const isFile2 = (() => {
+        if (isDir) {
+          return false;
+        }
+        try {
+          return $filesystem.fileFromPath(pathLike) !== null;
+        } catch {
+          return false;
+        }
+      })();
+      return fileType === "file" ? isFile2 : fileType === "dir" ? isDir : isFile2 || isDir;
+    };
+    var writeFileSync = (path3, data, options2) => {
+      if (typeof path3 !== "string") {
+        throw new Error("path must be a string");
+      }
+      if (typeof data !== "string") {
+        throw new Error("data must be a string");
+      }
+      const mode = (() => {
+        if (options2 && typeof options2 === "object" && "mode" in options2) {
+          return options2.mode;
+        }
+        return 420;
+      })();
+      $os.writeFile(path3, data, mode);
+    };
+    function mkdirSync(path3, options2) {
+      const mode = (() => {
+        if (options2 && typeof options2 === "object" && "mode" in options2) {
+          return options2.mode;
+        }
+        return 493;
+      })();
+      $os.mkdirAll(path3.toString(), mode);
+      return;
+    }
+    var path_exports = {};
+    __export2(path_exports, {
+      basename: () => basename,
+      delimiter: () => delimiter,
+      dirname: () => dirname,
+      extname: () => extname,
+      format: () => format,
+      isAbsolute: () => isAbsolute,
+      join: () => join,
+      normalize: () => normalize,
+      parse: () => parse5,
+      relative: () => relative,
+      resolve: () => resolve,
+      sep: () => sep,
+      win32: () => win32
+    });
+    function assertPath(path3) {
+      if (typeof path3 !== "string") {
+        throw new TypeError(
+          "Path must be a string. Received " + JSON.stringify(path3)
+        );
+      }
+    }
+    function normalizeStringPosix(path3, allowAboveRoot) {
+      var res = "";
+      var lastSegmentLength = 0;
+      var lastSlash = -1;
+      var dots = 0;
+      var code;
+      for (var i2 = 0; i2 <= path3.length; ++i2) {
+        if (i2 < path3.length) code = path3.charCodeAt(i2);
+        else if (code === 47) break;
+        else code = 47;
+        if (code === 47) {
+          if (lastSlash === i2 - 1 || dots === 1) {
+          } else if (lastSlash !== i2 - 1 && dots === 2) {
+            if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
+              if (res.length > 2) {
+                var lastSlashIndex = res.lastIndexOf("/");
+                if (lastSlashIndex !== res.length - 1) {
+                  if (lastSlashIndex === -1) {
+                    res = "";
+                    lastSegmentLength = 0;
+                  } else {
+                    res = res.slice(0, lastSlashIndex);
+                    lastSegmentLength = res.length - 1 - res.lastIndexOf("/");
+                  }
+                  lastSlash = i2;
+                  dots = 0;
+                  continue;
+                }
+              } else if (res.length === 2 || res.length === 1) {
+                res = "";
+                lastSegmentLength = 0;
+                lastSlash = i2;
+                dots = 0;
+                continue;
+              }
+            }
+            if (allowAboveRoot) {
+              if (res.length > 0) res += "/..";
+              else res = "..";
+              lastSegmentLength = 2;
+            }
+          } else {
+            if (res.length > 0) res += "/" + path3.slice(lastSlash + 1, i2);
+            else res = path3.slice(lastSlash + 1, i2);
+            lastSegmentLength = i2 - lastSlash - 1;
+          }
+          lastSlash = i2;
+          dots = 0;
+        } else if (code === 46 && dots !== -1) {
+          ++dots;
+        } else {
+          dots = -1;
+        }
+      }
+      return res;
+    }
+    function _format(sep2, pathObject) {
+      var dir = pathObject.dir || pathObject.root;
+      var base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
+      if (!dir) {
+        return base;
+      }
+      if (dir === pathObject.root) {
+        return dir + base;
+      }
+      return dir + sep2 + base;
+    }
+    function resolve(...args) {
+      var resolvedPath = "";
+      var resolvedAbsolute = false;
+      var cwd2;
+      for (var i2 = arguments.length - 1; i2 >= -1 && !resolvedAbsolute; i2--) {
+        var path3;
+        if (i2 >= 0) path3 = arguments[i2];
+        else {
+          if (cwd2 === void 0) cwd2 = $os.getwd();
+          path3 = cwd2;
+        }
+        assertPath(path3);
+        if (path3.length === 0) {
+          continue;
+        }
+        resolvedPath = path3 + "/" + resolvedPath;
+        resolvedAbsolute = path3.charCodeAt(0) === 47;
+      }
+      resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
+      if (resolvedAbsolute) {
+        if (resolvedPath.length > 0) return "/" + resolvedPath;
+        else return "/";
+      } else if (resolvedPath.length > 0) {
+        return resolvedPath;
+      } else {
+        return ".";
+      }
+    }
+    function normalize(path3) {
+      assertPath(path3);
+      if (path3.length === 0) return ".";
+      var isAbsolute2 = path3.charCodeAt(0) === 47;
+      var trailingSeparator = path3.charCodeAt(path3.length - 1) === 47;
+      path3 = normalizeStringPosix(path3, !isAbsolute2);
+      if (path3.length === 0 && !isAbsolute2) path3 = ".";
+      if (path3.length > 0 && trailingSeparator) path3 += "/";
+      if (isAbsolute2) return "/" + path3;
+      return path3;
+    }
+    function isAbsolute(path3) {
+      assertPath(path3);
+      return path3.length > 0 && path3.charCodeAt(0) === 47;
+    }
+    function join(...paths) {
+      if (arguments.length === 0) return ".";
+      var joined;
+      for (var i2 = 0; i2 < arguments.length; ++i2) {
+        var arg = arguments[i2];
+        assertPath(arg);
+        if (arg.length > 0) {
+          if (joined === void 0) joined = arg;
+          else joined += "/" + arg;
+        }
+      }
+      if (joined === void 0) return ".";
+      return normalize(joined);
+    }
+    function relative(from, to) {
+      assertPath(from);
+      assertPath(to);
+      if (from === to) return "";
+      from = resolve(from);
+      to = resolve(to);
+      if (from === to) return "";
+      var fromStart = 1;
+      for (; fromStart < from.length; ++fromStart) {
+        if (from.charCodeAt(fromStart) !== 47) break;
+      }
+      var fromEnd = from.length;
+      var fromLen = fromEnd - fromStart;
+      var toStart = 1;
+      for (; toStart < to.length; ++toStart) {
+        if (to.charCodeAt(toStart) !== 47) break;
+      }
+      var toEnd = to.length;
+      var toLen = toEnd - toStart;
+      var length = fromLen < toLen ? fromLen : toLen;
+      var lastCommonSep = -1;
+      var i2 = 0;
+      for (; i2 <= length; ++i2) {
+        if (i2 === length) {
+          if (toLen > length) {
+            if (to.charCodeAt(toStart + i2) === 47) {
+              return to.slice(toStart + i2 + 1);
+            } else if (i2 === 0) {
+              return to.slice(toStart + i2);
+            }
+          } else if (fromLen > length) {
+            if (from.charCodeAt(fromStart + i2) === 47) {
+              lastCommonSep = i2;
+            } else if (i2 === 0) {
+              lastCommonSep = 0;
+            }
+          }
+          break;
+        }
+        var fromCode = from.charCodeAt(fromStart + i2);
+        var toCode = to.charCodeAt(toStart + i2);
+        if (fromCode !== toCode) break;
+        else if (fromCode === 47) lastCommonSep = i2;
+      }
+      var out = "";
+      for (i2 = fromStart + lastCommonSep + 1; i2 <= fromEnd; ++i2) {
+        if (i2 === fromEnd || from.charCodeAt(i2) === 47) {
+          if (out.length === 0) out += "..";
+          else out += "/..";
+        }
+      }
+      if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
+      else {
+        toStart += lastCommonSep;
+        if (to.charCodeAt(toStart) === 47) ++toStart;
+        return to.slice(toStart);
+      }
+    }
+    function dirname(path3) {
+      assertPath(path3);
+      if (path3.length === 0) return ".";
+      var code = path3.charCodeAt(0);
+      var hasRoot = code === 47;
+      var end = -1;
+      var matchedSlash = true;
+      for (var i2 = path3.length - 1; i2 >= 1; --i2) {
+        code = path3.charCodeAt(i2);
+        if (code === 47) {
+          if (!matchedSlash) {
+            end = i2;
+            break;
+          }
+        } else {
+          matchedSlash = false;
+        }
+      }
+      if (end === -1) return hasRoot ? "/" : ".";
+      if (hasRoot && end === 1) return "//";
+      return path3.slice(0, end);
+    }
+    function basename(path3, ext) {
+      if (ext !== void 0 && typeof ext !== "string")
+        throw new TypeError('"ext" argument must be a string');
+      assertPath(path3);
+      var start = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var i2;
+      if (ext !== void 0 && ext.length > 0 && ext.length <= path3.length) {
+        if (ext.length === path3.length && ext === path3) return "";
+        var extIdx = ext.length - 1;
+        var firstNonSlashEnd = -1;
+        for (i2 = path3.length - 1; i2 >= 0; --i2) {
+          var code = path3.charCodeAt(i2);
+          if (code === 47) {
+            if (!matchedSlash) {
+              start = i2 + 1;
+              break;
+            }
+          } else {
+            if (firstNonSlashEnd === -1) {
+              matchedSlash = false;
+              firstNonSlashEnd = i2 + 1;
+            }
+            if (extIdx >= 0) {
+              if (code === ext.charCodeAt(extIdx)) {
+                if (--extIdx === -1) {
+                  end = i2;
+                }
+              } else {
+                extIdx = -1;
+                end = firstNonSlashEnd;
+              }
+            }
+          }
+        }
+        if (start === end) end = firstNonSlashEnd;
+        else if (end === -1) end = path3.length;
+        return path3.slice(start, end);
+      } else {
+        for (i2 = path3.length - 1; i2 >= 0; --i2) {
+          if (path3.charCodeAt(i2) === 47) {
+            if (!matchedSlash) {
+              start = i2 + 1;
+              break;
+            }
+          } else if (end === -1) {
+            matchedSlash = false;
+            end = i2 + 1;
+          }
+        }
+        if (end === -1) return "";
+        return path3.slice(start, end);
+      }
+    }
+    function extname(path3) {
+      assertPath(path3);
+      var startDot = -1;
+      var startPart = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var preDotState = 0;
+      for (var i2 = path3.length - 1; i2 >= 0; --i2) {
+        var code = path3.charCodeAt(i2);
+        if (code === 47) {
+          if (!matchedSlash) {
+            startPart = i2 + 1;
+            break;
+          }
+          continue;
+        }
+        if (end === -1) {
+          matchedSlash = false;
+          end = i2 + 1;
+        }
+        if (code === 46) {
+          if (startDot === -1) startDot = i2;
+          else if (preDotState !== 1) preDotState = 1;
+        } else if (startDot !== -1) {
+          preDotState = -1;
+        }
+      }
+      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+        return "";
+      }
+      return path3.slice(startDot, end);
+    }
+    function format(pathObject) {
+      if (pathObject === null || typeof pathObject !== "object") {
+        throw new TypeError(
+          'The "pathObject" argument must be of type Object. Received type ' + typeof pathObject
+        );
+      }
+      return _format("/", pathObject);
+    }
+    function parse5(path3) {
+      assertPath(path3);
+      var ret = { root: "", dir: "", base: "", ext: "", name: "" };
+      if (path3.length === 0) return ret;
+      var code = path3.charCodeAt(0);
+      var isAbsolute2 = code === 47;
+      var start;
+      if (isAbsolute2) {
+        ret.root = "/";
+        start = 1;
+      } else {
+        start = 0;
+      }
+      var startDot = -1;
+      var startPart = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var i2 = path3.length - 1;
+      var preDotState = 0;
+      for (; i2 >= start; --i2) {
+        code = path3.charCodeAt(i2);
+        if (code === 47) {
+          if (!matchedSlash) {
+            startPart = i2 + 1;
+            break;
+          }
+          continue;
+        }
+        if (end === -1) {
+          matchedSlash = false;
+          end = i2 + 1;
+        }
+        if (code === 46) {
+          if (startDot === -1) startDot = i2;
+          else if (preDotState !== 1) preDotState = 1;
+        } else if (startDot !== -1) {
+          preDotState = -1;
+        }
+      }
+      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+        if (end !== -1) {
+          if (startPart === 0 && isAbsolute2)
+            ret.base = ret.name = path3.slice(1, end);
+          else ret.base = ret.name = path3.slice(startPart, end);
+        }
+      } else {
+        if (startPart === 0 && isAbsolute2) {
+          ret.name = path3.slice(1, startDot);
+          ret.base = path3.slice(1, end);
+        } else {
+          ret.name = path3.slice(startPart, startDot);
+          ret.base = path3.slice(startPart, end);
+        }
+        ret.ext = path3.slice(startDot, end);
+      }
+      if (startPart > 0) ret.dir = path3.slice(0, startPart - 1);
+      else if (isAbsolute2) ret.dir = "/";
+      return ret;
+    }
+    var sep = "/";
+    var delimiter = ":";
+    var win32 = null;
+    var child_process_exports = {};
+    __export2(child_process_exports, {
+      execSync: () => execSync
+    });
+    var execSync = (cmdArr) => {
+      const [cmd, ...args] = cmdArr;
+      const _cmd = $os.cmd(cmd, ...args);
+      const charOut = _cmd.output();
+      const output = String.fromCharCode(...charOut);
+      return output;
+    };
+    var process_exports = {};
+    __export2(process_exports, {
+      cwd: () => cwd,
+      env: () => env
+    });
+    var cwd = () => $os.getwd();
+    var { env } = process;
   }
 });
 
@@ -224,14 +734,14 @@ var require_querystringify = __commonJS({
     function decode3(input) {
       try {
         return decodeURIComponent(input.replace(/\+/g, " "));
-      } catch (e) {
+      } catch (e2) {
         return null;
       }
     }
     function encode2(input) {
       try {
         return encodeURIComponent(input);
-      } catch (e) {
+      } catch (e2) {
         return null;
       }
     }
@@ -379,16 +889,16 @@ var require_url_parse = __commonJS({
     }
     function resolve(relative, base) {
       if (relative === "") return base;
-      var path3 = (base || "/").split("/").slice(0, -1).concat(relative.split("/")), i = path3.length, last = path3[i - 1], unshift = false, up = 0;
-      while (i--) {
-        if (path3[i] === ".") {
-          path3.splice(i, 1);
-        } else if (path3[i] === "..") {
-          path3.splice(i, 1);
+      var path3 = (base || "/").split("/").slice(0, -1).concat(relative.split("/")), i2 = path3.length, last = path3[i2 - 1], unshift = false, up = 0;
+      while (i2--) {
+        if (path3[i2] === ".") {
+          path3.splice(i2, 1);
+        } else if (path3[i2] === "..") {
+          path3.splice(i2, 1);
           up++;
         } else if (up) {
-          if (i === 0) unshift = true;
-          path3.splice(i, 1);
+          if (i2 === 0) unshift = true;
+          path3.splice(i2, 1);
           up--;
         }
       }
@@ -402,7 +912,7 @@ var require_url_parse = __commonJS({
       if (!(this instanceof Url)) {
         return new Url(address, location, parser2);
       }
-      var relative, extracted, parse5, instruction, index, key, instructions = rules.slice(), type = typeof location, url = this, i = 0;
+      var relative, extracted, parse5, instruction, index, key, instructions = rules.slice(), type = typeof location, url = this, i2 = 0;
       if ("object" !== type && "string" !== type) {
         parser2 = location;
         location = null;
@@ -417,8 +927,8 @@ var require_url_parse = __commonJS({
       if (extracted.protocol === "file:" && (extracted.slashesCount !== 2 || windowsDriveLetter.test(address)) || !extracted.slashes && (extracted.protocol || extracted.slashesCount < 2 || !isSpecial(url.protocol))) {
         instructions[3] = [/(.*)/, "pathname"];
       }
-      for (; i < instructions.length; i++) {
-        instruction = instructions[i];
+      for (; i2 < instructions.length; i2++) {
+        instruction = instructions[i2];
         if (typeof instruction === "function") {
           address = instruction(address, url);
           continue;
@@ -534,8 +1044,8 @@ var require_url_parse = __commonJS({
             url.username = encodeURIComponent(decodeURIComponent(value));
           }
       }
-      for (var i = 0; i < rules.length; i++) {
-        var ins = rules[i];
+      for (var i2 = 0; i2 < rules.length; i2++) {
+        var ins = rules[i2];
         if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
       }
       url.auth = url.password ? url.username + ":" + url.password : url.username;
@@ -576,519 +1086,9 @@ var require_url_parse = __commonJS({
   }
 });
 
-// node_modules/pocketbase-node/dist/index.js
-var require_dist3 = __commonJS({
-  "node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
-    "use strict";
-    init_cjs_shims();
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var src_exports2 = {};
-    __export2(src_exports2, {
-      child_process: () => child_process_exports,
-      fs: () => fs_exports,
-      path: () => path_exports,
-      process: () => process_exports
-    });
-    module2.exports = __toCommonJS2(src_exports2);
-    var fs_exports = {};
-    __export2(fs_exports, {
-      existsSync: () => existsSync,
-      mkdirSync: () => mkdirSync,
-      readFileSync: () => readFileSync,
-      writeFileSync: () => writeFileSync
-    });
-    function byteArrayToUtf8(byteArray) {
-      let utf8String = "";
-      for (let i = 0; i < byteArray.length; i++) {
-        utf8String += String.fromCharCode(byteArray[i]);
-      }
-      return decodeURIComponent(escape(utf8String));
-    }
-    var readFileSync = (path3, options2) => {
-      if (typeof path3 !== "string") {
-        throw new Error("path must be a string");
-      }
-      const res = $os.readFile(path3);
-      if (typeof res === "string") {
-        return res;
-      }
-      const s = byteArrayToUtf8(res);
-      return s;
-    };
-    var existsSync = (pathLike, fileType = "both") => {
-      const isDir = (() => {
-        try {
-          $os.readDir(pathLike);
-          return true;
-        } catch {
-          return false;
-        }
-      })();
-      const isFile2 = (() => {
-        if (isDir) {
-          return false;
-        }
-        try {
-          return $filesystem.fileFromPath(pathLike) !== null;
-        } catch {
-          return false;
-        }
-      })();
-      return fileType === "file" ? isFile2 : fileType === "dir" ? isDir : isFile2 || isDir;
-    };
-    var writeFileSync = (path3, data, options2) => {
-      if (typeof path3 !== "string") {
-        throw new Error("path must be a string");
-      }
-      if (typeof data !== "string") {
-        throw new Error("data must be a string");
-      }
-      const mode = (() => {
-        if (options2 && typeof options2 === "object" && "mode" in options2) {
-          return options2.mode;
-        }
-        return 420;
-      })();
-      $os.writeFile(path3, data, mode);
-    };
-    function mkdirSync(path3, options2) {
-      const mode = (() => {
-        if (options2 && typeof options2 === "object" && "mode" in options2) {
-          return options2.mode;
-        }
-        return 493;
-      })();
-      $os.mkdirAll(path3.toString(), mode);
-      return;
-    }
-    var path_exports = {};
-    __export2(path_exports, {
-      basename: () => basename,
-      delimiter: () => delimiter,
-      dirname: () => dirname,
-      extname: () => extname,
-      format: () => format,
-      isAbsolute: () => isAbsolute,
-      join: () => join,
-      normalize: () => normalize,
-      parse: () => parse5,
-      relative: () => relative,
-      resolve: () => resolve,
-      sep: () => sep,
-      win32: () => win32
-    });
-    function assertPath(path3) {
-      if (typeof path3 !== "string") {
-        throw new TypeError(
-          "Path must be a string. Received " + JSON.stringify(path3)
-        );
-      }
-    }
-    function normalizeStringPosix(path3, allowAboveRoot) {
-      var res = "";
-      var lastSegmentLength = 0;
-      var lastSlash = -1;
-      var dots = 0;
-      var code;
-      for (var i = 0; i <= path3.length; ++i) {
-        if (i < path3.length) code = path3.charCodeAt(i);
-        else if (code === 47) break;
-        else code = 47;
-        if (code === 47) {
-          if (lastSlash === i - 1 || dots === 1) {
-          } else if (lastSlash !== i - 1 && dots === 2) {
-            if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
-              if (res.length > 2) {
-                var lastSlashIndex = res.lastIndexOf("/");
-                if (lastSlashIndex !== res.length - 1) {
-                  if (lastSlashIndex === -1) {
-                    res = "";
-                    lastSegmentLength = 0;
-                  } else {
-                    res = res.slice(0, lastSlashIndex);
-                    lastSegmentLength = res.length - 1 - res.lastIndexOf("/");
-                  }
-                  lastSlash = i;
-                  dots = 0;
-                  continue;
-                }
-              } else if (res.length === 2 || res.length === 1) {
-                res = "";
-                lastSegmentLength = 0;
-                lastSlash = i;
-                dots = 0;
-                continue;
-              }
-            }
-            if (allowAboveRoot) {
-              if (res.length > 0) res += "/..";
-              else res = "..";
-              lastSegmentLength = 2;
-            }
-          } else {
-            if (res.length > 0) res += "/" + path3.slice(lastSlash + 1, i);
-            else res = path3.slice(lastSlash + 1, i);
-            lastSegmentLength = i - lastSlash - 1;
-          }
-          lastSlash = i;
-          dots = 0;
-        } else if (code === 46 && dots !== -1) {
-          ++dots;
-        } else {
-          dots = -1;
-        }
-      }
-      return res;
-    }
-    function _format(sep2, pathObject) {
-      var dir = pathObject.dir || pathObject.root;
-      var base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
-      if (!dir) {
-        return base;
-      }
-      if (dir === pathObject.root) {
-        return dir + base;
-      }
-      return dir + sep2 + base;
-    }
-    function resolve(...args) {
-      var resolvedPath = "";
-      var resolvedAbsolute = false;
-      var cwd2;
-      for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-        var path3;
-        if (i >= 0) path3 = arguments[i];
-        else {
-          if (cwd2 === void 0) cwd2 = $os.getwd();
-          path3 = cwd2;
-        }
-        assertPath(path3);
-        if (path3.length === 0) {
-          continue;
-        }
-        resolvedPath = path3 + "/" + resolvedPath;
-        resolvedAbsolute = path3.charCodeAt(0) === 47;
-      }
-      resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
-      if (resolvedAbsolute) {
-        if (resolvedPath.length > 0) return "/" + resolvedPath;
-        else return "/";
-      } else if (resolvedPath.length > 0) {
-        return resolvedPath;
-      } else {
-        return ".";
-      }
-    }
-    function normalize(path3) {
-      assertPath(path3);
-      if (path3.length === 0) return ".";
-      var isAbsolute2 = path3.charCodeAt(0) === 47;
-      var trailingSeparator = path3.charCodeAt(path3.length - 1) === 47;
-      path3 = normalizeStringPosix(path3, !isAbsolute2);
-      if (path3.length === 0 && !isAbsolute2) path3 = ".";
-      if (path3.length > 0 && trailingSeparator) path3 += "/";
-      if (isAbsolute2) return "/" + path3;
-      return path3;
-    }
-    function isAbsolute(path3) {
-      assertPath(path3);
-      return path3.length > 0 && path3.charCodeAt(0) === 47;
-    }
-    function join(...paths) {
-      if (arguments.length === 0) return ".";
-      var joined;
-      for (var i = 0; i < arguments.length; ++i) {
-        var arg = arguments[i];
-        assertPath(arg);
-        if (arg.length > 0) {
-          if (joined === void 0) joined = arg;
-          else joined += "/" + arg;
-        }
-      }
-      if (joined === void 0) return ".";
-      return normalize(joined);
-    }
-    function relative(from, to) {
-      assertPath(from);
-      assertPath(to);
-      if (from === to) return "";
-      from = resolve(from);
-      to = resolve(to);
-      if (from === to) return "";
-      var fromStart = 1;
-      for (; fromStart < from.length; ++fromStart) {
-        if (from.charCodeAt(fromStart) !== 47) break;
-      }
-      var fromEnd = from.length;
-      var fromLen = fromEnd - fromStart;
-      var toStart = 1;
-      for (; toStart < to.length; ++toStart) {
-        if (to.charCodeAt(toStart) !== 47) break;
-      }
-      var toEnd = to.length;
-      var toLen = toEnd - toStart;
-      var length = fromLen < toLen ? fromLen : toLen;
-      var lastCommonSep = -1;
-      var i = 0;
-      for (; i <= length; ++i) {
-        if (i === length) {
-          if (toLen > length) {
-            if (to.charCodeAt(toStart + i) === 47) {
-              return to.slice(toStart + i + 1);
-            } else if (i === 0) {
-              return to.slice(toStart + i);
-            }
-          } else if (fromLen > length) {
-            if (from.charCodeAt(fromStart + i) === 47) {
-              lastCommonSep = i;
-            } else if (i === 0) {
-              lastCommonSep = 0;
-            }
-          }
-          break;
-        }
-        var fromCode = from.charCodeAt(fromStart + i);
-        var toCode = to.charCodeAt(toStart + i);
-        if (fromCode !== toCode) break;
-        else if (fromCode === 47) lastCommonSep = i;
-      }
-      var out = "";
-      for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
-        if (i === fromEnd || from.charCodeAt(i) === 47) {
-          if (out.length === 0) out += "..";
-          else out += "/..";
-        }
-      }
-      if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
-      else {
-        toStart += lastCommonSep;
-        if (to.charCodeAt(toStart) === 47) ++toStart;
-        return to.slice(toStart);
-      }
-    }
-    function dirname(path3) {
-      assertPath(path3);
-      if (path3.length === 0) return ".";
-      var code = path3.charCodeAt(0);
-      var hasRoot = code === 47;
-      var end = -1;
-      var matchedSlash = true;
-      for (var i = path3.length - 1; i >= 1; --i) {
-        code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            end = i;
-            break;
-          }
-        } else {
-          matchedSlash = false;
-        }
-      }
-      if (end === -1) return hasRoot ? "/" : ".";
-      if (hasRoot && end === 1) return "//";
-      return path3.slice(0, end);
-    }
-    function basename(path3, ext) {
-      if (ext !== void 0 && typeof ext !== "string")
-        throw new TypeError('"ext" argument must be a string');
-      assertPath(path3);
-      var start = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var i;
-      if (ext !== void 0 && ext.length > 0 && ext.length <= path3.length) {
-        if (ext.length === path3.length && ext === path3) return "";
-        var extIdx = ext.length - 1;
-        var firstNonSlashEnd = -1;
-        for (i = path3.length - 1; i >= 0; --i) {
-          var code = path3.charCodeAt(i);
-          if (code === 47) {
-            if (!matchedSlash) {
-              start = i + 1;
-              break;
-            }
-          } else {
-            if (firstNonSlashEnd === -1) {
-              matchedSlash = false;
-              firstNonSlashEnd = i + 1;
-            }
-            if (extIdx >= 0) {
-              if (code === ext.charCodeAt(extIdx)) {
-                if (--extIdx === -1) {
-                  end = i;
-                }
-              } else {
-                extIdx = -1;
-                end = firstNonSlashEnd;
-              }
-            }
-          }
-        }
-        if (start === end) end = firstNonSlashEnd;
-        else if (end === -1) end = path3.length;
-        return path3.slice(start, end);
-      } else {
-        for (i = path3.length - 1; i >= 0; --i) {
-          if (path3.charCodeAt(i) === 47) {
-            if (!matchedSlash) {
-              start = i + 1;
-              break;
-            }
-          } else if (end === -1) {
-            matchedSlash = false;
-            end = i + 1;
-          }
-        }
-        if (end === -1) return "";
-        return path3.slice(start, end);
-      }
-    }
-    function extname(path3) {
-      assertPath(path3);
-      var startDot = -1;
-      var startPart = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var preDotState = 0;
-      for (var i = path3.length - 1; i >= 0; --i) {
-        var code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            startPart = i + 1;
-            break;
-          }
-          continue;
-        }
-        if (end === -1) {
-          matchedSlash = false;
-          end = i + 1;
-        }
-        if (code === 46) {
-          if (startDot === -1) startDot = i;
-          else if (preDotState !== 1) preDotState = 1;
-        } else if (startDot !== -1) {
-          preDotState = -1;
-        }
-      }
-      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
-      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-        return "";
-      }
-      return path3.slice(startDot, end);
-    }
-    function format(pathObject) {
-      if (pathObject === null || typeof pathObject !== "object") {
-        throw new TypeError(
-          'The "pathObject" argument must be of type Object. Received type ' + typeof pathObject
-        );
-      }
-      return _format("/", pathObject);
-    }
-    function parse5(path3) {
-      assertPath(path3);
-      var ret = { root: "", dir: "", base: "", ext: "", name: "" };
-      if (path3.length === 0) return ret;
-      var code = path3.charCodeAt(0);
-      var isAbsolute2 = code === 47;
-      var start;
-      if (isAbsolute2) {
-        ret.root = "/";
-        start = 1;
-      } else {
-        start = 0;
-      }
-      var startDot = -1;
-      var startPart = 0;
-      var end = -1;
-      var matchedSlash = true;
-      var i = path3.length - 1;
-      var preDotState = 0;
-      for (; i >= start; --i) {
-        code = path3.charCodeAt(i);
-        if (code === 47) {
-          if (!matchedSlash) {
-            startPart = i + 1;
-            break;
-          }
-          continue;
-        }
-        if (end === -1) {
-          matchedSlash = false;
-          end = i + 1;
-        }
-        if (code === 46) {
-          if (startDot === -1) startDot = i;
-          else if (preDotState !== 1) preDotState = 1;
-        } else if (startDot !== -1) {
-          preDotState = -1;
-        }
-      }
-      if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
-      preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-        if (end !== -1) {
-          if (startPart === 0 && isAbsolute2)
-            ret.base = ret.name = path3.slice(1, end);
-          else ret.base = ret.name = path3.slice(startPart, end);
-        }
-      } else {
-        if (startPart === 0 && isAbsolute2) {
-          ret.name = path3.slice(1, startDot);
-          ret.base = path3.slice(1, end);
-        } else {
-          ret.name = path3.slice(startPart, startDot);
-          ret.base = path3.slice(startPart, end);
-        }
-        ret.ext = path3.slice(startDot, end);
-      }
-      if (startPart > 0) ret.dir = path3.slice(0, startPart - 1);
-      else if (isAbsolute2) ret.dir = "/";
-      return ret;
-    }
-    var sep = "/";
-    var delimiter = ":";
-    var win32 = null;
-    var child_process_exports = {};
-    __export2(child_process_exports, {
-      execSync: () => execSync
-    });
-    var execSync = (cmdArr) => {
-      const [cmd, ...args] = cmdArr;
-      const _cmd = $os.cmd(cmd, ...args);
-      const charOut = _cmd.output();
-      const output = String.fromCharCode(...charOut);
-      return output;
-    };
-    var process_exports = {};
-    __export2(process_exports, {
-      cwd: () => cwd,
-      env: () => env
-    });
-    var cwd = () => $os.getwd();
-    var { env } = process;
-  }
-});
-
-// ../pocketbase-ejs/node_modules/pocketbase-node/dist/index.js
+// node_modules/pocketbase-ejs/node_modules/pocketbase-node/dist/index.js
 var require_dist4 = __commonJS({
-  "../pocketbase-ejs/node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
+  "node_modules/pocketbase-ejs/node_modules/pocketbase-node/dist/index.js"(exports2, module2) {
     "use strict";
     init_cjs_shims();
     var __defProp2 = Object.defineProperty;
@@ -1125,8 +1125,8 @@ var require_dist4 = __commonJS({
     });
     function byteArrayToUtf8(byteArray) {
       let utf8String = "";
-      for (let i = 0; i < byteArray.length; i++) {
-        utf8String += String.fromCharCode(byteArray[i]);
+      for (let i2 = 0; i2 < byteArray.length; i2++) {
+        utf8String += String.fromCharCode(byteArray[i2]);
       }
       return decodeURIComponent(escape(utf8String));
     }
@@ -1135,8 +1135,8 @@ var require_dist4 = __commonJS({
       if (typeof res === "string") {
         return res;
       }
-      const s = byteArrayToUtf8(res);
-      return s;
+      const s2 = byteArrayToUtf8(res);
+      return s2;
     };
     var existsSync = (path3, fileType = `file`) => {
       const isDir = (() => {
@@ -1213,13 +1213,13 @@ var require_dist4 = __commonJS({
       var lastSlash = -1;
       var dots = 0;
       var code;
-      for (var i = 0; i <= path3.length; ++i) {
-        if (i < path3.length) code = path3.charCodeAt(i);
+      for (var i2 = 0; i2 <= path3.length; ++i2) {
+        if (i2 < path3.length) code = path3.charCodeAt(i2);
         else if (code === 47) break;
         else code = 47;
         if (code === 47) {
-          if (lastSlash === i - 1 || dots === 1) {
-          } else if (lastSlash !== i - 1 && dots === 2) {
+          if (lastSlash === i2 - 1 || dots === 1) {
+          } else if (lastSlash !== i2 - 1 && dots === 2) {
             if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
               if (res.length > 2) {
                 var lastSlashIndex = res.lastIndexOf("/");
@@ -1231,14 +1231,14 @@ var require_dist4 = __commonJS({
                     res = res.slice(0, lastSlashIndex);
                     lastSegmentLength = res.length - 1 - res.lastIndexOf("/");
                   }
-                  lastSlash = i;
+                  lastSlash = i2;
                   dots = 0;
                   continue;
                 }
               } else if (res.length === 2 || res.length === 1) {
                 res = "";
                 lastSegmentLength = 0;
-                lastSlash = i;
+                lastSlash = i2;
                 dots = 0;
                 continue;
               }
@@ -1249,11 +1249,11 @@ var require_dist4 = __commonJS({
               lastSegmentLength = 2;
             }
           } else {
-            if (res.length > 0) res += "/" + path3.slice(lastSlash + 1, i);
-            else res = path3.slice(lastSlash + 1, i);
-            lastSegmentLength = i - lastSlash - 1;
+            if (res.length > 0) res += "/" + path3.slice(lastSlash + 1, i2);
+            else res = path3.slice(lastSlash + 1, i2);
+            lastSegmentLength = i2 - lastSlash - 1;
           }
-          lastSlash = i;
+          lastSlash = i2;
           dots = 0;
         } else if (code === 46 && dots !== -1) {
           ++dots;
@@ -1278,9 +1278,9 @@ var require_dist4 = __commonJS({
       var resolvedPath = "";
       var resolvedAbsolute = false;
       var cwd2;
-      for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+      for (var i2 = arguments.length - 1; i2 >= -1 && !resolvedAbsolute; i2--) {
         var path3;
-        if (i >= 0) path3 = arguments[i];
+        if (i2 >= 0) path3 = arguments[i2];
         else {
           if (cwd2 === void 0) cwd2 = $os.getwd();
           path3 = cwd2;
@@ -1320,8 +1320,8 @@ var require_dist4 = __commonJS({
     function join(...paths) {
       if (arguments.length === 0) return ".";
       var joined;
-      for (var i = 0; i < arguments.length; ++i) {
-        var arg = arguments[i];
+      for (var i2 = 0; i2 < arguments.length; ++i2) {
+        var arg = arguments[i2];
         assertPath(arg);
         if (arg.length > 0) {
           if (joined === void 0) joined = arg;
@@ -1352,32 +1352,32 @@ var require_dist4 = __commonJS({
       var toLen = toEnd - toStart;
       var length = fromLen < toLen ? fromLen : toLen;
       var lastCommonSep = -1;
-      var i = 0;
-      for (; i <= length; ++i) {
-        if (i === length) {
+      var i2 = 0;
+      for (; i2 <= length; ++i2) {
+        if (i2 === length) {
           if (toLen > length) {
-            if (to.charCodeAt(toStart + i) === 47) {
-              return to.slice(toStart + i + 1);
-            } else if (i === 0) {
-              return to.slice(toStart + i);
+            if (to.charCodeAt(toStart + i2) === 47) {
+              return to.slice(toStart + i2 + 1);
+            } else if (i2 === 0) {
+              return to.slice(toStart + i2);
             }
           } else if (fromLen > length) {
-            if (from.charCodeAt(fromStart + i) === 47) {
-              lastCommonSep = i;
-            } else if (i === 0) {
+            if (from.charCodeAt(fromStart + i2) === 47) {
+              lastCommonSep = i2;
+            } else if (i2 === 0) {
               lastCommonSep = 0;
             }
           }
           break;
         }
-        var fromCode = from.charCodeAt(fromStart + i);
-        var toCode = to.charCodeAt(toStart + i);
+        var fromCode = from.charCodeAt(fromStart + i2);
+        var toCode = to.charCodeAt(toStart + i2);
         if (fromCode !== toCode) break;
-        else if (fromCode === 47) lastCommonSep = i;
+        else if (fromCode === 47) lastCommonSep = i2;
       }
       var out = "";
-      for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
-        if (i === fromEnd || from.charCodeAt(i) === 47) {
+      for (i2 = fromStart + lastCommonSep + 1; i2 <= fromEnd; ++i2) {
+        if (i2 === fromEnd || from.charCodeAt(i2) === 47) {
           if (out.length === 0) out += "..";
           else out += "/..";
         }
@@ -1396,11 +1396,11 @@ var require_dist4 = __commonJS({
       var hasRoot = code === 47;
       var end = -1;
       var matchedSlash = true;
-      for (var i = path3.length - 1; i >= 1; --i) {
-        code = path3.charCodeAt(i);
+      for (var i2 = path3.length - 1; i2 >= 1; --i2) {
+        code = path3.charCodeAt(i2);
         if (code === 47) {
           if (!matchedSlash) {
-            end = i;
+            end = i2;
             break;
           }
         } else {
@@ -1418,27 +1418,27 @@ var require_dist4 = __commonJS({
       var start = 0;
       var end = -1;
       var matchedSlash = true;
-      var i;
+      var i2;
       if (ext !== void 0 && ext.length > 0 && ext.length <= path3.length) {
         if (ext.length === path3.length && ext === path3) return "";
         var extIdx = ext.length - 1;
         var firstNonSlashEnd = -1;
-        for (i = path3.length - 1; i >= 0; --i) {
-          var code = path3.charCodeAt(i);
+        for (i2 = path3.length - 1; i2 >= 0; --i2) {
+          var code = path3.charCodeAt(i2);
           if (code === 47) {
             if (!matchedSlash) {
-              start = i + 1;
+              start = i2 + 1;
               break;
             }
           } else {
             if (firstNonSlashEnd === -1) {
               matchedSlash = false;
-              firstNonSlashEnd = i + 1;
+              firstNonSlashEnd = i2 + 1;
             }
             if (extIdx >= 0) {
               if (code === ext.charCodeAt(extIdx)) {
                 if (--extIdx === -1) {
-                  end = i;
+                  end = i2;
                 }
               } else {
                 extIdx = -1;
@@ -1451,15 +1451,15 @@ var require_dist4 = __commonJS({
         else if (end === -1) end = path3.length;
         return path3.slice(start, end);
       } else {
-        for (i = path3.length - 1; i >= 0; --i) {
-          if (path3.charCodeAt(i) === 47) {
+        for (i2 = path3.length - 1; i2 >= 0; --i2) {
+          if (path3.charCodeAt(i2) === 47) {
             if (!matchedSlash) {
-              start = i + 1;
+              start = i2 + 1;
               break;
             }
           } else if (end === -1) {
             matchedSlash = false;
-            end = i + 1;
+            end = i2 + 1;
           }
         }
         if (end === -1) return "";
@@ -1473,21 +1473,21 @@ var require_dist4 = __commonJS({
       var end = -1;
       var matchedSlash = true;
       var preDotState = 0;
-      for (var i = path3.length - 1; i >= 0; --i) {
-        var code = path3.charCodeAt(i);
+      for (var i2 = path3.length - 1; i2 >= 0; --i2) {
+        var code = path3.charCodeAt(i2);
         if (code === 47) {
           if (!matchedSlash) {
-            startPart = i + 1;
+            startPart = i2 + 1;
             break;
           }
           continue;
         }
         if (end === -1) {
           matchedSlash = false;
-          end = i + 1;
+          end = i2 + 1;
         }
         if (code === 46) {
-          if (startDot === -1) startDot = i;
+          if (startDot === -1) startDot = i2;
           else if (preDotState !== 1) preDotState = 1;
         } else if (startDot !== -1) {
           preDotState = -1;
@@ -1525,23 +1525,23 @@ var require_dist4 = __commonJS({
       var startPart = 0;
       var end = -1;
       var matchedSlash = true;
-      var i = path3.length - 1;
+      var i2 = path3.length - 1;
       var preDotState = 0;
-      for (; i >= start; --i) {
-        code = path3.charCodeAt(i);
+      for (; i2 >= start; --i2) {
+        code = path3.charCodeAt(i2);
         if (code === 47) {
           if (!matchedSlash) {
-            startPart = i + 1;
+            startPart = i2 + 1;
             break;
           }
           continue;
         }
         if (end === -1) {
           matchedSlash = false;
-          end = i + 1;
+          end = i2 + 1;
         }
         if (code === 46) {
-          if (startDot === -1) startDot = i;
+          if (startDot === -1) startDot = i2;
           else if (preDotState !== 1) preDotState = 1;
         } else if (startDot !== -1) {
           preDotState = -1;
@@ -1593,9 +1593,9 @@ var require_dist4 = __commonJS({
   }
 });
 
-// ../pocketbase-ejs/lib/utils.js
+// node_modules/pocketbase-ejs/lib/utils.js
 var require_utils = __commonJS({
-  "../pocketbase-ejs/lib/utils.js"(exports2) {
+  "node_modules/pocketbase-ejs/lib/utils.js"(exports2) {
     "use strict";
     init_cjs_shims();
     var regExpChars = /[|\\{}()[\]^$+*?.]/g;
@@ -1666,8 +1666,8 @@ function encode_char(c) {
       list2 = list2 || [];
       from = from || {};
       if (to !== null && to !== void 0) {
-        for (var i = 0; i < list2.length; i++) {
-          var p = list2[i];
+        for (var i2 = 0; i2 < list2.length; i2++) {
+          var p = list2[i2];
           if (typeof from[p] != "undefined") {
             if (!hasOwn(from, p)) {
               continue;
@@ -1728,9 +1728,9 @@ function encode_char(c) {
   }
 });
 
-// ../pocketbase-ejs/package.json
+// node_modules/pocketbase-ejs/package.json
 var require_package = __commonJS({
-  "../pocketbase-ejs/package.json"(exports2, module2) {
+  "node_modules/pocketbase-ejs/package.json"(exports2, module2) {
     module2.exports = {
       name: "pocketbase-ejs",
       description: "Embedded JavaScript templates",
@@ -1777,9 +1777,9 @@ var require_package = __commonJS({
   }
 });
 
-// ../pocketbase-ejs/lib/ejs.js
+// node_modules/pocketbase-ejs/lib/ejs.js
 var require_ejs = __commonJS({
-  "../pocketbase-ejs/lib/ejs.js"(exports2) {
+  "node_modules/pocketbase-ejs/lib/ejs.js"(exports2) {
     "use strict";
     init_cjs_shims();
     var { fs: fs5, path: path3 } = require_dist4();
@@ -1928,8 +1928,8 @@ var require_ejs = __commonJS({
       var start = Math.max(realLineNo - 30, 0);
       var end = Math.min(lines.length, realLineNo + 3);
       var filename = esc(flnm);
-      var context = lines.slice(start, end).map(function(line2, i) {
-        var curr = i + start + 1;
+      var context = lines.slice(start, end).map(function(line2, i2) {
+        var curr = i2 + start + 1;
         return (curr == realLineNo ? " >> " : "    ") + curr + "| " + line2;
       }).join("\n");
       err.message = (filename || "ejs") + ":" + realLineNo + "\n" + context + "\n\n" + err.message;
@@ -2079,12 +2079,12 @@ var require_ejs = __commonJS({
           }
           if (opts.destructuredLocals && opts.destructuredLocals.length) {
             var destructuring = "  var __locals = (" + opts.localsName + " || {}),\n";
-            for (var i = 0; i < opts.destructuredLocals.length; i++) {
-              var name = opts.destructuredLocals[i];
+            for (var i2 = 0; i2 < opts.destructuredLocals.length; i2++) {
+              var name = opts.destructuredLocals[i2];
               if (!_JS_IDENTIFIER.test(name)) {
-                throw new Error("destructuredLocals[" + i + "] is not a valid JS identifier.");
+                throw new Error("destructuredLocals[" + i2 + "] is not a valid JS identifier.");
               }
-              if (i > 0) {
+              if (i2 > 0) {
                 destructuring += ",\n  ";
               }
               destructuring += name + " = __locals." + name;
@@ -2125,31 +2125,31 @@ var require_ejs = __commonJS({
           if (opts.async) {
             try {
               ctor = new Function("return (async function(){}).constructor;")();
-            } catch (e) {
-              if (e instanceof SyntaxError) {
+            } catch (e2) {
+              if (e2 instanceof SyntaxError) {
                 throw new Error("This environment does not support async/await");
               } else {
-                throw e;
+                throw e2;
               }
             }
           } else {
             ctor = Function;
           }
           fn = new ctor(opts.localsName + ", escapeFn, include, rethrow", src);
-        } catch (e) {
-          if (e instanceof SyntaxError) {
+        } catch (e2) {
+          if (e2 instanceof SyntaxError) {
             if (opts.filename) {
-              e.message += " in " + opts.filename;
+              e2.message += " in " + opts.filename;
             }
-            e.message += " while compiling ejs\n\n";
-            e.message += "If the above error is not helpful, you may want to try EJS-Lint:\n";
-            e.message += "https://github.com/RyanZim/EJS-Lint";
+            e2.message += " while compiling ejs\n\n";
+            e2.message += "If the above error is not helpful, you may want to try EJS-Lint:\n";
+            e2.message += "https://github.com/RyanZim/EJS-Lint";
             if (!opts.async) {
-              e.message += "\n";
-              e.message += "Or, if you meant to create an async function, pass `async: true` as an option.";
+              e2.message += "\n";
+              e2.message += "Or, if you meant to create an async function, pass `async: true` as an option.";
             }
           }
-          throw e;
+          throw e2;
         }
         var returnedFn = opts.client ? fn : function anonymous(data) {
           var include = function(path4, includeData) {
@@ -2174,7 +2174,7 @@ var require_ejs = __commonJS({
               enumerable: false,
               configurable: true
             });
-          } catch (e) {
+          } catch (e2) {
           }
         }
         return returnedFn;
@@ -3545,11 +3545,11 @@ var require_loader = __commonJS({
     }
     var simpleEscapeCheck = new Array(256);
     var simpleEscapeMap = new Array(256);
-    for (i = 0; i < 256; i++) {
-      simpleEscapeCheck[i] = simpleEscapeSequence(i) ? 1 : 0;
-      simpleEscapeMap[i] = simpleEscapeSequence(i);
+    for (i2 = 0; i2 < 256; i2++) {
+      simpleEscapeCheck[i2] = simpleEscapeSequence(i2) ? 1 : 0;
+      simpleEscapeMap[i2] = simpleEscapeSequence(i2);
     }
-    var i;
+    var i2;
     function State(input, options2) {
       this.input = input;
       this.filename = options2["filename"] || null;
@@ -4750,7 +4750,7 @@ var require_dumper = __commonJS({
     var STYLE_FOLDED = 4;
     var STYLE_DOUBLE = 5;
     function chooseScalarStyle(string, singleLineOnly, indentPerLevel, lineWidth, testAmbiguousType) {
-      var i;
+      var i2;
       var char, prev_char;
       var hasLineBreak = false;
       var hasFoldableLine = false;
@@ -4758,31 +4758,31 @@ var require_dumper = __commonJS({
       var previousLineBreak = -1;
       var plain = isPlainSafeFirst(string.charCodeAt(0)) && !isWhitespace(string.charCodeAt(string.length - 1));
       if (singleLineOnly) {
-        for (i = 0; i < string.length; i++) {
-          char = string.charCodeAt(i);
+        for (i2 = 0; i2 < string.length; i2++) {
+          char = string.charCodeAt(i2);
           if (!isPrintable(char)) {
             return STYLE_DOUBLE;
           }
-          prev_char = i > 0 ? string.charCodeAt(i - 1) : null;
+          prev_char = i2 > 0 ? string.charCodeAt(i2 - 1) : null;
           plain = plain && isPlainSafe(char, prev_char);
         }
       } else {
-        for (i = 0; i < string.length; i++) {
-          char = string.charCodeAt(i);
+        for (i2 = 0; i2 < string.length; i2++) {
+          char = string.charCodeAt(i2);
           if (char === CHAR_LINE_FEED) {
             hasLineBreak = true;
             if (shouldTrackWidth) {
               hasFoldableLine = hasFoldableLine || // Foldable line = too long, and not more-indented.
-              i - previousLineBreak - 1 > lineWidth && string[previousLineBreak + 1] !== " ";
-              previousLineBreak = i;
+              i2 - previousLineBreak - 1 > lineWidth && string[previousLineBreak + 1] !== " ";
+              previousLineBreak = i2;
             }
           } else if (!isPrintable(char)) {
             return STYLE_DOUBLE;
           }
-          prev_char = i > 0 ? string.charCodeAt(i - 1) : null;
+          prev_char = i2 > 0 ? string.charCodeAt(i2 - 1) : null;
           plain = plain && isPlainSafe(char, prev_char);
         }
-        hasFoldableLine = hasFoldableLine || shouldTrackWidth && (i - previousLineBreak - 1 > lineWidth && string[previousLineBreak + 1] !== " ");
+        hasFoldableLine = hasFoldableLine || shouldTrackWidth && (i2 - previousLineBreak - 1 > lineWidth && string[previousLineBreak + 1] !== " ");
       }
       if (!hasLineBreak && !hasFoldableLine) {
         return plain && !testAmbiguousType(string) ? STYLE_PLAIN : STYLE_SINGLE;
@@ -4878,18 +4878,18 @@ var require_dumper = __commonJS({
       var result = "";
       var char, nextChar;
       var escapeSeq;
-      for (var i = 0; i < string.length; i++) {
-        char = string.charCodeAt(i);
+      for (var i2 = 0; i2 < string.length; i2++) {
+        char = string.charCodeAt(i2);
         if (char >= 55296 && char <= 56319) {
-          nextChar = string.charCodeAt(i + 1);
+          nextChar = string.charCodeAt(i2 + 1);
           if (nextChar >= 56320 && nextChar <= 57343) {
             result += encodeHex((char - 55296) * 1024 + nextChar - 56320 + 65536);
-            i++;
+            i2++;
             continue;
           }
         }
         escapeSeq = ESCAPE_SEQUENCES[char];
-        result += !escapeSeq && isPrintable(char) ? string[i] : escapeSeq || encodeHex(char);
+        result += !escapeSeq && isPrintable(char) ? string[i2] : escapeSeq || encodeHex(char);
       }
       return result;
     }
@@ -5332,7 +5332,7 @@ var require_dist5 = __commonJS({
         str += "; Path=" + options2.path;
       }
       if (options2.expires) {
-        if (!isDate2(options2.expires) || !Number.isFinite(options2.expires.valueOf())) {
+        if (!isDate(options2.expires) || !Number.isFinite(options2.expires.valueOf())) {
           throw new TypeError(`option expires is invalid: ${options2.expires}`);
         }
         str += "; Expires=" + options2.expires.toUTCString();
@@ -5386,11 +5386,11 @@ var require_dist5 = __commonJS({
         return str;
       try {
         return decodeURIComponent(str);
-      } catch (e) {
+      } catch (e2) {
         return str;
       }
     }
-    function isDate2(val) {
+    function isDate(val) {
       return __toString.call(val) === "[object Date]";
     }
   }
@@ -5411,60 +5411,10 @@ __export(src_exports, {
 });
 module.exports = __toCommonJS(src_exports);
 init_cjs_shims();
-
-// src/lib/boot.ts
-init_cjs_shims();
-var boot = () => {
-  onBootstrap((e) => {
-    e.next();
-    if (!require.isOverridden) {
-      const oldRequire = require;
-      const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
-        `${__hooks}/pocketpages.pb`
-      );
-      require = (path3) => {
-        if (path3 === "pocketpages") {
-          return globalApi2;
-        }
-        if (!moduleExists2(path3)) {
-          throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
-        }
-        return oldRequire(path3);
-      };
-      require.isOverridden = true;
-    }
-    require(`${__hooks}/pocketpages.pb`).AfterBootstrapHandler();
-  });
-  routerUse((e) => {
-    if (!require.isOverridden) {
-      const oldRequire = require;
-      const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
-        `${__hooks}/pocketpages.pb`
-      );
-      require = (path3) => {
-        if (path3 === "pocketpages") {
-          return globalApi2;
-        }
-        if (!moduleExists2(path3)) {
-          throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
-        }
-        return oldRequire(path3);
-      };
-      require.isOverridden = true;
-    }
-    return require(`${__hooks}/pocketpages.pb`).v23MiddlewareWrapper(e);
-  });
-};
-
-// src/lib/types.ts
-init_cjs_shims();
-
-// src/main.ts
-init_cjs_shims();
 var log3 = __toESM(require_dist2());
 var import_pocketbase_stringify6 = __toESM(require_dist());
 
-// src/globalApi.ts
+// src/handlers/AfterBootstrapHandler.ts
 init_cjs_shims();
 
 // node_modules/@s-libs/micro-dash/fesm2022/micro-dash.mjs
@@ -5504,8 +5454,8 @@ function forEach(collection, iteratee) {
   return collection;
 }
 function forEachOfArray(array, iteratee) {
-  for (let i = 0, len = array.length; i < len; ++i) {
-    if (iteratee(array[i], i) === false) {
+  for (let i2 = 0, len = array.length; i2 < len; ++i2) {
+    if (iteratee(array[i2], i2) === false) {
       break;
     }
   }
@@ -5515,8 +5465,8 @@ function values(object) {
 }
 function times(n, iteratee) {
   const result = [];
-  for (let i = 0; i < n; ++i) {
-    result[i] = iteratee(i);
+  for (let i2 = 0; i2 < n; ++i2) {
+    result[i2] = iteratee(i2);
   }
   return result;
 }
@@ -5535,13 +5485,13 @@ function flatten(array) {
 }
 function pullAt(array, ...indexes) {
   const flattenedIndexes = flatten(indexes);
-  const result = flattenedIndexes.map((i) => array[i]);
+  const result = flattenedIndexes.map((i2) => array[i2]);
   let lastI;
-  for (const i of flattenedIndexes.sort((a, b) => b - a)) {
-    if (i !== lastI) {
-      array.splice(i, 1);
+  for (const i2 of flattenedIndexes.sort((a, b) => b - a)) {
+    if (i2 !== lastI) {
+      array.splice(i2, 1);
     }
-    lastI = i;
+    lastI = i2;
   }
   return result;
 }
@@ -5595,1910 +5545,739 @@ function shuffle(collection) {
   return sampleSize(collection, size(collection));
 }
 
-// ../pocketbase-js-sdk/dist/pocketbase.es.mjs
+// src/handlers/AfterBootstrapHandler.ts
+var import_pocketbase_log = __toESM(require_dist2());
+var import_pocketbase_node2 = __toESM(require_dist3());
+
+// src/lib/globalApi.ts
+init_cjs_shims();
+
+// node_modules/pocketbase-js-sdk-jsvm/dist/pocketbase.es.mjs
 init_cjs_shims();
 var ClientResponseError = class _ClientResponseError extends Error {
-  constructor(errData) {
-    super("ClientResponseError");
-    this.url = "";
-    this.status = 0;
-    this.response = {};
-    this.isAbort = false;
-    this.originalError = null;
-    Object.setPrototypeOf(this, _ClientResponseError.prototype);
-    if (errData !== null && typeof errData === "object") {
-      this.url = typeof errData.url === "string" ? errData.url : "";
-      this.status = typeof errData.status === "number" ? errData.status : 0;
-      this.isAbort = !!errData.isAbort;
-      this.originalError = errData.originalError;
-      if (errData.response !== null && typeof errData.response === "object") {
-        this.response = errData.response;
-      } else if (errData.data !== null && typeof errData.data === "object") {
-        this.response = errData.data;
-      } else {
-        this.response = {};
-      }
-    }
-    if (!this.originalError && !(errData instanceof _ClientResponseError)) {
-      this.originalError = errData;
-    }
-    if (typeof DOMException !== "undefined" && errData instanceof DOMException) {
-      this.isAbort = true;
-    }
-    this.name = "ClientResponseError " + this.status;
-    this.message = this.response?.message;
-    if (!this.message) {
-      if (this.originalError?.cause?.message?.includes("ECONNREFUSED ::1")) {
-        this.message = "Failed to connect to the PocketBase server. Try changing the SDK URL from localhost to 127.0.0.1 (https://github.com/pocketbase/js-sdk/issues/21).";
-      } else {
-        this.message = "Something went wrong while processing your request.";
-      }
-    }
+  constructor(e2) {
+    super("ClientResponseError"), this.url = "", this.status = 0, this.response = {}, this.isAbort = false, this.originalError = null, Object.setPrototypeOf(this, _ClientResponseError.prototype), null !== e2 && "object" == typeof e2 && (this.url = "string" == typeof e2.url ? e2.url : "", this.status = "number" == typeof e2.status ? e2.status : 0, this.isAbort = !!e2.isAbort, this.originalError = e2.originalError, null !== e2.response && "object" == typeof e2.response ? this.response = e2.response : null !== e2.data && "object" == typeof e2.data ? this.response = e2.data : this.response = {}), this.originalError || e2 instanceof _ClientResponseError || (this.originalError = e2), "undefined" != typeof DOMException && e2 instanceof DOMException && (this.isAbort = true), this.name = "ClientResponseError " + this.status, this.message = this.response?.message, this.message || (this.originalError?.cause?.message?.includes("ECONNREFUSED ::1") ? this.message = "Failed to connect to the PocketBase server. Try changing the SDK URL from localhost to 127.0.0.1 (https://github.com/pocketbase/js-sdk/issues/21)." : this.message = "Something went wrong while processing your request.");
   }
-  /**
-   * Alias for `this.response` for backward compatibility.
-   */
   get data() {
     return this.response;
   }
-  /**
-   * Make a POJO's copy of the current error class instance.
-   * @see https://github.com/vuex-orm/vuex-orm/issues/255
-   */
   toJSON() {
     return { ...this };
   }
 };
-var fieldContentRegExp = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
-function cookieParse(str, options2) {
-  const result = {};
-  if (typeof str !== "string") {
-    return result;
-  }
-  const opt = Object.assign({}, options2 || {});
-  const decode3 = opt.decode || defaultDecode;
-  let index = 0;
-  while (index < str.length) {
-    const eqIdx = str.indexOf("=", index);
-    if (eqIdx === -1) {
-      break;
-    }
-    let endIdx = str.indexOf(";", index);
-    if (endIdx === -1) {
-      endIdx = str.length;
-    } else if (endIdx < eqIdx) {
-      index = str.lastIndexOf(";", eqIdx - 1) + 1;
+var e = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
+function cookieParse(e2, t2) {
+  const s2 = {};
+  if ("string" != typeof e2) return s2;
+  const i2 = Object.assign({}, t2 || {}).decode || defaultDecode;
+  let r2 = 0;
+  for (; r2 < e2.length; ) {
+    const t3 = e2.indexOf("=", r2);
+    if (-1 === t3) break;
+    let o = e2.indexOf(";", r2);
+    if (-1 === o) o = e2.length;
+    else if (o < t3) {
+      r2 = e2.lastIndexOf(";", t3 - 1) + 1;
       continue;
     }
-    const key = str.slice(index, eqIdx).trim();
-    if (void 0 === result[key]) {
-      let val = str.slice(eqIdx + 1, endIdx).trim();
-      if (val.charCodeAt(0) === 34) {
-        val = val.slice(1, -1);
-      }
+    const n = e2.slice(r2, t3).trim();
+    if (void 0 === s2[n]) {
+      let r3 = e2.slice(t3 + 1, o).trim();
+      34 === r3.charCodeAt(0) && (r3 = r3.slice(1, -1));
       try {
-        result[key] = decode3(val);
-      } catch (_) {
-        result[key] = val;
+        s2[n] = i2(r3);
+      } catch (e3) {
+        s2[n] = r3;
       }
     }
-    index = endIdx + 1;
+    r2 = o + 1;
   }
-  return result;
+  return s2;
 }
-function cookieSerialize(name, val, options2) {
-  const opt = Object.assign({}, options2 || {});
-  const encode2 = opt.encode || defaultEncode;
-  if (!fieldContentRegExp.test(name)) {
-    throw new TypeError("argument name is invalid");
+function cookieSerialize(t2, s2, i2) {
+  const r2 = Object.assign({}, i2 || {}), o = r2.encode || defaultEncode;
+  if (!e.test(t2)) throw new TypeError("argument name is invalid");
+  const n = o(s2);
+  if (n && !e.test(n)) throw new TypeError("argument val is invalid");
+  let a = t2 + "=" + n;
+  if (null != r2.maxAge) {
+    const e2 = r2.maxAge - 0;
+    if (isNaN(e2) || !isFinite(e2)) throw new TypeError("option maxAge is invalid");
+    a += "; Max-Age=" + Math.floor(e2);
   }
-  const value = encode2(val);
-  if (value && !fieldContentRegExp.test(value)) {
-    throw new TypeError("argument val is invalid");
+  if (r2.domain) {
+    if (!e.test(r2.domain)) throw new TypeError("option domain is invalid");
+    a += "; Domain=" + r2.domain;
   }
-  let result = name + "=" + value;
-  if (opt.maxAge != null) {
-    const maxAge = opt.maxAge - 0;
-    if (isNaN(maxAge) || !isFinite(maxAge)) {
-      throw new TypeError("option maxAge is invalid");
-    }
-    result += "; Max-Age=" + Math.floor(maxAge);
+  if (r2.path) {
+    if (!e.test(r2.path)) throw new TypeError("option path is invalid");
+    a += "; Path=" + r2.path;
   }
-  if (opt.domain) {
-    if (!fieldContentRegExp.test(opt.domain)) {
-      throw new TypeError("option domain is invalid");
-    }
-    result += "; Domain=" + opt.domain;
+  if (r2.expires) {
+    if (!function isDate(e2) {
+      return "[object Date]" === Object.prototype.toString.call(e2) || e2 instanceof Date;
+    }(r2.expires) || isNaN(r2.expires.valueOf())) throw new TypeError("option expires is invalid");
+    a += "; Expires=" + r2.expires.toUTCString();
   }
-  if (opt.path) {
-    if (!fieldContentRegExp.test(opt.path)) {
-      throw new TypeError("option path is invalid");
-    }
-    result += "; Path=" + opt.path;
-  }
-  if (opt.expires) {
-    if (!isDate(opt.expires) || isNaN(opt.expires.valueOf())) {
-      throw new TypeError("option expires is invalid");
-    }
-    result += "; Expires=" + opt.expires.toUTCString();
-  }
-  if (opt.httpOnly) {
-    result += "; HttpOnly";
-  }
-  if (opt.secure) {
-    result += "; Secure";
-  }
-  if (opt.priority) {
-    const priority = typeof opt.priority === "string" ? opt.priority.toLowerCase() : opt.priority;
-    switch (priority) {
+  if (r2.httpOnly && (a += "; HttpOnly"), r2.secure && (a += "; Secure"), r2.priority) {
+    switch ("string" == typeof r2.priority ? r2.priority.toLowerCase() : r2.priority) {
       case "low":
-        result += "; Priority=Low";
+        a += "; Priority=Low";
         break;
       case "medium":
-        result += "; Priority=Medium";
+        a += "; Priority=Medium";
         break;
       case "high":
-        result += "; Priority=High";
+        a += "; Priority=High";
         break;
       default:
         throw new TypeError("option priority is invalid");
     }
   }
-  if (opt.sameSite) {
-    const sameSite = typeof opt.sameSite === "string" ? opt.sameSite.toLowerCase() : opt.sameSite;
-    switch (sameSite) {
+  if (r2.sameSite) {
+    switch ("string" == typeof r2.sameSite ? r2.sameSite.toLowerCase() : r2.sameSite) {
       case true:
-        result += "; SameSite=Strict";
+        a += "; SameSite=Strict";
         break;
       case "lax":
-        result += "; SameSite=Lax";
+        a += "; SameSite=Lax";
         break;
       case "strict":
-        result += "; SameSite=Strict";
+        a += "; SameSite=Strict";
         break;
       case "none":
-        result += "; SameSite=None";
+        a += "; SameSite=None";
         break;
       default:
         throw new TypeError("option sameSite is invalid");
     }
   }
-  return result;
+  return a;
 }
-function defaultDecode(val) {
-  return val.indexOf("%") !== -1 ? decodeURIComponent(val) : val;
+function defaultDecode(e2) {
+  return -1 !== e2.indexOf("%") ? decodeURIComponent(e2) : e2;
 }
-function defaultEncode(val) {
-  return encodeURIComponent(val);
+function defaultEncode(e2) {
+  return encodeURIComponent(e2);
 }
-function isDate(val) {
-  return Object.prototype.toString.call(val) === "[object Date]" || val instanceof Date;
-}
-var atobPolyfill;
-if (typeof atob === "function") {
-  atobPolyfill = atob;
-} else {
-  atobPolyfill = (input) => {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-    let str = String(input).replace(/=+$/, "");
-    if (str.length % 4 == 1) {
-      throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
-    }
-    for (
-      var bc = 0, bs, buffer, idx = 0, output = "";
-      // get next character
-      buffer = str.charAt(idx++);
-      // character found in table? initialize bit storage and add its ascii value;
-      ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer, // and if not first of each 4 characters,
-      // convert the first 8 bits to one ascii character
-      bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
-    ) {
-      buffer = chars.indexOf(buffer);
-    }
-    return output;
-  };
-}
-function getTokenPayload(token2) {
-  if (token2) {
-    try {
-      const encodedPayload = decodeURIComponent(atobPolyfill(token2.split(".")[1]).split("").map(function(c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(""));
-      return JSON.parse(encodedPayload) || {};
-    } catch (e) {
-    }
+var t;
+function getTokenPayload(e2) {
+  if (e2) try {
+    const s2 = decodeURIComponent(t(e2.split(".")[1]).split("").map(function(e3) {
+      return "%" + ("00" + e3.charCodeAt(0).toString(16)).slice(-2);
+    }).join(""));
+    return JSON.parse(s2) || {};
+  } catch (e3) {
   }
   return {};
 }
-function isTokenExpired(token2, expirationThreshold = 0) {
-  let payload = getTokenPayload(token2);
-  if (Object.keys(payload).length > 0 && (!payload.exp || payload.exp - expirationThreshold > Date.now() / 1e3)) {
-    return false;
-  }
-  return true;
+function isTokenExpired(e2, t2 = 0) {
+  let s2 = getTokenPayload(e2);
+  return !(Object.keys(s2).length > 0 && (!s2.exp || s2.exp - t2 > Date.now() / 1e3));
 }
-var defaultCookieKey = "pb_auth";
+t = "function" == typeof atob ? atob : (e2) => {
+  let t2 = String(e2).replace(/=+$/, "");
+  if (t2.length % 4 == 1) throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
+  for (var s2, i2, r2 = 0, o = 0, n = ""; i2 = t2.charAt(o++); ~i2 && (s2 = r2 % 4 ? 64 * s2 + i2 : i2, r2++ % 4) ? n += String.fromCharCode(255 & s2 >> (-2 * r2 & 6)) : 0) i2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".indexOf(i2);
+  return n;
+};
+var s = "pb_auth";
 var BaseAuthStore = class {
   constructor() {
-    this.baseToken = "";
-    this.baseModel = null;
-    this._onChangeCallbacks = [];
+    this.baseToken = "", this.baseModel = null, this._onChangeCallbacks = [];
   }
-  /**
-   * Retrieves the stored token (if any).
-   */
   get token() {
     return this.baseToken;
   }
-  /**
-   * Retrieves the stored model data (if any).
-   */
   get record() {
     return this.baseModel;
   }
-  /**
-   * @deprecated use `record` instead.
-   */
   get model() {
     return this.baseModel;
   }
-  /**
-   * Loosely checks if the store has valid token (aka. existing and unexpired exp claim).
-   */
   get isValid() {
     return !isTokenExpired(this.token);
   }
-  /**
-   * Loosely checks whether the currently loaded store state is for superuser.
-   *
-   * Alternatively you can also compare directly `pb.authStore.record?.collectionName`.
-   */
   get isSuperuser() {
-    let payload = getTokenPayload(this.token);
-    return payload.type == "auth" && (this.record?.collectionName == "_superusers" || // fallback in case the record field is not populated and assuming
-    // that the collection crc32 checksum id wasn't manually changed
-    !this.record?.collectionName && payload.collectionId == "pbc_3142635823");
+    let e2 = getTokenPayload(this.token);
+    return "auth" == e2.type && ("_superusers" == this.record?.collectionName || !this.record?.collectionName && "pbc_3142635823" == e2.collectionId);
   }
-  /**
-   * @deprecated use `isSuperuser` instead or simply check the record.collectionName property.
-   */
   get isAdmin() {
-    console.warn("Please replace pb.authStore.isAdmin with pb.authStore.isSuperuser OR simply check the value of pb.authStore.record?.collectionName");
-    return this.isSuperuser;
+    return console.warn("Please replace pb.authStore.isAdmin with pb.authStore.isSuperuser OR simply check the value of pb.authStore.record?.collectionName"), this.isSuperuser;
   }
-  /**
-   * @deprecated use `!isSuperuser` instead or simply check the record.collectionName property.
-   */
   get isAuthRecord() {
-    console.warn("Please replace pb.authStore.isAuthRecord with !pb.authStore.isSuperuser OR simply check the value of pb.authStore.record?.collectionName");
-    return getTokenPayload(this.token).type == "auth" && !this.isSuperuser;
+    return console.warn("Please replace pb.authStore.isAuthRecord with !pb.authStore.isSuperuser OR simply check the value of pb.authStore.record?.collectionName"), "auth" == getTokenPayload(this.token).type && !this.isSuperuser;
   }
-  /**
-   * Saves the provided new token and model data in the auth store.
-   */
-  save(token2, record) {
-    this.baseToken = token2 || "";
-    this.baseModel = record || null;
-    this.triggerChange();
+  save(e2, t2) {
+    this.baseToken = e2 || "", this.baseModel = t2 || null, this.triggerChange();
   }
-  /**
-   * Removes the stored token and model data form the auth store.
-   */
   clear() {
-    this.baseToken = "";
-    this.baseModel = null;
-    this.triggerChange();
+    this.baseToken = "", this.baseModel = null, this.triggerChange();
   }
-  /**
-   * Parses the provided cookie string and updates the store state
-   * with the cookie's token and model data.
-   *
-   * NB! This function doesn't validate the token or its data.
-   * Usually this isn't a concern if you are interacting only with the
-   * PocketBase API because it has the proper server-side security checks in place,
-   * but if you are using the store `isValid` state for permission controls
-   * in a node server (eg. SSR), then it is recommended to call `authRefresh()`
-   * after loading the cookie to ensure an up-to-date token and model state.
-   * For example:
-   *
-   * ```js
-   * pb.authStore.loadFromCookie("cookie string...");
-   *
-   * try {
-   *     // get an up-to-date auth store state by veryfing and refreshing the loaded auth model (if any)
-   *     pb.authStore.isValid && await pb.collection('users').authRefresh();
-   * } catch (_) {
-   *     // clear the auth store on failed refresh
-   *     pb.authStore.clear();
-   * }
-   * ```
-   */
-  loadFromCookie(cookie2, key = defaultCookieKey) {
-    const rawData = cookieParse(cookie2 || "")[key] || "";
-    let data = {};
+  loadFromCookie(e2, t2 = s) {
+    const i2 = cookieParse(e2 || "")[t2] || "";
+    let r2 = {};
     try {
-      data = JSON.parse(rawData);
-      if (typeof data === null || typeof data !== "object" || Array.isArray(data)) {
-        data = {};
-      }
-    } catch (_) {
+      r2 = JSON.parse(i2), (null === typeof r2 || "object" != typeof r2 || Array.isArray(r2)) && (r2 = {});
+    } catch (e3) {
     }
-    this.save(data.token || "", data.record || data.model || null);
+    this.save(r2.token || "", r2.record || r2.model || null);
   }
-  /**
-   * Exports the current store state as cookie string.
-   *
-   * By default the following optional attributes are added:
-   * - Secure
-   * - HttpOnly
-   * - SameSite=Strict
-   * - Path=/
-   * - Expires={the token expiration date}
-   *
-   * NB! If the generated cookie exceeds 4096 bytes, this method will
-   * strip the model data to the bare minimum to try to fit within the
-   * recommended size in https://www.rfc-editor.org/rfc/rfc6265#section-6.1.
-   */
-  exportToCookie(options2, key = defaultCookieKey) {
-    const defaultOptions = {
-      secure: true,
-      sameSite: true,
-      httpOnly: true,
-      path: "/"
-    };
-    const payload = getTokenPayload(this.token);
-    if (payload?.exp) {
-      defaultOptions.expires = new Date(payload.exp * 1e3);
-    } else {
-      defaultOptions.expires = /* @__PURE__ */ new Date("1970-01-01");
+  exportToCookie(e2, t2 = s) {
+    const i2 = { secure: true, sameSite: true, httpOnly: true, path: "/" }, r2 = getTokenPayload(this.token);
+    i2.expires = r2?.exp ? new Date(1e3 * r2.exp) : /* @__PURE__ */ new Date("1970-01-01"), e2 = Object.assign({}, i2, e2);
+    const o = { token: this.token, record: this.record ? JSON.parse(JSON.stringify(this.record)) : null };
+    let n = cookieSerialize(t2, JSON.stringify(o), e2);
+    const a = "undefined" != typeof Blob ? new Blob([n]).size : n.length;
+    if (o.record && a > 4096) {
+      o.record = { id: o.record?.id, email: o.record?.email };
+      const s2 = ["collectionId", "collectionName", "verified"];
+      for (const e3 in this.record) s2.includes(e3) && (o.record[e3] = this.record[e3]);
+      n = cookieSerialize(t2, JSON.stringify(o), e2);
     }
-    options2 = Object.assign({}, defaultOptions, options2);
-    const rawData = {
-      token: this.token,
-      record: this.record ? JSON.parse(JSON.stringify(this.record)) : null
-    };
-    let result = cookieSerialize(key, JSON.stringify(rawData), options2);
-    const resultLength = typeof Blob !== "undefined" ? new Blob([result]).size : result.length;
-    if (rawData.record && resultLength > 4096) {
-      rawData.record = { id: rawData.record?.id, email: rawData.record?.email };
-      const extraProps = ["collectionId", "collectionName", "verified"];
-      for (const prop in this.record) {
-        if (extraProps.includes(prop)) {
-          rawData.record[prop] = this.record[prop];
-        }
-      }
-      result = cookieSerialize(key, JSON.stringify(rawData), options2);
-    }
-    return result;
+    return n;
   }
-  /**
-   * Register a callback function that will be called on store change.
-   *
-   * You can set the `fireImmediately` argument to true in order to invoke
-   * the provided callback right after registration.
-   *
-   * Returns a removal function that you could call to "unsubscribe" from the changes.
-   */
-  onChange(callback, fireImmediately = false) {
-    this._onChangeCallbacks.push(callback);
-    if (fireImmediately) {
-      callback(this.token, this.record);
-    }
-    return () => {
-      for (let i = this._onChangeCallbacks.length - 1; i >= 0; i--) {
-        if (this._onChangeCallbacks[i] == callback) {
-          delete this._onChangeCallbacks[i];
-          this._onChangeCallbacks.splice(i, 1);
-          return;
-        }
-      }
+  onChange(e2, t2 = false) {
+    return this._onChangeCallbacks.push(e2), t2 && e2(this.token, this.record), () => {
+      for (let t3 = this._onChangeCallbacks.length - 1; t3 >= 0; t3--) if (this._onChangeCallbacks[t3] == e2) return delete this._onChangeCallbacks[t3], void this._onChangeCallbacks.splice(t3, 1);
     };
   }
   triggerChange() {
-    for (const callback of this._onChangeCallbacks) {
-      callback && callback(this.token, this.record);
-    }
+    for (const e2 of this._onChangeCallbacks) e2 && e2(this.token, this.record);
   }
 };
 var LocalAuthStore = class extends BaseAuthStore {
-  constructor(storageKey = "pocketbase_auth") {
-    super();
-    this.storageFallback = {};
-    this.storageKey = storageKey;
-    this._bindStorageEvent();
+  constructor(e2 = "pocketbase_auth") {
+    super(), this.storageFallback = {}, this.storageKey = e2, this._bindStorageEvent();
   }
-  /**
-   * @inheritdoc
-   */
   get token() {
-    const data = this._storageGet(this.storageKey) || {};
-    return data.token || "";
+    return (this._storageGet(this.storageKey) || {}).token || "";
   }
-  /**
-   * @inheritdoc
-   */
   get record() {
-    const data = this._storageGet(this.storageKey) || {};
-    return data.record || data.model || null;
+    const e2 = this._storageGet(this.storageKey) || {};
+    return e2.record || e2.model || null;
   }
-  /**
-   * @deprecated use `record` instead.
-   */
   get model() {
     return this.record;
   }
-  /**
-   * @inheritdoc
-   */
-  save(token2, record) {
-    this._storageSet(this.storageKey, {
-      token: token2,
-      record
-    });
-    super.save(token2, record);
+  save(e2, t2) {
+    this._storageSet(this.storageKey, { token: e2, record: t2 }), super.save(e2, t2);
   }
-  /**
-   * @inheritdoc
-   */
   clear() {
-    this._storageRemove(this.storageKey);
-    super.clear();
+    this._storageRemove(this.storageKey), super.clear();
   }
-  // ---------------------------------------------------------------
-  // Internal helpers:
-  // ---------------------------------------------------------------
-  /**
-   * Retrieves `key` from the browser's local storage
-   * (or runtime/memory if local storage is undefined).
-   */
-  _storageGet(key) {
-    if (typeof window !== "undefined" && window?.localStorage) {
-      const rawValue = window.localStorage.getItem(key) || "";
+  _storageGet(e2) {
+    if ("undefined" != typeof window && window?.localStorage) {
+      const t2 = window.localStorage.getItem(e2) || "";
       try {
-        return JSON.parse(rawValue);
-      } catch (e) {
-        return rawValue;
+        return JSON.parse(t2);
+      } catch (e3) {
+        return t2;
       }
     }
-    return this.storageFallback[key];
+    return this.storageFallback[e2];
   }
-  /**
-   * Stores a new data in the browser's local storage
-   * (or runtime/memory if local storage is undefined).
-   */
-  _storageSet(key, value) {
-    if (typeof window !== "undefined" && window?.localStorage) {
-      let normalizedVal = value;
-      if (typeof value !== "string") {
-        normalizedVal = JSON.stringify(value);
-      }
-      window.localStorage.setItem(key, normalizedVal);
-    } else {
-      this.storageFallback[key] = value;
-    }
+  _storageSet(e2, t2) {
+    if ("undefined" != typeof window && window?.localStorage) {
+      let s2 = t2;
+      "string" != typeof t2 && (s2 = JSON.stringify(t2)), window.localStorage.setItem(e2, s2);
+    } else this.storageFallback[e2] = t2;
   }
-  /**
-   * Removes `key` from the browser's local storage and the runtime/memory.
-   */
-  _storageRemove(key) {
-    if (typeof window !== "undefined" && window?.localStorage) {
-      window.localStorage?.removeItem(key);
-    }
-    delete this.storageFallback[key];
+  _storageRemove(e2) {
+    "undefined" != typeof window && window?.localStorage && window.localStorage?.removeItem(e2), delete this.storageFallback[e2];
   }
-  /**
-   * Updates the current store state on localStorage change.
-   */
   _bindStorageEvent() {
-    if (typeof window === "undefined" || !window?.localStorage || !window.addEventListener) {
-      return;
-    }
-    window.addEventListener("storage", (e) => {
-      if (e.key != this.storageKey) {
-        return;
-      }
-      const data = this._storageGet(this.storageKey) || {};
-      super.save(data.token || "", data.record || data.model || null);
+    "undefined" != typeof window && window?.localStorage && window.addEventListener && window.addEventListener("storage", (e2) => {
+      if (e2.key != this.storageKey) return;
+      const t2 = this._storageGet(this.storageKey) || {};
+      super.save(t2.token || "", t2.record || t2.model || null);
     });
   }
 };
 var BaseService = class {
-  constructor(client) {
-    this.client = client;
+  constructor(e2) {
+    this.client = e2;
   }
 };
 var SettingsService = class extends BaseService {
-  /**
-   * Fetch all available app settings.
-   *
-   * @throws {ClientResponseError}
-   */
-  getAll(options2) {
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    return this.client.send("/api/settings", options2);
+  getAll(e2) {
+    return e2 = Object.assign({ method: "GET" }, e2), this.client.send("/api/settings", e2);
   }
-  /**
-   * Bulk updates app settings.
-   *
-   * @throws {ClientResponseError}
-   */
-  update(bodyParams, options2) {
-    options2 = Object.assign({
-      method: "PATCH",
-      body: bodyParams
-    }, options2);
-    return this.client.send("/api/settings", options2);
+  update(e2, t2) {
+    return t2 = Object.assign({ method: "PATCH", body: e2 }, t2), this.client.send("/api/settings", t2);
   }
-  /**
-   * Performs a S3 filesystem connection test.
-   *
-   * The currently supported `filesystem` are "storage" and "backups".
-   *
-   * @throws {ClientResponseError}
-   */
-  testS3(filesystem = "storage", options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: {
-        filesystem
-      }
-    }, options2);
-    this.client.send("/api/settings/test/s3", options2);
-    return true;
+  testS3(e2 = "storage", t2) {
+    return t2 = Object.assign({ method: "POST", body: { filesystem: e2 } }, t2), this.client.send("/api/settings/test/s3", t2), true;
   }
-  /**
-   * Sends a test email.
-   *
-   * The possible `emailTemplate` values are:
-   * - verification
-   * - password-reset
-   * - email-change
-   *
-   * @throws {ClientResponseError}
-   */
-  testEmail(collectionIdOrName, toEmail, emailTemplate, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: {
-        email: toEmail,
-        template: emailTemplate,
-        collection: collectionIdOrName
-      }
-    }, options2);
-    this.client.send("/api/settings/test/email", options2);
-    return true;
+  testEmail(e2, t2, s2, i2) {
+    return i2 = Object.assign({ method: "POST", body: { email: t2, template: s2, collection: e2 } }, i2), this.client.send("/api/settings/test/email", i2), true;
   }
-  /**
-   * Generates a new Apple OAuth2 client secret.
-   *
-   * @throws {ClientResponseError}
-   */
-  generateAppleClientSecret(clientId, teamId, keyId, privateKey, duration, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: {
-        clientId,
-        teamId,
-        keyId,
-        privateKey,
-        duration
-      }
-    }, options2);
-    return this.client.send("/api/settings/apple/generate-client-secret", options2);
+  generateAppleClientSecret(e2, t2, s2, i2, r2, o) {
+    return o = Object.assign({ method: "POST", body: { clientId: e2, teamId: t2, keyId: s2, privateKey: i2, duration: r2 } }, o), this.client.send("/api/settings/apple/generate-client-secret", o);
   }
 };
 var CrudService = class extends BaseService {
-  /**
-   * Response data decoder.
-   */
-  decode(data) {
-    return data;
+  decode(e2) {
+    return e2;
   }
-  getFullList(batchOrqueryParams, options2) {
-    if (typeof batchOrqueryParams == "number") {
-      return this._getFullList(batchOrqueryParams, options2);
-    }
-    options2 = Object.assign({}, batchOrqueryParams, options2);
-    let batch = 500;
-    if (options2.batch) {
-      batch = options2.batch;
-      delete options2.batch;
-    }
-    return this._getFullList(batch, options2);
+  getFullList(e2, t2) {
+    if ("number" == typeof e2) return this._getFullList(e2, t2);
+    let s2 = 500;
+    return (t2 = Object.assign({}, e2, t2)).batch && (s2 = t2.batch, delete t2.batch), this._getFullList(s2, t2);
   }
-  /**
-   * Returns paginated items list.
-   *
-   * You can use the generic T to supply a wrapper type of the crud model.
-   *
-   * @throws {ClientResponseError}
-   */
-  getList(page = 1, perPage = 30, options2) {
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    options2.query = Object.assign({
-      page,
-      perPage
-    }, options2.query);
-    const responseData = this.client.send(this.baseCrudPath, options2);
-    responseData.items = responseData.items?.map((item) => {
-      return this.decode(item);
-    }) || [];
-    return responseData;
+  getList(e2 = 1, t2 = 30, s2) {
+    (s2 = Object.assign({ method: "GET" }, s2)).query = Object.assign({ page: e2, perPage: t2 }, s2.query);
+    const i2 = this.client.send(this.baseCrudPath, s2);
+    return i2.items = i2.items?.map((e3) => this.decode(e3)) || [], i2;
   }
-  /**
-   * Returns the first found item by the specified filter.
-   *
-   * Internally it calls `getList(1, 1, { filter, skipTotal })` and
-   * returns the first found item.
-   *
-   * You can use the generic T to supply a wrapper type of the crud model.
-   *
-   * For consistency with `getOne`, this method will throw a 404
-   * ClientResponseError if no item was found.
-   *
-   * @throws {ClientResponseError}
-   */
-  getFirstListItem(filter, options2) {
-    options2 = Object.assign({
-      requestKey: "one_by_filter_" + this.baseCrudPath + "_" + filter
-    }, options2);
-    options2.query = Object.assign({
-      filter,
-      skipTotal: 1
-    }, options2.query);
-    const result = this.getList(1, 1, options2);
-    if (!result?.items?.length) {
-      throw new ClientResponseError({
-        status: 404,
-        response: {
-          code: 404,
-          message: "The requested resource wasn't found.",
-          data: {}
-        }
-      });
-    }
-    return result.items[0];
+  getFirstListItem(e2, t2) {
+    (t2 = Object.assign({ requestKey: "one_by_filter_" + this.baseCrudPath + "_" + e2 }, t2)).query = Object.assign({ filter: e2, skipTotal: 1 }, t2.query);
+    const s2 = this.getList(1, 1, t2);
+    if (!s2?.items?.length) throw new ClientResponseError({ status: 404, response: { code: 404, message: "The requested resource wasn't found.", data: {} } });
+    return s2.items[0];
   }
-  /**
-   * Returns single item by its id.
-   *
-   * You can use the generic T to supply a wrapper type of the crud model.
-   *
-   * If `id` is empty it will throw a 404 error.
-   *
-   * @throws {ClientResponseError}
-   */
-  getOne(id, options2) {
-    if (!id) {
-      throw new ClientResponseError({
-        url: this.client.buildURL(this.baseCrudPath + "/"),
-        status: 404,
-        response: {
-          code: 404,
-          message: "Missing required record id.",
-          data: {}
-        }
-      });
-    }
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    const responseData = this.client.send(this.baseCrudPath + "/" + encodeURIComponent(id), options2);
-    return this.decode(responseData);
+  getOne(e2, t2) {
+    if (!e2) throw new ClientResponseError({ url: this.client.buildURL(this.baseCrudPath + "/"), status: 404, response: { code: 404, message: "Missing required record id.", data: {} } });
+    t2 = Object.assign({ method: "GET" }, t2);
+    const s2 = this.client.send(this.baseCrudPath + "/" + encodeURIComponent(e2), t2);
+    return this.decode(s2);
   }
-  /**
-   * Creates a new item.
-   *
-   * You can use the generic T to supply a wrapper type of the crud model.
-   *
-   * @throws {ClientResponseError}
-   */
-  create(bodyParams, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: bodyParams
-    }, options2);
-    const responseData = this.client.send(this.baseCrudPath, options2);
-    return this.decode(responseData);
+  create(e2, t2) {
+    t2 = Object.assign({ method: "POST", body: e2 }, t2);
+    const s2 = this.client.send(this.baseCrudPath, t2);
+    return this.decode(s2);
   }
-  /**
-   * Updates an existing item by its id.
-   *
-   * You can use the generic T to supply a wrapper type of the crud model.
-   *
-   * @throws {ClientResponseError}
-   */
-  update(id, bodyParams, options2) {
-    options2 = Object.assign({
-      method: "PATCH",
-      body: bodyParams
-    }, options2);
-    const responseData = this.client.send(this.baseCrudPath + "/" + encodeURIComponent(id), options2);
-    return this.decode(responseData);
+  update(e2, t2, s2) {
+    s2 = Object.assign({ method: "PATCH", body: t2 }, s2);
+    const i2 = this.client.send(this.baseCrudPath + "/" + encodeURIComponent(e2), s2);
+    return this.decode(i2);
   }
-  /**
-   * Deletes an existing item by its id.
-   *
-   * @throws {ClientResponseError}
-   */
-  delete(id, options2) {
-    options2 = Object.assign({
-      method: "DELETE"
-    }, options2);
-    const responseData = this.client.send(this.baseCrudPath + "/" + encodeURIComponent(id), options2);
-    return responseData;
+  delete(e2, t2) {
+    t2 = Object.assign({ method: "DELETE" }, t2);
+    return this.client.send(this.baseCrudPath + "/" + encodeURIComponent(e2), t2);
   }
-  /**
-   * Returns a promise with all list items batch fetched at once.
-   */
-  _getFullList(batchSize = 500, options2) {
-    options2 = options2 || {};
-    options2.query = Object.assign({
-      skipTotal: 1
-    }, options2.query);
-    let result = [];
-    let request = (page) => {
-      const list2 = this.getList(page, batchSize || 500, options2);
-      const castedList = list2;
-      const items = castedList.items;
-      result = result.concat(items);
-      if (items.length == list2.perPage) {
-        return request(page + 1);
-      }
-      return result;
+  _getFullList(e2 = 500, t2) {
+    (t2 = t2 || {}).query = Object.assign({ skipTotal: 1 }, t2.query);
+    let s2 = [], request = (i2) => {
+      const r2 = this.getList(i2, e2 || 500, t2), o = r2.items;
+      return s2 = s2.concat(o), o.length == r2.perPage ? request(i2 + 1) : s2;
     };
     return request(1);
   }
 };
-function normalizeLegacyOptionsArgs(legacyWarn, baseOptions, bodyOrOptions, query) {
-  const hasBodyOrOptions = typeof bodyOrOptions !== "undefined";
-  const hasQuery = typeof query !== "undefined";
-  if (!hasQuery && !hasBodyOrOptions) {
-    return baseOptions;
-  }
-  if (hasQuery) {
-    console.warn(legacyWarn);
-    baseOptions.body = Object.assign({}, baseOptions.body, bodyOrOptions);
-    baseOptions.query = Object.assign({}, baseOptions.query, query);
-    return baseOptions;
-  }
-  return Object.assign(baseOptions, bodyOrOptions);
+function normalizeLegacyOptionsArgs(e2, t2, s2, i2) {
+  const r2 = void 0 !== i2;
+  return r2 || void 0 !== s2 ? r2 ? (console.warn(e2), t2.body = Object.assign({}, t2.body, s2), t2.query = Object.assign({}, t2.query, i2), t2) : Object.assign(t2, s2) : t2;
 }
 var RecordService = class extends CrudService {
-  constructor(client, collectionIdOrName) {
-    super(client);
-    this.collectionIdOrName = collectionIdOrName;
+  constructor(e2, t2) {
+    super(e2), this.collectionIdOrName = t2;
   }
-  /**
-   * @inheritdoc
-   */
   get baseCrudPath() {
     return this.baseCollectionPath + "/records";
   }
-  /**
-   * Returns the current collection service base path.
-   */
   get baseCollectionPath() {
     return "/api/collections/" + encodeURIComponent(this.collectionIdOrName);
   }
-  /**
-   * Returns whether the current service collection is superusers.
-   */
   get isSuperusers() {
-    return this.collectionIdOrName == "_superusers" || this.collectionIdOrName == "_pbc_2773867675";
+    return "_superusers" == this.collectionIdOrName || "_pbc_2773867675" == this.collectionIdOrName;
   }
-  /**
-   * @inheritdoc
-   */
-  getFullList(batchOrOptions, options2) {
-    if (typeof batchOrOptions == "number") {
-      return super.getFullList(batchOrOptions, options2);
+  getFullList(e2, t2) {
+    if ("number" == typeof e2) return super.getFullList(e2, t2);
+    const s2 = Object.assign({}, e2, t2);
+    return super.getFullList(s2);
+  }
+  getList(e2 = 1, t2 = 30, s2) {
+    return super.getList(e2, t2, s2);
+  }
+  getFirstListItem(e2, t2) {
+    return super.getFirstListItem(e2, t2);
+  }
+  getOne(e2, t2) {
+    return super.getOne(e2, t2);
+  }
+  create(e2, t2) {
+    return super.create(e2, t2);
+  }
+  update(e2, t2, s2) {
+    const i2 = super.update(e2, t2, s2);
+    if (this.client.authStore.record?.id === i2?.id && (this.client.authStore.record?.collectionId === this.collectionIdOrName || this.client.authStore.record?.collectionName === this.collectionIdOrName)) {
+      let e3 = Object.assign({}, this.client.authStore.record.expand), t3 = Object.assign({}, this.client.authStore.record, i2);
+      e3 && (t3.expand = Object.assign(e3, i2.expand)), this.client.authStore.save(this.client.authStore.token, t3);
     }
-    const params = Object.assign({}, batchOrOptions, options2);
-    return super.getFullList(params);
+    return i2;
   }
-  /**
-   * @inheritdoc
-   */
-  getList(page = 1, perPage = 30, options2) {
-    return super.getList(page, perPage, options2);
+  delete(e2, t2) {
+    const s2 = super.delete(e2, t2);
+    return !s2 || this.client.authStore.record?.id !== e2 || this.client.authStore.record?.collectionId !== this.collectionIdOrName && this.client.authStore.record?.collectionName !== this.collectionIdOrName || this.client.authStore.clear(), s2;
   }
-  /**
-   * @inheritdoc
-   */
-  getFirstListItem(filter, options2) {
-    return super.getFirstListItem(filter, options2);
+  authResponse(e2) {
+    const t2 = this.decode(e2?.record || {});
+    return this.client.authStore.save(e2?.token, t2), Object.assign({}, e2, { token: e2?.token || "", record: t2 });
   }
-  /**
-   * @inheritdoc
-   */
-  getOne(id, options2) {
-    return super.getOne(id, options2);
+  listAuthMethods(e2) {
+    return e2 = Object.assign({ method: "GET", fields: "mfa,otp,password,oauth2" }, e2), this.client.send(this.baseCollectionPath + "/auth-methods", e2);
   }
-  /**
-   * @inheritdoc
-   */
-  create(bodyParams, options2) {
-    return super.create(bodyParams, options2);
+  authWithPassword(e2, t2, s2) {
+    s2 = Object.assign({ method: "POST", body: { identity: e2, password: t2 } }, s2);
+    let i2 = this.client.send(this.baseCollectionPath + "/auth-with-password", s2);
+    return i2 = this.authResponse(i2), i2;
   }
-  /**
-   * @inheritdoc
-   *
-   * If the current `client.authStore.record` matches with the updated id, then
-   * on success the `client.authStore.record` will be updated with the new response record fields.
-   */
-  update(id, bodyParams, options2) {
-    const item = super.update(id, bodyParams, options2);
-    if (
-      // is record auth
-      this.client.authStore.record?.id === item?.id && (this.client.authStore.record?.collectionId === this.collectionIdOrName || this.client.authStore.record?.collectionName === this.collectionIdOrName)
-    ) {
-      let authExpand = Object.assign({}, this.client.authStore.record.expand);
-      let authRecord = Object.assign({}, this.client.authStore.record, item);
-      if (authExpand) {
-        authRecord.expand = Object.assign(authExpand, item.expand);
-      }
-      this.client.authStore.save(this.client.authStore.token, authRecord);
-    }
-    return item;
+  authWithOAuth2Code(e2, t2, s2, i2, r2, o, n) {
+    let a = { method: "POST", body: { provider: e2, code: t2, codeVerifier: s2, redirectURL: i2, createData: r2 } };
+    a = normalizeLegacyOptionsArgs("This form of authWithOAuth2Code(provider, code, codeVerifier, redirectURL, createData?, body?, query?) is deprecated. Consider replacing it with authWithOAuth2Code(provider, code, codeVerifier, redirectURL, createData?, options?).", a, o, n);
+    const c = this.client.send(this.baseCollectionPath + "/auth-with-oauth2", a);
+    return this.authResponse(c);
   }
-  /**
-   * @inheritdoc
-   *
-   * If the current `client.authStore.record` matches with the deleted id,
-   * then on success the `client.authStore` will be cleared.
-   */
-  delete(id, options2) {
-    const success = super.delete(id, options2);
-    if (success && // is record auth
-    this.client.authStore.record?.id === id && (this.client.authStore.record?.collectionId === this.collectionIdOrName || this.client.authStore.record?.collectionName === this.collectionIdOrName)) {
-      this.client.authStore.clear();
-    }
-    return success;
+  authRefresh(e2, t2) {
+    let s2 = { method: "POST" };
+    s2 = normalizeLegacyOptionsArgs("This form of authRefresh(body?, query?) is deprecated. Consider replacing it with authRefresh(options?).", s2, e2, t2);
+    const i2 = this.client.send(this.baseCollectionPath + "/auth-refresh", s2);
+    return this.authResponse(i2);
   }
-  // ---------------------------------------------------------------
-  // Auth handlers
-  // ---------------------------------------------------------------
-  /**
-   * Prepare successful collection authorization response.
-   */
-  authResponse(responseData) {
-    const record = this.decode(responseData?.record || {});
-    this.client.authStore.save(responseData?.token, record);
-    return Object.assign({}, responseData, {
-      // normalize common fields
-      token: responseData?.token || "",
-      record
-    });
+  requestPasswordReset(e2, t2, s2) {
+    let i2 = { method: "POST", body: { email: e2 } };
+    return i2 = normalizeLegacyOptionsArgs("This form of requestPasswordReset(email, body?, query?) is deprecated. Consider replacing it with requestPasswordReset(email, options?).", i2, t2, s2), this.client.send(this.baseCollectionPath + "/request-password-reset", i2), true;
   }
-  /**
-   * Returns all available collection auth methods.
-   *
-   * @throws {ClientResponseError}
-   */
-  listAuthMethods(options2) {
-    options2 = Object.assign({
-      method: "GET",
-      // @todo remove after deleting the pre v0.23 API response fields
-      fields: "mfa,otp,password,oauth2"
-    }, options2);
-    return this.client.send(this.baseCollectionPath + "/auth-methods", options2);
+  confirmPasswordReset(e2, t2, s2, i2, r2) {
+    let o = { method: "POST", body: { token: e2, password: t2, passwordConfirm: s2 } };
+    return o = normalizeLegacyOptionsArgs("This form of confirmPasswordReset(token, password, passwordConfirm, body?, query?) is deprecated. Consider replacing it with confirmPasswordReset(token, password, passwordConfirm, options?).", o, i2, r2), this.client.send(this.baseCollectionPath + "/confirm-password-reset", o), true;
   }
-  /**
-   * Authenticate a single auth collection record via its username/email and password.
-   *
-   * On success, this method also automatically updates
-   * the client's AuthStore data and returns:
-   * - the authentication token
-   * - the authenticated record model
-   *
-   * @throws {ClientResponseError}
-   */
-  authWithPassword(usernameOrEmail, password, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: {
-        identity: usernameOrEmail,
-        password
-      }
-    }, options2);
-    let authData = this.client.send(this.baseCollectionPath + "/auth-with-password", options2);
-    authData = this.authResponse(authData);
-    return authData;
+  requestVerification(e2, t2, s2) {
+    let i2 = { method: "POST", body: { email: e2 } };
+    return i2 = normalizeLegacyOptionsArgs("This form of requestVerification(email, body?, query?) is deprecated. Consider replacing it with requestVerification(email, options?).", i2, t2, s2), this.client.send(this.baseCollectionPath + "/request-verification", i2), true;
   }
-  authWithOAuth2Code(provider, code, codeVerifier, redirectURL, createData, bodyOrOptions, query) {
-    let options2 = {
-      method: "POST",
-      body: {
-        provider,
-        code,
-        codeVerifier,
-        redirectURL,
-        createData
-      }
-    };
-    options2 = normalizeLegacyOptionsArgs("This form of authWithOAuth2Code(provider, code, codeVerifier, redirectURL, createData?, body?, query?) is deprecated. Consider replacing it with authWithOAuth2Code(provider, code, codeVerifier, redirectURL, createData?, options?).", options2, bodyOrOptions, query);
-    const data = this.client.send(this.baseCollectionPath + "/auth-with-oauth2", options2);
-    return this.authResponse(data);
+  confirmVerification(e2, t2, s2) {
+    let i2 = { method: "POST", body: { token: e2 } };
+    i2 = normalizeLegacyOptionsArgs("This form of confirmVerification(token, body?, query?) is deprecated. Consider replacing it with confirmVerification(token, options?).", i2, t2, s2), this.client.send(this.baseCollectionPath + "/confirm-verification", i2);
+    const r2 = getTokenPayload(e2), o = this.client.authStore.record;
+    return o && !o.verified && o.id === r2.id && o.collectionId === r2.collectionId && (o.verified = true, this.client.authStore.save(this.client.authStore.token, o)), true;
   }
-  authRefresh(bodyOrOptions, query) {
-    let options2 = {
-      method: "POST"
-    };
-    options2 = normalizeLegacyOptionsArgs("This form of authRefresh(body?, query?) is deprecated. Consider replacing it with authRefresh(options?).", options2, bodyOrOptions, query);
-    const data = this.client.send(this.baseCollectionPath + "/auth-refresh", options2);
-    return this.authResponse(data);
+  requestEmailChange(e2, t2, s2) {
+    let i2 = { method: "POST", body: { newEmail: e2 } };
+    return i2 = normalizeLegacyOptionsArgs("This form of requestEmailChange(newEmail, body?, query?) is deprecated. Consider replacing it with requestEmailChange(newEmail, options?).", i2, t2, s2), this.client.send(this.baseCollectionPath + "/request-email-change", i2), true;
   }
-  requestPasswordReset(email, bodyOrOptions, query) {
-    let options2 = {
-      method: "POST",
-      body: {
-        email
-      }
-    };
-    options2 = normalizeLegacyOptionsArgs("This form of requestPasswordReset(email, body?, query?) is deprecated. Consider replacing it with requestPasswordReset(email, options?).", options2, bodyOrOptions, query);
-    this.client.send(this.baseCollectionPath + "/request-password-reset", options2);
-    return true;
+  confirmEmailChange(e2, t2, s2, i2) {
+    let r2 = { method: "POST", body: { token: e2, password: t2 } };
+    r2 = normalizeLegacyOptionsArgs("This form of confirmEmailChange(token, password, body?, query?) is deprecated. Consider replacing it with confirmEmailChange(token, password, options?).", r2, s2, i2), this.client.send(this.baseCollectionPath + "/confirm-email-change", r2);
+    const o = getTokenPayload(e2), n = this.client.authStore.record;
+    return n && n.id === o.id && n.collectionId === o.collectionId && this.client.authStore.clear(), true;
   }
-  confirmPasswordReset(passwordResetToken, password, passwordConfirm, bodyOrOptions, query) {
-    let options2 = {
-      method: "POST",
-      body: {
-        token: passwordResetToken,
-        password,
-        passwordConfirm
-      }
-    };
-    options2 = normalizeLegacyOptionsArgs("This form of confirmPasswordReset(token, password, passwordConfirm, body?, query?) is deprecated. Consider replacing it with confirmPasswordReset(token, password, passwordConfirm, options?).", options2, bodyOrOptions, query);
-    this.client.send(this.baseCollectionPath + "/confirm-password-reset", options2);
-    return true;
+  requestOTP(e2, t2) {
+    return t2 = Object.assign({ method: "POST", body: { email: e2 } }, t2), this.client.send(this.baseCollectionPath + "/request-otp", t2);
   }
-  requestVerification(email, bodyOrOptions, query) {
-    let options2 = {
-      method: "POST",
-      body: {
-        email
-      }
-    };
-    options2 = normalizeLegacyOptionsArgs("This form of requestVerification(email, body?, query?) is deprecated. Consider replacing it with requestVerification(email, options?).", options2, bodyOrOptions, query);
-    this.client.send(this.baseCollectionPath + "/request-verification", options2);
-    return true;
+  authWithOTP(e2, t2, s2) {
+    s2 = Object.assign({ method: "POST", body: { otpId: e2, password: t2 } }, s2);
+    const i2 = this.client.send(this.baseCollectionPath + "/auth-with-otp", s2);
+    return this.authResponse(i2);
   }
-  confirmVerification(verificationToken, bodyOrOptions, query) {
-    let options2 = {
-      method: "POST",
-      body: {
-        token: verificationToken
-      }
-    };
-    options2 = normalizeLegacyOptionsArgs("This form of confirmVerification(token, body?, query?) is deprecated. Consider replacing it with confirmVerification(token, options?).", options2, bodyOrOptions, query);
-    this.client.send(this.baseCollectionPath + "/confirm-verification", options2);
-    const payload = getTokenPayload(verificationToken);
-    const model = this.client.authStore.record;
-    if (model && !model.verified && model.id === payload.id && model.collectionId === payload.collectionId) {
-      model.verified = true;
-      this.client.authStore.save(this.client.authStore.token, model);
-    }
-    return true;
-  }
-  requestEmailChange(newEmail, bodyOrOptions, query) {
-    let options2 = {
-      method: "POST",
-      body: {
-        newEmail
-      }
-    };
-    options2 = normalizeLegacyOptionsArgs("This form of requestEmailChange(newEmail, body?, query?) is deprecated. Consider replacing it with requestEmailChange(newEmail, options?).", options2, bodyOrOptions, query);
-    this.client.send(this.baseCollectionPath + "/request-email-change", options2);
-    return true;
-  }
-  confirmEmailChange(emailChangeToken, password, bodyOrOptions, query) {
-    let options2 = {
-      method: "POST",
-      body: {
-        token: emailChangeToken,
-        password
-      }
-    };
-    options2 = normalizeLegacyOptionsArgs("This form of confirmEmailChange(token, password, body?, query?) is deprecated. Consider replacing it with confirmEmailChange(token, password, options?).", options2, bodyOrOptions, query);
-    this.client.send(this.baseCollectionPath + "/confirm-email-change", options2);
-    const payload = getTokenPayload(emailChangeToken);
-    const model = this.client.authStore.record;
-    if (model && model.id === payload.id && model.collectionId === payload.collectionId) {
-      this.client.authStore.clear();
-    }
-    return true;
-  }
-  /**
-   * Sends auth record OTP to the provided email.
-   *
-   * @throws {ClientResponseError}
-   */
-  requestOTP(email, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: { email }
-    }, options2);
-    return this.client.send(this.baseCollectionPath + "/request-otp", options2);
-  }
-  /**
-   * Authenticate a single auth collection record via OTP.
-   *
-   * On success, this method also automatically updates
-   * the client's AuthStore data and returns:
-   * - the authentication token
-   * - the authenticated record model
-   *
-   * @throws {ClientResponseError}
-   */
-  authWithOTP(otpId, password, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: { otpId, password }
-    }, options2);
-    const data = this.client.send(this.baseCollectionPath + "/auth-with-otp", options2);
-    return this.authResponse(data);
-  }
-  /**
-   * Impersonate authenticates with the specified recordId and
-   * returns a new client with the received auth token in a memory store.
-   *
-   * If `duration` is 0 the generated auth token will fallback
-   * to the default collection auth token duration.
-   *
-   * This action currently requires superusers privileges.
-   *
-   * @throws {ClientResponseError}
-   */
-  impersonate(recordId, duration, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: { duration }
-    }, options2);
-    options2.headers = options2.headers || {};
-    if (!options2.headers.Authorization) {
-      options2.headers.Authorization = this.client.authStore.token;
-    }
-    const client = new Client(this.client.baseURL, new BaseAuthStore(), this.client.lang);
-    const authData = client.send(this.baseCollectionPath + "/impersonate/" + encodeURIComponent(recordId), options2);
-    client.authStore.save(authData?.token, this.decode(authData?.record || {}));
-    return client;
+  impersonate(e2, t2, s2) {
+    (s2 = Object.assign({ method: "POST", body: { duration: t2 } }, s2)).headers = s2.headers || {}, s2.headers.Authorization || (s2.headers.Authorization = this.client.authStore.token);
+    const i2 = new Client(this.client.baseURL, new BaseAuthStore(), this.client.lang), r2 = i2.send(this.baseCollectionPath + "/impersonate/" + encodeURIComponent(e2), s2);
+    return i2.authStore.save(r2?.token, this.decode(r2?.record || {})), i2;
   }
 };
 var CollectionService = class extends CrudService {
-  /**
-   * @inheritdoc
-   */
   get baseCrudPath() {
     return "/api/collections";
   }
-  /**
-   * Imports the provided collections.
-   *
-   * If `deleteMissing` is `true`, all local collections and their fields,
-   * that are not present in the imported configuration, WILL BE DELETED
-   * (including their related records data)!
-   *
-   * @throws {ClientResponseError}
-   */
-  import(collections, deleteMissing = false, options2) {
-    options2 = Object.assign({
-      method: "PUT",
-      body: {
-        collections,
-        deleteMissing
-      }
-    }, options2);
-    this.client.send(this.baseCrudPath + "/import", options2);
-    return true;
+  import(e2, t2 = false, s2) {
+    return s2 = Object.assign({ method: "PUT", body: { collections: e2, deleteMissing: t2 } }, s2), this.client.send(this.baseCrudPath + "/import", s2), true;
   }
-  /**
-   * Returns type indexed map with scaffolded collection models
-   * populated with their default field values.
-   *
-   * @throws {ClientResponseError}
-   */
-  getScaffolds(options2) {
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    return this.client.send(this.baseCrudPath + "/meta/scaffolds", options2);
+  getScaffolds(e2) {
+    return e2 = Object.assign({ method: "GET" }, e2), this.client.send(this.baseCrudPath + "/meta/scaffolds", e2);
   }
-  /**
-   * Deletes all records associated with the specified collection.
-   *
-   * @throws {ClientResponseError}
-   */
-  truncate(collectionIdOrName, options2) {
-    options2 = Object.assign({
-      method: "DELETE"
-    }, options2);
-    this.client.send(this.baseCrudPath + "/" + encodeURIComponent(collectionIdOrName) + "/truncate", options2);
-    return true;
+  truncate(e2, t2) {
+    return t2 = Object.assign({ method: "DELETE" }, t2), this.client.send(this.baseCrudPath + "/" + encodeURIComponent(e2) + "/truncate", t2), true;
   }
 };
 var LogService = class extends BaseService {
-  /**
-   * Returns paginated logs list.
-   *
-   * @throws {ClientResponseError}
-   */
-  getList(page = 1, perPage = 30, options2) {
-    options2 = Object.assign({ method: "GET" }, options2);
-    options2.query = Object.assign({
-      page,
-      perPage
-    }, options2.query);
-    return this.client.send("/api/logs", options2);
+  getList(e2 = 1, t2 = 30, s2) {
+    return (s2 = Object.assign({ method: "GET" }, s2)).query = Object.assign({ page: e2, perPage: t2 }, s2.query), this.client.send("/api/logs", s2);
   }
-  /**
-   * Returns a single log by its id.
-   *
-   * If `id` is empty it will throw a 404 error.
-   *
-   * @throws {ClientResponseError}
-   */
-  getOne(id, options2) {
-    if (!id) {
-      throw new ClientResponseError({
-        url: this.client.buildURL("/api/logs/"),
-        status: 404,
-        response: {
-          code: 404,
-          message: "Missing required log id.",
-          data: {}
-        }
-      });
-    }
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    return this.client.send("/api/logs/" + encodeURIComponent(id), options2);
+  getOne(e2, t2) {
+    if (!e2) throw new ClientResponseError({ url: this.client.buildURL("/api/logs/"), status: 404, response: { code: 404, message: "Missing required log id.", data: {} } });
+    return t2 = Object.assign({ method: "GET" }, t2), this.client.send("/api/logs/" + encodeURIComponent(e2), t2);
   }
-  /**
-   * Returns logs statistics.
-   *
-   * @throws {ClientResponseError}
-   */
-  getStats(options2) {
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    return this.client.send("/api/logs/stats", options2);
+  getStats(e2) {
+    return e2 = Object.assign({ method: "GET" }, e2), this.client.send("/api/logs/stats", e2);
   }
 };
 var HealthService = class extends BaseService {
-  /**
-   * Checks the health status of the api.
-   *
-   * @throws {ClientResponseError}
-   */
-  check(options2) {
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    return this.client.send("/api/health", options2);
+  check(e2) {
+    return e2 = Object.assign({ method: "GET" }, e2), this.client.send("/api/health", e2);
   }
 };
 var FileService = class extends BaseService {
-  /**
-   * @deprecated Please replace with `pb.files.getURL()`.
-   */
-  getUrl(record, filename, queryParams = {}) {
-    console.warn("Please replace pb.files.getUrl() with pb.files.getURL()");
-    return this.getURL(record, filename, queryParams);
+  getUrl(e2, t2, s2 = {}) {
+    return console.warn("Please replace pb.files.getUrl() with pb.files.getURL()"), this.getURL(e2, t2, s2);
   }
-  /**
-   * Builds and returns an absolute record file url for the provided filename.
-   */
-  getURL(record, filename, queryParams = {}) {
-    if (!filename || !record?.id || !(record?.collectionId || record?.collectionName)) {
-      return "";
+  getURL(e2, t2, s2 = {}) {
+    if (!t2 || !e2?.id || !e2?.collectionId && !e2?.collectionName) return "";
+    const i2 = [];
+    i2.push("api"), i2.push("files"), i2.push(encodeURIComponent(e2.collectionId || e2.collectionName)), i2.push(encodeURIComponent(e2.id)), i2.push(encodeURIComponent(t2));
+    let r2 = this.client.buildURL(i2.join("/"));
+    if (Object.keys(s2).length) {
+      false === s2.download && delete s2.download;
+      const e3 = new URLSearchParams(s2);
+      r2 += (r2.includes("?") ? "&" : "?") + e3;
     }
-    const parts = [];
-    parts.push("api");
-    parts.push("files");
-    parts.push(encodeURIComponent(record.collectionId || record.collectionName));
-    parts.push(encodeURIComponent(record.id));
-    parts.push(encodeURIComponent(filename));
-    let result = this.client.buildURL(parts.join("/"));
-    if (Object.keys(queryParams).length) {
-      if (queryParams.download === false) {
-        delete queryParams.download;
-      }
-      const params = new URLSearchParams(queryParams);
-      result += (result.includes("?") ? "&" : "?") + params;
-    }
-    return result;
+    return r2;
   }
-  /**
-   * Requests a new private file access token for the current auth model.
-   *
-   * @throws {ClientResponseError}
-   */
-  getToken(options2) {
-    options2 = Object.assign({
-      method: "POST"
-    }, options2);
-    const data = this.client.send("/api/files/token", options2);
-    return data?.token || "";
+  getToken(e2) {
+    e2 = Object.assign({ method: "POST" }, e2);
+    const t2 = this.client.send("/api/files/token", e2);
+    return t2?.token || "";
   }
 };
 var BackupService = class extends BaseService {
-  /**
-   * Returns list with all available backup files.
-   *
-   * @throws {ClientResponseError}
-   */
-  getFullList(options2) {
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    return this.client.send("/api/backups", options2);
+  getFullList(e2) {
+    return e2 = Object.assign({ method: "GET" }, e2), this.client.send("/api/backups", e2);
   }
-  /**
-   * Initializes a new backup.
-   *
-   * @throws {ClientResponseError}
-   */
-  create(basename, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: {
-        name: basename
-      }
-    }, options2);
-    this.client.send("/api/backups", options2);
-    return true;
+  create(e2, t2) {
+    return t2 = Object.assign({ method: "POST", body: { name: e2 } }, t2), this.client.send("/api/backups", t2), true;
   }
-  /**
-   * Uploads an existing backup file.
-   *
-   * Example:
-   *
-   * ```js
-   * await pb.backups.upload({
-   *     file: new Blob([...]),
-   * });
-   * ```
-   *
-   * @throws {ClientResponseError}
-   */
-  upload(bodyParams, options2) {
-    options2 = Object.assign({
-      method: "POST",
-      body: bodyParams
-    }, options2);
-    this.client.send("/api/backups/upload", options2);
-    return true;
+  upload(e2, t2) {
+    return t2 = Object.assign({ method: "POST", body: e2 }, t2), this.client.send("/api/backups/upload", t2), true;
   }
-  /**
-   * Deletes a single backup file.
-   *
-   * @throws {ClientResponseError}
-   */
-  delete(key, options2) {
-    options2 = Object.assign({
-      method: "DELETE"
-    }, options2);
-    this.client.send(`/api/backups/${encodeURIComponent(key)}`, options2);
-    return true;
+  delete(e2, t2) {
+    return t2 = Object.assign({ method: "DELETE" }, t2), this.client.send(`/api/backups/${encodeURIComponent(e2)}`, t2), true;
   }
-  /**
-   * Initializes an app data restore from an existing backup.
-   *
-   * @throws {ClientResponseError}
-   */
-  restore(key, options2) {
-    options2 = Object.assign({
-      method: "POST"
-    }, options2);
-    this.client.send(`/api/backups/${encodeURIComponent(key)}/restore`, options2);
-    return true;
+  restore(e2, t2) {
+    return t2 = Object.assign({ method: "POST" }, t2), this.client.send(`/api/backups/${encodeURIComponent(e2)}/restore`, t2), true;
   }
-  /**
-   * Builds a download url for a single existing backup using a
-   * superuser file token and the backup file key.
-   *
-   * The file token can be generated via `pb.files.getToken()`.
-   */
-  getDownloadURL(token2, key) {
-    return this.client.buildURL(`/api/backups/${encodeURIComponent(key)}?token=${encodeURIComponent(token2)}`);
+  getDownloadURL(e2, t2) {
+    return this.client.buildURL(`/api/backups/${encodeURIComponent(t2)}?token=${encodeURIComponent(e2)}`);
   }
 };
 var CronService = class extends BaseService {
-  /**
-   * Returns list with all registered cron jobs.
-   *
-   * @throws {ClientResponseError}
-   */
-  getFullList(options2) {
-    options2 = Object.assign({
-      method: "GET"
-    }, options2);
-    return this.client.send("/api/crons", options2);
+  getFullList(e2) {
+    return e2 = Object.assign({ method: "GET" }, e2), this.client.send("/api/crons", e2);
   }
-  /**
-   * Runs the specified cron job.
-   *
-   * @throws {ClientResponseError}
-   */
-  run(jobId, options2) {
-    options2 = Object.assign({
-      method: "POST"
-    }, options2);
-    this.client.send(`/api/crons/${encodeURIComponent(jobId)}`, options2);
-    return true;
+  run(e2, t2) {
+    return t2 = Object.assign({ method: "POST" }, t2), this.client.send(`/api/crons/${encodeURIComponent(e2)}`, t2), true;
   }
 };
-function isFile(val) {
-  return typeof Blob !== "undefined" && val instanceof Blob || typeof File !== "undefined" && val instanceof File;
+function isFile(e2) {
+  return "undefined" != typeof Blob && e2 instanceof Blob || "undefined" != typeof File && e2 instanceof File;
 }
-function isFormData(body) {
-  return body && // we are checking the constructor name because FormData
-  // is not available natively in some environments and the
-  // polyfill(s) may not be globally accessible
-  (body.constructor.name === "FormData" || // fallback to global FormData instance check
-  // note: this is needed because the constructor.name could be different in case of
-  //       custom global FormData implementation, eg. React Native on Android/iOS
-  typeof FormData !== "undefined" && body instanceof FormData);
+function isFormData(e2) {
+  return e2 && ("FormData" === e2.constructor.name || "undefined" != typeof FormData && e2 instanceof FormData);
 }
-function hasFileField(body) {
-  for (const key in body) {
-    const values2 = Array.isArray(body[key]) ? body[key] : [body[key]];
-    for (const v of values2) {
-      if (isFile(v)) {
-        return true;
-      }
-    }
+function hasFileField(e2) {
+  for (const t2 in e2) {
+    const s2 = Array.isArray(e2[t2]) ? e2[t2] : [e2[t2]];
+    for (const e3 of s2) if (isFile(e3)) return true;
   }
   return false;
 }
-function convertToFormDataIfNeeded(body) {
-  if (typeof FormData === "undefined" || typeof body === "undefined" || typeof body !== "object" || body === null || isFormData(body) || !hasFileField(body)) {
-    return body;
+var i = /^[\-\.\d]+$/;
+function inferFormDataValue(e2) {
+  if ("string" != typeof e2) return e2;
+  if ("true" == e2) return true;
+  if ("false" == e2) return false;
+  if (("-" === e2[0] || e2[0] >= "0" && e2[0] <= "9") && i.test(e2)) {
+    let t2 = +e2;
+    if ("" + t2 === e2) return t2;
   }
-  const form = new FormData();
-  for (const key in body) {
-    const val = body[key];
-    if (typeof val === "object" && !hasFileField({ data: val })) {
-      let payload = {};
-      payload[key] = val;
-      form.append("@jsonPayload", JSON.stringify(payload));
-    } else {
-      const normalizedVal = Array.isArray(val) ? val : [val];
-      for (let v of normalizedVal) {
-        form.append(key, v);
-      }
-    }
-  }
-  return form;
+  return e2;
 }
-function convertFormDataToObject(formData) {
-  let result = {};
-  formData.forEach((v, k) => {
-    if (k === "@jsonPayload" && typeof v == "string") {
-      try {
-        let parsed = JSON.parse(v);
-        Object.assign(result, parsed);
-      } catch (err) {
-        console.warn("@jsonPayload error:", err);
-      }
-    } else {
-      if (typeof result[k] !== "undefined") {
-        if (!Array.isArray(result[k])) {
-          result[k] = [result[k]];
-        }
-        result[k].push(inferFormDataValue(v));
-      } else {
-        result[k] = inferFormDataValue(v);
-      }
-    }
-  });
-  return result;
-}
-var inferNumberCharsRegex = /^[\-\.\d]+$/;
-function inferFormDataValue(value) {
-  if (typeof value != "string") {
-    return value;
-  }
-  if (value == "true") {
-    return true;
-  }
-  if (value == "false") {
-    return false;
-  }
-  if ((value[0] === "-" || value[0] >= "0" && value[0] <= "9") && inferNumberCharsRegex.test(value)) {
-    let num = +value;
-    if ("" + num === value) {
-      return num;
-    }
-  }
-  return value;
-}
-var knownSendOptionsKeys = [
-  "fetch",
-  "headers",
-  "body",
-  "query",
-  "params",
-  // ---,
-  "cache",
-  "credentials",
-  "headers",
-  "integrity",
-  "keepalive",
-  "method",
-  "mode",
-  "redirect",
-  "referrer",
-  "referrerPolicy",
-  "signal",
-  "window"
-];
-function normalizeUnknownQueryParams(options2) {
-  if (!options2) {
-    return;
-  }
-  options2.query = options2.query || {};
-  for (let key in options2) {
-    if (knownSendOptionsKeys.includes(key)) {
-      continue;
-    }
-    options2.query[key] = options2[key];
-    delete options2[key];
+var r = ["fetch", "headers", "body", "query", "params", "cache", "credentials", "headers", "integrity", "keepalive", "method", "mode", "redirect", "referrer", "referrerPolicy", "signal", "window"];
+function normalizeUnknownQueryParams(e2) {
+  if (e2) {
+    e2.query = e2.query || {};
+    for (let t2 in e2) r.includes(t2) || (e2.query[t2] = e2[t2], delete e2[t2]);
   }
 }
-function serializeQueryParams(params) {
-  const result = [];
-  for (const key in params) {
-    if (params[key] === null || typeof params[key] === "undefined") {
-      continue;
-    }
-    const value = params[key];
-    const encodedKey = encodeURIComponent(key);
-    if (Array.isArray(value)) {
-      for (const v of value) {
-        result.push(encodedKey + "=" + encodeURIComponent(v));
-      }
-    } else if (value instanceof Date) {
-      result.push(encodedKey + "=" + encodeURIComponent(value.toISOString()));
-    } else if (typeof value !== null && typeof value === "object") {
-      result.push(encodedKey + "=" + encodeURIComponent(JSON.stringify(value)));
-    } else {
-      result.push(encodedKey + "=" + encodeURIComponent(value));
-    }
+function serializeQueryParams(e2) {
+  const t2 = [];
+  for (const s2 in e2) {
+    if (null === e2[s2] || void 0 === e2[s2]) continue;
+    const i2 = e2[s2], r2 = encodeURIComponent(s2);
+    if (Array.isArray(i2)) for (const e3 of i2) t2.push(r2 + "=" + encodeURIComponent(e3));
+    else i2 instanceof Date ? t2.push(r2 + "=" + encodeURIComponent(i2.toISOString())) : null !== typeof i2 && "object" == typeof i2 ? t2.push(r2 + "=" + encodeURIComponent(JSON.stringify(i2))) : t2.push(r2 + "=" + encodeURIComponent(i2));
   }
-  return result.join("&");
+  return t2.join("&");
 }
 var BatchService = class extends BaseService {
   constructor() {
-    super(...arguments);
-    this.requests = [];
-    this.subs = {};
+    super(...arguments), this.requests = [], this.subs = {};
   }
-  /**
-   * Starts constructing a batch request entry for the specified collection.
-   */
-  collection(collectionIdOrName) {
-    if (!this.subs[collectionIdOrName]) {
-      this.subs[collectionIdOrName] = new SubBatchService(this.requests, collectionIdOrName);
-    }
-    return this.subs[collectionIdOrName];
+  collection(e2) {
+    return this.subs[e2] || (this.subs[e2] = new SubBatchService(this.requests, e2)), this.subs[e2];
   }
-  /**
-   * Sends the batch requests.
-   *
-   * @throws {ClientResponseError}
-   */
-  send(options2) {
-    const formData = new FormData();
-    const jsonData = [];
-    for (let i = 0; i < this.requests.length; i++) {
-      const req = this.requests[i];
-      jsonData.push({
-        method: req.method,
-        url: req.url,
-        headers: req.headers,
-        body: req.json
-      });
-      if (req.files) {
-        for (let key in req.files) {
-          const files = req.files[key] || [];
-          for (let file of files) {
-            formData.append("requests." + i + "." + key, file);
-          }
-        }
+  send(e2) {
+    const t2 = new FormData(), s2 = [];
+    for (let e3 = 0; e3 < this.requests.length; e3++) {
+      const i2 = this.requests[e3];
+      if (s2.push({ method: i2.method, url: i2.url, headers: i2.headers, body: i2.json }), i2.files) for (let s3 in i2.files) {
+        const r2 = i2.files[s3] || [];
+        for (let i3 of r2) t2.append("requests." + e3 + "." + s3, i3);
       }
     }
-    formData.append("@jsonPayload", JSON.stringify({ requests: jsonData }));
-    options2 = Object.assign({
-      method: "POST",
-      body: formData
-    }, options2);
-    return this.client.send("/api/batch", options2);
+    return t2.append("@jsonPayload", JSON.stringify({ requests: s2 })), e2 = Object.assign({ method: "POST", body: t2 }, e2), this.client.send("/api/batch", e2);
   }
 };
 var SubBatchService = class {
-  constructor(requests, collectionIdOrName) {
-    this.requests = [];
-    this.requests = requests;
-    this.collectionIdOrName = collectionIdOrName;
+  constructor(e2, t2) {
+    this.requests = [], this.requests = e2, this.collectionIdOrName = t2;
   }
-  /**
-   * Registers a record upsert request into the current batch queue.
-   *
-   * The request will be executed as update if `bodyParams` have a valid existing record `id` value, otherwise - create.
-   */
-  upsert(bodyParams, options2) {
-    options2 = Object.assign({
-      body: bodyParams || {}
-    }, options2);
-    const request = {
-      method: "PUT",
-      url: "/api/collections/" + encodeURIComponent(this.collectionIdOrName) + "/records"
-    };
-    this.prepareRequest(request, options2);
-    this.requests.push(request);
+  upsert(e2, t2) {
+    t2 = Object.assign({ body: e2 || {} }, t2);
+    const s2 = { method: "PUT", url: "/api/collections/" + encodeURIComponent(this.collectionIdOrName) + "/records" };
+    this.prepareRequest(s2, t2), this.requests.push(s2);
   }
-  /**
-   * Registers a record create request into the current batch queue.
-   */
-  create(bodyParams, options2) {
-    options2 = Object.assign({
-      body: bodyParams || {}
-    }, options2);
-    const request = {
-      method: "POST",
-      url: "/api/collections/" + encodeURIComponent(this.collectionIdOrName) + "/records"
-    };
-    this.prepareRequest(request, options2);
-    this.requests.push(request);
+  create(e2, t2) {
+    t2 = Object.assign({ body: e2 || {} }, t2);
+    const s2 = { method: "POST", url: "/api/collections/" + encodeURIComponent(this.collectionIdOrName) + "/records" };
+    this.prepareRequest(s2, t2), this.requests.push(s2);
   }
-  /**
-   * Registers a record update request into the current batch queue.
-   */
-  update(id, bodyParams, options2) {
-    options2 = Object.assign({
-      body: bodyParams || {}
-    }, options2);
-    const request = {
-      method: "PATCH",
-      url: "/api/collections/" + encodeURIComponent(this.collectionIdOrName) + "/records/" + encodeURIComponent(id)
-    };
-    this.prepareRequest(request, options2);
-    this.requests.push(request);
+  update(e2, t2, s2) {
+    s2 = Object.assign({ body: t2 || {} }, s2);
+    const i2 = { method: "PATCH", url: "/api/collections/" + encodeURIComponent(this.collectionIdOrName) + "/records/" + encodeURIComponent(e2) };
+    this.prepareRequest(i2, s2), this.requests.push(i2);
   }
-  /**
-   * Registers a record delete request into the current batch queue.
-   */
-  delete(id, options2) {
-    options2 = Object.assign({}, options2);
-    const request = {
-      method: "DELETE",
-      url: "/api/collections/" + encodeURIComponent(this.collectionIdOrName) + "/records/" + encodeURIComponent(id)
-    };
-    this.prepareRequest(request, options2);
-    this.requests.push(request);
+  delete(e2, t2) {
+    t2 = Object.assign({}, t2);
+    const s2 = { method: "DELETE", url: "/api/collections/" + encodeURIComponent(this.collectionIdOrName) + "/records/" + encodeURIComponent(e2) };
+    this.prepareRequest(s2, t2), this.requests.push(s2);
   }
-  prepareRequest(request, options2) {
-    normalizeUnknownQueryParams(options2);
-    request.headers = options2.headers;
-    request.json = {};
-    request.files = {};
-    if (typeof options2.query !== "undefined") {
-      const query = serializeQueryParams(options2.query);
-      if (query) {
-        request.url += (request.url.includes("?") ? "&" : "?") + query;
-      }
+  prepareRequest(e2, t2) {
+    if (normalizeUnknownQueryParams(t2), e2.headers = t2.headers, e2.json = {}, e2.files = {}, void 0 !== t2.query) {
+      const s3 = serializeQueryParams(t2.query);
+      s3 && (e2.url += (e2.url.includes("?") ? "&" : "?") + s3);
     }
-    let body = options2.body;
-    if (isFormData(body)) {
-      body = convertFormDataToObject(body);
-    }
-    for (const key in body) {
-      const val = body[key];
-      if (isFile(val)) {
-        request.files[key] = request.files[key] || [];
-        request.files[key].push(val);
-      } else if (Array.isArray(val)) {
-        const foundFiles = [];
-        const foundRegular = [];
-        for (const v of val) {
-          if (isFile(v)) {
-            foundFiles.push(v);
-          } else {
-            foundRegular.push(v);
-          }
+    let s2 = t2.body;
+    isFormData(s2) && (s2 = function convertFormDataToObject(e3) {
+      let t3 = {};
+      return e3.forEach((e4, s3) => {
+        if ("@jsonPayload" === s3 && "string" == typeof e4) try {
+          let s4 = JSON.parse(e4);
+          Object.assign(t3, s4);
+        } catch (e5) {
+          console.warn("@jsonPayload error:", e5);
         }
-        if (foundFiles.length > 0 && foundFiles.length == val.length) {
-          request.files[key] = request.files[key] || [];
-          for (let file of foundFiles) {
-            request.files[key].push(file);
-          }
-        } else {
-          request.json[key] = foundRegular;
-          if (foundFiles.length > 0) {
-            let fileKey = key;
-            if (!key.startsWith("+") && !key.endsWith("+")) {
-              fileKey += "+";
-            }
-            request.files[fileKey] = request.files[fileKey] || [];
-            for (let file of foundFiles) {
-              request.files[fileKey].push(file);
-            }
-          }
+        else void 0 !== t3[s3] ? (Array.isArray(t3[s3]) || (t3[s3] = [t3[s3]]), t3[s3].push(inferFormDataValue(e4))) : t3[s3] = inferFormDataValue(e4);
+      }), t3;
+    }(s2));
+    for (const t3 in s2) {
+      const i2 = s2[t3];
+      if (isFile(i2)) e2.files[t3] = e2.files[t3] || [], e2.files[t3].push(i2);
+      else if (Array.isArray(i2)) {
+        const s3 = [], r2 = [];
+        for (const e3 of i2) isFile(e3) ? s3.push(e3) : r2.push(e3);
+        if (s3.length > 0 && s3.length == i2.length) {
+          e2.files[t3] = e2.files[t3] || [];
+          for (let i3 of s3) e2.files[t3].push(i3);
+        } else if (e2.json[t3] = r2, s3.length > 0) {
+          let i3 = t3;
+          t3.startsWith("+") || t3.endsWith("+") || (i3 += "+"), e2.files[i3] = e2.files[i3] || [];
+          for (let t4 of s3) e2.files[i3].push(t4);
         }
-      } else {
-        request.json[key] = val;
-      }
+      } else e2.json[t3] = i2;
     }
   }
 };
 var Client = class {
-  /**
-   * Legacy getter alias for baseURL.
-   * @deprecated Please replace with baseURL.
-   */
   get baseUrl() {
     return this.baseURL;
   }
-  /**
-   * Legacy setter alias for baseURL.
-   * @deprecated Please replace with baseURL.
-   */
-  set baseUrl(v) {
-    this.baseURL = v;
+  set baseUrl(e2) {
+    this.baseURL = e2;
   }
-  constructor(baseURL = "/", authStore, lang = "en-US") {
-    this.recordServices = {};
-    this.baseURL = baseURL;
-    this.lang = lang;
-    if (authStore) {
-      this.authStore = authStore;
-    } else if (typeof window != "undefined" && !!window.Deno) {
-      this.authStore = new BaseAuthStore();
-    } else {
-      this.authStore = new LocalAuthStore();
-    }
-    this.collections = new CollectionService(this);
-    this.files = new FileService(this);
-    this.logs = new LogService(this);
-    this.settings = new SettingsService(this);
-    this.health = new HealthService(this);
-    this.backups = new BackupService(this);
-    this.crons = new CronService(this);
+  constructor(e2 = "/", t2, s2 = "en-US") {
+    this.recordServices = {}, this.baseURL = e2, this.lang = s2, t2 ? this.authStore = t2 : "undefined" != typeof window && window.Deno ? this.authStore = new BaseAuthStore() : this.authStore = new LocalAuthStore(), this.collections = new CollectionService(this), this.files = new FileService(this), this.logs = new LogService(this), this.settings = new SettingsService(this), this.health = new HealthService(this), this.backups = new BackupService(this), this.crons = new CronService(this);
   }
-  /**
-   * @deprecated
-   * With PocketBase v0.23.0 admins are converted to a regular auth
-   * collection named "_superusers", aka. you can use directly collection("_superusers").
-   */
   get admins() {
     return this.collection("_superusers");
   }
-  /**
-   * Creates a new batch handler for sending multiple transactional
-   * create/update/upsert/delete collection requests in one network call.
-   *
-   * Example:
-   * ```js
-   * const batch = pb.createBatch();
-   *
-   * batch.collection("example1").create({ ... })
-   * batch.collection("example2").update("RECORD_ID", { ... })
-   * batch.collection("example3").delete("RECORD_ID")
-   * batch.collection("example4").upsert({ ... })
-   *
-   * await batch.send()
-   * ```
-   */
   createBatch() {
     return new BatchService(this);
   }
-  /**
-   * Returns the RecordService associated to the specified collection.
-   */
-  collection(idOrName) {
-    if (!this.recordServices[idOrName]) {
-      this.recordServices[idOrName] = new RecordService(this, idOrName);
-    }
-    return this.recordServices[idOrName];
+  collection(e2) {
+    return this.recordServices[e2] || (this.recordServices[e2] = new RecordService(this, e2)), this.recordServices[e2];
   }
-  /**
-   * Constructs a filter expression with placeholders populated from a parameters object.
-   *
-   * Placeholder parameters are defined with the `{:paramName}` notation.
-   *
-   * The following parameter values are supported:
-   *
-   * - `string` (_single quotes are autoescaped_)
-   * - `number`
-   * - `boolean`
-   * - `Date` object (_stringified into the PocketBase datetime format_)
-   * - `null`
-   * - everything else is converted to a string using `JSON.stringify()`
-   *
-   * Example:
-   *
-   * ```js
-   * pb.collection("example").getFirstListItem(pb.filter(
-   *    'title ~ {:title} && created >= {:created}',
-   *    { title: "example", created: new Date()}
-   * ))
-   * ```
-   */
-  filter(raw, params) {
-    if (!params) {
-      return raw;
-    }
-    for (let key in params) {
-      let val = params[key];
-      switch (typeof val) {
+  filter(e2, t2) {
+    if (!t2) return e2;
+    for (let s2 in t2) {
+      let i2 = t2[s2];
+      switch (typeof i2) {
         case "boolean":
         case "number":
-          val = "" + val;
+          i2 = "" + i2;
           break;
         case "string":
-          val = "'" + val.replace(/'/g, "\\'") + "'";
+          i2 = "'" + i2.replace(/'/g, "\\'") + "'";
           break;
         default:
-          if (val === null) {
-            val = "null";
-          } else if (val instanceof Date) {
-            val = "'" + val.toISOString().replace("T", " ") + "'";
-          } else {
-            val = "'" + JSON.stringify(val).replace(/'/g, "\\'") + "'";
-          }
+          i2 = null === i2 ? "null" : i2 instanceof Date ? "'" + i2.toISOString().replace("T", " ") + "'" : "'" + JSON.stringify(i2).replace(/'/g, "\\'") + "'";
       }
-      raw = raw.replaceAll("{:" + key + "}", val);
+      e2 = e2.replaceAll("{:" + s2 + "}", i2);
     }
-    return raw;
+    return e2;
   }
-  /**
-   * @deprecated Please use `pb.files.getURL()`.
-   */
-  getFileUrl(record, filename, queryParams = {}) {
-    console.warn("Please replace pb.getFileUrl() with pb.files.getURL()");
-    return this.files.getURL(record, filename, queryParams);
+  getFileUrl(e2, t2, s2 = {}) {
+    return console.warn("Please replace pb.getFileUrl() with pb.files.getURL()"), this.files.getURL(e2, t2, s2);
   }
-  /**
-   * @deprecated Please use `pb.buildURL()`.
-   */
-  buildUrl(path3) {
-    console.warn("Please replace pb.buildUrl() with pb.buildURL()");
-    return this.buildURL(path3);
+  buildUrl(e2) {
+    return console.warn("Please replace pb.buildUrl() with pb.buildURL()"), this.buildURL(e2);
   }
-  /**
-   * Builds a full client url by safely concatenating the provided path.
-   */
-  buildURL(path3) {
-    let url = this.baseURL;
-    if (typeof window !== "undefined" && !!window.location && !url.startsWith("https://") && !url.startsWith("http://")) {
-      url = window.location.origin?.endsWith("/") ? window.location.origin.substring(0, window.location.origin.length - 1) : window.location.origin || "";
-      if (!this.baseURL.startsWith("/")) {
-        url += window.location.pathname || "/";
-        url += url.endsWith("/") ? "" : "/";
-      }
-      url += this.baseURL;
-    }
-    if (path3) {
-      url += url.endsWith("/") ? "" : "/";
-      url += path3.startsWith("/") ? path3.substring(1) : path3;
-    }
-    return url;
+  buildURL(e2) {
+    let t2 = this.baseURL;
+    return "undefined" == typeof window || !window.location || t2.startsWith("https://") || t2.startsWith("http://") || (t2 = window.location.origin?.endsWith("/") ? window.location.origin.substring(0, window.location.origin.length - 1) : window.location.origin || "", this.baseURL.startsWith("/") || (t2 += window.location.pathname || "/", t2 += t2.endsWith("/") ? "" : "/"), t2 += this.baseURL), e2 && (t2 += t2.endsWith("/") ? "" : "/", t2 += e2.startsWith("/") ? e2.substring(1) : e2), t2;
   }
-  /**
-   * Sends an api http request.
-   *
-   * @throws {ClientResponseError}
-   */
-  send(path3, options2) {
-    options2 = this.initSendOptions(path3, options2);
-    let url = this.buildURL(path3);
+  send(e2, t2) {
+    t2 = this.initSendOptions(e2, t2);
+    let s2 = this.buildURL(e2);
     if (this.beforeSend) {
-      const result = Object.assign({}, this.beforeSend(url, options2));
-      if (typeof result.url !== "undefined" || typeof result.options !== "undefined") {
-        url = result.url || url;
-        options2 = result.options || options2;
-      } else if (Object.keys(result).length) {
-        options2 = result;
-        console?.warn && console.warn("Deprecated format of beforeSend return: please use `return { url, options }`, instead of `return options`.");
-      }
+      const e3 = Object.assign({}, this.beforeSend(s2, t2));
+      void 0 !== e3.url || void 0 !== e3.options ? (s2 = e3.url || s2, t2 = e3.options || t2) : Object.keys(e3).length && (t2 = e3, console?.warn && console.warn("Deprecated format of beforeSend return: please use `return { url, options }`, instead of `return options`."));
     }
-    if (typeof options2.query !== "undefined") {
-      const query = serializeQueryParams(options2.query);
-      if (query) {
-        url += (url.includes("?") ? "&" : "?") + query;
-      }
-      delete options2.query;
+    if (void 0 !== t2.query) {
+      const e3 = serializeQueryParams(t2.query);
+      e3 && (s2 += (s2.includes("?") ? "&" : "?") + e3), delete t2.query;
     }
-    if (this.getHeader(options2.headers, "Content-Type") == "application/json" && options2.body && typeof options2.body !== "string") {
-      options2.body = JSON.stringify(options2.body);
-    }
-    const fetchFunc = options2.fetch || $http.send;
+    "application/json" == this.getHeader(t2.headers, "Content-Type") && t2.body && "string" != typeof t2.body && (t2.body = JSON.stringify(t2.body));
+    const i2 = t2.fetch || $http.send;
     try {
-      const args = {
-        url,
-        method: options2.method,
-        headers: options2.headers,
-        body: options2.body
-      };
-      const response = fetchFunc(args);
-      let data = {};
+      console.log(`fetching ${s2} with method ${t2.method}`);
+      const e3 = i2({ url: s2 });
+      let r2 = {};
       try {
-        data = response.json;
-      } catch (_) {
+        r2 = e3.json();
+      } catch (e4) {
       }
-      if (this.afterSend) {
-        data = this.afterSend(response, data, options2);
-      }
-      if (response.statusCode >= 400) {
-        throw new ClientResponseError({
-          url,
-          status: response.statusCode,
-          data
-        });
-      }
-      return data;
-    } catch (err) {
-      throw new ClientResponseError(err);
+      if (this.afterSend && (r2 = this.afterSend(e3, r2, t2)), e3.statusCode >= 400) throw new ClientResponseError({ url: s2, status: e3.statusCode, data: r2 });
+      return r2;
+    } catch (e3) {
+      throw new ClientResponseError(e3);
     }
   }
-  /**
-   * Shallow copy the provided object and takes care to initialize
-   * any options required to preserve the backward compatability.
-   *
-   * @param  {SendOptions} options
-   * @return {SendOptions}
-   */
-  // @ts-ignore
-  initSendOptions(path3, options2) {
-    options2 = Object.assign({ method: "GET" }, options2);
-    options2.body = convertToFormDataIfNeeded(options2.body);
-    normalizeUnknownQueryParams(options2);
-    if (this.getHeader(options2.headers, "Content-Type") === null && !isFormData(options2.body)) {
-      options2.headers = Object.assign({}, options2.headers, {
-        "Content-Type": "application/json"
-      });
-    }
-    if (this.getHeader(options2.headers, "Accept-Language") === null) {
-      options2.headers = Object.assign({}, options2.headers, {
-        "Accept-Language": this.lang
-      });
-    }
-    if (
-      // has valid token
-      this.authStore.token && // auth header is not explicitly set
-      this.getHeader(options2.headers, "Authorization") === null
-    ) {
-      options2.headers = Object.assign({}, options2.headers, {
-        Authorization: this.authStore.token
-      });
-    }
-    return options2;
-  }
-  /**
-   * Extracts the header with the provided name in case-insensitive manner.
-   * Returns `null` if no header matching the name is found.
-   */
-  getHeader(headers, name) {
-    headers = headers || {};
-    name = name.toLowerCase();
-    for (let key in headers) {
-      if (key.toLowerCase() == name) {
-        return headers[key];
+  initSendOptions(e2, t2) {
+    return (t2 = Object.assign({ method: "GET" }, t2)).body = function convertToFormDataIfNeeded(e3) {
+      if ("undefined" == typeof FormData || void 0 === e3 || "object" != typeof e3 || null === e3 || isFormData(e3) || !hasFileField(e3)) return e3;
+      const t3 = new FormData();
+      for (const s2 in e3) {
+        const i2 = e3[s2];
+        if ("object" != typeof i2 || hasFileField({ data: i2 })) {
+          const e4 = Array.isArray(i2) ? i2 : [i2];
+          for (let i3 of e4) t3.append(s2, i3);
+        } else {
+          let e4 = {};
+          e4[s2] = i2, t3.append("@jsonPayload", JSON.stringify(e4));
+        }
       }
-    }
+      return t3;
+    }(t2.body), normalizeUnknownQueryParams(t2), null !== this.getHeader(t2.headers, "Content-Type") || isFormData(t2.body) || (t2.headers = Object.assign({}, t2.headers, { "Content-Type": "application/json" })), null === this.getHeader(t2.headers, "Accept-Language") && (t2.headers = Object.assign({}, t2.headers, { "Accept-Language": this.lang })), this.authStore.token && null === this.getHeader(t2.headers, "Authorization") && (t2.headers = Object.assign({}, t2.headers, { Authorization: this.authStore.token })), t2;
+  }
+  getHeader(e2, t2) {
+    e2 = e2 || {}, t2 = t2.toLowerCase();
+    for (let s2 in e2) if (s2.toLowerCase() == t2) return e2[s2];
     return null;
   }
 };
 
-// src/globalApi.ts
+// src/lib/globalApi.ts
 var log = __toESM(require_dist2());
 var import_pocketbase_stringify2 = __toESM(require_dist());
 var import_url_parse = __toESM(require_url_parse());
@@ -7529,7 +6308,7 @@ var findRecordsByFilter = (collection, options2, dao = $app.dao()) => {
   return JSON.parse((0, import_pocketbase_stringify.stringify)(records));
 };
 
-// src/globalApi.ts
+// src/lib/globalApi.ts
 var globalApi = {
   url: (path3) => (0, import_url_parse.default)(path3, true),
   stringify: import_pocketbase_stringify2.stringify,
@@ -7599,7 +6378,7 @@ var globalApi = {
     const pb = globalApi.pb();
     try {
       const { user, password } = globalApi.createPaswordlessUser(email, options2);
-    } catch (e) {
+    } catch (e2) {
     }
     const res = pb.collection(options2?.collection ?? "users").requestOTP(email);
     return res;
@@ -7612,11 +6391,6 @@ var globalApi = {
   },
   ...log
 };
-
-// src/lib/AfterBootstrapHandler.ts
-init_cjs_shims();
-var import_pocketbase_log = __toESM(require_dist2());
-var import_pocketbase_node2 = __toESM(require_dist3());
 
 // src/lib/debug.ts
 init_cjs_shims();
@@ -7635,18 +6409,18 @@ var pagesRoot = $filepath.join(__hooks, `pages`);
 var SAFE_HEADER = `if (typeof module === 'undefined') { module = { exports: {} } };`;
 var exts = ["", ".js", ".json"];
 var moduleExists = (path3) => {
-  for (let i = 0; i < exts.length; i++) {
-    if (import_pocketbase_node.fs.existsSync(path3 + exts[i])) {
+  for (let i2 = 0; i2 < exts.length; i2++) {
+    if (import_pocketbase_node.fs.existsSync(path3 + exts[i2])) {
       return true;
     }
   }
   return false;
 };
 var simulateRequire = (path3) => {
-  for (let i = 0; i < exts.length; i++) {
+  for (let i2 = 0; i2 < exts.length; i2++) {
     try {
-      return import_pocketbase_node.fs.readFileSync(path3 + exts[i], "utf-8");
-    } catch (e) {
+      return import_pocketbase_node.fs.readFileSync(path3 + exts[i2], "utf-8");
+    } catch (e2) {
       continue;
     }
   }
@@ -7683,7 +6457,7 @@ ${simulateRequire(path4)}
     const finalPath = $filepath.join(pagesRoot, "_private", path3);
     try {
       return _require(finalPath);
-    } catch (e) {
+    } catch (e2) {
       throw new Error(`No module '${finalPath}' found`);
     }
   }
@@ -7692,10 +6466,10 @@ ${simulateRequire(path4)}
     try {
       const finalPath = $filepath.join(currentPath, "_private", path3);
       return _require(finalPath);
-    } catch (e) {
-      const errorMsg = `${e}`;
-      if (!(e instanceof NotFoundError)) {
-        throw e;
+    } catch (e2) {
+      const errorMsg = `${e2}`;
+      if (!(e2 instanceof NotFoundError)) {
+        throw e2;
       }
       if (currentPath === pagesRoot) {
         throw new Error(
@@ -7730,7 +6504,7 @@ var echo = (...args) => {
   return result.join(" ");
 };
 
-// src/lib/AfterBootstrapHandler.ts
+// src/handlers/AfterBootstrapHandler.ts
 var LOADER_METHODS = ["load", "get", "post", "put", "delete"];
 var AfterBootstrapHandler = () => {
   (0, import_pocketbase_log.info)(`pocketpages startup`);
@@ -7749,7 +6523,7 @@ var AfterBootstrapHandler = () => {
     ...(() => {
       try {
         return require(configPath);
-      } catch (e) {
+      } catch (e2) {
         return {};
       }
     })()
@@ -7771,13 +6545,13 @@ var AfterBootstrapHandler = () => {
     if ($filepath.base(f).startsWith("+")) {
       return false;
     }
-    const pathParts = f.split("/");
+    const pathParts = $filepath.toSlash(f).split("/");
     return !pathParts.some((part) => part === "_private");
   });
   dbg2({ addressableFiles });
   const routes = addressableFiles.map((relativePath) => {
     dbg2(`Examining route`, relativePath);
-    const parts = relativePath.split("/").filter((p) => !p.startsWith(`(`));
+    const parts = $filepath.toSlash(relativePath).split("/").filter((p) => !p.startsWith(`(`));
     const absolutePath = $filepath.join(pagesRoot, relativePath);
     dbg2({ relativePath, absolutePath, parts });
     const content = toString($os.readFile(absolutePath));
@@ -7805,7 +6579,7 @@ var AfterBootstrapHandler = () => {
       return route;
     }
     {
-      const pathParts = $filepath.dir(relativePath).split(`/`).filter((node) => node != ".").filter((p) => !!p);
+      const pathParts = $filepath.toSlash($filepath.dir(relativePath)).split(`/`).filter((node) => node != ".").filter((p) => !!p);
       dbg2(`layout`, { pathParts }, $filepath.dir(relativePath));
       do {
         const maybeLayout = $filepath.join(
@@ -7825,7 +6599,7 @@ var AfterBootstrapHandler = () => {
       } while (true);
     }
     {
-      const pathParts = $filepath.dir(relativePath).split(`/`).filter((p) => !!p);
+      const pathParts = $filepath.toSlash($filepath.dir(relativePath)).split(`/`).filter((p) => !!p);
       const current = [pagesRoot];
       do {
         const maybeMiddleware = $filepath.join(...current, `+middleware.js`);
@@ -7851,14 +6625,14 @@ var AfterBootstrapHandler = () => {
       });
     }
     return route;
-  }).filter((r) => r.segments.length > 0);
+  }).filter((r2) => r2.segments.length > 0);
   dbg2({ routes });
   const cache = { routes, config };
   dbg2({ cache });
   $app.store().set(`pocketpages`, cache);
 };
 
-// src/lib/MiddlewareHandler.ts
+// src/handlers/MiddlewareHandler.ts
 init_cjs_shims();
 var import_pocketbase_log2 = __toESM(require_dist2());
 var import_url_parse2 = __toESM(require_url_parse());
@@ -7955,7 +6729,7 @@ function splitCells(tableRow, count) {
       return " |";
     }
   }), cells = row.split(/ \|/);
-  let i = 0;
+  let i2 = 0;
   if (!cells[0].trim()) {
     cells.shift();
   }
@@ -7970,8 +6744,8 @@ function splitCells(tableRow, count) {
         cells.push("");
     }
   }
-  for (; i < cells.length; i++) {
-    cells[i] = cells[i].trim().replace(/\\\|/g, "|");
+  for (; i2 < cells.length; i2++) {
+    cells[i2] = cells[i2].trim().replace(/\\\|/g, "|");
   }
   return cells;
 }
@@ -7998,15 +6772,15 @@ function findClosingBracket(str, b) {
     return -1;
   }
   let level = 0;
-  for (let i = 0; i < str.length; i++) {
-    if (str[i] === "\\") {
-      i++;
-    } else if (str[i] === b[0]) {
+  for (let i2 = 0; i2 < str.length; i2++) {
+    if (str[i2] === "\\") {
+      i2++;
+    } else if (str[i2] === b[0]) {
       level++;
-    } else if (str[i] === b[1]) {
+    } else if (str[i2] === b[1]) {
       level--;
       if (level < 0) {
-        return i;
+        return i2;
       }
     }
   }
@@ -8138,18 +6912,18 @@ var _Tokenizer = class {
       while (lines.length > 0) {
         let inBlockquote = false;
         const currentLines = [];
-        let i;
-        for (i = 0; i < lines.length; i++) {
-          if (/^ {0,3}>/.test(lines[i])) {
-            currentLines.push(lines[i]);
+        let i2;
+        for (i2 = 0; i2 < lines.length; i2++) {
+          if (/^ {0,3}>/.test(lines[i2])) {
+            currentLines.push(lines[i2]);
             inBlockquote = true;
           } else if (!inBlockquote) {
-            currentLines.push(lines[i]);
+            currentLines.push(lines[i2]);
           } else {
             break;
           }
         }
-        lines = lines.slice(i);
+        lines = lines.slice(i2);
         const currentRaw = currentLines.join("\n");
         const currentText = currentRaw.replace(/\n {0,3}((?:=+|-+) *)(?=\n|$)/g, "\n    $1").replace(/^ {0,3}>[ \t]?/gm, "");
         raw = raw ? `${raw}
@@ -8224,7 +6998,7 @@ ${currentText}` : currentText;
         }
         raw = cap[0];
         src = src.substring(raw.length);
-        let line = cap[2].split("\n", 1)[0].replace(/^\t+/, (t) => " ".repeat(3 * t.length));
+        let line = cap[2].split("\n", 1)[0].replace(/^\t+/, (t2) => " ".repeat(3 * t2.length));
         let nextLine = src.split("\n", 1)[0];
         let blankLine = !line.trim();
         let indent = 0;
@@ -8333,18 +7107,18 @@ ${currentText}` : currentText;
       list2.items[list2.items.length - 1].raw = list2.items[list2.items.length - 1].raw.trimEnd();
       list2.items[list2.items.length - 1].text = list2.items[list2.items.length - 1].text.trimEnd();
       list2.raw = list2.raw.trimEnd();
-      for (let i = 0; i < list2.items.length; i++) {
+      for (let i2 = 0; i2 < list2.items.length; i2++) {
         this.lexer.state.top = false;
-        list2.items[i].tokens = this.lexer.blockTokens(list2.items[i].text, []);
+        list2.items[i2].tokens = this.lexer.blockTokens(list2.items[i2].text, []);
         if (!list2.loose) {
-          const spacers = list2.items[i].tokens.filter((t) => t.type === "space");
-          const hasMultipleLineBreaks = spacers.length > 0 && spacers.some((t) => /\n.*\n/.test(t.raw));
+          const spacers = list2.items[i2].tokens.filter((t2) => t2.type === "space");
+          const hasMultipleLineBreaks = spacers.length > 0 && spacers.some((t2) => /\n.*\n/.test(t2.raw));
           list2.loose = hasMultipleLineBreaks;
         }
       }
       if (list2.loose) {
-        for (let i = 0; i < list2.items.length; i++) {
-          list2.items[i].loose = true;
+        for (let i2 = 0; i2 < list2.items.length; i2++) {
+          list2.items[i2].loose = true;
         }
       }
       return list2;
@@ -8410,21 +7184,21 @@ ${currentText}` : currentText;
         item.align.push(null);
       }
     }
-    for (let i = 0; i < headers.length; i++) {
+    for (let i2 = 0; i2 < headers.length; i2++) {
       item.header.push({
-        text: headers[i],
-        tokens: this.lexer.inline(headers[i]),
+        text: headers[i2],
+        tokens: this.lexer.inline(headers[i2]),
         header: true,
-        align: item.align[i]
+        align: item.align[i2]
       });
     }
     for (const row of rows) {
-      item.rows.push(splitCells(row, item.header.length).map((cell, i) => {
+      item.rows.push(splitCells(row, item.header.length).map((cell, i2) => {
         return {
           text: cell,
           tokens: this.lexer.inline(cell),
           header: false,
-          align: item.align[i]
+          align: item.align[i2]
         };
       }));
     }
@@ -8912,8 +7686,8 @@ var _Lexer = class __Lexer {
   lex(src) {
     src = src.replace(/\r\n|\r/g, "\n");
     this.blockTokens(src, this.tokens);
-    for (let i = 0; i < this.inlineQueue.length; i++) {
-      const next = this.inlineQueue[i];
+    for (let i2 = 0; i2 < this.inlineQueue.length; i2++) {
+      const next = this.inlineQueue[i2];
       this.inlineTokens(next.src, next.tokens);
     }
     this.inlineQueue = [];
@@ -9436,8 +8210,8 @@ var _Parser = class __Parser {
    */
   parse(tokens, top = true) {
     let out = "";
-    for (let i = 0; i < tokens.length; i++) {
-      const anyToken = tokens[i];
+    for (let i2 = 0; i2 < tokens.length; i2++) {
+      const anyToken = tokens[i2];
       if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[anyToken.type]) {
         const genericToken = anyToken;
         const ret = this.options.extensions.renderers[genericToken.type].call({ parser: this }, genericToken);
@@ -9487,8 +8261,8 @@ var _Parser = class __Parser {
         case "text": {
           let textToken = token2;
           let body = this.renderer.text(textToken);
-          while (i + 1 < tokens.length && tokens[i + 1].type === "text") {
-            textToken = tokens[++i];
+          while (i2 + 1 < tokens.length && tokens[i2 + 1].type === "text") {
+            textToken = tokens[++i2];
             body += "\n" + this.renderer.text(textToken);
           }
           if (top) {
@@ -9522,8 +8296,8 @@ var _Parser = class __Parser {
   parseInline(tokens, renderer) {
     renderer = renderer || this.renderer;
     let out = "";
-    for (let i = 0; i < tokens.length; i++) {
-      const anyToken = tokens[i];
+    for (let i2 = 0; i2 < tokens.length; i2++) {
+      const anyToken = tokens[i2];
       if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[anyToken.type]) {
         const ret = this.options.extensions.renderers[anyToken.type].call({ parser: this }, anyToken);
         if (ret !== false || !["escape", "html", "link", "image", "strong", "em", "codespan", "br", "del", "text"].includes(anyToken.type)) {
@@ -9882,26 +8656,26 @@ var Marked = class {
           html2 = opt.hooks.postprocess(html2);
         }
         return html2;
-      } catch (e) {
-        return throwError(e);
+      } catch (e2) {
+        return throwError(e2);
       }
     };
     return parse5;
   }
   onError(silent, async) {
-    return (e) => {
-      e.message += "\nPlease report this to https://github.com/markedjs/marked.";
+    return (e2) => {
+      e2.message += "\nPlease report this to https://github.com/markedjs/marked.";
       if (silent) {
-        const msg = "<p>An error occurred:</p><pre>" + escape$1(e.message + "", true) + "</pre>";
+        const msg = "<p>An error occurred:</p><pre>" + escape$1(e2.message + "", true) + "</pre>";
         if (async) {
           return Promise.resolve(msg);
         }
         return msg;
       }
       if (async) {
-        return Promise.reject(e);
+        return Promise.reject(e2);
       }
-      throw e;
+      throw e2;
     };
   }
 };
@@ -10134,8 +8908,8 @@ function decode(input) {
     return decodeURIComponent(input);
   } catch {
     let tokens = input.match(singleMatcher) || [];
-    for (let i = 1; i < tokens.length; i++) {
-      input = decodeComponents(tokens, i).join("");
+    for (let i2 = 1; i2 < tokens.length; i2++) {
+      input = decodeComponents(tokens, i2).join("");
       tokens = input.match(singleMatcher) || [];
     }
     return input;
@@ -10641,23 +9415,23 @@ var parseRoute = (url, routes) => {
   for (const maybeFname of tryFnames) {
     const parts = maybeFname.split("/").filter((p) => p);
     const routeCandidates = routes.filter(
-      (r) => r.segments.length === parts.length
+      (r2) => r2.segments.length === parts.length
     );
     for (const route of routeCandidates) {
-      const matched = route.segments.every((segment, i) => {
+      const matched = route.segments.every((segment, i2) => {
         const { paramName } = segment;
         if (paramName) {
-          params[paramName] = parts[i];
+          params[paramName] = parts[i2];
           return true;
         }
         const matchesWithFingerprint = (() => {
           if (route.shouldPreProcess) return false;
-          if (i !== route.segments.length - 1) return false;
+          if (i2 !== route.segments.length - 1) return false;
           const fingerprinted = fingerprint(segment.nodeName, route.fingerprint);
           dbg2({ segment, fingerprinted, parts });
-          return fingerprinted === parts[i];
+          return fingerprinted === parts[i2];
         })();
-        return segment.nodeName === parts[i] || matchesWithFingerprint;
+        return segment.nodeName === parts[i2] || matchesWithFingerprint;
       });
       if (matched) {
         return { route, params };
@@ -10667,7 +9441,7 @@ var parseRoute = (url, routes) => {
   return null;
 };
 
-// src/lib/MiddlewareHandler.ts
+// src/handlers/MiddlewareHandler.ts
 var MiddlewareHandler = (request, response, next) => {
   const { routes, config } = $app.store().get(`pocketpages`);
   const { method, url } = request;
@@ -10687,7 +9461,6 @@ var MiddlewareHandler = (request, response, next) => {
   try {
     dbg2(`Found a matching route`, { parsedRoute });
     const DefaultSseFilter = (clientId, client) => {
-      (0, import_pocketbase_log2.info)("DefaultSseFilter", { clientId, client });
       return api.auth?.id ? client.get("auth")?.id === api.auth?.id : true;
     };
     const deferredSse = {
@@ -10711,9 +9484,9 @@ var MiddlewareHandler = (request, response, next) => {
       ...globalApi,
       params,
       echo: (...args) => {
-        const s = echo(...args);
-        response.write(s);
-        return s;
+        const s2 = echo(...args);
+        response.write(s2);
+        return s2;
       },
       formData: request.formData,
       body: request.body,
@@ -10735,7 +9508,7 @@ var MiddlewareHandler = (request, response, next) => {
       asset: (path3) => {
         const shortAssetPath = path3.startsWith("/") ? path3 : $filepath.join(route.assetPrefix, path3);
         const fullAssetPath = path3.startsWith("/") ? path3 : $filepath.join(
-          ...route.segments.slice(0, -2).map((s) => s.nodeName),
+          ...route.segments.slice(0, -2).map((s2) => s2.nodeName),
           route.assetPrefix,
           path3
         );
@@ -10869,7 +9642,7 @@ var MiddlewareHandler = (request, response, next) => {
       dbg2(`Attempting to parse as JSON`);
       const parsed = JSON.parse(content);
       return response.json(200, parsed);
-    } catch (e) {
+    } catch (e2) {
       dbg2(`Not JSON`);
     }
     route.layouts.forEach((layoutPath) => {
@@ -10879,29 +9652,31 @@ var MiddlewareHandler = (request, response, next) => {
       content = renderFile(layoutPath, api);
     });
     if (deferredSse.topic) {
-      (0, import_pocketbase_log2.info)("Sending deferred SSE", { deferredSse });
       _sseSend(deferredSse.topic, JSON.stringify(content), deferredSse.filter);
       return response.json(200, { sse: "ok" });
     }
     return response.html(200, content);
-  } catch (e) {
-    (0, import_pocketbase_log2.error)(e);
+  } catch (e2) {
+    (0, import_pocketbase_log2.error)(e2);
     const message = (() => {
-      const m = `${e}`;
+      const m = `${e2}`;
       if (m.includes("Value is not an object"))
         return `${m} - are you referencing a symbol missing from require() or resolve()?`;
-      return `${e}`;
+      return `${e2}`;
     })();
-    if (e instanceof BadRequestError) {
+    if (e2 instanceof BadRequestError) {
       return response.html(400, message);
     }
     return response.html(
       500,
       `<html><body><h1>PocketPages Error</h1><pre><code>${message}
-${e instanceof Error ? e.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pagesRoot)).replaceAll(__hooks, "") : ""}</code></pre></body></html>`
+${e2 instanceof Error ? e2.stack?.replaceAll(pagesRoot, "/" + $filepath.base(pagesRoot)).replaceAll(__hooks, "") : ""}</code></pre></body></html>`
     );
   }
 };
+
+// src/lib/types.ts
+init_cjs_shims();
 
 // src/lib/wrapper.ts
 init_cjs_shims();
@@ -10932,21 +9707,21 @@ var setAuthFromHeaderOrCookie = (request) => {
     }
     try {
       request.auth = $app.findAuthRecordByToken(cleanToken, "auth");
-    } catch (e) {
+    } catch (e2) {
     }
   }
 };
 
 // src/lib/wrapper.ts
-var v23MiddlewareWrapper = (e) => {
+var v23MiddlewareWrapper = (e2) => {
   const next = () => {
-    e.next();
+    e2.next();
   };
-  if (!e.request) {
+  if (!e2.request) {
     dbg2(`No request, passing on to PocketBase`);
     return next();
   }
-  const { method, url } = e.request;
+  const { method, url } = e2.request;
   dbg2({ method, url });
   if (!url) {
     if (!url) {
@@ -10955,13 +9730,13 @@ var v23MiddlewareWrapper = (e) => {
     }
   }
   const request = {
-    auth: e.auth,
+    auth: e2.auth,
     method: method.toUpperCase(),
     url: (0, import_url_parse3.default)(url.string()),
-    formData: () => e.requestInfo().body,
-    body: () => e.requestInfo().body,
+    formData: () => e2.requestInfo().body,
+    body: () => e2.requestInfo().body,
     header: (name) => {
-      return e.request?.header.get(name) || "";
+      return e2.request?.header.get(name) || "";
     },
     cookies: /* @__PURE__ */ (() => {
       let parsed;
@@ -10994,25 +9769,25 @@ var v23MiddlewareWrapper = (e) => {
   };
   const response = {
     file: (path3) => {
-      return e.fileFS($os.dirFS($filepath.dir(path3)), $filepath.base(path3));
+      return e2.fileFS($os.dirFS($filepath.dir(path3)), $filepath.base(path3));
     },
-    write: (s) => {
-      e.response.write(s);
+    write: (s2) => {
+      e2.response.write(s2);
     },
     redirect: (path3, status = 302) => {
-      e.redirect(status, path3);
+      e2.redirect(status, path3);
     },
     json: (status, data) => {
-      e.json(status, data);
+      e2.json(status, data);
     },
     html: (status, data) => {
-      e.html(status, data);
+      e2.html(status, data);
     },
     header: (name, value) => {
       if (value === void 0) {
-        return e.response.header().get(name) || "";
+        return e2.response.header().get(name) || "";
       }
-      e.response.header().set(name, value);
+      e2.response.header().set(name, value);
       return value;
     },
     cookie: (name, value, options2 = {}) => {
@@ -11032,7 +9807,7 @@ var v23MiddlewareWrapper = (e) => {
     }
   };
   setAuthFromHeaderOrCookie(request);
-  require(`${__hooks}/pocketpages.pb`).MiddlewareHandler(
+  require($filepath.join(__hooks, "pocketpages.pb")).MiddlewareHandler(
     request,
     response,
     next
@@ -11042,7 +9817,45 @@ var v23MiddlewareWrapper = (e) => {
 // src/index.ts
 var isBooting = typeof onBootstrap !== "undefined";
 if (isBooting) {
-  boot();
+  onBootstrap((e2) => {
+    e2.next();
+    if (!require.isOverridden) {
+      const oldRequire = require;
+      const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
+        $filepath.join(__hooks, "pocketpages.pb")
+      );
+      require = (path3) => {
+        if (path3 === "pocketpages") {
+          return globalApi2;
+        }
+        if (!moduleExists2(path3)) {
+          throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
+        }
+        return oldRequire(path3);
+      };
+      require.isOverridden = true;
+    }
+    require($filepath.join(__hooks, "pocketpages.pb")).AfterBootstrapHandler();
+  });
+  routerUse((e2) => {
+    if (!require.isOverridden) {
+      const oldRequire = require;
+      const { globalApi: globalApi2, moduleExists: moduleExists2 } = oldRequire(
+        $filepath.join(__hooks, "pocketpages.pb")
+      );
+      require = (path3) => {
+        if (path3 === "pocketpages") {
+          return globalApi2;
+        }
+        if (!moduleExists2(path3)) {
+          throw new Error(`Module ${path3} not found. Did you mean resolve()?`);
+        }
+        return oldRequire(path3);
+      };
+      require.isOverridden = true;
+    }
+    return require($filepath.join(__hooks, "pocketpages.pb")).v23MiddlewareWrapper(e2);
+  });
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -11056,10 +9869,14 @@ if (isBooting) {
   stringify,
   v23MiddlewareWrapper
 });
-/**
- * @file Embedded JavaScript templating engine. {@link http://ejs.co}
- * @author Matthew Eernisse <mde@fleegix.org>
- * @author Tiancheng "Timothy" Gu <timothygu99@gmail.com>
- * @project EJS
- * @license {@link http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0}
- */
+/*! Bundled license information:
+
+pocketbase-ejs/lib/ejs.js:
+  (**
+   * @file Embedded JavaScript templating engine. {@link http://ejs.co}
+   * @author Matthew Eernisse <mde@fleegix.org>
+   * @author Tiancheng "Timothy" Gu <timothygu99@gmail.com>
+   * @project EJS
+   * @license {@link http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0}
+   *)
+*/

@@ -1,4 +1,21 @@
 /// <reference types="pocketbase-jsvm" />
+declare const dbg: (...objs: any[]) => void;
+declare const info: (...objs: any[]) => void;
+declare const warn: (...objs: any[]) => void;
+declare const error: (...objs: any[]) => void;
+declare const log: (...objs: any[]) => void;
+
+declare const log$1_dbg: typeof dbg;
+declare const log$1_error: typeof error;
+declare const log$1_info: typeof info;
+declare const log$1_log: typeof log;
+declare const log$1_warn: typeof warn;
+declare namespace log$1 {
+  export { log$1_dbg as dbg, log$1_error as error, log$1_info as info, log$1_log as log, log$1_warn as warn };
+}
+
+declare const stringify: (obj: any, replacer?: (k: string, v: any) => any, space?: number) => string;
+
 type Nil = null | undefined;
 type ArrayIteratee<I, O> = (item: I, index: number) => O;
 type ObjectIteratee<T, O> = (item: T[keyof T], key: StringifiedKey<T>) => O;
@@ -1258,23 +1275,6 @@ declare class Client {
     private getHeader;
 }
 
-declare const dbg: (...objs: any[]) => void;
-declare const info: (...objs: any[]) => void;
-declare const warn: (...objs: any[]) => void;
-declare const error: (...objs: any[]) => void;
-declare const log: (...objs: any[]) => void;
-
-declare const log$1_dbg: typeof dbg;
-declare const log$1_error: typeof error;
-declare const log$1_info: typeof info;
-declare const log$1_log: typeof log;
-declare const log$1_warn: typeof warn;
-declare namespace log$1 {
-  export { log$1_dbg as dbg, log$1_error as error, log$1_info as info, log$1_log as log, log$1_warn as warn };
-}
-
-declare const stringify: (obj: any, replacer?: (k: string, v: any) => any, space?: number) => string;
-
 declare namespace URLParse {
     type URLPart =
         | "auth"
@@ -1357,29 +1357,6 @@ declare const URLParse: {
     };
     trimLeft(url: string): string;
 };
-
-type Route = {
-    relativePath: string;
-    absolutePath: string;
-    fingerprint: string;
-    shouldPreProcess: boolean;
-    assetPrefix: string;
-    segments: {
-        nodeName: string;
-        paramName?: string;
-    }[];
-    middlewares: string[];
-    loaders: Partial<{
-        load: string;
-        get: string;
-        post: string;
-        put: string;
-        delete: string;
-    }>;
-    isMarkdown: boolean;
-    layouts: string[];
-};
-declare const AfterBootstrapHandler: PagesInitializerFunc;
 
 type FilterOptions = {
     filter?: string;
@@ -1531,11 +1508,34 @@ type PagesInitializerFunc = () => void;
 type PagesNextFunc = () => void;
 type PagesMiddlewareFunc = (request: PagesRequest, response: PagesResponse, next: PagesNextFunc) => void;
 
+type Route = {
+    relativePath: string;
+    absolutePath: string;
+    fingerprint: string;
+    shouldPreProcess: boolean;
+    assetPrefix: string;
+    segments: {
+        nodeName: string;
+        paramName?: string;
+    }[];
+    middlewares: string[];
+    loaders: Partial<{
+        load: string;
+        get: string;
+        post: string;
+        put: string;
+        delete: string;
+    }>;
+    isMarkdown: boolean;
+    layouts: string[];
+};
+declare const AfterBootstrapHandler: PagesInitializerFunc;
+
+declare const MiddlewareHandler: PagesMiddlewareFunc;
+
 declare const globalApi: PagesGlobalContext;
 
 declare const moduleExists: (path: string) => boolean;
-
-declare const MiddlewareHandler: PagesMiddlewareFunc;
 
 declare const v23MiddlewareWrapper: (e: core.RequestEvent) => void;
 
