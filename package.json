@@ -31,7 +31,7 @@
     "build:copy:daisyui-docs": "cp dist/pocketpages.pb.js starters/daisyui-docs/pb_hooks",
     "build:copy:docs": "cp dist/pocketpages.pb.js docs/pb_hooks",
     "build:copy:auth": "cp dist/pocketpages.pb.js starters/auth/pb_hooks",
-    "watch": "rimraf dist && chokidar 'src/**/*' -c 'bun run build'"
+    "dev": "rimraf dist && chokidar 'src/**/*' -c 'bun run build'"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
