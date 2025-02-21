@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.13.3
+
+### Patch Changes
+
+- Fix: update pocketbase-js-sdk-jsvm to 10003
+
 ## 0.13.2
 
 ### Patch Changes
