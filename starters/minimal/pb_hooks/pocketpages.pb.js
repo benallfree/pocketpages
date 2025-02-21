@@ -6240,11 +6240,10 @@ var Client = class {
     "application/json" == this.getHeader(t2.headers, "Content-Type") && t2.body && "string" != typeof t2.body && (t2.body = JSON.stringify(t2.body));
     const i2 = t2.fetch || $http.send;
     try {
-      console.log(`fetching ${s2} with method ${t2.method}`);
-      const e3 = i2({ url: s2 });
+      const e3 = i2({ url: s2, method: t2.method, headers: t2.headers, body: t2.body });
       let r2 = {};
       try {
-        r2 = e3.json();
+        r2 = e3.json;
       } catch (e4) {
       }
       if (this.afterSend && (r2 = this.afterSend(e3, r2, t2)), e3.statusCode >= 400) throw new ClientResponseError({ url: s2, status: e3.statusCode, data: r2 });
