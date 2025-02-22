@@ -1,0 +1,22 @@
+{
+  "name": "pocketpages-starter-htmx",
+  "version": "0.0.1",
+  "description": "A starter project for PocketPages with htmx",
+  "author": {
+    "name": "Ben Allfree",
+    "github": "benallfree"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benallfree/pocketpages/tree/main/packages/starters/htmx"
+  },
+  "keywords": [
+    "pocketpages",
+    "starter",
+    "htmx"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "pocketpages": "workspace:*"
+  }
+}

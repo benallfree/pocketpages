@@ -1,7 +1,0 @@
-{
-  "name": "htmx",
-  "scripts": {
-    "serve": "pocketbase serve --dir=pb_data",
-    "dev": "pocketbase serve --dir=pb_data --dev"
-  }
-}

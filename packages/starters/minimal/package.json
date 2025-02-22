@@ -1,0 +1,22 @@
+{
+  "name": "pocketpages-starter-minimal",
+  "version": "0.0.1",
+  "description": "A minimal starter project for PocketPages",
+  "author": {
+    "name": "Ben Allfree",
+    "github": "benallfree"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benallfree/pocketpages/tree/main/packages/starters/minimal"
+  },
+  "keywords": [
+    "pocketpages",
+    "starter",
+    "minimal"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "pocketpages": "workspace:*"
+  }
+}

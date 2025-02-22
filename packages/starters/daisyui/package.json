@@ -1,0 +1,29 @@
+{
+  "name": "pocketpages-starter-daisyui",
+  "version": "0.0.1",
+  "description": "A starter project for PocketPages with DaisyUI",
+  "author": {
+    "name": "Ben Allfree",
+    "github": "benallfree"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benallfree/pocketpages/tree/main/packages/starters/daisyui"
+  },
+  "keywords": [
+    "pocketpages",
+    "starter",
+    "daisyui"
+  ],
+  "scripts": {
+    "dev": "tailwindcss -i ./pb_hooks/pages/app.tailwind.css -o ./pb_hooks/pages/app.css --watch"
+  },
+  "dependencies": {
+    "pocketpages": "workspace:*"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "daisyui": "^4.12.23",
+    "tailwindcss": "^3.4.17"
+  }
+}
