@@ -18,7 +18,8 @@
   },
   "homepage": "https://pocketpages.dev",
   "files": [
-    "dist"
+    "dist",
+    "*.md"
   ],
   "scripts": {
     "build": "tsup",
