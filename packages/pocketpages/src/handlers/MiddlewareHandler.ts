@@ -9,7 +9,7 @@ import type { PagesResponse } from 'src/lib/types'
 import { default as parse, default as URL } from 'url-parse'
 import { setAuthFromHeaderOrCookie } from '../lib/auth'
 import { dbg } from '../lib/debug'
-import { parseSlots, renderFile } from '../lib/ejs'
+import { renderFile } from '../lib/ejs'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
 import { marked } from '../lib/marked'
 import { resolveRoute } from '../lib/resolveRoute'
@@ -27,6 +27,32 @@ import {
   PagesRequestContext,
   RedirectOptions,
 } from '../lib/types'
+
+export const parseSlots = (input: string) => {
+  const regex = /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g
+  const slots: Record<string, string> = {}
+  let lastIndex = 0
+  let cleanedContent = ''
+  let match: RegExpExecArray | null
+
+  while ((match = regex.exec(input)) !== null) {
+    const name = match[1]
+    const content = match[2]?.trim()
+    if (name && content) {
+      slots[name] = content
+      // Add the content between the last match and this slot tag
+      cleanedContent += input.slice(lastIndex, match.index)
+      lastIndex = match.index + match[0].length
+    }
+  }
+  // Add any remaining content after the last slot
+  cleanedContent += input.slice(lastIndex)
+
+  return {
+    slots,
+    content: cleanedContent.trim(),
+  }
+}
 
 export type SseFilter = (clientId: string, client: any) => boolean
 
