@@ -28,9 +28,10 @@
   "dependencies": {
     "@s-libs/micro-dash": "^18.0.0",
     "cookie": "^1.0.2",
+    "pocketbase-log": "^0.0.2",
+    "pocketpages-plugin-ejs": "workspace:^0.0.4",
     "qs-lite": "^1.0.0",
-    "url-parse": "^1.5.10",
-    "pocketpages-plugin-ejs": "workspace:^0.0.4"
+    "url-parse": "^1.5.10"
   },
   "devDependencies": {
     "@types/url-parse": "^1.4.11",

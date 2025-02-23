@@ -14,9 +14,6 @@
     "packages/plugins/auth": {
       "name": "pocketpages-plugin-auth",
       "version": "0.0.4",
-      "dependencies": {
-        "pocketpages": "workspace:^0.15.0",
-      },
       "devDependencies": {
         "@changesets/cli": "^2.27.12",
         "chokidar-cli": "^3.0.0",
@@ -25,7 +22,7 @@
         "typescript": "^5.7.3",
       },
       "peerDependencies": {
-        "pocketpages-plugin-js-sdk": "workspace:*",
+        "pocketpages-plugin-js-sdk": "workspace:^0.0.4",
       },
     },
     "packages/plugins/ejs": {
@@ -109,6 +106,7 @@
       "dependencies": {
         "@s-libs/micro-dash": "^18.0.0",
         "cookie": "^1.0.2",
+        "pocketbase-log": "^0.0.2",
         "pocketpages-plugin-ejs": "workspace:^0.0.4",
         "qs-lite": "^1.0.0",
         "url-parse": "^1.5.10",
@@ -698,6 +696,8 @@
     "pocketbase-js-sdk-jsvm": ["pocketbase-js-sdk-jsvm@0.25.10003", "", {}, "sha512-AsnYFHPuut3DHt5LzgzGZrVtvIR4uTMX4YjTKwTfl90oz6ioCiRsDKuPD5ghTmxtYMWXxKX7WwrhOrHv6bTjBQ=="],
 
     "pocketbase-jsvm": ["pocketbase-jsvm@0.25.10001", "", {}, "sha512-F8Jss51uzp4C6nHcR5PxmscXtKbrWJjqDF/u7cHIh2amnUILnfY/JD5tTzYoqn3rDe1CIrQOaalDzAZ3gdMz9w=="],
+
+    "pocketbase-log": ["pocketbase-log@0.0.2", "", { "dependencies": { "pocketbase-stringify": "^0.0.2" } }, "sha512-d0thSPYopTZzC4I85hlN6hrZaQEX7BzHieovV45zqFfE3kl4rb65xITe3UDZ+/42IfCTEchaPbTUDP2yd1/E8g=="],
 
     "pocketbase-node": ["pocketbase-node@0.0.3", "", {}, "sha512-ZGrRFRlJqSXDl63913ZoHdtmpXJcaKO1km8STlGDbUJY6A+4xRC84e31gM4frRwSNhW6HsgsqkmzAj+UkZkDLg=="],
 
