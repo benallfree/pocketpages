@@ -25,8 +25,7 @@
     "tailwindcss": "^3.4.17"
   },
   "dependencies": {
-    "pocketpages": "workspace:^0.15.0",
-    "pocketpages-plugin-ejs": "workspace:*"
+    "pocketpages": "workspace:^0.15.1"
   },
   "files": [
     "pb_hooks",

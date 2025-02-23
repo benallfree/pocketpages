@@ -12,7 +12,6 @@
     "url": "https://github.com/benallfree/pocketpages/packages/starters/mvp"
   },
   "dependencies": {
-    "pocketpages": "workspace:^0.15.0",
-    "pocketpages-plugin-ejs": "workspace:*"
+    "pocketpages": "workspace:^0.15.1"
   }
 }

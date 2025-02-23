@@ -1,5 +1,12 @@
 # pocketpages
 
+## 0.15.1
+
+### Patch Changes
+
+- Added ejs dep
+- Added package readme
+
 ## 0.15.0
 
 ### Breaking Changes
