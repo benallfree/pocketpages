@@ -166,7 +166,6 @@ export type PagesConfig = {
   preprocessorExts: string[]
   debug: boolean
   host: string
-  boot: (globalApi: PagesGlobalContext) => void
 }
 
 export type Cache = { routes: Route[]; config: PagesConfig }

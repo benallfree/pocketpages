@@ -1,7 +1,6 @@
 import { forEach } from '@s-libs/micro-dash'
 import { info } from 'pocketbase-log'
 import { fs } from 'pocketbase-node'
-import { globalApi } from 'src/lib/globalApi'
 import { dbg } from '../lib/debug'
 import { pagesRoot } from '../lib/helpers'
 import { Cache, PagesConfig, PagesInitializerFunc } from '../lib/types'
@@ -56,7 +55,6 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
     preprocessorExts: ['.ejs', '.md'],
     debug: false,
     host: 'http://localhost:8090',
-    boot: () => {},
     ...(() => {
       try {
         return require(configPath) as Partial<PagesConfig>
@@ -68,8 +66,6 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   if (config.debug) {
     $app.store().set('__pocketpages_debug', true)
   }
-
-  config.boot(globalApi)
 
   const physicalFiles: string[] = []
   $filepath.walkDir(pagesRoot, (path, d, err) => {
