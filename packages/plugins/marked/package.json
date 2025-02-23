@@ -1,6 +1,6 @@
 {
   "name": "pocketpages-plugin-marked",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@s-libs/micro-dash": "^18.0.0",
     "chokidar-cli": "^3.0.0",
-    "pocketpages": "workspace:^0.15.0",
+    "pocketpages": "workspace:^0.15.3",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3"
   },

@@ -1,5 +1,13 @@
 # pocketpages
 
+## 0.15.3
+
+### Patch Changes
+
+- Fix: bad build
+- Updated dependencies
+  - pocketpages-plugin-ejs@0.0.5
+
 ## 0.15.2
 
 ### Patch Changes

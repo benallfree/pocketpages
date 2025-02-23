@@ -3,8 +3,8 @@
   "version": "0.0.2",
   "private": true,
   "dependencies": {
-    "pocketpages": "workspace:^0.15.2",
-    "pocketpages-plugin-sse": "workspace:^0.0.4"
+    "pocketpages": "workspace:^0.15.3",
+    "pocketpages-plugin-sse": "workspace:^0.0.5"
   },
   "files": [
     "pb_hooks",

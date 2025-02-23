@@ -1,5 +1,11 @@
 # pocketpages-plugin-js-sdk
 
+## 0.0.6
+
+### Patch Changes
+
+- Fix: bad build
+
 ## 0.0.5
 
 ### Patch Changes

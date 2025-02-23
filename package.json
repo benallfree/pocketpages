@@ -9,7 +9,15 @@
     "typescript": "^5.7.3"
   },
   "scripts": {
-    "publish": "concurrently 'bun run publish:*'",
+    "build": "concurrently 'bun run build:*'",
+    "build:pocketpages": "cd packages/pocketpages && bun run build",
+    "build:plugins:auth": "cd packages/plugins/auth && bun run build",
+    "build:plugins:ejs": "cd packages/plugins/ejs && bun run build",
+    "build:plugins:js-sdk": "cd packages/plugins/js-sdk && bun run build",
+    "build:plugins:marked": "cd packages/plugins/marked && bun run build",
+    "build:plugins:micro-dash": "cd packages/plugins/micro-dash && bun run build",
+    "build:plugins:sse": "cd packages/plugins/sse && bun run build",
+    "publish": "bun run build && concurrently 'bun run publish:*'",
     "publish:pocketpages": "cd packages/pocketpages && bun publish",
     "publish:plugins:auth": "cd packages/plugins/auth && bun publish",
     "publish:plugins:ejs": "cd packages/plugins/ejs && bun publish",
