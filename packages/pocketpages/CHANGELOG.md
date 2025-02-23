@@ -1,5 +1,13 @@
 # pocketpages
 
+## 0.15.2
+
+### Patch Changes
+
+- a612d93: Fix: renamed global plugin config context to globalApi
+- 757334f: Enh: show error message if +config.js fails to load
+- 19d5283: Fix: added missing pocketbase-log dep
+
 ## 0.15.1
 
 ### Patch Changes
