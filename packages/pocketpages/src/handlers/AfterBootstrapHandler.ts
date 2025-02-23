@@ -21,6 +21,7 @@ export type Route = {
     load: string
     get: string
     post: string
+    patch: string
     put: string
     delete: string
   }>
@@ -28,7 +29,14 @@ export type Route = {
   layouts: string[]
 }
 
-export const LOADER_METHODS = ['load', 'get', 'post', 'put', 'delete'] as const
+export const LOADER_METHODS = [
+  'load',
+  'get',
+  'post',
+  'put',
+  'patch',
+  'delete',
+] as const
 
 export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   info(`pocketpages startup`)

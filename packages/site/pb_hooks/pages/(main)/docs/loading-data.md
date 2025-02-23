@@ -246,6 +246,7 @@ module.exports = function (api) {
 - `+get.js` - GET requests only
 - `+post.js` - POST requests only
 - `+put.js` - PUT requests only
+- `+patch.js` - PATCH requests only
 - `+delete.js` - DELETE requests only
 
 > **Note**: Method-specific loaders are optional. If not present, only `+load.js` (if it exists) will execute.
