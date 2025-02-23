@@ -24,7 +24,7 @@ const authData = api.signInWithOTP(otpData.otpId, code)
 Here's a complete OTP login implementation:
 
 ```ejs
-<<%='script server'%>>
+<<%%='script server'%>>
   let error = null
   let otpId = request.body().otpId || null
   const { mode, otpCode, identity } = {
@@ -57,11 +57,11 @@ Here's a complete OTP login implementation:
   }
 </script>
 
-<% if (error) { %>
-  <mark><%= error %></mark>
-<% } %>
+<%% if (error) { %>
+  <mark><%%= error %></mark>
+<%% } %>
 
-<% if (!otpId) { %>
+<%% if (!otpId) { %>
   <!-- Step 1: Request OTP -->
   <h3>Request OTP Code</h3>
   <form method="post">
@@ -70,14 +70,14 @@ Here's a complete OTP login implementation:
     <input name="identity" required type="email" />
     <button type="submit">Send OTP Code</button>
   </form>
-<% } else { %>
+<%% } else { %>
   <!-- Step 2: Verify OTP -->
   <h3>Enter OTP Code</h3>
   <p>Please check your email for the OTP code and enter it below.</p>
   <form method="post">
     <input type="hidden" name="mode" value="otp-confirm" />
-    <input type="hidden" name="otpId" value="<%= otpId %>" />
-    <input type="hidden" name="identity" value="<%= identity %>" />
+    <input type="hidden" name="otpId" value="<%%= otpId %>" />
+    <input type="hidden" name="identity" value="<%%= identity %>" />
     <input type="text" name="otpCode" placeholder="Enter OTP code" required />
     <button type="submit">Verify & Login</button>
   </form>
@@ -85,10 +85,10 @@ Here's a complete OTP login implementation:
   <!-- Allow requesting a new code -->
   <form method="post">
     <input type="hidden" name="mode" value="otp-request" />
-    <input type="hidden" name="identity" value="<%= identity %>" />
+    <input type="hidden" name="identity" value="<%%= identity %>" />
     <button type="submit">Resend OTP code</button>
   </form>
-<% } %>
+<%% } %>
 ```
 
 ## API Reference
