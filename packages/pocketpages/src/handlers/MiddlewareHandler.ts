@@ -65,15 +65,21 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     return next()
   }
 
-  if (!e.request.url) {
+  const { method, url } = e.request
+
+  dbg({ method, url })
+
+  if (!url) {
     dbg(`No URL, passing on to PocketBase`)
     return next()
   }
 
+  dbg(`Pages middleware request: ${method} ${url}`)
+
   const request: PagesRequest = {
     auth: e.auth,
-    method: e.request.method.toUpperCase() as PagesMethods,
-    url: parse(e.request.url.toString()),
+    method: method.toUpperCase() as PagesMethods,
+    url: parse(url.string()),
     formData: () => e.requestInfo().body,
     body: () => e.requestInfo().body,
     header: (name: string) => {
@@ -165,13 +171,11 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
   const { routes, config } = $app.store<Cache>().get(`pocketpages`)
 
-  const { method, url } = request
-
   dbg(`pocketpages handler`)
 
   dbg(`Pages middleware request: ${method} ${url}`)
 
-  const resolvedRoute = resolveRoute(url, routes)
+  const resolvedRoute = resolveRoute(request.url, routes)
 
   /**
    * If it doesn't match any known route, pass it on
@@ -185,18 +189,18 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   const { route, params } = resolvedRoute
   const { absolutePath, relativePath } = route
 
-  /**
-   * If the file exists but is not a preprocessor file, skip PocketPages and serve statically
-   */
-  if (route.isStatic) {
-    dbg(`Serving static file ${absolutePath}`)
-    return response.file(absolutePath)
-  }
+  try {
+    /**
+     * If the file exists but is not a preprocessor file, skip PocketPages and serve statically
+     */
+    if (route.isStatic) {
+      dbg(`Serving static file ${absolutePath}`)
+      return response.file(absolutePath)
+    }
 
-  /*
+    /*
     At this point, we have a route PocketPages needs to handle.
     */
-  try {
     dbg(`Found a matching route`, { resolvedRoute })
 
     const DefaultSseFilter: SseFilter = (clientId: string, client: any) => {
@@ -269,9 +273,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
         const assetRoute = resolveRoute(new URL(fullAssetPath), routes)
         dbg({ fullAssetPath, shortAssetPath, assetRoute })
         if (!assetRoute) {
-          if ($app.isDev()) {
-            return `${shortAssetPath}?_r=${Date.now()}`
-          }
           return `${shortAssetPath}`
         }
         return applyFingerprint(shortAssetPath, assetRoute.route.fingerprint)
