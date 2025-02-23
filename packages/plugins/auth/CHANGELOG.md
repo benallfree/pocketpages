@@ -1,5 +1,13 @@
 # pocketpages-plugin-auth
 
+## 0.0.8
+
+### Patch Changes
+
+- Fix: build
+- Updated dependencies
+  - pocketpages-plugin-js-sdk@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes

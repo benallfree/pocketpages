@@ -1,6 +1,6 @@
 {
   "name": "pocketpages-plugin-auth",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
     "dev": "chokidar 'src/**/*' -c 'bun run build'"
   },
   "peerDependencies": {
-    "pocketpages-plugin-js-sdk": "workspace:^0.0.7"
+    "pocketpages-plugin-js-sdk": "workspace:^0.0.8"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.12",
