@@ -96,12 +96,12 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   const routes: Route[] = addressableFiles
     .map((relativePath) => {
       dbg(`Examining route`, relativePath)
-      const parts = $filepath
+      const partsWithoutGroupNames = $filepath
         .toSlash(relativePath)
         .split('/')
         .filter((p) => !p.startsWith(`(`))
       const absolutePath = $filepath.join(pagesRoot, relativePath)
-      dbg({ relativePath, absolutePath, parts })
+      dbg({ relativePath, absolutePath, partsWithoutGroupNames })
 
       // dbg({ parts })
       const content = toString($os.readFile(absolutePath))
@@ -111,12 +111,13 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
         relativePath,
         absolutePath,
         fingerprint: contentSha,
-        assetPrefix: parts[parts.length - 2] ?? '',
+        assetPrefix:
+          partsWithoutGroupNames[partsWithoutGroupNames.length - 2] ?? '',
         isMarkdown: relativePath.endsWith('.md'),
         shouldPreProcess: config.preprocessorExts.some((ext) =>
           relativePath.endsWith(ext)
         ),
-        segments: parts.map((part) => {
+        segments: partsWithoutGroupNames.map((part) => {
           return {
             nodeName: part,
             paramName: part.match(/\[.*\]/)
@@ -140,7 +141,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
         const pathParts = $filepath
           .toSlash($filepath.dir(relativePath))
           .split(`/`)
-          .filter((node) => node != '.')
+          .filter((node) => node !== '.')
           .filter((p) => !!p)
         dbg(`layout`, { pathParts }, $filepath.dir(relativePath))
         do {
