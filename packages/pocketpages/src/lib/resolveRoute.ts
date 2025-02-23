@@ -1,4 +1,4 @@
-import queryString from 'query-string'
+import * as qs from 'qs-lite'
 import URLParse from 'url-parse'
 import { Route } from '../handlers/AfterBootstrapHandler'
 import { dbg } from './debug'
@@ -10,7 +10,7 @@ export const resolveRoute = (url: URLParse<string>, routes: Route[]) => {
 
   const urlPath = url.pathname.slice(1)
   dbg(`***resolveRoute`, { url, urlPath })
-  const params: PagesParams = queryString.parse(url.query)
+  const params: PagesParams = qs.parse(url.query.slice(1))
   const tryFnames = [
     `${urlPath}`,
     ...config.preprocessorExts.map((ext) => `${urlPath}${ext}`),
