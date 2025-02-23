@@ -1,8 +1,13 @@
 import { forEach, merge } from '@s-libs/micro-dash'
+import type { SerializeOptions } from 'cookie'
+import * as cookie from 'cookie'
 import { error, info } from 'pocketbase-log'
+import { stringify } from 'pocketbase-stringify'
 import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
 import { globalApi } from 'src/lib/globalApi'
-import { default as URL } from 'url-parse'
+import type { PagesResponse } from 'src/lib/types'
+import { default as parse, default as URL } from 'url-parse'
+import { setAuthFromHeaderOrCookie } from '../lib/auth'
 import { dbg } from '../lib/debug'
 import { parseSlots, renderFile } from '../lib/ejs'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
@@ -15,18 +20,123 @@ import {
   OAuth2ProviderInfo,
   OAuth2RequestOptions,
   OAuth2SignInOptions,
+  PagesMethods,
   PagesMiddlewareFunc,
+  PagesNextFunc,
+  PagesRequest,
   PagesRequestContext,
   RedirectOptions,
 } from '../lib/types'
 
 export type SseFilter = (clientId: string, client: any) => boolean
 
-export const MiddlewareHandler: PagesMiddlewareFunc = (
-  request,
-  response,
-  next
-) => {
+export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
+  const next: PagesNextFunc = () => {
+    e.next()
+  }
+  if (!e.request) {
+    dbg(`No request, passing on to PocketBase`)
+    return next()
+  }
+
+  if (!e.request.url) {
+    dbg(`No URL, passing on to PocketBase`)
+    return next()
+  }
+
+  const request: PagesRequest = {
+    auth: e.auth,
+    method: e.request.method.toUpperCase() as PagesMethods,
+    url: parse(e.request.url.toString()),
+    formData: () => e.requestInfo().body,
+    body: () => e.requestInfo().body,
+    header: (name: string) => {
+      return e.request?.header.get(name) || ''
+    },
+    cookies: (() => {
+      let parsed: Record<string, any>
+
+      const tryParseJson = (value: string | undefined) => {
+        if (!value) return value
+        try {
+          return JSON.parse(value)
+        } catch {
+          return value
+        }
+      }
+
+      const cookieFunc = <T = Record<string, any>>(name?: string): T => {
+        if (!parsed) {
+          const cookieHeader = request.header('Cookie')
+          const rawParsed = cookie.parse(cookieHeader || '')
+          // Parse all values once during initialization
+          parsed = Object.fromEntries(
+            Object.entries(rawParsed).map(([key, value]) => [
+              key,
+              tryParseJson(value),
+            ])
+          )
+        }
+
+        if (name === undefined) {
+          return parsed as T
+        }
+        return parsed[name] as T
+      }
+
+      return cookieFunc as {
+        <T = Record<string, any>>(): T
+        <T>(name: string): T
+      }
+    })(),
+  }
+
+  const response: PagesResponse = {
+    file: (path: string) => {
+      return e.fileFS($os.dirFS($filepath.dir(path)), $filepath.base(path))
+    },
+    write: (s: string) => {
+      e.response.write(s)
+    },
+    redirect: (path: string, status = 302) => {
+      e.redirect(status, path)
+    },
+    json: (status: number, data: any) => {
+      e.json(status, data)
+    },
+    html: (status: number, data: string) => {
+      e.html(status, data)
+    },
+    header: (name: string, value?: string) => {
+      if (value === undefined) {
+        return e.response.header().get(name) || ''
+      }
+      e.response.header().set(name, value)
+      return value
+    },
+    cookie: <T>(
+      name: string,
+      value: T,
+      options: Partial<SerializeOptions> = {}
+    ) => {
+      const _options = {
+        path: '/',
+        ...options,
+      }
+      const stringifiedValue = (() => {
+        if (typeof value !== 'string') {
+          return stringify(value)
+        }
+        return value
+      })()
+      const serialized = cookie.serialize(name, stringifiedValue, _options)
+      response.header(`Set-Cookie`, serialized)
+      return serialized
+    },
+  }
+
+  setAuthFromHeaderOrCookie(request)
+
   const { routes, config } = $app.store<Cache>().get(`pocketpages`)
 
   const { method, url } = request

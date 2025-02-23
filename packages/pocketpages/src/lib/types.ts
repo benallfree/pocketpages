@@ -202,8 +202,4 @@ export type PagesResponse = {
 export type PagesInitializerFunc = () => void
 export type PagesNextFunc = () => void
 
-export type PagesMiddlewareFunc = (
-  request: PagesRequest,
-  response: PagesResponse,
-  next: PagesNextFunc
-) => void
+export type PagesMiddlewareFunc = (e: core.RequestEvent) => void
