@@ -17,7 +17,7 @@
     "pocketpages": "workspace:^0.15.3"
   },
   "dependencies": {
-    "pocketbase-js-sdk-jsvm": "^0.25.10003"
+    "pocketbase-js-sdk-jsvm": "^0.25.10004"
   },
   "files": [
     "dist",

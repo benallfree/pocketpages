@@ -13,21 +13,22 @@
     },
     "packages/plugins/auth": {
       "name": "pocketpages-plugin-auth",
-      "version": "0.0.4",
+      "version": "0.0.6",
       "devDependencies": {
         "@changesets/cli": "^2.27.12",
         "chokidar-cli": "^3.0.0",
+        "pocketbase-js-sdk-jsvm": "^0.25.10004",
         "pocketbase-jsvm": "^0.25.10001",
         "tsup": "^8.3.6",
         "typescript": "^5.7.3",
       },
       "peerDependencies": {
-        "pocketpages-plugin-js-sdk": "workspace:^0.0.4",
+        "pocketpages-plugin-js-sdk": "workspace:^0.0.6",
       },
     },
     "packages/plugins/ejs": {
       "name": "pocketpages-plugin-ejs",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "dependencies": {
         "pocketbase-ejs": "^3.1.10006",
         "pocketbase-node": "^0.0.3",
@@ -36,29 +37,29 @@
       "devDependencies": {
         "@s-libs/micro-dash": "^18.0.0",
         "chokidar-cli": "^3.0.0",
-        "pocketpages": "workspace:^0.15.0",
+        "pocketpages": "workspace:^0.15.3",
         "tsup": "^8.3.6",
         "typescript": "^5.7.3",
       },
     },
     "packages/plugins/js-sdk": {
       "name": "pocketpages-plugin-js-sdk",
-      "version": "0.0.4",
+      "version": "0.0.6",
       "dependencies": {
-        "pocketbase-js-sdk-jsvm": "^0.25.10003",
+        "pocketbase-js-sdk-jsvm": "^0.25.10004",
       },
       "devDependencies": {
         "@changesets/cli": "^2.27.12",
         "chokidar-cli": "^3.0.0",
         "pocketbase-jsvm": "^0.25.10001",
-        "pocketpages": "workspace:^0.15.0",
+        "pocketpages": "workspace:^0.15.3",
         "tsup": "^8.3.6",
         "typescript": "^5.7.3",
       },
     },
     "packages/plugins/marked": {
       "name": "pocketpages-plugin-marked",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "dependencies": {
         "front-matter": "^4.0.2",
         "marked": "^15.0.7",
@@ -78,7 +79,7 @@
     },
     "packages/plugins/micro-dash": {
       "name": "pocketpages-plugin-micro-dash",
-      "version": "0.0.4",
+      "version": "0.0.6",
       "dependencies": {
         "pocketpages": "workspace:^0.14.0-rc.5",
       },
@@ -91,7 +92,7 @@
     },
     "packages/plugins/sse": {
       "name": "pocketpages-plugin-sse",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "devDependencies": {
         "chokidar-cli": "^3.0.0",
         "pocketbase-jsvm": "^0.25.10001",
@@ -102,12 +103,12 @@
     },
     "packages/pocketpages": {
       "name": "pocketpages",
-      "version": "0.15.1",
+      "version": "0.15.3",
       "dependencies": {
         "@s-libs/micro-dash": "^18.0.0",
         "cookie": "^1.0.2",
         "pocketbase-log": "^0.0.2",
-        "pocketpages-plugin-ejs": "workspace:^0.0.4",
+        "pocketpages-plugin-ejs": "workspace:^0.0.5",
         "qs-lite": "^1.0.0",
         "url-parse": "^1.5.10",
       },
@@ -693,7 +694,7 @@
 
     "pocketbase-ejs": ["pocketbase-ejs@3.1.10006", "", { "dependencies": { "pocketbase-node": "^0.0.2" } }, "sha512-OBt+qsE7APD2baer4sTddwC1UfhT1HwIt4I208v5IZ2RXncgd5d0Z/DwAZy5PEJrWscHn2qCob4GLiEiv6lvEQ=="],
 
-    "pocketbase-js-sdk-jsvm": ["pocketbase-js-sdk-jsvm@0.25.10003", "", {}, "sha512-AsnYFHPuut3DHt5LzgzGZrVtvIR4uTMX4YjTKwTfl90oz6ioCiRsDKuPD5ghTmxtYMWXxKX7WwrhOrHv6bTjBQ=="],
+    "pocketbase-js-sdk-jsvm": ["pocketbase-js-sdk-jsvm@0.25.10004", "", {}, "sha512-/0RkFa6X4LeKMdv4KCXhC5i2cvpG0elvXInRyk8bApjG8jyyPiNDL6o9VBvgxjl6j8/HcQYf3oKYXmZteqAFvQ=="],
 
     "pocketbase-jsvm": ["pocketbase-jsvm@0.25.10001", "", {}, "sha512-F8Jss51uzp4C6nHcR5PxmscXtKbrWJjqDF/u7cHIh2amnUILnfY/JD5tTzYoqn3rDe1CIrQOaalDzAZ3gdMz9w=="],
 
