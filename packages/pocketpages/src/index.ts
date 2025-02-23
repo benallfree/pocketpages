@@ -12,15 +12,15 @@ export { moduleExists } from './lib/helpers'
 export * from './lib/types'
 export { v23MiddlewareWrapper } from './lib/wrapper'
 
-const isBooting = typeof onBootstrap !== 'undefined'
+const isInHandler = typeof onBootstrap === 'undefined'
 
-if (isBooting) {
+if (!isInHandler) {
   onBootstrap((e) => {
     e.next()
-    require('pocketpages').AfterBootstrapHandler()
+    require(`pocketpages`).AfterBootstrapHandler()
   })
 
   routerUse((e) => {
-    return require('pocketpages').v23MiddlewareWrapper(e)
+    require(`pocketpages`).MiddlewareHandler(e)
   })
 }
