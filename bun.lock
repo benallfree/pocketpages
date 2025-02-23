@@ -12,10 +12,9 @@
     },
     "packages/plugins/auth": {
       "name": "pocketpages-plugin-auth",
-      "version": "0.0.2",
+      "version": "0.0.4",
       "dependencies": {
-        "pocketpages": "workspace:^0.14.0-rc.5",
-        "pocketpages-plugin-js-sdk": "workspace:*",
+        "pocketpages": "workspace:^0.15.0",
       },
       "devDependencies": {
         "@changesets/cli": "^2.27.12",
@@ -24,45 +23,47 @@
         "tsup": "^8.3.6",
         "typescript": "^5.7.3",
       },
+      "peerDependencies": {
+        "pocketpages-plugin-js-sdk": "workspace:*",
+      },
     },
     "packages/plugins/ejs": {
       "name": "pocketpages-plugin-ejs",
-      "version": "0.0.2",
+      "version": "0.0.4",
       "dependencies": {
         "pocketbase-ejs": "^3.1.10006",
         "pocketbase-node": "^0.0.3",
         "pocketbase-stringify": "^0.0.2",
-        "pocketpages": "workspace:^0.14.0",
       },
       "devDependencies": {
         "@s-libs/micro-dash": "^18.0.0",
         "chokidar-cli": "^3.0.0",
+        "pocketpages": "workspace:^0.15.0",
         "tsup": "^8.3.6",
         "typescript": "^5.7.3",
       },
     },
     "packages/plugins/js-sdk": {
       "name": "pocketpages-plugin-js-sdk",
-      "version": "0.0.2",
+      "version": "0.0.4",
       "dependencies": {
         "pocketbase-js-sdk-jsvm": "^0.25.10003",
-        "pocketpages": "workspace:^0.14.0-rc.5",
       },
       "devDependencies": {
         "@changesets/cli": "^2.27.12",
         "chokidar-cli": "^3.0.0",
         "pocketbase-jsvm": "^0.25.10001",
+        "pocketpages": "workspace:^0.15.0",
         "tsup": "^8.3.6",
         "typescript": "^5.7.3",
       },
     },
     "packages/plugins/marked": {
       "name": "pocketpages-plugin-marked",
-      "version": "0.0.2",
+      "version": "0.0.4",
       "dependencies": {
         "front-matter": "^4.0.2",
         "marked": "^15.0.7",
-        "pocketpages": "workspace:^0.14.0",
         "remark-frontmatter": "^5.0.0",
         "remark-frontmatter-yaml": "^1.3.0",
         "remark-parse": "^11.0.0",
@@ -72,14 +73,14 @@
       "devDependencies": {
         "@s-libs/micro-dash": "^18.0.0",
         "chokidar-cli": "^3.0.0",
-        "pocketpages": "workspace:^0.14.0",
+        "pocketpages": "workspace:^0.15.0",
         "tsup": "^8.3.6",
         "typescript": "^5.7.3",
       },
     },
     "packages/plugins/micro-dash": {
       "name": "pocketpages-plugin-micro-dash",
-      "version": "0.0.2",
+      "version": "0.0.4",
       "dependencies": {
         "pocketpages": "workspace:^0.14.0-rc.5",
       },
@@ -92,23 +93,22 @@
     },
     "packages/plugins/sse": {
       "name": "pocketpages-plugin-sse",
-      "version": "0.0.2",
-      "dependencies": {
-        "pocketpages": "workspace:^0.14.0-rc.5",
-      },
+      "version": "0.0.4",
       "devDependencies": {
         "chokidar-cli": "^3.0.0",
         "pocketbase-jsvm": "^0.25.10001",
+        "pocketpages": "workspace:^0.15.0",
         "tsup": "^8.3.6",
         "typescript": "^5.7.3",
       },
     },
     "packages/pocketpages": {
       "name": "pocketpages",
-      "version": "0.14.1",
+      "version": "0.15.1",
       "dependencies": {
         "@s-libs/micro-dash": "^18.0.0",
         "cookie": "^1.0.2",
+        "pocketpages-plugin-ejs": "workspace:^0.0.4",
         "qs-lite": "^1.0.0",
         "url-parse": "^1.5.10",
       },
@@ -125,9 +125,8 @@
       "name": "pocketpages-site",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:^0.14.0",
-        "pocketpages-plugin-ejs": "workspace:*",
-        "pocketpages-plugin-marked": "workspace:*",
+        "pocketpages": "workspace:^0.15.1",
+        "pocketpages-plugin-marked": "workspace:^0.0.4",
       },
       "devDependencies": {
         "@tailwindcss/typography": "^0.5.15",
@@ -143,9 +142,8 @@
       "name": "pocketpages-starter-auth",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:^0.14.0-rc.5",
+        "pocketpages": "workspace:^0.15.1",
         "pocketpages-plugin-auth": "workspace:*",
-        "pocketpages-plugin-ejs": "workspace:*",
         "pocketpages-plugin-js-sdk": "workspace:*",
       },
     },
@@ -153,8 +151,7 @@
       "name": "pocketpages-starter-daisyui",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:^0.14.0-rc.5",
-        "pocketpages-plugin-ejs": "workspace:*",
+        "pocketpages": "workspace:^0.15.1",
       },
       "devDependencies": {
         "@tailwindcss/typography": "^0.5.16",
@@ -166,9 +163,8 @@
       "name": "pocketpages-starter-daisyui-docs",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:^0.14.0-rc.5",
-        "pocketpages-plugin-ejs": "workspace:*",
-        "pocketpages-plugin-marked": "workspace:*",
+        "pocketpages": "workspace:^0.15.1",
+        "pocketpages-plugin-marked": "workspace:^0.0.4",
       },
       "devDependencies": {
         "@tailwindcss/typography": "^0.5.16",
@@ -180,25 +176,22 @@
       "name": "pocketpages-starter-htmx",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:^0.14.0-rc.5",
-        "pocketpages-plugin-ejs": "workspace:*",
-        "pocketpages-plugin-sse": "workspace:*",
+        "pocketpages": "workspace:^0.15.1",
+        "pocketpages-plugin-sse": "workspace:^0.0.4",
       },
     },
     "packages/starters/minimal": {
       "name": "pocketpages-starter-minimal",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:^0.14.0-rc.5",
-        "pocketpages-plugin-ejs": "workspace:^0.0.2-rc.5",
+        "pocketpages": "workspace:^0.15.1",
       },
     },
     "packages/starters/mvp": {
       "name": "pocketpages-starter-mvp",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:^0.14.0",
-        "pocketpages-plugin-ejs": "workspace:*",
+        "pocketpages": "workspace:^0.15.1",
       },
     },
   },
