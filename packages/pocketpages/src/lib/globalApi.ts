@@ -3,7 +3,6 @@ import PocketBase from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as parse } from 'url-parse'
-import { findRecordByFilter, findRecordsByFilter } from './db'
 import {
   AuthOptions,
   Cache,
@@ -22,8 +21,6 @@ export const globalApi: PagesGlobalContext = {
   shuffle,
   pick,
   env: (key: string) => process.env[key] ?? '',
-  findRecordByFilter,
-  findRecordsByFilter,
   createUser: (
     email: string,
     password: string,

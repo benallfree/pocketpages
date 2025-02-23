@@ -61,7 +61,6 @@
 - [`warn`](/docs/global-api/log)
 - [`error`](/docs/global-api/log)
 - [`env`](/docs/global-api/env)
-- [`findRecord(s)ByFilter`](/docs/global-api/db)
 - [`micro-dash`](/docs/global-api/micro-dash)
 - [`pb` (PocketBase JS SDK)](/docs/global-api/pb)
 - [`store`](/docs/global-api/store)

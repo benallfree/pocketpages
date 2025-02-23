@@ -5,7 +5,6 @@ import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as parse } from 'url-parse'
 import { Route } from '../handlers/AfterBootstrapHandler'
-import { findRecordByFilter, findRecordsByFilter } from './db'
 
 export type User = {
   avatar: string
@@ -66,8 +65,6 @@ export type PagesGlobalContext = {
   shuffle: typeof shuffle
   pick: typeof pick
   env: (key: string) => string
-  findRecordByFilter: typeof findRecordByFilter
-  findRecordsByFilter: typeof findRecordsByFilter
   createUser: (
     email: string,
     password: string,
