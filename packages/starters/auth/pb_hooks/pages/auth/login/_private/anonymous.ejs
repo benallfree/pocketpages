@@ -1,6 +1,7 @@
 <script server>
   let error = null
   const methods = pb().collection('users').listAuthMethods();
+  console.log(`***methods`, JSON.stringify(methods, null, 2))
   dbg({
     methods
   })

@@ -2,13 +2,13 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig({
   entry: {
-    'pocketpages.pb': 'src/index.ts',
+    'index.cjs': 'src/index.ts',
   },
   format: ['cjs'],
   dts: {
     resolve: true,
     compilerOptions: {
-      module: 'ESNext',
+      module: 'ES6',
       moduleResolution: 'bundler',
       skipLibCheck: false,
       types: ['pocketbase-jsvm'],
@@ -25,16 +25,9 @@ export default defineConfig({
   sourcemap: false,
   splitting: false,
   bundle: true,
-  onSuccess: 'bun run build:copy',
   banner: {
     js: `if (typeof module === 'undefined') { module = { exports: {} } };`,
   },
-  noExternal: [
-    '@s-libs/micro-dash',
-    'pocketbase-js-sdk-jsvm',
-    'pocketbase-log',
-    'pocketbase-stringify',
-    'url-parse',
-    'pocketbase-jsvm',
-  ],
+  external: ['pocketpages', 'marked'],
+  noExternal: ['@s-libs/micro-dash'],
 })

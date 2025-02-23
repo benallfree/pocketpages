@@ -1,7 +1,18 @@
 {
   "name": "pocketpages-starter-minimal",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "dependencies": {
+    "pocketpages": "workspace:^0.15.0",
+    "pocketpages-plugin-ejs": "workspace:^0.0.3"
+  },
+  "pockethost": {
+    "instanceId": "minimal"
+  },
+  "files": [
+    "pb_hooks",
+    "*.md"
+  ],
   "description": "A minimal starter project for PocketPages",
   "author": {
     "name": "Ben Allfree",
@@ -16,8 +27,5 @@
     "starter",
     "minimal"
   ],
-  "license": "MIT",
-  "dependencies": {
-    "pocketpages": "workspace:*"
-  }
+  "license": "MIT"
 }

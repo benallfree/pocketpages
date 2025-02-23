@@ -1,7 +1,16 @@
 {
   "name": "pocketpages-starter-htmx",
+  "version": "0.0.2",
   "private": true,
-  "version": "0.0.1",
+  "dependencies": {
+    "pocketpages": "workspace:^0.15.0",
+    "pocketpages-plugin-ejs": "workspace:^0.0.3",
+    "pocketpages-plugin-sse": "workspace:^0.0.3"
+  },
+  "files": [
+    "pb_hooks",
+    "*.md"
+  ],
   "description": "A starter project for PocketPages with htmx",
   "author": {
     "name": "Ben Allfree",
@@ -16,8 +25,5 @@
     "starter",
     "htmx"
   ],
-  "license": "MIT",
-  "dependencies": {
-    "pocketpages": "workspace:*"
-  }
+  "license": "MIT"
 }

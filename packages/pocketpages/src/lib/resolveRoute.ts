@@ -11,38 +11,41 @@ export const resolveRoute = (url: URLParse<string>, routes: Route[]) => {
   const urlPath = url.pathname.slice(1)
   dbg(`***resolveRoute`, { url, urlPath })
   const params: PagesParams = qs.parse(url.query.slice(1))
-  const tryFnames = [
-    `${urlPath}`,
-    ...config.preprocessorExts.map((ext) => `${urlPath}${ext}`),
-    ...config.preprocessorExts.map((ext) => `${urlPath}/index${ext}`),
-  ]
+  const tryFnames = [urlPath || 'index']
+  if (tryFnames[0] !== 'index') {
+    tryFnames.push(`${urlPath}/index`)
+  }
   dbg({ tryFnames })
   for (const maybeFname of tryFnames) {
-    const parts = maybeFname.split('/').filter((p) => p)
+    const parts = $filepath
+      .toSlash(maybeFname)
+      .split('/')
+      .filter((p) => p)
     dbg(`incoming parts`, parts)
-    const routeCandidates = routes.filter(
-      (r) => r.segments.length === parts.length
-    )
-    // dbg({ routeCandidates })
-    for (const route of routeCandidates) {
+    for (const route of routes) {
       dbg(`checking route`, route)
       const matched = route.segments.every((segment, i) => {
-        const { paramName } = segment
-        if (paramName) {
-          params[paramName] = parts[i]!
-          return true
-        }
+        const { nodeName } = segment
+        const part = parts[i]
         const matchesWithFingerprint = (() => {
-          if (!route.isStatic) return false
           if (i !== route.segments.length - 1) return false
+          if (!route.isStatic) return false
           const fingerprinted = fingerprint(segment.nodeName, route.fingerprint)
           dbg(`fingerprint details`, { segment, fingerprinted, parts })
           return fingerprinted === parts[i]
         })()
-        return segment.nodeName === parts[i] || matchesWithFingerprint
+        dbg(`match status`, { nodeName, part, matchesWithFingerprint })
+        return nodeName === part || matchesWithFingerprint
       })
       if (matched) {
         dbg(`Matched route`, route)
+        route.segments.forEach((segment, i) => {
+          const { paramName } = segment
+          if (paramName) {
+            params[paramName] = parts[i]!
+            return true
+          }
+        })
         return { route, params }
       }
     }

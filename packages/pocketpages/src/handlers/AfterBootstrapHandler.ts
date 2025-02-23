@@ -1,8 +1,9 @@
-import { forEach } from '@s-libs/micro-dash'
+import { forEach, keys } from '@s-libs/micro-dash'
 import { info } from 'pocketbase-log'
 import { fs } from 'pocketbase-node'
 import { dbg } from '../lib/debug'
 import { pagesRoot } from '../lib/helpers'
+import { loadPlugins } from '../lib/loadPlugins'
 import { Cache, PagesConfig, PagesInitializerFunc } from '../lib/types'
 
 export type Route = {
@@ -24,7 +25,6 @@ export type Route = {
     put: string
     delete: string
   }>
-  isMarkdown: boolean
   layouts: string[]
 }
 
@@ -46,15 +46,16 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
     )
   }
 
+  const VALID_CONFIG_KEYS = ['plugins', 'debug'] as const
+
   /**
    * Load the config file
    */
   const configPath = $filepath.join(pagesRoot, `+config.js`)
   // dbg({ configPath })
   const config: PagesConfig = {
-    preprocessorExts: ['.ejs', '.md'],
+    plugins: [`pocketpages-plugin-ejs`],
     debug: false,
-    host: 'http://localhost:8090',
     ...(() => {
       try {
         return require(configPath) as Partial<PagesConfig>
@@ -66,6 +67,13 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   if (config.debug) {
     $app.store().set('__pocketpages_debug', true)
   }
+  keys(config).forEach((key) => {
+    if (
+      !VALID_CONFIG_KEYS.includes(key as (typeof VALID_CONFIG_KEYS)[number])
+    ) {
+      throw new Error(`Invalid config key: ${key}`)
+    }
+  })
 
   const physicalFiles: string[] = []
   $filepath.walkDir(pagesRoot, (path, d, err) => {
@@ -85,6 +93,11 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   })
 
   dbg({ routableFiles })
+
+  const plugins = loadPlugins({
+    config,
+    routes: [],
+  })
 
   const routes: Route[] = routableFiles
     .map((relativePath) => {
@@ -106,7 +119,6 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
         fingerprint: contentSha,
         assetPrefix:
           partsWithoutGroupNames[partsWithoutGroupNames.length - 2] ?? '',
-        isMarkdown: relativePath.endsWith('.md'),
         segments: partsWithoutGroupNames.map((part) => {
           return {
             nodeName: part,
@@ -118,16 +130,23 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
         middlewares: [],
         layouts: [],
         loaders: {},
-        isStatic: !config.preprocessorExts.some((ext) =>
-          relativePath.endsWith(ext)
-        ),
+        isStatic: false,
       }
+
+      route.isStatic = !plugins.some((p) =>
+        p.handles?.({ route, filePath: absolutePath })
+      )
 
       if (route.isStatic) {
         // If the route is not handled, it means it's a static file
         // and we can serve it directly
         return route
       }
+
+      const lastSegment = route.segments[route.segments.length - 1]!
+      lastSegment.nodeName = $filepath
+        .base(lastSegment.nodeName)
+        .slice(0, -$filepath.ext(lastSegment.nodeName).length)
 
       /**
        * Calculate layouts

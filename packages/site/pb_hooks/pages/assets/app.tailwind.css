@@ -82,3 +82,11 @@ blockquote p:first-of-type::before {
 blockquote p:last-of-type::after {
   content: '';
 }
+
+.prose.toc > ul > li > p {
+  @apply p-0 m-0;
+}
+
+.prose.toc :where(li ul) {
+  @apply ms-1;
+}

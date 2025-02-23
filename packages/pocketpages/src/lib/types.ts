@@ -1,29 +1,8 @@
-import { forEach, keys, merge, pick, shuffle, values } from '@s-libs/micro-dash'
 import { SerializeOptions } from 'cookie'
-import PocketBase, { OTPResponse } from 'pocketbase-js-sdk-jsvm'
 import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as parse } from 'url-parse'
 import { Route } from '../handlers/AfterBootstrapHandler'
-
-export type User = {
-  avatar: string
-  collectionId: string
-  collectionName: string
-  created: string
-  emailVisibility: boolean
-  email: string
-  id: string
-  name: string
-  updated: string
-  username: string
-  verified: boolean
-}
-
-export type AuthData = {
-  token: string
-  record: User
-}
 
 export type PageDataLoaderFunc<TData = any> = (
   api: Omit<PagesRequestContext<TData>, 'data'>
@@ -33,59 +12,14 @@ export type MiddlewareLoaderFunc<TData = any> = (
   api: Omit<PagesRequestContext<TData>, 'data'>
 ) => object
 
-export type PagesParams<T = string> = Record<string, T | null | Array<T | null>>
-
-export type AuthOptions = {
-  collection: string
-}
-
-export type OAuth2RequestOptions = {
-  cookieName: string
-  redirectPath: string
-  autoRedirect: boolean
-} & AuthOptions
-
-export type OAuth2SignInOptions = {
-  cookieName: string
-} & AuthOptions
-
-export type CreateUserOptions = {
-  sendVerificationEmail: boolean
-} & AuthOptions
+export type PagesParams = Record<string, string | string[] | undefined>
 
 export type PagesGlobalContext = {
   url: (
     path: string
   ) => ReturnType<typeof parse<Record<string, string | undefined>>>
   stringify: typeof stringify
-  forEach: typeof forEach
-  keys: typeof keys
-  values: typeof values
-  merge: typeof merge
-  shuffle: typeof shuffle
-  pick: typeof pick
   env: (key: string) => string
-  createUser: (
-    email: string,
-    password: string,
-    options?: Partial<CreateUserOptions>
-  ) => User
-  createAnonymousUser: (options?: Partial<AuthOptions>) => {
-    user: User
-    email: string
-    password: string
-  }
-  createPaswordlessUser: (
-    email: string,
-    options?: Partial<CreateUserOptions>
-  ) => {
-    user: User
-    password: string
-  }
-  requestVerification: (email: string, options?: Partial<AuthOptions>) => void
-  confirmVerification: (token: string, options?: Partial<AuthOptions>) => void
-  requestOTP: (email: string, options?: Partial<AuthOptions>) => OTPResponse
-  pb: () => PocketBase
   store: {
     (name: string, value: any): void
     (name: string): any
@@ -99,14 +33,6 @@ export type ResolveOptions = {
 export type RedirectOptions = {
   status: number
   message: string
-}
-
-export type OAuth2ProviderInfo = {
-  name: string
-  state: string
-  codeChallenge: string
-  codeVerifier: string
-  redirectUrl: string
 }
 
 export type PagesRequestContext<TData = any> = {
@@ -124,45 +50,82 @@ export type PagesRequestContext<TData = any> = {
   response: PagesResponse
   slot: string
   slots: Record<string, string>
-  signInWithPassword: (
-    email: string,
-    password: string,
-    options?: Partial<AuthOptions>
-  ) => AuthData
-  registerWithPassword: (
-    email: string,
-    password: string,
-    options?: Partial<CreateUserOptions>
-  ) => AuthData
-  signInAnonymously: (options?: Partial<AuthOptions>) => AuthData
-  signInWithOTP: (
-    otpId: string,
-    password: string,
-    options?: Partial<AuthOptions>
-  ) => AuthData
-  requestOAuth2Login: (
-    providerName: string,
-    options?: Partial<OAuth2RequestOptions>
-  ) => string
-  signInWithOAuth2: (
-    state: string,
-    code: string,
-    options?: Partial<OAuth2SignInOptions>,
-    storedProviderInfo?: OAuth2ProviderInfo
-  ) => AuthData
-  signOut: () => void
-  signInWithToken: (token: string) => void
-  send: (
-    topic: string,
-    message: string,
-    filter?: (clientId: string, client: any) => boolean
-  ) => void
 } & PagesGlobalContext
 
-export type PagesConfig = {
-  preprocessorExts: string[]
+export type PluginFactoryConfig = {
+  pagesRoot: string
+  config: PagesConfig
+  global: PagesGlobalContext & { [_: string]: any }
+  routes: Route[]
+  dbg: typeof log.dbg
+}
+
+export type PluginContextBase = {
+  route: Route
+}
+
+export type HandlesContext = {
+  route: Route
+  filePath: string
+}
+
+export type RenderContext = PluginContextBase & {
+  api: PagesRequestContext
+  content: string
+  filePath: string
+  plugins: Plugin[]
+}
+
+export type ExtendContextApiContext = PluginContextBase & {
+  api: PagesRequestContext & { [_: string]: any }
+}
+
+export type ResponseContext = PluginContextBase & {
+  api: PagesRequestContext
+  content: string
+}
+
+export type RequestContext = {
+  request: PagesRequest
+  response: PagesResponse
+}
+
+export type Plugin = {
+  onRequest?: (context: RequestContext) => void
+  onRender?: (context: RenderContext) => string
+  handles?: (context: HandlesContext) => boolean
+  onExtendContextApi?: (context: ExtendContextApiContext) => void
+  onResponse?: (context: ResponseContext) => boolean
+}
+
+export type PluginOptionsBase = {
   debug: boolean
-  host: string
+}
+
+export type PluginFactory<
+  TExtra extends PluginOptionsBase = PluginOptionsBase,
+> = (
+  config: PluginFactoryConfig,
+  extra: Partial<TExtra> & PluginOptionsBase
+) => Plugin
+
+export type PluginOptions = {
+  [key: string]: any
+} & PluginOptionsBase
+
+export type PluginConfigItem = {
+  fn: PluginFactory
+} & PluginOptions
+
+export type PluginConfigItemShortHand =
+  | string
+  | ({ name: string; [key: string]: any } & PluginOptionsBase)
+  | PluginFactory
+  | Partial<PluginConfigItem>
+
+export type PagesConfig = {
+  plugins: PluginConfigItemShortHand[]
+  debug: boolean
 }
 
 export type Cache = { routes: Route[]; config: PagesConfig }

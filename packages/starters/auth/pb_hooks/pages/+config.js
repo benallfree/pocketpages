@@ -1,4 +1,8 @@
 module.exports = {
-  host: 'http://localhost:8080',
-  //   debug: true,
+  plugins: [
+    'pocketpages-plugin-auth',
+    'pocketpages-plugin-js-sdk',
+    'pocketpages-plugin-ejs',
+  ],
+  debug: true,
 }

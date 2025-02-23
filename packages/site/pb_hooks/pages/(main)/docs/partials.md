@@ -5,7 +5,7 @@ description: Learn how PocketPages handles template partials through a convenien
 
 # Using Partials in PocketPages
 
-Partials are reusable EJS templates that you can include within other EJS files. PocketPages implements an innovative partial resolution system that makes organizing and using partials both secure and convenient.
+Partials are reusable templates that you can include within other files. PocketPages implements an innovative partial resolution system that makes organizing and using partials both secure and convenient.
 
 ## The \_private Directory System
 
@@ -25,6 +25,7 @@ pb_hooks/
     _private/
       global-header.ejs
       global-footer.ejs
+      docs.md          # Markdown file processed after EJS
     blog/
       _private/
         blog-sidebar.ejs
@@ -41,7 +42,22 @@ pb_hooks/
 To include a partial, use the standard EJS include syntax:
 
 ```ejs
-<%%- include('header.ejs', { ...data }) %>
+<%%- include('header.ejs', { title: 'My Page' }) %>
+```
+
+The included file will be processed through:
+
+1. EJS template engine first
+2. Any configured plugins that handle that file type (e.g., markdown files will be processed by the markdown plugin)
+
+For example:
+
+```ejs
+<!-- Including a markdown file that will be processed after EJS -->
+<%%- include('docs.md', { section: 'overview' }) %>
+
+<!-- Including an EJS template -->
+<%%- include('header.ejs', { title: 'My Page' }) %>
 ```
 
 ### Partial Resolution
@@ -136,6 +152,7 @@ pb_hooks/
     _private/           // Global components used everywhere
       header.ejs
       footer.ejs
+      docs.md           // Markdown files processed after EJS
     docs/
       _private/         // Documentation-specific components
         sidebar.ejs

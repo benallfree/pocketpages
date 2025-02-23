@@ -5,24 +5,31 @@ description: Core utility functions available everywhere in PocketPages, includi
 
 # Understanding the Global API
 
-The Global API provides utility functions that are available both in EJS templates and in any JavaScript code via `require('pocketpages')`. These functions are context-free, meaning they don't depend on the current request or response context.
+The Global API provides utility functions that are automatically available in all request contexts (EJS templates, loaders, middleware) and can also be accessed via `require('pocketpages').globalApi` when needed outside of request contexts. These functions are context-free, meaning they don't depend on the current request or response state.
 
 ## How to Access the Global API
 
-There are two ways to access these functions:
+The Global API functions are automatically injected into:
 
-1. **In EJS Templates**: The functions are automatically available (along with the Context API)
-2. **In JavaScript Files**: Import via require
+1. **EJS Templates**: Available directly (no import needed)
+2. **Loaders (`+load.js`)**: Available in the API parameter
+3. **Middleware**: Available in the API parameter
 
-### Example: Using the Global API in JavaScript
+For code outside of request contexts (like utility libraries), you can import via:
 
 ```js
-const { dbg, stringify, url } = require('pocketpages')
+const { globalApi } = require('pocketpages')
+```
 
-function processData(data) {
-  dbg('Processing data:', stringify(data))
+### Example: Using the Global API in Request Contexts
 
-  const parsed = url('https://example.com/path?q=search')
+```js
+/** @type {import('pocketpages').PageDataLoaderFunc} */
+module.exports = function (api) {
+  // Global API functions are available directly from api
+  api.dbg('Processing data:', api.stringify(data))
+
+  const parsed = api.url('https://example.com/path?q=search')
   return parsed.searchParams.get('q')
 }
 ```
@@ -38,8 +45,7 @@ function processData(data) {
   error("Error message");
 
   // JSON handling
-  const obj = { hello: "world" };
-  const str = stringify(obj);
+  const str = stringify({ hello: "world" });
 
   // URL parsing
   const parsed = url('https://example.com/path?q=search');
@@ -48,52 +54,45 @@ function processData(data) {
 <p>Search param: <%%= parsed.searchParams.get('q') %></p>
 
 <%%
-  // Database helpers
-  const record = findRecordByFilter('users', 'username = "admin"');
-  const records = findRecordsByFilter('posts', 'published = true');
+  // Environment variable access
+  const apiKey = env('API_KEY');
 
-  // Micro-dash utilities
-  forEach([1, 2, 3], n => {
-    dbg(n);
-  });
+  // Global store
+  store('viewCount', 5);
+  const count = store('viewCount');
 %>
 ```
 
 ## Available Global Functions
 
-The Global API provides several utility functions:
+The Global API provides these core utility functions:
 
-- **PocketBase JS SDKClient**
+- **URL Handling**
 
-  - `pb()` - Get configured PocketBase SDK client
+  - `url(path: string)` - Parse URLs with automatic query string parsing
+
+- **Data Handling**
+
+  - `stringify()` - Safe JSON stringification
+  - `store(name: string, value?: any)` - Get/set values in global store
+
+- **Environment**
+
+  - `env(key: string)` - Access environment variables
 
 - **Logging**
-
   - `dbg()` - Debug level logging
   - `info()` - Info level logging
   - `warn()` - Warning level logging
   - `error()` - Error level logging
 
-- **Data Handling**
+## Additional Features via Plugins
 
-  - `stringify()` - Safe JSON stringification
-  - `url()` - URL parsing and manipulation
+Many additional utilities are available through official plugins:
 
-- **Database Helpers**
-
-  - `findRecordByFilter()` - Find single record
-  - `findRecordsByFilter()` - Find multiple records
-
-- **User Management**
-
-  - `createUser()` - Create a regular user
-  - `createAnonymousUser()` - Create an anonymous user
-
-- **Micro-dash Utilities**
-  - `forEach()` - Array iteration
-  - `keys()` - Object key extraction
-  - `values()` - Object value extraction
-  - `merge()` - Object merging
+- **@pocketpages-plugin/js-sdk**: PocketBase SDK client
+- **@pocketpages-plugin/micro-dash**: Lodash-like utilities
+- **@pocketpages-plugin/marked**: Markdown processing
 
 ## Using in Libraries
 
@@ -101,7 +100,8 @@ The Global API is particularly useful when writing reusable functions that don't
 
 ```js
 // myLibrary.js
-const { dbg, stringify } = require('pocketpages')
+const { globalApi } = require('pocketpages')
+const { dbg, stringify } = globalApi
 
 function processUserData(user) {
   dbg('Processing user:', stringify(user))
@@ -113,9 +113,9 @@ module.exports = { processUserData }
 
 ## Additional Notes
 
-- Global API functions are always available, whether in templates or JavaScript files
+- Global API functions are always available in request contexts without requiring imports
 - They're designed to be context-free and work consistently everywhere
-- The same functions are merged into the Context API for convenience in templates
-- Use `require('pocketpages')` when you need these functions in separate files or libraries
+- For code outside request contexts, use `require('pocketpages').globalApi`
+- The functions are safe to use anywhere in your application
 
 For detailed information about specific API methods, please refer to the individual API documentation pages in the sidebar.

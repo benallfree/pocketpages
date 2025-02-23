@@ -9,10 +9,19 @@ HTMX is a powerful library that allows you to access modern browser features dir
 
 ## Setting Up HTMX
 
-1. Add HTMX to your layout file:
+1. Add HTMX and the SSE extension to your layout file:
 
 ```html
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<script src="https://unpkg.com/pocketbase-htmx-ext-sse"></script>
+```
+
+2. Enable the required plugins in your `+config.js`:
+
+```javascript
+module.exports = {
+  plugins: ['pocketpages-plugin-ejs', 'pocketpages-plugin-sse'],
+}
 ```
 
 ## Route Organization
@@ -93,9 +102,8 @@ pb_hooks/
 ```html
 <!-- pages/(site)/products/index.ejs -->
 <div class="products-container">
-  <%% products.forEach(product => { %>
-    <%%- include('/_private/product-card', { product }) %>
-  <%% }) %>
+  <%% products.forEach(product => { %> <%%- include('/_private/product-card', {
+  product }) %> <%% }) %>
 
   <button
     hx-get="/xapi/products/load"
@@ -109,9 +117,8 @@ pb_hooks/
 
 ```html
 <!-- pages/xapi/products/load.ejs -->
-<%% products.items.forEach(product => { %>
-    <%%-include('/_private/product-card', { product }) %>
-<%% }) %>
+<%% products.items.forEach(product => { %> <%%-include('/_private/product-card',
+{ product }) %> <%% }) %>
 ```
 
 ### Benefits of Using Partials
@@ -307,3 +314,99 @@ Implement real-time updates with polling:
 3. **Rate Limiting**
    - Implement rate limiting for API endpoints. Recent versions of PocketBase include rate limiting. PocketHost and Cloudflare also include rate limiting.
    - Use appropriate debounce/throttle on HTMX triggers
+
+## Realtime Updates with SSE
+
+PocketPages provides Server-Sent Events (SSE) integration with HTMX for realtime updates. Here's how to use it:
+
+### Basic Chat Example
+
+```html
+<!-- pages/(site)/index.ejs -->
+<div hx-ext="pocketbase-sse">
+  <div sse-swap="chat" hx-swap="beforeend">
+    <!-- Content from SSE will be appended here -->
+  </div>
+</div>
+
+<form
+  hx-post="/api/chat"
+  hx-swap="none"
+  hx-on::after-request="if(event.detail.successful) { this.reset(); }"
+>
+  <input type="text" name="message" />
+  <button type="submit">Send</button>
+</form>
+```
+
+```ejs
+<!-- pages/api/chat.ejs -->
+<%%
+  const { message } = body()
+  sseSend('chat')
+%>
+<div>
+  <%%= message %>
+</div>
+```
+
+### How SSE Works
+
+1. **Server-Side Events**
+
+   - The `sseSend(topic)` function broadcasts rendered content to all subscribers
+   - Content after the `sseSend()` call is captured and sent
+   - Multiple clients can receive updates simultaneously
+
+2. **Client-Side Reception**
+   - The `hx-ext="pocketbase-sse"` attribute enables SSE support
+   - `sse-swap="topic"` subscribes to a specific topic
+   - `hx-swap` determines how updates are inserted (e.g., `beforeend`, `innerHTML`)
+
+### Example: Realtime Counter
+
+```ejs
+<!-- pages/(site)/index.ejs -->
+<button hx-get="/api/count">
+  <%%- include('count.ejs') %>
+</button>
+
+<!-- pages/_private/count.ejs -->
+<b><%%= store('count')||1 %></b>
+
+<!-- pages/api/count.ejs -->
+<%%
+  $app.runInTransaction(() => {
+    store('count', (store('count') || 1) + 1)
+  })
+%>
+<%%- include('count.ejs') %>
+```
+
+### Best Practices for Realtime
+
+1. **Topic Management**
+
+   - Use descriptive topic names (e.g., `chat`, `notifications`)
+   - Consider namespacing for different features (`user:123:notifications`)
+   - Keep topics focused and specific
+
+2. **Performance**
+
+   - Send minimal HTML updates
+   - Use appropriate swap strategies
+   - Consider debouncing frequent updates
+   - Use transactions for atomic operations
+
+3. **Error Handling**
+
+   - Implement reconnection logic
+   - Provide feedback for connection status
+   - Handle failed updates gracefully
+   - Log errors appropriately
+
+4. **Security**
+   - Validate user permissions before sending updates
+   - Sanitize content before broadcasting
+   - Implement rate limiting for message sending
+   - Use appropriate CSRF protection

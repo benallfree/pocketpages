@@ -28,13 +28,6 @@ export default defineConfig({
   banner: {
     js: `if (typeof module === 'undefined') { module = { exports: {} } };`,
   },
-  external: ['pocketpages'],
-  noExternal: [
-    '@s-libs/micro-dash',
-    'pocketbase-js-sdk-jsvm',
-    'pocketbase-log',
-    'pocketbase-stringify',
-    'url-parse',
-    'pocketbase-jsvm',
-  ],
+  external: ['pocketpages', /^[^tsup]$/, /pocketbase-.*/],
+  noExternal: ['@s-libs/micro-dash'],
 })

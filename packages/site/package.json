@@ -1,22 +1,38 @@
 {
   "name": "pocketpages-site",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "author": {
+    "name": "Ben Allfree",
+    "github": "benallfree"
+  },
+  "homepage": "https://pocketpages.dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benallfree/pocketpages/tree/main/packages/site"
+  },
   "scripts": {
     "dev": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch"
-  },
-  "dependencies": {
-    "pocketpages": "workspace:^0.14.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",
     "daisyui": "^4.12.10",
-    "pocketbase-jsvm": "^0.23.10002",
     "postcss-import": "^16.1.0",
-    "prettier": "^3.3.3",
     "tailwindcss": "^3.4.11",
+    "pocketbase-jsvm": "^0.23.10002",
+    "prettier": "^3.3.3",
     "typescript": "^5.6.2"
   },
+  "dependencies": {
+    "pocketpages": "workspace:^0.15.0",
+    "pocketpages-plugin-ejs": "workspace:^0.0.3",
+    "pocketpages-plugin-marked": "workspace:^0.0.3"
+  },
+  "files": [
+    "pb_hooks",
+    "*.md"
+  ],
   "pockethost": {
     "instanceId": "pocketpages"
   }

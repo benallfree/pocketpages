@@ -7,5 +7,9 @@ pb_data
 docs/.cache
 .secrets
 .ftp-deploy-sync-state.json
+package-lock.json
+bun.lockb
+dist
+tmp
 dist
 .vscode

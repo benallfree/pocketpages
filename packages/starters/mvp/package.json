@@ -1,7 +1,7 @@
 {
   "name": "pocketpages-starter-mvp",
+  "version": "0.0.2",
   "private": true,
-  "version": "0.0.1",
   "description": "A minimal PocketBase project using the MVP.css framework",
   "author": {
     "name": "Ben Allfree",
@@ -11,12 +11,8 @@
     "type": "git",
     "url": "https://github.com/benallfree/pocketpages/packages/starters/mvp"
   },
-  "scripts": {
-    "serve": "pocketbase serve --dir=pb_data",
-    "dev": "concurrently \"npm:dev:*\"",
-    "dev:pocketbase": "pocketbase serve --dir=pb_data --dev"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
+  "dependencies": {
+    "pocketpages": "workspace:^0.15.0",
+    "pocketpages-plugin-ejs": "workspace:*"
   }
 }

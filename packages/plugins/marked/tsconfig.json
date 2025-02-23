@@ -15,5 +15,5 @@
       "$util/*": ["src/lib/util/*"]
     }
   },
-  "include": ["src/**/*", "site/**/*"]
+  "include": ["src/**/*"]
 }

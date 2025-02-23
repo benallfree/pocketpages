@@ -1,7 +1,17 @@
 {
   "name": "pocketpages-starter-auth",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "dependencies": {
+    "pocketpages": "workspace:^0.15.0",
+    "pocketpages-plugin-ejs": "workspace:*",
+    "pocketpages-plugin-auth": "workspace:*",
+    "pocketpages-plugin-js-sdk": "workspace:*"
+  },
+  "files": [
+    "pb_hooks",
+    "*.md"
+  ],
   "description": "A starter project for PocketPages with authentication",
   "author": {
     "name": "Ben Allfree",
@@ -19,8 +29,5 @@
     "starter",
     "auth"
   ],
-  "license": "MIT",
-  "dependencies": {
-    "pocketpages": "workspace:*"
-  }
+  "license": "MIT"
 }

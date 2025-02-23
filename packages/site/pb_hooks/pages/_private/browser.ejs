@@ -4,7 +4,7 @@
       <%= `http://localhost:8090` %>
     </div>
   </div>
-  <div class=" bg-base-100 text-left px-4 pb-32" <%- (typeof bodyTags !== 'undefined' && bodyTags)||'' %>>
-    <%- (typeof content !== 'undefined' && content)||`This page is empty.`%>
+  <div class=" bg-base-100 text-left px-4 pb-32" <%- data.bodyTags||'' %>>
+    <%- data.content||`This page is empty.`%>
   </div>
 </div>

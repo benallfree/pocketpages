@@ -1,30 +1,24 @@
 import { forEach, merge } from '@s-libs/micro-dash'
 import type { SerializeOptions } from 'cookie'
 import * as cookie from 'cookie'
-import { error, info } from 'pocketbase-log'
+import { error } from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
 import { globalApi } from 'src/lib/globalApi'
 import type { PagesResponse } from 'src/lib/types'
 import { default as parse, default as URL } from 'url-parse'
-import { setAuthFromHeaderOrCookie } from '../lib/auth'
 import { dbg } from '../lib/debug'
-import { renderFile } from '../lib/ejs'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
-import { marked } from '../lib/marked'
+import { loadPlugins } from '../lib/loadPlugins'
 import { resolveRoute } from '../lib/resolveRoute'
 import {
-  AuthData,
-  AuthOptions,
   Cache,
-  OAuth2ProviderInfo,
-  OAuth2RequestOptions,
-  OAuth2SignInOptions,
   PagesMethods,
   PagesMiddlewareFunc,
   PagesNextFunc,
   PagesRequest,
   PagesRequestContext,
+  Plugin,
   RedirectOptions,
 } from '../lib/types'
 
@@ -54,7 +48,31 @@ export const parseSlots = (input: string) => {
   }
 }
 
-export type SseFilter = (clientId: string, client: any) => boolean
+const jsonResponder: Plugin = {
+  /**
+   * Attempt to parse the content as JSON
+   */
+  onResponse: ({ content, api, route }) => {
+    const { response } = api
+    try {
+      dbg(`Attempting to parse as JSON`)
+      const parsed = JSON.parse(content)
+      response.json(200, parsed)
+      return true
+    } catch (e) {
+      dbg(`Not JSON`)
+    }
+    return false
+  },
+}
+
+const defaultResponder: Plugin = {
+  onResponse: ({ content, api, route }) => {
+    const { response } = api
+    response.html(200, content)
+    return true
+  },
+}
 
 export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   const next: PagesNextFunc = () => {
@@ -167,13 +185,11 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     },
   }
 
-  setAuthFromHeaderOrCookie(request)
+  const cache = $app.store<Cache>().get(`pocketpages`)
+  const { routes, config } = cache
 
-  const { routes, config } = $app.store<Cache>().get(`pocketpages`)
-
-  dbg(`pocketpages handler`)
-
-  dbg(`Pages middleware request: ${method} ${url}`)
+  const plugins = loadPlugins(cache)
+  plugins.forEach((plugin) => plugin.onRequest?.({ request, response }))
 
   const resolvedRoute = resolveRoute(request.url, routes)
 
@@ -191,7 +207,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
   try {
     /**
-     * If the file exists but is not a preprocessor file, skip PocketPages and serve statically
+     * If the file exists but no plugin handles it, serve statically
      */
     if (route.isStatic) {
       dbg(`Serving static file ${absolutePath}`)
@@ -202,37 +218,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     At this point, we have a route PocketPages needs to handle.
     */
     dbg(`Found a matching route`, { resolvedRoute })
-
-    const DefaultSseFilter: SseFilter = (clientId: string, client: any) => {
-      return api.auth?.id ? client.get('auth')?.id === api.auth?.id : true
-    }
-
-    const deferredSse = {
-      topic: '',
-      filter: DefaultSseFilter,
-    }
-
-    const _sseSend = (
-      name: string,
-      data: string,
-      filter: SseFilter = DefaultSseFilter
-    ) => {
-      const payload = new SubscriptionMessage({
-        name,
-        data,
-      })
-
-      const clients = $app.subscriptionsBroker().clients()
-
-      const filteredClients = Object.entries(clients).filter(
-        ([clientId, client]) =>
-          client.hasSubscription(name) && filter(clientId, client)
-      )
-
-      filteredClients.forEach(([clientId, client]) => {
-        client.send(payload)
-      })
-    }
 
     const api: PagesRequestContext<any> = {
       ...globalApi,
@@ -279,142 +264,9 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       },
       meta: mkMeta(),
       resolve: mkResolve($filepath.dir(absolutePath)),
-      registerWithPassword: (
-        email: string,
-        password: string,
-        options?: Partial<AuthOptions>
-      ) => {
-        globalApi.createUser(email, password, options)
-        const authData = api.signInWithPassword(email, password, options)
-        return authData
-      },
-      signInWithPassword: (
-        email: string,
-        password: string,
-        options?: Partial<AuthOptions>
-      ) => {
-        const authData = globalApi
-          .pb()
-          .collection(options?.collection ?? 'users')
-          .authWithPassword(email, password) as AuthData
-
-        api.signInWithToken(authData.token)
-        return authData
-      },
-      signInAnonymously: (options?: Partial<AuthOptions>) => {
-        const { user, email, password } = globalApi.createAnonymousUser()
-
-        const authData = api.signInWithPassword(email, password, options)
-        return authData
-      },
-      signInWithOTP: (
-        otpId: string,
-        password: string,
-        options?: Partial<AuthOptions>
-      ) => {
-        const pb = globalApi.pb()
-        const authData = pb
-          .collection(options?.collection ?? 'users')
-          .authWithOTP(otpId, password.toString())
-        api.signInWithToken(authData.token)
-        // TODO set user to verfied
-        return authData as AuthData
-      },
-      requestOAuth2Login: (
-        providerName: string,
-        options?: Partial<OAuth2RequestOptions>
-      ) => {
-        const pb = globalApi.pb()
-        const methods = pb
-          .collection(options?.collection ?? 'users')
-          .listAuthMethods()
-
-        const { providers } = methods.oauth2
-
-        const provider = providers.find((p) => p.name === providerName)
-
-        if (!provider) {
-          throw new Error(`Provider ${providerName} not found`)
-        }
-
-        const redirectUrl = `${$app.settings().meta.appURL}${options?.redirectPath ?? '/auth/oauth/confirm'}`
-
-        const authUrl = provider.authURL + redirectUrl
-
-        response.cookie(options?.cookieName ?? 'pp_oauth_state', {
-          ...globalApi.pick(
-            provider,
-            'name',
-            'state',
-            'codeChallenge',
-            'codeVerifier'
-          ),
-          redirectUrl,
-        })
-
-        if (options?.autoRedirect ?? true) {
-          response.redirect(authUrl)
-        }
-        return authUrl
-      },
-      signInWithOAuth2: (
-        state: string,
-        code: string,
-        options?: Partial<OAuth2SignInOptions>,
-        _storedProviderInfo?: OAuth2ProviderInfo
-      ) => {
-        const storedProvider =
-          _storedProviderInfo ??
-          api.request.cookies<OAuth2ProviderInfo>(
-            options?.cookieName ?? 'pp_oauth_state'
-          )
-
-        if (!storedProvider) {
-          throw new Error('No stored provider info found')
-        }
-
-        if (storedProvider.state !== state) {
-          throw new Error(`State parameters don't match.`)
-        }
-
-        const authData = globalApi
-          .pb()
-          .collection(options?.collection ?? 'users')
-          .authWithOAuth2Code(
-            storedProvider.name,
-            code,
-            storedProvider.codeVerifier,
-            storedProvider.redirectUrl,
-            // pass any optional user create data
-            {
-              emailVisibility: false,
-            }
-          )
-
-        api.signInWithToken(authData.token)
-        return authData as AuthData
-      },
-      signOut: () => {
-        response.cookie(`pb_auth`, '')
-      },
-      signInWithToken: (token: string) => {
-        response.cookie(`pb_auth`, token)
-      },
-      send: (
-        topic: string,
-        messageOrFilter: string | SseFilter = DefaultSseFilter,
-        filter: SseFilter = DefaultSseFilter
-      ) => {
-        const isDeferred = typeof messageOrFilter === 'function'
-        if (isDeferred) {
-          deferredSse.topic = topic
-          deferredSse.filter = messageOrFilter
-          info('Deferred SSE', { deferredSse })
-          return
-        }
-        return _sseSend(topic, messageOrFilter, filter)
-      },
     }
+
+    plugins.forEach((plugin) => plugin.onExtendContextApi?.({ api, route }))
 
     let data = {}
     route.middlewares.forEach((maybeMiddleware) => {
@@ -424,7 +276,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
     // Execute loaders
     {
-      const methods = ['load', method.toLowerCase()]
+      const methods = ['load', method.toLowerCase(), method]
       forEach(methods, (method) => {
         const loaderFname = route.loaders[method as keyof typeof route.loaders]
         if (!loaderFname) return
@@ -439,36 +291,17 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     //@ts-ignore
     delete api.echo
 
-    /**
-     * Run the content through the EJS preprocessor
-     */
-    dbg(`Rendering file`, { absolutePath })
-    var content = renderFile(absolutePath, api)
-
-    /**
-     * Run the content through the Markdown preprocessor
-     */
-    if (route.isMarkdown) {
-      dbg(`Markdown file`, { absolutePath })
-      const res = marked(content, api)
-      content = res.content
-
-      forEach(res.frontmatter, (value, key) => {
-        api.meta(key, value)
-      })
-      dbg(`markdown`, { content })
-    }
-
-    /**
-     * Attempt to parse the content as JSON
-     */
-    try {
-      dbg(`Attempting to parse as JSON`)
-      const parsed = JSON.parse(content)
-      return response.json(200, parsed)
-    } catch (e) {
-      dbg(`Not JSON`)
-    }
+    let content = plugins.reduce((content, plugin) => {
+      return (
+        plugin.onRender?.({
+          content,
+          api,
+          route,
+          filePath: absolutePath,
+          plugins,
+        }) ?? content
+      )
+    }, '')
 
     /**
      * Render the content in the layout
@@ -477,16 +310,25 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       const res = parseSlots(content)
       api.slots = res.slots
       api.slot = res.slots.default || res.content
-      content = renderFile(layoutPath, api)
+      content = plugins.reduce((content, plugin) => {
+        return (
+          plugin.onRender?.({
+            content,
+            api,
+            route,
+            filePath: layoutPath,
+            plugins,
+          }) ?? content
+        )
+      }, content)
     })
 
-    if (deferredSse.topic) {
-      _sseSend(deferredSse.topic, JSON.stringify(content), deferredSse.filter)
-      return response.json(200, { sse: 'ok' })
+    for (const plugin of [...plugins, jsonResponder, defaultResponder]) {
+      if (plugin.onResponse?.({ content, api, route })) {
+        return
+      }
     }
-
-    // dbg(`Final result`, str)
-    return response.html(200, content)
+    throw new Error(`No plugin handled the response`)
   } catch (e) {
     error(e)
     const message = (() => {
