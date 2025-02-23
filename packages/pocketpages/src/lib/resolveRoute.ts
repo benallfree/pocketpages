@@ -33,7 +33,7 @@ export const resolveRoute = (url: URLParse<string>, routes: Route[]) => {
           return true
         }
         const matchesWithFingerprint = (() => {
-          if (route.shouldPreProcess) return false
+          if (!route.isStatic) return false
           if (i !== route.segments.length - 1) return false
           const fingerprinted = fingerprint(segment.nodeName, route.fingerprint)
           dbg(`fingerprint details`, { segment, fingerprinted, parts })

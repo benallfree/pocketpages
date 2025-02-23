@@ -10,12 +10,12 @@ export type Route = {
   relativePath: string
   absolutePath: string
   fingerprint: string
-  shouldPreProcess: boolean
   assetPrefix: string
   segments: {
     nodeName: string
     paramName?: string
   }[]
+  isStatic: boolean
   middlewares: string[]
   loaders: Partial<{
     load: string
@@ -81,19 +81,16 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   })
   dbg({ physicalFiles })
 
-  const addressableFiles = physicalFiles.filter((f) => {
+  const routableFiles = physicalFiles.filter((f) => {
     // Check if file name starts with +
-    if ($filepath.base(f).startsWith('+')) {
-      return false
-    }
-
-    // Check if any path segment is _private
+    const notRoutable = [/^[-+_]/]
     const pathParts = $filepath.toSlash(f).split('/')
-    return !pathParts.some((part) => part === '_private')
+    return !pathParts.some((part) => notRoutable.some((r) => r.test(part)))
   })
-  dbg({ addressableFiles })
 
-  const routes: Route[] = addressableFiles
+  dbg({ routableFiles })
+
+  const routes: Route[] = routableFiles
     .map((relativePath) => {
       dbg(`Examining route`, relativePath)
       const partsWithoutGroupNames = $filepath
@@ -114,9 +111,6 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
         assetPrefix:
           partsWithoutGroupNames[partsWithoutGroupNames.length - 2] ?? '',
         isMarkdown: relativePath.endsWith('.md'),
-        shouldPreProcess: config.preprocessorExts.some((ext) =>
-          relativePath.endsWith(ext)
-        ),
         segments: partsWithoutGroupNames.map((part) => {
           return {
             nodeName: part,
@@ -128,9 +122,14 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
         middlewares: [],
         layouts: [],
         loaders: {},
+        isStatic: !config.preprocessorExts.some((ext) =>
+          relativePath.endsWith(ext)
+        ),
       }
 
-      if (!route.shouldPreProcess) {
+      if (route.isStatic) {
+        // If the route is not handled, it means it's a static file
+        // and we can serve it directly
         return route
       }
 
@@ -145,15 +144,17 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
           .filter((p) => !!p)
         dbg(`layout`, { pathParts }, $filepath.dir(relativePath))
         do {
-          const maybeLayout = $filepath.join(
-            pagesRoot,
-            ...pathParts,
-            `+layout.ejs`
+          const maybeLayouts = $filepath.glob(
+            $filepath.join(pagesRoot, ...pathParts, `+layout.*`)
           )
-          dbg({ pathParts, maybeLayout })
-          if (fs.existsSync(maybeLayout, 'file')) {
+          dbg({ pathParts, maybeLayouts })
+          if (maybeLayouts && maybeLayouts.length > 0) {
+            if (maybeLayouts.length > 1) {
+              throw new Error(`Multiple layouts found for ${relativePath}`)
+            }
+            const maybeLayout = maybeLayouts[0]!
             route.layouts.push(maybeLayout)
-            dbg(`layout found`)
+            dbg(`layout found`, { maybeLayout })
           }
           if (pathParts.length === 0) {
             break

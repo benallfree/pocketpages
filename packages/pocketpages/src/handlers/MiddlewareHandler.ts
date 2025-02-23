@@ -162,7 +162,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   /**
    * If the file exists but is not a preprocessor file, skip PocketPages and serve statically
    */
-  if (!route.shouldPreProcess) {
+  if (route.isStatic) {
     dbg(`Serving static file ${absolutePath}`)
     return response.file(absolutePath)
   }
