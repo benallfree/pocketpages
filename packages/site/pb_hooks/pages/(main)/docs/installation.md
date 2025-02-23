@@ -27,6 +27,4 @@ Changes appear immediately on the next refresh.
 
 ## How does it work?
 
-PocketPages is a PocketBase JS Hooks library. It needs to live in the `pb_hooks` directory so PocketBase can see it and run it. From there, it parses the `pb_hooks/pages` directory.
-
-`pages` doesn't strictly need to live in `pb_hooks`, but it's nice to put it there because PocketBase will pick up any changes during local development.
+PocketPages is a Multi-Page Application (MPA) preprocessor for PocketBase. It listens for requests and renders pages using file-based routing rules like old school PHP.
