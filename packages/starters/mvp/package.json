@@ -1,5 +1,6 @@
 {
   "name": "pocketpages-starter-mvp",
+  "private": true,
   "version": "0.0.1",
   "description": "A minimal PocketBase project using the MVP.css framework",
   "author": {

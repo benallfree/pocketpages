@@ -1,5 +1,6 @@
 {
   "name": "pocketpages-starter-minimal",
+  "private": true,
   "version": "0.0.1",
   "description": "A minimal starter project for PocketPages",
   "author": {

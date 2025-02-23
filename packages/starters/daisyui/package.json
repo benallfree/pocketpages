@@ -1,5 +1,6 @@
 {
   "name": "pocketpages-starter-daisyui",
+  "private": true,
   "version": "0.0.1",
   "description": "A starter project for PocketPages with DaisyUI",
   "author": {

@@ -1,5 +1,6 @@
 {
   "name": "pocketpages-starter-htmx",
+  "private": true,
   "version": "0.0.1",
   "description": "A starter project for PocketPages with htmx",
   "author": {

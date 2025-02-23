@@ -1,5 +1,6 @@
 {
   "name": "pocketpages-site",
+  "private": true,
   "version": "0.0.1",
   "scripts": {
     "dev": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch"
