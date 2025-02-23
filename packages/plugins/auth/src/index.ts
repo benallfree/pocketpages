@@ -47,9 +47,9 @@ export type CreateUserOptions = {
 } & AuthOptions
 
 const authPluginFactory: PluginFactory = (config) => {
-  const { global } = config
+  const { globalApi } = config
 
-  global.createUser = (
+  globalApi.createUser = (
     email: string,
     password: string,
     options?: Partial<CreateUserOptions>
@@ -60,7 +60,7 @@ const authPluginFactory: PluginFactory = (config) => {
     if (!password.trim()) {
       throw new Error('Password is required')
     }
-    const pb = global.pb() as PocketBase
+    const pb = globalApi.pb() as PocketBase
     const user = pb.collection(options?.collection ?? 'users').create<User>({
       email,
       password,
@@ -70,51 +70,51 @@ const authPluginFactory: PluginFactory = (config) => {
       options?.sendVerificationEmail === undefined ||
       options.sendVerificationEmail
     ) {
-      global.requestVerification(email, options)
+      globalApi.requestVerification(email, options)
     }
     return user
   }
-  global.createAnonymousUser = (options?: Partial<AuthOptions>) => {
+  globalApi.createAnonymousUser = (options?: Partial<AuthOptions>) => {
     const email = `anonymous-${$security.randomStringWithAlphabet(
       10,
       '123456789'
     )}@example.com`
     return {
       email,
-      ...global.createPaswordlessUser(email, {
+      ...globalApi.createPaswordlessUser(email, {
         ...options,
         sendVerificationEmail: false,
       }),
     }
   }
-  global.createPaswordlessUser = (
+  globalApi.createPaswordlessUser = (
     email: string,
     options?: Partial<CreateUserOptions>
   ) => {
     const password = $security.randomStringWithAlphabet(40, '123456789')
     return {
       password,
-      user: global.createUser(email, password, options),
+      user: globalApi.createUser(email, password, options),
     }
   }
-  global.requestVerification = (
+  globalApi.requestVerification = (
     email: string,
     options?: Partial<AuthOptions>
   ) => {
-    const pb = global.pb()
+    const pb = globalApi.pb()
     pb.collection(options?.collection ?? 'users').requestVerification(email)
   }
-  global.confirmVerification = (
+  globalApi.confirmVerification = (
     token: string,
     options?: Partial<AuthOptions>
   ) => {
-    const pb = global.pb()
+    const pb = globalApi.pb()
     pb.collection(options?.collection ?? 'users').confirmVerification(token)
   }
-  global.requestOTP = (email: string, options?: Partial<AuthOptions>) => {
-    const pb = global.pb()
+  globalApi.requestOTP = (email: string, options?: Partial<AuthOptions>) => {
+    const pb = globalApi.pb()
     try {
-      const { user, password } = global.createPaswordlessUser(email, options)
+      const { user, password } = globalApi.createPaswordlessUser(email, options)
     } catch (e) {
       // User likely already exists
     }
@@ -149,7 +149,7 @@ const authPluginFactory: PluginFactory = (config) => {
           }
         } catch (_) {}
 
-        const pb = global.pb()
+        const pb = globalApi.pb()
         pb.authStore.save(data.token || '', data.record || data.model || null)
         try {
           // get an up-to-date auth store state by veryfing and refreshing the loaded auth model (if any)

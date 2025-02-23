@@ -56,7 +56,7 @@ export const loadPlugins = (cache: Cache): Plugin[] => {
       const factoryConfig: PluginFactoryConfig = {
         pagesRoot,
         config,
-        global: globalApi,
+        globalApi,
         routes,
         dbg: extra.debug ? globalApi.dbg : dbg,
       }

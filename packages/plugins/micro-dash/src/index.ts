@@ -3,13 +3,13 @@ import { forEach, keys, merge, pick, shuffle, values } from '@s-libs/micro-dash'
 import { PluginFactory } from '../../../pocketpages/src/lib/types'
 
 const microDashPluginFactory: PluginFactory = (config) => {
-  const { global } = config
-  global.forEach = forEach
-  global.keys = keys
-  global.values = values
-  global.merge = merge
-  global.pick = pick
-  global.shuffle = shuffle
+  const { globalApi } = config
+  globalApi.forEach = forEach
+  globalApi.keys = keys
+  globalApi.values = values
+  globalApi.merge = merge
+  globalApi.pick = pick
+  globalApi.shuffle = shuffle
   return {}
 }
 

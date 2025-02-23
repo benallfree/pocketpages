@@ -55,7 +55,7 @@ export type PagesRequestContext<TData = any> = {
 export type PluginFactoryConfig = {
   pagesRoot: string
   config: PagesConfig
-  global: PagesGlobalContext & { [_: string]: any }
+  globalApi: PagesGlobalContext & { [_: string]: any }
   routes: Route[]
   dbg: typeof log.dbg
 }
