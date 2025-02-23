@@ -5,6 +5,8 @@ description: Step-by-step guide for installing PocketPages.
 
 # Installation
 
+> **PocketPages requires PocketBase v0.25.5 or later.**
+
 Installing PocketPages is easy.
 
 <%- include(`quickstart.ejs`) %>
