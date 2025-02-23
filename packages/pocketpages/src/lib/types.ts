@@ -199,7 +199,7 @@ export type PagesResponse = {
     options?: Partial<SerializeOptions>
   ) => void
 }
-export type PagesInitializerFunc = () => void
+export type PagesInitializerFunc = (e: core.BootstrapEvent) => void
 export type PagesNextFunc = () => void
 
 export type PagesMiddlewareFunc = (e: core.RequestEvent) => void

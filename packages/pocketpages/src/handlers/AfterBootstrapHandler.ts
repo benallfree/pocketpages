@@ -30,7 +30,7 @@ export type Route = {
 
 export const LOADER_METHODS = ['load', 'get', 'post', 'put', 'delete'] as const
 
-export const AfterBootstrapHandler: PagesInitializerFunc = () => {
+export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   info(`pocketpages startup`)
 
   if (!fs.existsSync(pagesRoot)) {
