@@ -1,5 +1,5 @@
 import { forEach, keys } from '@s-libs/micro-dash'
-import { info } from 'pocketbase-log'
+import { error, info } from 'pocketbase-log'
 import { fs } from 'pocketbase-node'
 import { dbg } from '../lib/debug'
 import { pagesRoot } from '../lib/helpers'
@@ -60,6 +60,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
       try {
         return require(configPath) as Partial<PagesConfig>
       } catch (e) {
+        error(`Error loading config file: ${e}`)
         return {}
       }
     })(),
