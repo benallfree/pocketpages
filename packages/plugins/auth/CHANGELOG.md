@@ -1,5 +1,13 @@
 # pocketpages-plugin-auth
 
+## 0.0.7
+
+### Patch Changes
+
+- 79dc05d: Fix: update pocketbase-js-sdk-jsvm
+- Updated dependencies [79dc05d]
+  - pocketpages-plugin-js-sdk@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes
