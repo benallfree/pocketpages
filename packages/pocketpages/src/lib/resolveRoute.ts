@@ -2,44 +2,30 @@ import queryString from 'query-string'
 import URLParse from 'url-parse'
 import { Route } from '../handlers/AfterBootstrapHandler'
 import { dbg } from './debug'
+import { fingerprint } from './fingerprint'
 import { Cache, PagesParams } from './types'
 
-export const fingerprint = (nodeName: string, fingerprint: string) => {
-  // Split filename into base and extension
-  const lastDotIndex = nodeName.lastIndexOf('.')
-  if (lastDotIndex === -1) {
-    // No extension - just append fingerprint
-    return `${nodeName}.${fingerprint}`
-  }
-
-  const base = nodeName.slice(0, lastDotIndex)
-  const ext = nodeName.slice(lastDotIndex)
-
-  // Insert fingerprint between base and extension
-  return `${base}.${fingerprint}${ext}`
-}
-
-export const parseRoute = (url: URLParse<string>, routes: Route[]) => {
+export const resolveRoute = (url: URLParse<string>, routes: Route[]) => {
   const { config } = $app.store<Cache>().get(`pocketpages`)
 
   const urlPath = url.pathname.slice(1)
-  // dbg(`***parseRoute`, { url, urlPath })
+  dbg(`***resolveRoute`, { url, urlPath })
   const params: PagesParams = queryString.parse(url.query)
   const tryFnames = [
     `${urlPath}`,
     ...config.preprocessorExts.map((ext) => `${urlPath}${ext}`),
     ...config.preprocessorExts.map((ext) => `${urlPath}/index${ext}`),
   ]
-  // dbg({ tryFnames })
+  dbg({ tryFnames })
   for (const maybeFname of tryFnames) {
     const parts = maybeFname.split('/').filter((p) => p)
-    // dbg({ parts })
-    // dbg({ routes })
+    dbg(`incoming parts`, parts)
     const routeCandidates = routes.filter(
       (r) => r.segments.length === parts.length
     )
     // dbg({ routeCandidates })
     for (const route of routeCandidates) {
+      dbg(`checking route`, route)
       const matched = route.segments.every((segment, i) => {
         const { paramName } = segment
         if (paramName) {
@@ -50,14 +36,13 @@ export const parseRoute = (url: URLParse<string>, routes: Route[]) => {
           if (route.shouldPreProcess) return false
           if (i !== route.segments.length - 1) return false
           const fingerprinted = fingerprint(segment.nodeName, route.fingerprint)
-          dbg({ segment, fingerprinted, parts })
-
+          dbg(`fingerprint details`, { segment, fingerprinted, parts })
           return fingerprinted === parts[i]
         })()
         return segment.nodeName === parts[i] || matchesWithFingerprint
       })
       if (matched) {
-        // dbg(`Matched route`, route)
+        dbg(`Matched route`, route)
         return { route, params }
       }
     }

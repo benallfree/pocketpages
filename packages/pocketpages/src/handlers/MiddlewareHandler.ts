@@ -1,12 +1,13 @@
 import { forEach, merge } from '@s-libs/micro-dash'
 import { error, info } from 'pocketbase-log'
+import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
 import { globalApi } from 'src/lib/globalApi'
 import { default as URL } from 'url-parse'
 import { dbg } from '../lib/debug'
 import { parseSlots, renderFile } from '../lib/ejs'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
 import { marked } from '../lib/marked'
-import { fingerprint as applyFingerprint, parseRoute } from '../lib/parseRoute'
+import { resolveRoute } from '../lib/resolveRoute'
 import {
   AuthData,
   AuthOptions,
@@ -34,18 +35,18 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
 
   dbg(`Pages middleware request: ${method} ${url}`)
 
-  const parsedRoute = parseRoute(url, routes)
+  const resolvedRoute = resolveRoute(url, routes)
 
   /**
    * If it doesn't match any known route, pass it on
    */
-  if (!parsedRoute) {
+  if (!resolvedRoute) {
     // Otherwise, pass it on to PocketBase to handle
     dbg(`No route matched for ${url}, passing on to PocketBase`)
     return next()
   }
 
-  const { route, params } = parsedRoute
+  const { route, params } = resolvedRoute
   const { absolutePath, relativePath } = route
 
   /**
@@ -60,7 +61,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
     At this point, we have a route PocketPages needs to handle.
     */
   try {
-    dbg(`Found a matching route`, { parsedRoute })
+    dbg(`Found a matching route`, { resolvedRoute })
 
     const DefaultSseFilter: SseFilter = (clientId: string, client: any) => {
       return api.auth?.id ? client.get('auth')?.id === api.auth?.id : true
@@ -129,7 +130,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (
               route.assetPrefix,
               path
             )
-        const assetRoute = parseRoute(new URL(fullAssetPath), routes)
+        const assetRoute = resolveRoute(new URL(fullAssetPath), routes)
         dbg({ fullAssetPath, shortAssetPath, assetRoute })
         if (!assetRoute) {
           if ($app.isDev()) {
