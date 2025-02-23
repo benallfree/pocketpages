@@ -3,9 +3,20 @@
   "private": true,
   "devDependencies": {
     "@changesets/cli": "^2.28.0",
+    "concurrently": "^9.1.2",
     "prettier": "^3.5.1",
     "prettier-plugin-organize-imports": "^4.1.0",
     "typescript": "^5.7.3"
+  },
+  "scripts": {
+    "publish": "concurrently 'bun run publish:*'",
+    "publish:pocketpages": "cd packages/pocketpages && bun publish",
+    "publish:plugins:auth": "cd packages/plugins/auth && bun publish",
+    "publish:plugins:ejs": "cd packages/plugins/ejs && bun publish",
+    "publish:plugins:js-sdk": "cd packages/plugins/js-sdk && bun publish",
+    "publish:plugins:marked": "cd packages/plugins/marked && bun publish",
+    "publish:plugins:micro-dash": "cd packages/plugins/micro-dash && bun publish",
+    "publish:plugins:sse": "cd packages/plugins/sse && bun publish"
   },
   "prettier": {
     "singleQuote": true,
