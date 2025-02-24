@@ -48,24 +48,6 @@ export const parseSlots = (input: string) => {
   }
 }
 
-const jsonResponder: Plugin = {
-  /**
-   * Attempt to parse the content as JSON
-   */
-  onResponse: ({ content, api, route }) => {
-    const { response } = api
-    try {
-      dbg(`Attempting to parse as JSON`)
-      const parsed = JSON.parse(content)
-      response.json(200, parsed)
-      return true
-    } catch (e) {
-      dbg(`Not JSON`)
-    }
-    return false
-  },
-}
-
 const defaultResponder: Plugin = {
   onResponse: ({ content, api, route }) => {
     const { response } = api
@@ -303,6 +285,15 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       )
     }, '')
 
+    try {
+      dbg(`Attempting to parse as JSON`)
+      const parsed = JSON.parse(content)
+      response.json(200, parsed)
+      return true
+    } catch (e) {
+      dbg(`Not JSON`)
+    }
+
     /**
      * Render the content in the layout
      */
@@ -323,7 +314,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       }, content)
     })
 
-    for (const plugin of [...plugins, jsonResponder, defaultResponder]) {
+    for (const plugin of [...plugins, defaultResponder]) {
       if (plugin.onResponse?.({ content, api, route })) {
         return
       }
