@@ -25,7 +25,8 @@ export const resolveRoute = (url: URLParse<string>, routes: Route[]) => {
     for (const route of routes) {
       dbg(`checking route`, route)
       const matched = route.segments.every((segment, i) => {
-        const { nodeName } = segment
+        const { nodeName, paramName } = segment
+        if (paramName) return true // Match any value for param route segments
         const part = parts[i]
         const matchesWithFingerprint = (() => {
           if (i !== route.segments.length - 1) return false
