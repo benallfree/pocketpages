@@ -1,6 +1,6 @@
 ---
 title: JS SDK Plugin
-description: Adds PocketBase JavaScript SDK support to PocketPages with automatic authentication handling and JSVM compatibility.
+description: Adds PocketBase JavaScript SDK support to PocketPages with configurable authentication handling and JSVM compatibility.
 ---
 
 # JS SDK Plugin
@@ -33,42 +33,63 @@ module.exports = {
 
 ## Usage
 
-The plugin adds a `pb()` function to the global context that returns a configured PocketBase client:
+The plugin adds a `pb()` function to the global context that returns a configured PocketBase client. The client is cached based on the host and authentication context.
+
+```typescript
+type PocketBaseClientOptions = {
+  auth?: core.Record    // Auth record to use
+  host?: string        // PocketBase host URL
+  request?: Request    // Current request context
+}
+
+// Get a PocketBase client
+const client = pb(options?: PocketBaseClientOptions)
+```
+
+### Authentication Handling
+
+To get a client with the current request's authentication context:
 
 ```ejs
 <%%
-  // Get a reference to the PocketBase client
-  const client = pb()
+  // Get an authenticated client for the current request
+  const client = pb({ request })
 
-  // Use any PocketBase SDK method
+  // Use any PocketBase SDK method with the authenticated context
   const records = client.collection('posts').getFullList({
     sort: '-created',
     expand: 'author',
   })
 %>
-
-<%% records.forEach(record => { %>
-  <div class="post">
-    <h2><%%= record.title %></h2>
-    <p>By <%%= record.expand?.author?.name %></p>
-  </div>
-<%% }) %>
 ```
 
-### Authentication Support
+To get an unauthenticated client:
 
-The client automatically handles authentication by checking for:
+```ejs
+<%%
+  // Get an anonymous client
+  const client = pb()
+%>
+```
 
-1. The `Authorization` header
-2. The `pb_auth` cookie
+### Client Caching
 
-This means you can use the same client for both authenticated and unauthenticated requests without additional configuration.
+The plugin caches PocketBase clients based on:
+
+- The host URL
+- The authentication context (user ID)
+
+This means:
+
+- Multiple calls with the same auth context reuse the same client
+- Different users get different client instances
+- Anonymous requests share a common unauthenticated client
 
 ### Example: Working with Collections
 
 ```ejs
 <%%
-  const client = pb()
+  const client = pb({ request })
 
   // Create a record
   const post = client.collection('posts').create({
@@ -81,11 +102,6 @@ This means you can use the same client for both authenticated and unauthenticate
     filter: 'status = "published"',
     sort: '-created',
   })
-
-  // Update a record
-  client.collection('posts').update(post.id, {
-    views: post.views + 1,
-  })
 %>
 ```
 
@@ -93,7 +109,7 @@ This means you can use the same client for both authenticated and unauthenticate
 
 ```ejs
 <%%
-  const client = pb()
+  const client = pb({ request })
 
   try {
     // Attempt to authenticate
