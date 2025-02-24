@@ -1,4 +1,7 @@
-import PocketBase from 'pocketbase-js-sdk-jsvm'
+import PocketBase, {
+  AuthModel,
+  RecordAuthResponse,
+} from 'pocketbase-js-sdk-jsvm'
 import { PluginFactory } from 'pocketpages'
 
 export type OAuth2ProviderInfo = {
@@ -46,8 +49,25 @@ export type CreateUserOptions = {
   sendVerificationEmail: boolean
 } & AuthOptions
 
+const safeParseJson = (value: string | undefined) => {
+  if (!value) return value
+  try {
+    return JSON.parse(value)
+  } catch {
+    return value
+  }
+}
+
+const toPlainObject = (value: any) => {
+  if (typeof value === 'object' && value !== null) {
+    return JSON.parse(JSON.stringify(value))
+  }
+  return value
+}
+
 const authPluginFactory: PluginFactory = (config) => {
   const { globalApi } = config
+  const { dbg, info } = globalApi
 
   globalApi.createUser = (
     email: string,
@@ -66,6 +86,7 @@ const authPluginFactory: PluginFactory = (config) => {
       password,
       passwordConfirm: password,
     })
+    dbg(`created user: ${user.id}`)
     if (
       options?.sendVerificationEmail === undefined ||
       options.sendVerificationEmail
@@ -92,6 +113,7 @@ const authPluginFactory: PluginFactory = (config) => {
     options?: Partial<CreateUserOptions>
   ) => {
     const password = $security.randomStringWithAlphabet(40, '123456789')
+    dbg(`created paswordless user: ${email}:${password}`)
     return {
       password,
       user: globalApi.createUser(email, password, options),
@@ -124,53 +146,36 @@ const authPluginFactory: PluginFactory = (config) => {
 
   return {
     onRequest: ({ request, response }) => {
+      const { auth } = request
+      if (auth) {
+        dbg(`skipping cookie auth because auth record already set: ${auth.id}`)
+        return
+      }
       /**
        * If the route is protected, check the auth
        */
-      // https://github.com/pocketbase/pocketbase/blob/ad92992324c3fd0f09c36300890620a0224c6c06/apis/middlewares.go#L212-L254
-      // https://github.com/pocketbase/pocketbase/blob/8271452430603cf3051a1cd89bcde01a0fa8fc89/apis/middlewares.go#L192-L220
-      const token =
-        request.header('Authorization') || request.cookies('pb_auth')
-      // dbg(`incoming auth token`, { token })
-      if (token) {
-        // Remove 'Bearer ' prefix if present
-        const cleanToken = token.replace(/^Bearer\s+/i, '')
+      // https://github.com/benallfree/pocketbase/blob/f38700982c1b46ac1a51ff59e985fae6fc332ccb/apis/middlewares.go#L181
+      const cookieToken = safeParseJson(request.cookies<any>('pb_auth'))?.token
+      dbg(`pb_auth cookie token: ${cookieToken || `<none>`}`)
 
-        let data: { [key: string]: any } = {}
+      if (cookieToken) {
         try {
-          data = JSON.parse(cleanToken)
-          // normalize
-          if (
-            typeof data === null ||
-            typeof data !== 'object' ||
-            Array.isArray(data)
-          ) {
-            data = {}
-          }
-        } catch (_) {}
-
-        const pb = globalApi.pb()
-        pb.authStore.save(data.token || '', data.record || data.model || null)
-        try {
-          // get an up-to-date auth store state by veryfing and refreshing the loaded auth model (if any)
-          pb.authStore.isValid && pb.collection('users').authRefresh()
-        } catch (_) {
-          // clear the auth store on failed refresh
-          pb.authStore.clear()
-        }
-
-        try {
-          request.auth = $app.findAuthRecordByToken(cleanToken, 'auth')
+          const authRecord = $app.findAuthRecordByToken(cookieToken)
+          dbg(`cookie token swapped for auth record: ${authRecord.id}`)
+          request.event.auth = authRecord
+          request.auth = authRecord
         } catch (e) {
-          // Token is invalid or expired
+          dbg(`error fetching auth record: ${e}`)
         }
       }
     },
     onExtendContextApi: ({ api }) => {
+      const pb = () => api.pb() as PocketBase
+
       api.registerWithPassword = (
         email: string,
         password: string,
-        options?: Partial<AuthOptions>
+        options?: Partial<CreateUserOptions>
       ) => {
         api.createUser(email, password, options)
         const authData = api.signInWithPassword(email, password, options)
@@ -181,12 +186,11 @@ const authPluginFactory: PluginFactory = (config) => {
         password: string,
         options?: Partial<AuthOptions>
       ) => {
-        const authData = api
-          .pb()
+        const authData = pb()
           .collection(options?.collection ?? 'users')
           .authWithPassword(email, password) as AuthData
 
-        api.signInWithToken(authData.token)
+        api.signIn(authData)
         return authData
       }
 
@@ -202,11 +206,10 @@ const authPluginFactory: PluginFactory = (config) => {
         password: string,
         options?: Partial<AuthOptions>
       ) => {
-        const pb = api.pb()
-        const authData = pb
+        const authData = pb()
           .collection(options?.collection ?? 'users')
           .authWithOTP(otpId, password.toString())
-        api.signInWithToken(authData.token)
+        api.signIn(authData)
         // TODO set user to verfied
         return authData as AuthData
       }
@@ -215,8 +218,7 @@ const authPluginFactory: PluginFactory = (config) => {
         providerName: string,
         options?: Partial<OAuth2RequestOptions>
       ) => {
-        const pb = api.pb()
-        const methods = pb
+        const methods = pb()
           .collection(options?.collection ?? 'users')
           .listAuthMethods()
 
@@ -269,8 +271,7 @@ const authPluginFactory: PluginFactory = (config) => {
           throw new Error(`State parameters don't match.`)
         }
 
-        const authData = api
-          .pb()
+        const authData = pb()
           .collection(options?.collection ?? 'users')
           .authWithOAuth2Code(
             storedProvider.name,
@@ -283,7 +284,7 @@ const authPluginFactory: PluginFactory = (config) => {
             }
           )
 
-        api.signInWithToken(authData.token)
+        api.signIn(authData)
         return authData as AuthData
       }
 
@@ -291,8 +292,14 @@ const authPluginFactory: PluginFactory = (config) => {
         api.response.cookie(`pb_auth`, '')
       }
 
-      api.signInWithToken = (token: string) => {
-        api.response.cookie(`pb_auth`, token)
+      api.signIn = (authData: RecordAuthResponse<AuthModel>) => {
+        dbg(
+          `signing in with token and saving to pb_auth cookie: ${authData.record.id} ${authData.token}`
+        )
+        api.response.cookie(`pb_auth`, {
+          token: authData.token,
+          record: toPlainObject(authData.record),
+        })
       }
     },
   }
