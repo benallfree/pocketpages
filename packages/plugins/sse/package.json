@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
-    "dev": "chokidar 'src/**/*' -c 'bun run build'"
+    "dev": "bun run build && chokidar 'src/**/*' -c 'bun run build'"
   },
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
