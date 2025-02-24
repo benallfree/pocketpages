@@ -77,6 +77,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   dbg(`Pages middleware request: ${method} ${url}`)
 
   const request: PagesRequest = {
+    event: e,
     auth: e.auth,
     method: method.toUpperCase() as PagesMethods,
     url: parse(url.string()),

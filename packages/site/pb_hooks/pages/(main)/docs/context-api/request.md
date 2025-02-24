@@ -6,9 +6,14 @@ description: Access HTTP request details including method, headers, and query pa
 # `request` - HTTP Request Object
 
 - **Type**: [`PagesRequest`](https://github.com/benallfree/pocketpages/blob/main/src/lib/pages/index.ts#L6-L12)
-- **Description**: The `request` object provides access to essential HTTP request information in a framework-agnostic way. This abstraction ensures your templates remain compatible across PocketBase versions.
+- **Description**: The `request` object provides access to essential HTTP request information and the underlying PocketBase request event.
 
 ## Properties
+
+### `event`
+
+- Type: `core.RequestEvent`
+- Description: The underlying PocketBase request event, providing direct access to PocketBase's request handling capabilities
 
 ### `auth`
 
@@ -28,17 +33,17 @@ description: Access HTTP request details including method, headers, and query pa
 ### `formData()`
 
 - Type: `() => Record<string, any>`
-- Description: Function that returns form data submitted with the request
+- Description: Function that returns form data submitted with the request. Uses `event.requestInfo().body` internally.
 
 ### `body()`
 
 - Type: `() => Record<string, any> | string`
-- Description: Function that returns request body as an object (if JSON) or string (if form data)
+- Description: Function that returns request body as an object (if JSON) or string (if form data). Uses `event.requestInfo().body` internally.
 
 ### `header()`
 
 - Type: `(name: string) => string`
-- Description: Function that returns the value of the specified request header
+- Description: Function that returns the value of the specified request header. Returns empty string if header not found.
 
 ### `cookies`
 
@@ -46,10 +51,19 @@ description: Access HTTP request details including method, headers, and query pa
   ```typescript
   {
     <T = Record<string, any>>(): T
-    <T>(name: string): T
+    <T>(name: string): T | undefined
   }
   ```
-- Description: Function that returns cookie values with type safety. When called with no arguments, returns all cookies as the specified type (defaults to `Record<string, any>`). When called with a name, returns that specific cookie's value with the specified type.
+- Description: Function that returns cookie values with automatic JSON parsing. When called with no arguments, returns all cookies. When called with a name, returns that specific cookie's value.
+
+## Cookie Handling
+
+The `cookies` function automatically:
+
+1. Parses the Cookie header only once
+2. Attempts to parse JSON values
+3. Falls back to raw string values if JSON parsing fails
+4. Provides type safety through generics
 
 Example usage:
 
@@ -61,68 +75,32 @@ interface UserPreferences {
   fontSize: number
 }
 const userPrefs = request.cookies<UserPreferences>('preferences')
-// TypeScript knows these properties exist
-const theme = userPrefs.theme
-const fontSize = userPrefs.fontSize
-
-// Get a simple string cookie
-const theme = request.cookies<string>('theme')
 
 // Get all cookies with type
 interface AllCookies {
-  theme: string
   preferences: UserPreferences
   session: { id: string }
 }
 const allCookies = request.cookies<AllCookies>()
-// TypeScript knows the shape of all cookies
-const sessionId = allCookies.session.id
 %>
 ```
 
-### Type-Safe Cookie Examples
+## Using the Request Event
+
+The `event` property gives you direct access to PocketBase's request handling:
 
 ```ejs
 <%%
-// Define your cookie types
-interface SessionData {
-  userId: number
-  role: string
-  lastAccess: string
-}
+// Access the raw request event
+const { event } = request
 
-interface CartData {
-  items: number[]
-  total: number
-}
+// Get request info
+const info = event.requestInfo()
+const rawBody = info.body
+const rawHeaders = info.headers
 
-// Get typed cookies
-const session = request.cookies<SessionData>('session')
-// TypeScript knows these are the correct types
-const userId: number = session.userId
-const role: string = session.role
-
-const cart = request.cookies<CartData>('cart')
-// Array methods available because TypeScript knows items is number[]
-const itemCount = cart.items.length
-const total: number = cart.total
-
-// Arrays with explicit type
-const recentItems = request.cookies<number[]>('recentItems')
-// TypeScript knows this is a number array
-const lastItem = recentItems[recentItems.length - 1]
-
-// Get all cookies with a defined structure
-interface CookieStore {
-  session: SessionData
-  cart: CartData
-  recentItems: number[]
-  theme: string
-}
-const store = request.cookies<CookieStore>()
-// Full type safety on all cookie access
-const cartTotal = store.cart.total
-const currentTheme = store.theme
+// Access PocketBase context
+const pb = event.context
 %>
 ```
 
@@ -132,72 +110,63 @@ const currentTheme = store.theme
 
 ```ejs
 <%%
-// Access request method
-const method = request.method
+// Get method and URL
+const { method, url } = request
 
-// Get URL information
-const path = request.url.pathname
-const query = request.url.query
+// Access query parameters
+const page = url.query.page
+const sort = url.query.sort
 
-// Access form data
-const formData = request.formData()
-
-// Access raw body
-const rawBody = request.body()
+// Get headers
+const userAgent = request.header('User-Agent')
 %>
 ```
 
-### Authentication Check
+### Form Data and Body
+
+```ejs
+<%%
+if (request.method === 'POST') {
+  // Get form data
+  const formData = request.formData()
+
+  // Or get raw body
+  const body = request.body()
+}
+%>
+```
+
+### Working with Cookies
+
+```ejs
+<%%
+// Type-safe cookie access
+interface SessionData {
+  userId: string
+  role: string
+}
+
+// Get a single typed cookie
+const session = request.cookies<SessionData>('session')
+if (session) {
+  const { userId, role } = session
+}
+
+// Get all cookies
+const allCookies = request.cookies()
+%>
+```
+
+### Authentication Context
 
 ```ejs
 <%%
 if (request.auth) {
-  // User is authenticated
-  const userId = request.auth.id
-  const email = request.auth.email
-} else {
-  // User is not authenticated
+  // Access auth record properties
+  const { id, email } = request.auth
+
+  // Use with pb() client
+  const client = pb({ request })
 }
-%>
-```
-
-### Query Parameter Handling
-
-```ejs
-<%%
-// Access query parameters from the URL
-const page = request.url.query.page || '1'
-const sort = request.url.query.sort || 'date'
-%>
-```
-
-### Form Data Processing
-
-```ejs
-<%%
-if (request.method === 'post') {
-    // Access submitted form data
-    const formData = request.formData()
-    const username = formData.username
-    const email = formData.email
-}
-%>
-```
-
-### Working with Headers and Cookies
-
-```ejs
-<%%
-// Access request headers
-const userAgent = request.header('User-Agent')
-const contentType = request.header('Content-Type')
-
-// Working with cookies
-const sessionData = request.cookies('session') // Returns parsed JSON if valid
-const rawTheme = request.cookies('theme') // Returns string if not JSON
-
-// Get all cookies with automatic JSON parsing
-const allCookies = request.cookies()
-const { session, theme, preferences } = allCookies
 %>
 ```
