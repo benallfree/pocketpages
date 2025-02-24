@@ -1,5 +1,11 @@
 # pocketpages-plugin-js-sdk
 
+## 0.0.9
+
+### Patch Changes
+
+- d80bbb2: Enh: added options and caching to maintain multiple client objects with different auth
+
 ## 0.0.8
 
 ### Patch Changes

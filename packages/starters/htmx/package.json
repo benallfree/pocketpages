@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "private": true,
   "dependencies": {
-    "pocketpages": "workspace:^0.15.3",
+    "pocketpages": "workspace:^0.15.4",
     "pocketpages-plugin-sse": "workspace:^0.0.5"
   },
   "files": [

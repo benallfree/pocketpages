@@ -1,5 +1,16 @@
 # pocketpages-plugin-auth
 
+## 0.1.0
+
+### Minor Changes
+
+- 4286e4f: Renamed signInWithToken to signIn and fixed cookie writing bug
+
+### Patch Changes
+
+- Updated dependencies [d80bbb2]
+  - pocketpages-plugin-js-sdk@0.0.9
+
 ## 0.0.8
 
 ### Patch Changes

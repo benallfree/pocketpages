@@ -1,5 +1,13 @@
 # pocketpages
 
+## 0.15.4
+
+### Patch Changes
+
+- ecb8f60: Fix: corrected handling of route params and parsing
+- 3355a8c: Fix: corrected JSON response handling
+- d1ade18: Enh: add `event` to request
+
 ## 0.15.3
 
 ### Patch Changes
