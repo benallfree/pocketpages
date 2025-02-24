@@ -5,7 +5,6 @@ import { error } from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
 import { globalApi } from 'src/lib/globalApi'
-import type { PagesResponse } from 'src/lib/types'
 import { default as parse, default as URL } from 'url-parse'
 import { dbg } from '../lib/debug'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
@@ -18,6 +17,7 @@ import {
   PagesNextFunc,
   PagesRequest,
   PagesRequestContext,
+  PagesResponse,
   Plugin,
   RedirectOptions,
 } from '../lib/types'
