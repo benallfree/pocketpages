@@ -1,5 +1,12 @@
 # pocketpages-plugin-ejs
 
+## 0.0.6
+
+### Patch Changes
+
+- b1c4f31: Fix: corrected build name and main source name
+- 3712c73: Enh: include() with omitted extensions will search extensions[]
+
 ## 0.0.5
 
 ### Patch Changes

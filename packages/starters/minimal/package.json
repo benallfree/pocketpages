@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.2",
   "dependencies": {
-    "pocketpages": "workspace:^0.15.4"
+    "pocketpages": "workspace:^0.15.5"
   },
   "pockethost": {
     "instanceId": "minimal"

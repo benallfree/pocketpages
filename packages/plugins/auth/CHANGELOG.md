@@ -1,5 +1,11 @@
 # pocketpages-plugin-auth
 
+## 0.1.1
+
+### Patch Changes
+
+- df9995a: Fix: make js-sdk a required dep
+
 ## 0.1.0
 
 ### Minor Changes

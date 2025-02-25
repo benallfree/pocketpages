@@ -1,5 +1,14 @@
 # pocketpages
 
+## 0.15.5
+
+### Patch Changes
+
+- 2c597ff: Fix: escape XML on error messages
+- Updated dependencies [b1c4f31]
+- Updated dependencies [3712c73]
+  - pocketpages-plugin-ejs@0.0.6
+
 ## 0.15.4
 
 ### Patch Changes
