@@ -7,16 +7,10 @@ description: Handle user authentication with PocketBase, including password, OTP
 
 The Authentication plugin (`pocketpages-plugin-auth`) provides a complete authentication system for PocketPages applications, supporting multiple authentication methods including password, OTP, OAuth2, and anonymous authentication.
 
-## Requirements
-
-This plugin requires:
-
-- `pocketpages-plugin-js-sdk` - For PocketBase client functionality
-
 ## Installation
 
 ```bash
-npm install pocketpages-plugin-auth pocketpages-plugin-js-sdk
+npm install pocketpages-plugin-auth
 ```
 
 ## Configuration
@@ -26,7 +20,7 @@ Add the plugin to your `+config.js` file:
 ```javascript
 module.exports = {
   plugins: [
-    'pocketpages-plugin-js-sdk', // Required dependency
+    'pocketpages-plugin-js-sdk', // Required dependency, must be explicitly listed
     'pocketpages-plugin-auth',
     // ... other plugins
   ],

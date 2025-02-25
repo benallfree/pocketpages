@@ -8,7 +8,7 @@
     "build": "tsup",
     "dev": "chokidar 'src/**/*' -c 'bun run build'"
   },
-  "peerDependencies": {
+  "dependencies": {
     "pocketpages-plugin-js-sdk": "workspace:^0.0.9"
   },
   "devDependencies": {
