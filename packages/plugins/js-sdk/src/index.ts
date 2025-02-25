@@ -22,7 +22,6 @@ const jsSdkPluginFactory: PluginFactory<JSSdkPluginOptions> = (
     const pb = new PocketBase(host)
     if (auth) {
       dbg(`auth`, typeof auth, auth)
-      console.log(`hello`)
       const token = auth.newAuthToken()
       pb.authStore.save(token, JSON.parse(JSON.stringify(auth)))
       dbg(
