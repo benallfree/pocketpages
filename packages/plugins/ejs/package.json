@@ -2,7 +2,7 @@
   "name": "pocketpages-plugin-ejs",
   "version": "0.0.5",
   "description": "EJS plugin for PocketPages",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
