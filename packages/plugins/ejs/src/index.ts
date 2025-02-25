@@ -48,24 +48,44 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
       return path.resolve(pagesRoot, includePath)
     }
 
+    // Try each extension when searching for the file
+    const tryExtensions = (basePath: string) => {
+      // First try the exact path
+      dbg(`trying exact path ${basePath}`)
+      if (fs.existsSync(basePath, 'file')) {
+        dbg(`found exact path ${basePath}`)
+        return basePath
+      }
+
+      // Then try each extension if the file doesn't have one
+      for (const ext of opts.extensions) {
+        const pathWithExt = basePath + ext
+        dbg(`trying extension ${pathWithExt}`)
+        if (fs.existsSync(pathWithExt, 'file')) {
+          dbg(`found extension ${pathWithExt}`)
+          return pathWithExt
+        }
+      }
+      return null
+    }
+
     // Handle relative paths by searching up the directory tree
     let currentPath = path.dirname(templatePath)
     while (currentPath.length >= pagesRoot.length) {
       const attemptPath = path.resolve(currentPath, `_private`, includePath)
-      dbg(`attemptPath`, { attemptPath })
-      if (fs.existsSync(attemptPath, 'file')) {
-        return attemptPath
-      } else {
-        // If we're at pagesRoot and still haven't found it, fall back to default behavior
-        if (currentPath === pagesRoot) {
-          break
-        }
-        // Move up one directory
-        currentPath = path.dirname(currentPath)
+      const foundPath = tryExtensions(attemptPath)
+      if (foundPath) {
+        return foundPath
       }
+
+      // If we're at pagesRoot and still haven't found it, fall back to default behavior
+      if (currentPath === pagesRoot) {
+        break
+      }
+      // Move up one directory
+      currentPath = path.dirname(currentPath)
     }
 
-    // dbg(`got here with no results`, { includePath, templatePath })
     throw new Error(
       `No partial '${includePath}' found in any _private directory`
     )

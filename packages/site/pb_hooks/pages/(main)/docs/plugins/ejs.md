@@ -50,13 +50,29 @@ The plugin adds support for `<<%=`script server`%>>` blocks as an alternative to
 
 ### Smart Partial Resolution
 
-Includes are resolved by searching up the directory tree for `_private` directories:
+Includes are resolved by searching up the directory tree for `_private` directories. When resolving includes, the plugin will:
+
+1. Look for an exact match of the specified path
+2. If not found, try appending each configured extension
+3. Repeat this process up the directory tree in `_private` folders
 
 ```ejs
-<!-- Will search for header.ejs in: -->
-<!-- 1. ./current/dir/_private/header.ejs -->
-<!-- 2. ./parent/dir/_private/header.ejs -->
-<!-- 3. ./root/_private/header.ejs -->
+<!-- For example, include('header') with extensions: ['.ejs', '.md'] will search for: -->
+<!-- 1. ./current/dir/_private/header -->
+<!-- 2. ./current/dir/_private/header.ejs -->
+<!-- 3. ./current/dir/_private/header.md -->
+<!-- 4. ./parent/dir/_private/header -->
+<!-- 5. ./parent/dir/_private/header.ejs -->
+<!-- 6. ./parent/dir/_private/header.md -->
+<!-- 7. ./root/_private/header -->
+<!-- 8. ./root/_private/header.ejs -->
+<!-- 9. ./root/_private/header.md -->
+<%%- include('header', { title: 'My Page' }) %>
+```
+
+You can still include files with explicit extensions:
+
+```ejs
 <%%- include('header.ejs', { title: 'My Page' }) %>
 ```
 
