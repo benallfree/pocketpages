@@ -22,6 +22,25 @@ import {
   RedirectOptions,
 } from '../lib/types'
 
+const escapeXml = (unsafe: string = '') => {
+  return unsafe.replace(/[<>&'"]/g, (c) => {
+    switch (c) {
+      case '<':
+        return '&lt;'
+      case '>':
+        return '&gt;'
+      case '&':
+        return '&amp;'
+      case "'":
+        return '&apos;'
+      case '"':
+        return '&quot;'
+      default:
+        return c
+    }
+  })
+}
+
 export const parseSlots = (input: string) => {
   const regex = /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g
   const slots: Record<string, string> = {}
@@ -332,15 +351,15 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     if (e instanceof BadRequestError) {
       return response.html(400, message)
     }
+    const stackTrace =
+      e instanceof Error
+        ? e.stack
+            ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
+            .replaceAll(__hooks, '')
+        : ''
     return response.html(
       500,
-      `<html><body><h1>PocketPages Error</h1><pre><code>${message}\n${
-        e instanceof Error
-          ? e.stack
-              ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
-              .replaceAll(__hooks, '')
-          : ''
-      }</code></pre></body></html>`
+      `<html><body><h1>PocketPages Error</h1><pre><code>${escapeXml(message)}\n${escapeXml(stackTrace)}</code></pre></body></html>`
     )
   }
 }
