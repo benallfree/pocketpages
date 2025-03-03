@@ -46,7 +46,8 @@ export type OAuth2SignInOptions = {
 } & AuthOptions
 
 export type CreateUserOptions = {
-  sendVerificationEmail: boolean
+  sendVerificationEmail: boolean,
+  params?: Record<string,any>
 } & AuthOptions
 
 const safeParseJson = (value: string | undefined) => {
@@ -85,6 +86,7 @@ const authPluginFactory: PluginFactory = (config) => {
       email,
       password,
       passwordConfirm: password,
+      ...(options?.params || {})
     })
     dbg(`created user: ${user.id}`)
     if (
