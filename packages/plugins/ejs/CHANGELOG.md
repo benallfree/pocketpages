@@ -1,5 +1,11 @@
 # pocketpages-plugin-ejs
 
+## 0.0.7
+
+### Patch Changes
+
+- 06b9fed: Fix: include(file,data) now works properly
+
 ## 0.0.6
 
 ### Patch Changes

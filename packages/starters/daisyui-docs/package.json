@@ -27,7 +27,7 @@
     "tailwindcss": "^3.4.17"
   },
   "dependencies": {
-    "pocketpages": "workspace:^0.15.5",
+    "pocketpages": "workspace:^0.15.6",
     "pocketpages-plugin-marked": "workspace:^0.0.5"
   },
   "files": [

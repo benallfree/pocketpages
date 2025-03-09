@@ -1,6 +1,6 @@
 {
   "name": "pocketpages-plugin-ejs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "EJS plugin for PocketPages",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
     "pocketbase-stringify": "^0.0.2"
   },
   "devDependencies": {
-    "pocketpages": "workspace:^0.15.5",
+    "pocketpages": "workspace:^0.15.6",
     "@s-libs/micro-dash": "^18.0.0",
     "chokidar-cli": "^3.0.0",
     "tsup": "^8.3.6",

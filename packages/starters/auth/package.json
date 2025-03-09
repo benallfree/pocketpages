@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.2",
   "dependencies": {
-    "pocketpages": "workspace:^0.15.5",
+    "pocketpages": "workspace:^0.15.6",
     "pocketpages-plugin-auth": "workspace:^0.1.1",
     "pocketpages-plugin-js-sdk": "workspace:^0.0.9"
   },

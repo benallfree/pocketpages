@@ -1,5 +1,12 @@
 # pocketpages
 
+## 0.15.6
+
+### Patch Changes
+
+- Updated dependencies [06b9fed]
+  - pocketpages-plugin-ejs@0.0.7
+
 ## 0.15.5
 
 ### Patch Changes
