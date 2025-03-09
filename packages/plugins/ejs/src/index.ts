@@ -133,13 +133,7 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
                 (content, plugin) =>
                   plugin.onRender?.({
                     ...renderContext,
-                    api: {
-                      ...renderContext.api,
-                      data: {
-                        ...renderContext.api.data,
-                        ...data,
-                      },
-                    },
+                    api: data,
                     content,
                     filePath: ejs.resolveInclude(path, filePath, false),
                   }) ?? content,
