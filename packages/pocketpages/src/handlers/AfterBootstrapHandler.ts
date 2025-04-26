@@ -161,7 +161,10 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
         dbg(`layout`, { pathParts }, $filepath.dir(relativePath))
         do {
           const maybeLayouts = $filepath.glob(
-            $filepath.join(pagesRoot, ...pathParts, `+layout.*`)
+            $filepath
+              .join(pagesRoot, ...pathParts, `+layout.*`)
+              // Escape glob [] syntax used in parameter routing
+              .replace('[', '\\[').replace(']', '\\]')
           )
           dbg({ pathParts, maybeLayouts })
           if (maybeLayouts && maybeLayouts.length > 0) {
