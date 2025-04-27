@@ -62,6 +62,12 @@ if (!isInHandler) {
           require(`pocketpages`).MiddlewareHandler(e)
         })
       }
+
+      if (route.loaders.patch) {
+        routerAdd('PATCH', path, (e) => {
+          require(`pocketpages`).MiddlewareHandler(e)
+        })
+      }
     })
   })
 }
