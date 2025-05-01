@@ -20,6 +20,7 @@ import {
   PagesResponse,
   Plugin,
   RedirectOptions,
+  MiddlewareLoaderFunc,
 } from '../lib/types'
 
 const escapeXml = (unsafe: string = '') => {
@@ -272,75 +273,94 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     plugins.forEach((plugin) => plugin.onExtendContextApi?.({ api, route }))
 
     let data = {}
-    route.middlewares.forEach((maybeMiddleware) => {
-      dbg(`Executing middleware ${maybeMiddleware}`)
-      data = merge(data, require(maybeMiddleware)({ ...api, data }))
-    })
+    let idx = 0
 
-    // Execute loaders
-    {
-      const methods = ['load', method.toLowerCase(), method]
-      forEach(methods, (method) => {
-        const loaderFname = route.loaders[method as keyof typeof route.loaders]
-        if (!loaderFname) return
-        dbg(`Executing loader ${loaderFname}`)
-        data = merge(data, require(loaderFname)({ ...api, data }))
-      })
+    _next()
+
+    function _next(extra: object = {}) {
+      data = merge(data, extra)
+
+      if (idx >= route.middlewares.length) {
+        return done()
+      }
+
+      const maybeMiddleware = route.middlewares[idx++] as string
+      const middlewareFn: MiddlewareLoaderFunc = require(maybeMiddleware)
+
+      dbg(`Executing middleware ${maybeMiddleware}`)
+      if (middlewareFn.length < 2) {
+        _next(middlewareFn({ ...api, data }))
+      } else {
+        middlewareFn({ ...api, data }, _next)
+      }
     }
+
+    function done() {
+      // Execute loaders
+      {
+        const methods = ['load', method.toLowerCase(), method]
+        forEach(methods, (method) => {
+          const loaderFname = route.loaders[method as keyof typeof route.loaders]
+          if (!loaderFname) return
+          dbg(`Executing loader ${loaderFname}`)
+          data = merge(data, require(loaderFname)({ ...api, data }))
+        })
+      }
 
     api.data = data
     // dbg(`Final api:`, { params: api.params, data: api.data })
 
-    //@ts-ignore
-    delete api.echo
+      //@ts-ignore
+      delete api.echo
 
-    let content = plugins.reduce((content, plugin) => {
-      return (
-        plugin.onRender?.({
-          content,
-          api,
-          route,
-          filePath: absolutePath,
-          plugins,
-        }) ?? content
-      )
-    }, '')
-
-    try {
-      dbg(`Attempting to parse as JSON`)
-      const parsed = JSON.parse(content)
-      response.json(200, parsed)
-      return true
-    } catch (e) {
-      dbg(`Not JSON`)
-    }
-
-    /**
-     * Render the content in the layout
-     */
-    route.layouts.forEach((layoutPath) => {
-      const res = parseSlots(content)
-      api.slots = res.slots
-      api.slot = res.slots.default || res.content
-      content = plugins.reduce((content, plugin) => {
+      let content = plugins.reduce((content, plugin) => {
         return (
           plugin.onRender?.({
             content,
             api,
             route,
-            filePath: layoutPath,
+            filePath: absolutePath,
             plugins,
           }) ?? content
         )
-      }, content)
-    })
+      }, '')
 
-    for (const plugin of [...plugins, defaultResponder]) {
-      if (plugin.onResponse?.({ content, api, route })) {
-        return
+      try {
+        dbg(`Attempting to parse as JSON`)
+        const parsed = JSON.parse(content)
+        response.json(200, parsed)
+        return true
+      } catch (e) {
+        dbg(`Not JSON`)
       }
+
+      /**
+       * Render the content in the layout
+       */
+      route.layouts.forEach((layoutPath) => {
+        const res = parseSlots(content)
+        api.slots = res.slots
+        api.slot = res.slots.default || res.content
+        content = plugins.reduce((content, plugin) => {
+          return (
+            plugin.onRender?.({
+              content,
+              api,
+              route,
+              filePath: layoutPath,
+              plugins,
+            }) ?? content
+          )
+        }, content)
+      })
+
+      for (const plugin of [...plugins, defaultResponder]) {
+        if (plugin.onResponse?.({ content, api, route })) {
+          return
+        }
+      }
+      throw new Error(`No plugin handled the response`)
     }
-    throw new Error(`No plugin handled the response`)
   } catch (e) {
     error(e)
     const message = (() => {
