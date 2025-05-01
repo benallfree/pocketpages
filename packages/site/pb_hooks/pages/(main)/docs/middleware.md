@@ -113,6 +113,31 @@ module.exports = function (api) {
 }
 ```
 
+## Controlling Middleware Execution
+
+Middleware supports a second argument: `next`.
+
+You can call `next()` to continue to the next middleware or `next({ ... })` to append data to the template context.
+
+If you return early (without calling `next()`), execution stops and downstream middleware won't run.
+
+### Example with `next`
+
+```js
+/** @type {import('pocketpages').MiddlewareLoaderFunc} */
+module.exports = function (api, next) {
+  const { params, response } = api
+
+  if (!params.id?.match(/^[0-9]+$/)) {
+    return response.json(400, { error: 'Invalid ID' })
+  }
+
+  next({ validatedId: parseInt(params.id, 10) })
+}
+```
+
+This allows fine-grained control over flow and shared data between middleware layers.
+
 ## Using Middleware Data
 
 Access middleware data in templates through `data`:

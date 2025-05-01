@@ -8,8 +8,13 @@ export type PageDataLoaderFunc<TData = any> = (
   api: Omit<PagesRequestContext<TData>, 'data'>
 ) => object
 
+export type MiddlewareNextFunc = (
+  data?: object
+) => void
+
 export type MiddlewareLoaderFunc<TData = any> = (
-  api: Omit<PagesRequestContext<TData>, 'data'>
+  api: PagesRequestContext<TData>,
+  next?: MiddlewareNextFunc
 ) => object
 
 export type PagesParams = Record<string, string | string[] | undefined>
