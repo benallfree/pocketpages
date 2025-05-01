@@ -22,16 +22,19 @@ if (!isInHandler) {
   const { routes } = $app.store<Cache>().get(`pocketpages`)
 
   routes.forEach((route) => {
-    const nodeNames = route.segments.map(({ nodeName }) => nodeName)
+    const nodeNames = route.segments.map(({ nodeName, paramName }) => paramName ? `{${paramName}}` : nodeName)
 
     if (nodeNames[nodeNames.length - 1] === "index") {
       nodeNames.pop()
     }
 
     const paths = [
-      '/' + nodeNames.join('/'),
       nodeNames.length > 0 ? '/' + nodeNames.join('/') + '/{$}' : '/{$}',
     ]
+
+    if (nodeNames.length > 1) {
+      paths.push('/' + nodeNames.join('/'))
+    }
 
     if (route.isStatic) {
       nodeNames.push(fingerprint(nodeNames.pop() as string, route.fingerprint))
@@ -42,6 +45,7 @@ if (!isInHandler) {
       console.log(path)
 
       routerAdd('GET', path, (e) => {
+        console.log(e.request?.pattern)
         require(`pocketpages`).MiddlewareHandler(e)
       })
 
