@@ -68,6 +68,7 @@ export const parseSlots = (input: string) => {
 }
 
 const defaultResponder: Plugin = {
+  name: 'builtin',
   onResponse: ({ content, api, route }) => {
     const { response } = api
     response.html(200, content)

@@ -32,6 +32,7 @@ const ssePluginFactory: PluginFactory = (config) => {
   }
 
   return {
+    name: 'sse',
     onExtendContextApi: ({ api }) => {
       const DefaultSseFilter: SseFilter = (clientId: string, client: any) => {
         return api.auth?.id ? client.get('auth')?.id === api.auth?.id : true

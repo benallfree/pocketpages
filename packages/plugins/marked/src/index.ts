@@ -25,6 +25,7 @@ const markedPluginFactory: PluginFactory<MarkedPluginOptions> = (
   }
 
   return {
+    name: 'marked',
     handles: ({ filePath }) => {
       return _handles(filePath)
     },

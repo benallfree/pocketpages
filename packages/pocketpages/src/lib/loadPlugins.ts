@@ -10,7 +10,7 @@ import {
   PluginFactoryConfig,
   PluginOptions,
 } from 'src/lib/types'
-import { dbg } from './debug'
+import { dbg as systemDbg } from './debug'
 import { pagesRoot } from './helpers'
 
 const normalizePlugin = (
@@ -48,24 +48,27 @@ export const loadPlugins = (cache: Cache): Plugin[] => {
   const { config, routes } = cache
 
   return [
-    ...config.plugins.map((plugin) => {
-      const normalizedPlugin = normalizePlugin(plugin)
+    ...config.plugins.map((pluginConfigItem) => {
+      const normalizedPlugin = normalizePlugin(pluginConfigItem)
 
       const extra = omit(normalizedPlugin, 'fn') as PluginOptions
 
-      const factoryConfig: PluginFactoryConfig = {
-        pagesRoot,
-        config,
-        globalApi,
-        routes,
-        dbg: extra.debug ? globalApi.dbg : dbg,
-      }
-
-      dbg(`loading plugin`, { factoryConfig, extra, plugin })
       try {
-        return normalizedPlugin.fn(factoryConfig, extra)
+        const factoryConfig: PluginFactoryConfig = {
+          pagesRoot,
+          config,
+          globalApi,
+          routes,
+          dbg: (...args: any[]) =>
+            extra.debug
+              ? globalApi.dbg(`[${plugin.name}]`, ...args)
+              : systemDbg(`[${plugin.name}]`, ...args),
+        }
+        const plugin = normalizedPlugin.fn(factoryConfig, extra)
+        systemDbg(`loaded plugin ${plugin.name}`)
+        return plugin
       } catch (e) {
-        error(`error loading plugin`, { plugin, error: e })
+        error(`error loading plugin`, { plugin: pluginConfigItem, error: e })
         throw e
       }
     }),

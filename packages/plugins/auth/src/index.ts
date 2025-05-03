@@ -136,7 +136,10 @@ const authPluginFactory: PluginFactory = (config) => {
   globalApi.requestOTP = (email: string, options?: Partial<AuthOptions>) => {
     const pb = globalApi.pb()
     try {
-      const { user, password } = globalApi.createPaswordlessUser(email, options)
+      const { user, password } = globalApi.createPaswordlessUser(email, {
+        sendVerificationEmail: false,
+        ...options,
+      })
     } catch (e) {
       // User likely already exists
     }
@@ -145,6 +148,7 @@ const authPluginFactory: PluginFactory = (config) => {
   }
 
   return {
+    name: 'auth',
     onRequest: ({ request, response }) => {
       const { auth } = request
       if (auth) {

@@ -48,7 +48,9 @@ const jsSdkPluginFactory: PluginFactory<JSSdkPluginOptions> = (
     return pb
   }
 
-  return {}
+  return {
+    name: 'js-sdk',
+  }
 }
 
 export default jsSdkPluginFactory

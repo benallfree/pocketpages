@@ -10,7 +10,9 @@ const microDashPluginFactory: PluginFactory = (config) => {
   globalApi.merge = merge
   globalApi.pick = pick
   globalApi.shuffle = shuffle
-  return {}
+  return {
+    name: 'micro-dash',
+  }
 }
 
 export default microDashPluginFactory

@@ -1,7 +1,7 @@
 import ejs from 'pocketbase-ejs'
 import { fs, path } from 'pocketbase-node'
 import { stringify } from 'pocketbase-stringify'
-import { PluginFactory, PluginOptionsBase } from 'pocketpages'
+import { Plugin, PluginFactory, PluginOptionsBase } from 'pocketpages'
 
 export type EjsPluginOptions = PluginOptionsBase & {
   extensions: string[]
@@ -27,7 +27,8 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
   })
 
   const { pagesRoot, dbg } = config
-  dbg(`ejs plugin config`, { pagesRoot, opts })
+
+  // dbg(`ejs plugin config`, { pagesRoot, opts })
 
   ejs.compile = function (template: string, options: any) {
     const newTemplate = template.replaceAll(
@@ -42,7 +43,7 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
     templatePath: string,
     isDir: boolean
   ) {
-    dbg(`resolveInclude`, { name: includePath, filename: templatePath, isDir })
+    dbg(`ejs resolveInclude ${includePath} from ${templatePath}`)
     // Handle absolute paths (starting with /)
     if (isDir) {
       return path.resolve(pagesRoot, includePath)
@@ -51,7 +52,7 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
     // Try each extension when searching for the file
     const tryExtensions = (basePath: string) => {
       // First try the exact path
-      dbg(`trying exact path ${basePath}`)
+      // dbg(`trying exact path ${basePath}`)
       if (fs.existsSync(basePath, 'file')) {
         dbg(`found exact path ${basePath}`)
         return basePath
@@ -60,7 +61,7 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
       // Then try each extension if the file doesn't have one
       for (const ext of opts.extensions) {
         const pathWithExt = basePath + ext
-        dbg(`trying extension ${pathWithExt}`)
+        // dbg(`trying extension ${pathWithExt}`)
         if (fs.existsSync(pathWithExt, 'file')) {
           dbg(`found extension ${pathWithExt}`)
           return pathWithExt
@@ -95,14 +96,15 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
     return opts.extensions.includes($filepath.ext(filePath))
   }
 
-  return {
+  const thisPlugin: Plugin = {
+    name: 'ejs',
     handles: ({ filePath }) => {
       return _handles(filePath)
     },
     onRender: (renderContext) => {
       const { api, filePath, plugins } = renderContext
       if (!_handles(filePath)) return renderContext.content
-      dbg(`ejs onRender`, { filePath })
+      dbg(`onRender ${filePath}`)
 
       const content: string = ejs.renderFile(
         filePath,
@@ -124,21 +126,24 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
           cache: false, // !$app.isDev(),
           root: pagesRoot,
           includeFile: function (path: string, options: any) {
-            dbg(`includeFile`, { path, options })
+            dbg(`includeFile ${path}`)
             const renderFunc = oldIncludeFile(path, options)
             return (data: any) => {
               const rawRendered = renderFunc(data)
-              dbg(`raw rendered`, { rawRendered, data })
-              return plugins.reduce(
-                (content, plugin) =>
-                  plugin.onRender?.({
-                    ...renderContext,
-                    api: data,
-                    content,
-                    filePath: ejs.resolveInclude(path, filePath, false),
-                  }) ?? content,
-                rawRendered as string
-              )
+              // dbg(`raw rendered\n${rawRendered}`)
+              return plugins
+                .filter((otherPlugin) => otherPlugin.name !== thisPlugin.name)
+                .reduce((content, plugin) => {
+                  dbg(`calling ${plugin.name}:onRender ${path}`)
+                  return (
+                    plugin.onRender?.({
+                      ...renderContext,
+                      api: data,
+                      content,
+                      filePath: ejs.resolveInclude(path, filePath, false),
+                    }) ?? content
+                  )
+                }, rawRendered as string)
             }
           },
         }
@@ -154,6 +159,7 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
       return content
     },
   }
+  return thisPlugin
 }
 
 export default ejsPluinFactory

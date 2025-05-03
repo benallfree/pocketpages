@@ -91,6 +91,7 @@ export type RequestContext = {
 }
 
 export type Plugin = {
+  name: string
   onRequest?: (context: RequestContext) => void
   onRender?: (context: RenderContext) => string
   handles?: (context: HandlesContext) => boolean
