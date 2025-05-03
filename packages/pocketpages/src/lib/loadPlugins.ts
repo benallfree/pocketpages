@@ -40,7 +40,7 @@ const loadFactory = (plugin: string) => {
     const module = require(plugin)
     return (module.default ?? module) as PluginFactory
   })()
-  dbg(`factory`, { factory })
+  // dbg(`factory`, { factory })
   return factory
 }
 

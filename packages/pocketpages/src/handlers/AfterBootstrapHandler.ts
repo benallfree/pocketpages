@@ -102,13 +102,13 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
 
   const routes: Route[] = routableFiles
     .map((relativePath) => {
-      dbg(`Examining route`, relativePath)
+      // dbg(`Examining route`, relativePath)
       const partsWithoutGroupNames = $filepath
         .toSlash(relativePath)
         .split('/')
         .filter((p) => !p.startsWith(`(`))
       const absolutePath = $filepath.join(pagesRoot, relativePath)
-      dbg({ relativePath, absolutePath, partsWithoutGroupNames })
+      // dbg({ relativePath, absolutePath, partsWithoutGroupNames })
 
       // dbg({ parts })
       const content = toString($os.readFile(absolutePath))
@@ -158,22 +158,23 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
           .split(`/`)
           .filter((node) => node !== '.')
           .filter((p) => !!p)
-        dbg(`layout`, { pathParts }, $filepath.dir(relativePath))
+        // dbg(`layout`, { pathParts }, $filepath.dir(relativePath))
         do {
           const maybeLayouts = $filepath.glob(
             $filepath
               .join(pagesRoot, ...pathParts, `+layout.*`)
               // Escape glob [] syntax used in parameter routing
-              .replace('[', '\\[').replace(']', '\\]')
+              .replace('[', '\\[')
+              .replace(']', '\\]')
           )
-          dbg({ pathParts, maybeLayouts })
+          // dbg({ pathParts, maybeLayouts })
           if (maybeLayouts && maybeLayouts.length > 0) {
             if (maybeLayouts.length > 1) {
               throw new Error(`Multiple layouts found for ${relativePath}`)
             }
             const maybeLayout = maybeLayouts[0]!
             route.layouts.push(maybeLayout)
-            dbg(`layout found`, { maybeLayout })
+            // dbg(`layout found ${maybeLayout}`)
           }
           if (pathParts.length === 0) {
             break
@@ -221,11 +222,11 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
       return route
     })
     .filter((r) => r.segments.length > 0)
-  dbg({ routes })
+  // dbg({ routes })
 
   // dbg({ config })
 
   const cache: Cache = { routes, config }
-  dbg({ cache })
+  // dbg({ cache })
   $app.store<Cache>().set(`pocketpages`, cache)
 }

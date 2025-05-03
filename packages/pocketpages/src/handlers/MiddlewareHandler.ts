@@ -86,7 +86,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
   const { method, url } = e.request
 
-  dbg({ method, url })
+  // dbg({ method, url })
 
   if (!url) {
     dbg(`No URL, passing on to PocketBase`)
@@ -219,7 +219,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     /*
     At this point, we have a route PocketPages needs to handle.
     */
-    dbg(`Found a matching route`, { resolvedRoute })
+    // dbg(`Found a matching route`, { resolvedRoute })
 
     const api: PagesRequestContext<any> = {
       ...globalApi,
@@ -258,7 +258,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
               path
             )
         const assetRoute = resolveRoute(new URL(fullAssetPath), routes)
-        dbg({ fullAssetPath, shortAssetPath, assetRoute })
+        // dbg({ fullAssetPath, shortAssetPath, assetRoute })
         if (!assetRoute) {
           return `${shortAssetPath}`
         }
@@ -288,7 +288,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     }
 
     api.data = data
-    dbg(`Final api:`, { params: api.params, data: api.data })
+    // dbg(`Final api:`, { params: api.params, data: api.data })
 
     //@ts-ignore
     delete api.echo
