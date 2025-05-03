@@ -1,5 +1,18 @@
 # pocketpages
 
+## 0.16.0
+
+### Minor Changes
+
+- 8fef39f: Plugins now require a `name` field
+
+### Patch Changes
+
+- 41ceeda: Improved framework debugging output
+- Updated dependencies [8fef39f]
+- Updated dependencies [8fef39f]
+  - pocketpages-plugin-ejs@0.1.0
+
 ## 0.15.6
 
 ### Patch Changes

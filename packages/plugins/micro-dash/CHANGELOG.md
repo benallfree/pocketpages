@@ -1,5 +1,11 @@
 # pocketpages-plugin-micro-dash
 
+## 0.1.0
+
+### Minor Changes
+
+- 8fef39f: Plugins now require a `name` field
+
 ## 0.0.6
 
 ### Patch Changes

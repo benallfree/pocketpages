@@ -1,5 +1,16 @@
 # pocketpages-plugin-auth
 
+## 0.2.0
+
+### Minor Changes
+
+- 8fef39f: Plugins now require a `name` field
+
+### Patch Changes
+
+- Updated dependencies [8fef39f]
+  - pocketpages-plugin-js-sdk@0.1.0
+
 ## 0.1.1
 
 ### Patch Changes

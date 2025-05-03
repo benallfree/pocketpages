@@ -1,5 +1,15 @@
 # pocketpages-plugin-ejs
 
+## 0.1.0
+
+### Minor Changes
+
+- 8fef39f: Plugins now require a `name` field
+
+### Patch Changes
+
+- 8fef39f: Fix: Includefile double render
+
 ## 0.0.7
 
 ### Patch Changes

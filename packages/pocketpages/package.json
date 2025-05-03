@@ -1,6 +1,6 @@
 {
   "name": "pocketpages",
-  "version": "0.15.6",
+  "version": "0.16.0",
   "description": "Server-side JS pages for PocketBase",
   "author": {
     "name": "Ben Allfree",
@@ -29,7 +29,7 @@
     "@s-libs/micro-dash": "^18.0.0",
     "cookie": "^1.0.2",
     "pocketbase-log": "^0.0.2",
-    "pocketpages-plugin-ejs": "workspace:^0.0.7",
+    "pocketpages-plugin-ejs": "workspace:^0.1.0",
     "qs-lite": "^1.0.0",
     "url-parse": "^1.5.10"
   },
