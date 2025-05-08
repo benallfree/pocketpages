@@ -169,4 +169,4 @@ These files follow the same hierarchical execution order as `+middleware.js`.
 ## Reference
 
 - [Loading Data Guide](/docs/loading-data)
-- [API Documentation](/docs/api)
+- [API Documentation](/docs/context-api)
