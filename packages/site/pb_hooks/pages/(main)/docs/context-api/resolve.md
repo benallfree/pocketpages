@@ -140,11 +140,11 @@ module.exports = {
 // products/_private/queries.js
 module.exports = {
   getActiveProducts: () => {
-    return $app.dao().findRecordsByExpr('products', 'status = ?', ['active'])
+    return $app
+      .findRecordsByExpr('products', 'status = ?', ['active'])
   },
   getCategoryProducts: (categoryId) => {
     return $app
-      .dao()
       .findRecordsByExpr('products', 'category = ?', [categoryId])
   },
 }
@@ -180,10 +180,10 @@ module.exports = {
    // _private/database.js
    module.exports = {
      query: (sql, params) => {
-       return $app.dao().findRecordsByExpr('table', sql, params)
+       return $app.findRecordsByExpr('table', sql, params)
      },
      getRecord: (collection, id) => {
-       return $app.dao().findRecordById(collection, id)
+       return $app.findRecordById(collection, id)
      },
    }
    ```

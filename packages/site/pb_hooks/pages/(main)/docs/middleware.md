@@ -27,7 +27,7 @@ module.exports = function (api) {
   }
 
   // Load data
-  const categories = findRecordsByFilter('categories', {
+  const categories = $app.findRecordsByFilter('categories', {
     filter: 'active = true',
   })
 

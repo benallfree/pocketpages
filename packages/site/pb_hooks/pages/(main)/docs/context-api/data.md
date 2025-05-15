@@ -44,8 +44,6 @@ pb_hooks/
 ```javascript
 /** @type {import('pocketpages').PageDataLoaderFunc} */
 module.exports = function (api) {
-  const { findRecordsByFilter } = api
-
   return {
     siteName: 'My Store',
     navigation: [
@@ -61,9 +59,7 @@ module.exports = function (api) {
 ```javascript
 /** @type {import('pocketpages').PageDataLoaderFunc} */
 module.exports = function (api) {
-  const { findRecordsByFilter } = api
-
-  const categories = findRecordsByFilter('categories', {
+  const categories = $app.findRecordsByFilter('categories', {
     filter: 'active = true',
     sort: 'name',
   })
