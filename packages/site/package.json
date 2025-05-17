@@ -33,6 +33,6 @@
     "*.md"
   ],
   "pockethost": {
-    "instanceId": "pocketpages"
+    "instanceName": "pocketpages"
   }
 }
