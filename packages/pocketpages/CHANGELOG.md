@@ -1,5 +1,15 @@
 # pocketpages
 
+## 0.17.0
+
+### Minor Changes
+
+- 30b37be: Added next() handling to middleware
+
+### Patch Changes
+
+- pocketpages-plugin-ejs@0.1.0
+
 ## 0.16.0
 
 ### Minor Changes
