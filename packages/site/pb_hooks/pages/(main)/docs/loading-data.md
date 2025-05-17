@@ -13,7 +13,7 @@ The simplest way to load data is directly in your template using `<%% %>` tags a
 
 ```ejs
 <%%
-  const products = findRecordsByFilter('products', {
+  const products = $app.findRecordsByFilter('products', {
     filter: 'active = true',
     sort: 'name'
   })
@@ -41,12 +41,12 @@ For better code formatting support in editors like VSCode, you can use the `<scr
 
 ```ejs
 <script server<%-`>` %>
-  const products = findRecordsByFilter('products', {
+  const products = $app.findRecordsByFilter('products', {
     filter: 'active = true',
     sort: 'name'
   })
 
-  const categories = findRecordsByFilter('categories', {
+  const categories = $app.findRecordsByFilter('categories', {
     sort: 'name'
   })
 </script>
@@ -88,9 +88,7 @@ For more complex data loading needs, PocketPages provides `+load.js` files. Thes
 ```javascript
 /** @type {import('pocketpages').PageDataLoaderFunc} */
 module.exports = function (api) {
-  const { findRecordsByFilter } = api
-
-  const products = findRecordsByFilter('products', {
+  const products = $app.findRecordsByFilter('products', {
     filter: 'active = true',
     sort: 'name',
   })
@@ -145,9 +143,7 @@ If the route resolves to `/products/123/index.ejs`:
 ```javascript
 /** @type {import('pocketpages').PageDataLoaderFunc} */
 module.exports = function (api) {
-  const { findRecordsByFilter } = api
-
-  const products = findRecordsByFilter('products', {
+  const products = $app.findRecordsByFilter('products', {
     filter: 'active = true',
     sort: '-created',
   })
@@ -202,7 +198,7 @@ pb_hooks/pages/
 /** @type {import('pocketpages').PageDataLoaderFunc} */
 module.exports = function (api) {
   return {
-    departments: findRecordsByFilter('departments', {
+    departments: $app.findRecordsByFilter('departments', {
       filter: 'active = true',
     }),
   }

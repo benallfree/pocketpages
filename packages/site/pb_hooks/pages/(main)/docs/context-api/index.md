@@ -85,7 +85,6 @@ Additionally, all [Global API](/docs/global-api) functions are available:
 
 - Logging functions (`dbg`, `info`, `warn`, `error`)
 - Data handling (`stringify`, `url`)
-- Database helpers (`findRecordByFilter`, `findRecordsByFilter`)
 - Micro-dash utilities (`forEach`, `keys`, `values`, `merge`)
 
 ## Additional Notes
