@@ -113,6 +113,38 @@ module.exports = function (api) {
 }
 ```
 
+## Controlling Middleware Execution
+
+Middleware supports an optional second argument: `next`.
+
+- **If the `next` argument is omitted:**
+
+  - Middleware behaves as if `next()` is called automatically when the function exits.
+  - Execution will always continue to the next middleware or default handler.
+
+- **If the `next` argument is included:**
+  - Any data passed to `next` is merged with and overwrites previous `data` keys.
+  - Middleware will **not** proceed unless `next()` is called.
+  - The page route will only be rendered if `next()` is called all the way through the chain.
+  - If you return early (without calling `next()`), execution stops, no further middleware or loaders (`+load`, `+get`, etc) will run, no plugin `onRender` will be called, and **no response will be sent**. You must manually send a response, e.g. `response.json(400, { error: 'Forbidden' })`.
+
+### Example with `next`
+
+```js
+/** @type {import('pocketpages').MiddlewareLoaderFunc} */
+module.exports = function (api, next) {
+  const { params, response } = api
+
+  if (!params.id?.match(/^[0-9]+$/)) {
+    return response.json(400, { error: 'Invalid ID' })
+  }
+
+  next({ validatedId: parseInt(params.id, 10) })
+}
+```
+
+This allows fine-grained control over flow and shared data between middleware layers.
+
 ## Using Middleware Data
 
 Access middleware data in templates through `data`:
