@@ -1,6 +1,9 @@
-module.exports = (api) => {
+module.exports = (api, next) => {
   const { auth, redirect } = api
   if (!auth) {
-    redirect('/auth/login')
+    return redirect('/auth/login', {
+      message: 'You must be logged in to access this page',
+    })
   }
+  next()
 }
