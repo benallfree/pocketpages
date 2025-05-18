@@ -1,0 +1,33 @@
+<h1>Test Loaders</h1>
+
+<div class="code-toolbar">
+    <pre class="language-text">
+        <code class="language-text">METHOD: <%= data.method %></code>
+    </pre>
+</div>
+
+<button class="btn" type="submit" onclick="loadContent(window.location.href, 'GET')">GET</button>
+<button class="btn" type="submit" onclick="loadContent(window.location.href, 'POST')">POST</button>
+<button class="btn" type="submit" onclick="loadContent(window.location.href, 'PUT')">PUT</button>
+<button class="btn" type="submit" onclick="loadContent(window.location.href, 'PATCH')">PATCH</button>
+<button class="btn" type="submit" onclick="loadContent(window.location.href, 'DELETE')">DELETE</button>
+
+<script>
+    function loadContent(url, method = 'GET') {
+        fetch(url, { method })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                const bodyContent = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+                document.body.innerHTML = bodyContent ? bodyContent[1] : html;
+            })
+            .catch(error => {
+                console.error('Failed to load content:', error);
+                document.body.innerHTML = '<h1>Failed to load content</h1>';
+            });
+    }
+</script>
