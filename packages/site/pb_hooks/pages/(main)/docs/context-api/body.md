@@ -3,10 +3,10 @@ title: body - Raw Request Body
 description: Access the raw request body data in PocketPages templates through a function call.
 ---
 
-# `body` - Raw Request Body
+# `body` - Parsed Request Body
 
 - **Type**: `() => Record<string, any> | string`
-- **Description**: A function that returns the raw request body data. It returns either a parsed object for JSON content or a raw string for other content types.
+- **Description**: Returns the request body, parsed by Pocketbase according to the request's Content-Type. Supported types include JSON, XML and form-data.
 
 ## Basic Usage
 
@@ -78,9 +78,8 @@ if (request.method === 'POST') {
 ## Important Notes
 
 1. `body()` is a function that must be called to access the request body
-2. For form submissions with `application/x-www-form-urlencoded` or `multipart/form-data` content types, use [`formData`](/docs/context-api/form-data) instead
-3. Returns a JavaScript object for JSON content types
-4. Returns a string for other content types
-5. Consider type checking the return value before using it
+2. Returns a JavaScript object for JSON content types
+3. Returns a string for other content types
+4. Consider type checking the return value before using it
 
 See [Request Handling](/docs/request-handling) for more detailed information about working with HTTP requests in PocketPages.

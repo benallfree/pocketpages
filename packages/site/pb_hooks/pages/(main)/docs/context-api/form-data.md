@@ -3,18 +3,22 @@ title: formData - Form Submission Data
 description: Access submitted form data in PocketPages templates, with support for various form field types and file uploads.
 ---
 
-# `formData` - Form Submission Data
+# `formData` - Parsed Request Body (alias of [body](/docs/context-api/body))
 
-- **Type**: `Record<string, any>`
-- **Description**: The `formData` object provides access to data submitted through HTML forms. It automatically parses both URL-encoded and multipart form data, making form handling straightforward in your templates.
+- **Type**: `() => Record<string, any> | string`
+- **Description**: Returns the request body, parsed by Pocketbase according to the request's Content-Type. Supported types include JSON, XML and form-data.
 
 ## Basic Usage
 
 ### Simple Form Example
 
 ```ejs
+<%% let data = {}; %>
 <%% if (request.method === 'POST') { %>
-    <%% if (formData.email && formData.message) { %>
+
+    <%% data = formData(); %>
+
+    <%% if (data.email && data.message) { %>
         <div class="alert success">
             Form submitted successfully!
         </div>
@@ -31,13 +35,13 @@ description: Access submitted form data in PocketPages templates, with support f
         <input type="email"
                id="email"
                name="email"
-               value="<%%= formData.email || '' %>">
+               value="<%%= data.email || '' %>">
     </div>
 
     <div class="form-group">
         <label for="message">Message:</label>
         <textarea id="message"
-                  name="message"><%%= formData.message || '' %></textarea>
+                  name="message"><%%= data.message || '' %></textarea>
     </div>
 
     <button type="submit">Send</button>
@@ -49,64 +53,70 @@ description: Access submitted form data in PocketPages templates, with support f
 ### Text Inputs
 
 ```ejs
+<%% let data = formData(); %>
+
 <form method="POST">
     <!-- Single-line text -->
-    <input type="text" name="username" value="<%%= formData.username || '' %>">
+    <input type="text" name="username" value="<%%= data.username || '' %>">
 
     <!-- Password -->
     <input type="password" name="password">
 
     <!-- Email -->
-    <input type="email" name="email" value="<%%= formData.email || '' %>">
+    <input type="email" name="email" value="<%%= data.email || '' %>">
 
     <!-- Multi-line text -->
-    <textarea name="bio"><%%= formData.bio || '' %></textarea>
+    <textarea name="bio"><%%= data.bio || '' %></textarea>
 </form>
 ```
 
 ### Checkboxes and Radio Buttons
 
 ```ejs
+<%% let data = formData(); %>
+
 <form method="POST">
     <!-- Single checkbox -->
     <input type="checkbox"
            name="subscribe"
            value="yes"
-           <%%= formData.subscribe === 'yes' ? 'checked' : '' %>>
+           <%%= data.subscribe === 'yes' ? 'checked' : '' %>>
 
     <!-- Multiple checkboxes -->
     <input type="checkbox"
            name="interests[]"
            value="coding"
-           <%%= formData.interests?.includes('coding') ? 'checked' : '' %>>
+           <%%= data.interests?.includes('coding') ? 'checked' : '' %>>
     <input type="checkbox"
            name="interests[]"
            value="design"
-           <%%= formData.interests?.includes('design') ? 'checked' : '' %>>
+           <%%= data.interests?.includes('design') ? 'checked' : '' %>>
 
     <!-- Radio buttons -->
     <input type="radio"
            name="gender"
            value="male"
-           <%%= formData.gender === 'male' ? 'checked' : '' %>>
+           <%%= data.gender === 'male' ? 'checked' : '' %>>
     <input type="radio"
            name="gender"
            value="female"
-           <%%= formData.gender === 'female' ? 'checked' : '' %>>
+           <%%= data.gender === 'female' ? 'checked' : '' %>>
 </form>
 ```
 
 ### Select Dropdowns
 
 ```ejs
+<%% let data = formData(); %>
+
 <form method="POST">
     <!-- Single select -->
     <select name="country">
         <option value="">Select Country</option>
-        <option value="us" <%%= formData.country === 'us' ? 'selected' : '' %>>
+        <option value="us" <%%= data.country === 'us' ? 'selected' : '' %>>
             United States
         </option>
-        <option value="uk" <%%= formData.country === 'uk' ? 'selected' : '' %>>
+        <option value="uk" <%%= data.country === 'uk' ? 'selected' : '' %>>
             United Kingdom
         </option>
     </select>
@@ -114,11 +124,11 @@ description: Access submitted form data in PocketPages templates, with support f
     <!-- Multiple select -->
     <select name="skills[]" multiple>
         <option value="js"
-                <%%= formData.skills?.includes('js') ? 'selected' : '' %>>
+                <%%= data.skills?.includes('js') ? 'selected' : '' %>>
             JavaScript
         </option>
         <option value="php"
-                <%%= formData.skills?.includes('php') ? 'selected' : '' %>>
+                <%%= data.skills?.includes('php') ? 'selected' : '' %>>
             PHP
         </option>
     </select>
@@ -129,10 +139,12 @@ description: Access submitted form data in PocketPages templates, with support f
 
 ```ejs
 <%%
+let data = formData();
+
 if (request.method === 'POST') {
     // Validate required fields
     const required = ['name', 'email', 'message']
-    const missing = required.filter(field => !formData[field])
+    const missing = required.filter(field => !data[field])
 
     if (missing.length > 0) {
         response.status(400)
@@ -145,11 +157,11 @@ if (request.method === 'POST') {
         // Process the form data
         try {
             $app.dao().saveRecord('messages', {
-                name: formData.name,
-                email: formData.email,
-                message: formData.message,
-                interests: formData.interests || [],
-                newsletter: formData.newsletter === 'yes'
+                name: data.name,
+                email: data.email,
+                message: data.message,
+                interests: data.interests || [],
+                newsletter: data.newsletter === 'yes'
             })
             redirect('/thank-you')
             return
@@ -175,7 +187,7 @@ if (request.method === 'POST') {
             <input type="text"
                    id="name"
                    name="name"
-                   value="<%%= formData.name || '' %>"
+                   value="<%%= data.name || '' %>"
                    required>
         </div>
 
@@ -184,7 +196,7 @@ if (request.method === 'POST') {
             <input type="email"
                    id="email"
                    name="email"
-                   value="<%%= formData.email || '' %>"
+                   value="<%%= data.email || '' %>"
                    required>
         </div>
     </fieldset>
@@ -243,19 +255,20 @@ if (request.method === 'POST') {
 <%% if (request.method === 'POST') { %>
     <details>
         <summary>Submitted Form Data</summary>
-        <pre><%%= stringify(formData) %></pre>
+        <pre><%%= stringify(formData()) %></pre>
     </details>
 <%% } %>
 ```
 
 ## Important Notes
 
-1. `formData` is only populated on POST requests
-2. Values are automatically decoded and parsed
-3. Array fields (like multiple checkboxes) use `[]` in the name
-4. Empty fields are submitted as empty strings
-5. Unchecked checkboxes are not included in `formData`
-6. Always validate and sanitize form data before using it
+1. `formData` is an alias of `body`, they both get the parsed request object via Pocketbase JSVM `e.requestInfo().body`
+2. `formData` is only populated on POST requests
+3. Values are automatically decoded and parsed
+4. Array fields (like multiple checkboxes) use `[]` in the name
+5. Empty fields are submitted as empty strings
+6. Unchecked checkboxes are not included in `formData`
+7. Always validate and sanitize form data before using it
 
 ## Best Practices
 
