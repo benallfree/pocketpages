@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.18.1
+
+### Patch Changes
+
+- Fix bad publish
+
 ## 0.18.0
 
 ### Minor Changes
