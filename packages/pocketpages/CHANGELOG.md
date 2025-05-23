@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.18.0
+
+### Minor Changes
+
+- Allow +config.js to be a function which takes globalApi
+
 ## 0.17.0
 
 ### Minor Changes
