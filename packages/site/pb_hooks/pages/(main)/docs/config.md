@@ -48,6 +48,25 @@ module.exports = {
 }
 ```
 
+You can also export a function that takes the [globalApi](/docs/global-api) as an argument.
+
+This allows you to leverage things like `env()` and more in your config.
+
+```javascript
+module.exports = function(api) {
+  return {
+    plugins: [
+      {
+        name: 'pocketpages-plugin-js-sdk',
+        host: api.env('POCKETPAGES_HOST'),
+      },
+      'pocketpages-plugin-ejs',
+    ],
+    debug: true,
+  };
+}
+```
+
 ## Configuration Options
 
 - **`plugins`**: An array that specifies which plugins to use and their configurations. Plugins can be specified in several ways:
