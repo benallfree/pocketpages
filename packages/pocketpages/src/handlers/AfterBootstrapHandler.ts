@@ -5,6 +5,7 @@ import { dbg } from '../lib/debug'
 import { pagesRoot } from '../lib/helpers'
 import { loadPlugins } from '../lib/loadPlugins'
 import { Cache, PagesConfig, PagesInitializerFunc } from '../lib/types'
+import { globalApi } from '../lib/globalApi'
 
 export type Route = {
   relativePath: string
@@ -58,7 +59,11 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
     debug: false,
     ...(() => {
       try {
-        return require(configPath) as Partial<PagesConfig>
+        const mod = require(configPath)
+        if (typeof mod === 'function') {
+          return mod(globalApi) as Partial<PagesConfig>
+        }
+        return mod as Partial<PagesConfig>
       } catch (e) {
         error(`Error loading config file: ${e}`)
         return {}
