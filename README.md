@@ -30,3 +30,10 @@ PR's are welcome.
 - Core features
 - Starter kits
 - Showcases
+
+To develop against the starters, install [bun](https://bun.sh/).
+
+- Clone the repo `git clone https://github.com/benallfree/pocketpages`
+- Download pocketbase, if you use linux, execute `download-pocketbase.sh` (you may need to `chmod +x ./pocketbase` pocketbase)
+- run `bun dev` in a new terminal at repo root, leave open.
+- For developing inside the starters, pocketbase requires a parent node_modules folder. Symbolically link the pb_folders you need to the root of the repo. For example, to develop against the auth starter: at repo root, run `ln -s ./packages/starters/auth/pb_* ./`
