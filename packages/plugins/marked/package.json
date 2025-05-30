@@ -22,7 +22,7 @@
   "devDependencies": {
     "@s-libs/micro-dash": "^18.0.0",
     "chokidar-cli": "^3.0.0",
-    "pocketpages": "workspace:^0.16.0",
+    "pocketpages": "workspace:^0.18.0",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3"
   },
