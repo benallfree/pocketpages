@@ -14,7 +14,7 @@
     "pocketbase-jsvm": "^0.25.10001",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3",
-    "pocketpages": "workspace:^0.16.0"
+    "pocketpages": "workspace:^0.18.0"
   },
   "dependencies": {
     "pocketbase-js-sdk-jsvm": "^0.25.10004"
