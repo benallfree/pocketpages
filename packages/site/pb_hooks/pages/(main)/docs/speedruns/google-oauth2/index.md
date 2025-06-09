@@ -5,9 +5,9 @@ This guide will walk you through setting up Google OAuth2 authentication for you
 > **Note**: PocketPages provides an authentication starter kit that includes pre-built Google OAuth2 integration. You can get started quickly with:
 >
 > ```bash
-> npx tiged benallfree/pocketpages/starters/auth my-auth-app
-> cd my-auth-app
-> npm i
+> mkdir auth
+> cd auth
+> npx tiged benallfree/pocketpages/packages/starters/auth . && sed -i 's/"workspace://g' package.json
 > ```
 
 ## 1. Create/Select Google Cloud Project

@@ -5,10 +5,10 @@ This starter kit shows how to do Multi Page App (MPA) auth using PocketPages.
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/packages/starters/auth .
+mkdir auth
 cd auth
-npm i
-pocketbase --dir=pb_data --dev serve
+npx tiged benallfree/pocketpages/packages/starters/auth . && sed -i 's/"workspace://g' package.json
+pocketbase serve --dir=pb_data --dev
 bunx maildev
 ```
 
