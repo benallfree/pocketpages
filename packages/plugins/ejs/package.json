@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "dev": "bun run build && chokidar 'src/**/*' -c 'bun run build'"
+    "build": "tsdown",
+    "dev": "tsdown --watch"
   },
   "dependencies": {
     "pocketbase-ejs": "^3.1.10006",
@@ -17,7 +17,7 @@
     "pocketpages": "workspace:>=0.16.0",
     "@s-libs/micro-dash": "^18.0.0",
     "chokidar-cli": "^3.0.0",
-    "tsup": "^8.3.6",
+    "tsdown": "^0.12.7",
     "typescript": "^5.7.3"
   },
   "files": [

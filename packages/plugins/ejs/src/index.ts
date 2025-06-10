@@ -1,7 +1,7 @@
 import ejs from 'pocketbase-ejs'
 import { fs, path } from 'pocketbase-node'
 import { stringify } from 'pocketbase-stringify'
-import { Plugin, PluginFactory, PluginOptionsBase } from 'pocketpages'
+import type { Plugin, PluginFactory, PluginOptionsBase } from 'pocketpages'
 
 export type EjsPluginOptions = PluginOptionsBase & {
   extensions: string[]
