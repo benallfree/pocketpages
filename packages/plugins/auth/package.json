@@ -2,11 +2,11 @@
   "name": "pocketpages-plugin-auth",
   "version": "0.2.0",
   "description": "",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "dev": "chokidar 'src/**/*' -c 'bun run build'"
+    "build": "tsdown",
+    "dev": "tsdown --watch"
   },
   "dependencies": {
     "pocketpages-plugin-js-sdk": "workspace:>=0.1.0"
@@ -16,7 +16,7 @@
     "chokidar-cli": "^3.0.0",
     "pocketbase-js-sdk-jsvm": "^0.25.10004",
     "pocketbase-jsvm": "^0.25.10001",
-    "tsup": "^8.3.6",
+    "tsdown": "^0.12.7",
     "typescript": "^5.7.3"
   },
   "files": [
