@@ -2,7 +2,7 @@
   "name": "pocketpages-plugin-js-sdk",
   "version": "0.1.0",
   "description": "PocketBase JS SDK for JSVM",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsdown",
