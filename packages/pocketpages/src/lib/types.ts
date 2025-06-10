@@ -140,7 +140,8 @@ export type PagesMethods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 export type PagesRequest = {
   event: core.RequestEvent
-  auth?: core.Record
+  auth?: core.Record  
+  authToken?: string
   method: PagesMethods
   url: parse<string>
   formData: () => Record<string, any>
