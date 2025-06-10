@@ -1,5 +1,9 @@
 import PocketBase from 'pocketbase-js-sdk-jsvm'
-import { PagesRequest, PluginFactory, PluginOptionsBase } from 'pocketpages'
+import type {
+  PagesRequest,
+  PluginFactory,
+  PluginOptionsBase,
+} from 'pocketpages'
 
 export type JSSdkPluginOptions = PluginOptionsBase & {
   host: string

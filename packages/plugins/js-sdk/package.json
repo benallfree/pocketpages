@@ -5,14 +5,14 @@
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
     "dev": "bun run build && chokidar 'src/**/*' -c 'bun run build'"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.12",
     "chokidar-cli": "^3.0.0",
     "pocketbase-jsvm": "^0.25.10001",
-    "tsup": "^8.3.6",
+    "tsdown": "^0.12.7",
     "typescript": "^5.7.3",
     "pocketpages": "workspace:>=0.16.0"
   },
