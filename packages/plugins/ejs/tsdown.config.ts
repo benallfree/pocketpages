@@ -5,6 +5,6 @@ export default defineConfig({
     index: 'src/index.ts',
   },
   format: ['cjs'],
-  clean: false,
+  clean: true,
   outDir: 'dist',
 })
