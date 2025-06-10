@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsdown",
-    "dev": "bun run build && chokidar 'src/**/*' -c 'bun run build'"
+    "dev": "tsdown --watch"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.12",
