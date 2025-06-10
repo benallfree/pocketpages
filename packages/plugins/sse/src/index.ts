@@ -1,4 +1,4 @@
-import { PluginFactory } from 'pocketpages'
+import type { PluginFactory } from 'pocketpages'
 
 export type SseFilter = (clientId: string, client: any) => boolean
 

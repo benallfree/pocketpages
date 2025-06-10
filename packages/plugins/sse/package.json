@@ -2,16 +2,16 @@
   "name": "pocketpages-plugin-sse",
   "version": "0.1.0",
   "description": "SSE plugin for PocketPages",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "dev": "bun run build && chokidar 'src/**/*' -c 'bun run build'"
+    "build": "tsdown",
+    "dev": "tsdown --watch"
   },
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
     "pocketbase-jsvm": "^0.25.10001",
-    "tsup": "^8.3.6",
+    "tsdown": "^0.12.7",
     "typescript": "^5.7.3",
     "pocketpages": "workspace:>=0.16.0"
   },
