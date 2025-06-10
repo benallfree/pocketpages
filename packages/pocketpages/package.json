@@ -22,23 +22,20 @@
     "*.md"
   ],
   "scripts": {
-    "build": "tsup",
-    "dev": "bun run build && chokidar 'src/**/*' 'package.json' '*.js' '*.ts' -c 'bun run build'"
+    "build": "tsdown",
+    "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@s-libs/micro-dash": "^18.0.0",
-    "cookie": "^1.0.2",
     "pocketbase-log": "^0.0.2",
-    "pocketpages-plugin-ejs": "workspace:>=0.1.0",
-    "qs-lite": "^1.0.0",
-    "url-parse": "^1.5.10"
+    "pocketpages-plugin-ejs": "workspace:>=0.1.0"
   },
   "devDependencies": {
+    "@s-libs/micro-dash": "^18.0.0",
+    "cookie": "^1.0.2",
+    "qs-lite": "^1.0.0",
+    "url-parse": "^1.5.10",
     "@types/url-parse": "^1.4.11",
     "pocketbase-jsvm": "^0.25.10001",
-    "prettier": "^3.3.3",
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "rimraf": "^6.0.1",
-    "tsup": "^8.3.5"
+    "tsdown": "^0.12.7"
   }
 }

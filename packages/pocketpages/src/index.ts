@@ -1,10 +1,10 @@
-export * as log from 'pocketbase-log'
-export { stringify } from 'pocketbase-stringify'
-export { AfterBootstrapHandler } from './handlers/AfterBootstrapHandler'
-export { MiddlewareHandler } from './handlers/MiddlewareHandler'
-export { globalApi } from './lib/globalApi'
-export { moduleExists } from './lib/helpers'
-export * from './lib/types'
+import * as log from 'pocketbase-log'
+import { stringify } from 'pocketbase-stringify'
+import { AfterBootstrapHandler } from './handlers/AfterBootstrapHandler'
+import { MiddlewareHandler } from './handlers/MiddlewareHandler'
+import { globalApi } from './lib/globalApi'
+import { moduleExists } from './lib/helpers'
+export type * from './lib/types'
 
 const isInHandler = typeof onBootstrap === 'undefined'
 
@@ -17,4 +17,14 @@ if (!isInHandler) {
   routerUse((e) => {
     require(`pocketpages`).MiddlewareHandler(e)
   })
+}
+// Export all functions and modules using export = for CommonJS compatibility
+// @ts-expect-error
+export = {
+  AfterBootstrapHandler,
+  MiddlewareHandler,
+  globalApi,
+  log,
+  moduleExists,
+  stringify,
 }
