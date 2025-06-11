@@ -22,11 +22,11 @@ const jsSdkPluginFactory: PluginFactory<JSSdkPluginOptions> = (
   const { globalApi } = config
   const { dbg } = globalApi
 
-  const newClient = (host: string, auth?: core.Record) => {
+  const newClient = (host: string, auth?: core.Record, authToken?: string) => {
     const pb = new PocketBase(host)
     if (auth) {
       dbg(`auth`, typeof auth, auth)
-      const token = auth.newAuthToken()
+      const token = authToken ?? auth.newAuthToken()
       pb.authStore.save(token, JSON.parse(JSON.stringify(auth)))
       dbg(
         `created new PocketBase client for ${host} with saved auth: ${auth.id} ${token}`
@@ -42,12 +42,13 @@ const jsSdkPluginFactory: PluginFactory<JSSdkPluginOptions> = (
   globalApi.pb = (options?: Partial<PocketBaseClientOptions>) => {
     const host = options?.host ?? extra?.host ?? `http://localhost:8090`
     const auth = options?.auth ?? options?.request?.auth
+    const authToken = options?.request?.authToken
     const key = `${host}-${auth?.id}`
     if (pbCache.has(key)) {
       return pbCache.get(key)
     }
     dbg(`creating new pb client for ${key}`)
-    const pb = newClient(host, auth)
+    const pb = newClient(host, auth, authToken)
     pbCache.set(key, pb)
     return pb
   }
