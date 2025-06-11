@@ -5,9 +5,8 @@ This setup provides a minimal **PocketPages** app integrated with **Tailwind CSS
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/packages/starters/daisyui .
+mkdir daisyui
 cd daisyui
-npm i
-npm run dev
+npx tiged benallfree/pocketpages/packages/starters/daisyui . && sed -i 's/"workspace://g' package.json
 pocketbase serve --dir=pb_data --dev
 ```
