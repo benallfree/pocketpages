@@ -168,6 +168,7 @@ const authPluginFactory: PluginFactory = (config) => {
           dbg(`cookie token swapped for auth record: ${authRecord.id}`)
           request.event.auth = authRecord
           request.auth = authRecord
+          request.authToken = cookieToken
         } catch (e) {
           dbg(`error fetching auth record: ${e}`)
         }
