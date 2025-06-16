@@ -222,7 +222,10 @@ Consider these factors when choosing authentication methods:
 PocketPages provides a complete authentication starter kit that demonstrates all these authentication methods working together:
 
 ```bash
-npx tiged benallfree/pocketpages/starters/auth .
+mkdir auth
+cd auth
+npx tiged benallfree/pocketpages/packages/starters/auth . && sed -i 's/"workspace://g' package.json
+pocketbase --dir=pb_data --dev serve
 ```
 
 The starter kit includes:

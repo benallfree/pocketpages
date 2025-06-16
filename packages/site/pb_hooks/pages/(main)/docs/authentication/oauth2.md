@@ -12,9 +12,9 @@ OAuth2 authentication allows users to sign in using their accounts from provider
 > **Note**: PocketPages provides an authentication starter kit that includes many pre-built integrations. You can get started quickly with:
 >
 > ```bash
-> npx tiged benallfree/pocketpages/starters/auth my-auth-app
-> cd my-auth-app
-> npm i
+> mkdir auth
+> cd auth
+> npx tiged benallfree/pocketpages/packages/starters/auth . && sed -i 's/"workspace://g' package.json
 > ```
 
 ## Basic Usage

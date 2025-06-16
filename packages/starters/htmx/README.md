@@ -5,8 +5,8 @@ This starter kit is based on the [htmx](https://htmx.org/) project. It is design
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/packages/starters/htmx .
+mkdir htmx
 cd htmx
-npm i
+npx tiged benallfree/pocketpages/packages/starters/htmx . && sed -i 's/"workspace://g' package.json
 pocketbase serve --dir=pb_data --dev
 ```

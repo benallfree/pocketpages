@@ -4,9 +4,9 @@
 
 
 <div class="max-w-[320px] sm:max-w-full overflow-x-auto ">
-  <pre><code class="language-bash ">npx tiged benallfree/pocketpages/packages/starters/minimal .
+  <pre><code class="language-bash">mkdir minimal
 cd minimal
-npm install</code></pre>
+npx tiged benallfree/pocketpages/packages/starters/minimal . && sed -i 's/"workspace://g' package.json</code></pre>
 </div>
 
 <div class="text-left  overflow  text-2xl mt-5 mb-5">
@@ -14,6 +14,6 @@ npm install</code></pre>
 </div>
 <div class="max-w-[320px] sm:max-w-full overflow-x-auto ">
 
-  <pre><code class="language-bash">pocketbase --dir=minimal/pb_data --dev serve 
+  <pre><code class="language-bash">pocketbase --dir=pb_data --dev serve 
 </code></pre>
 </div>

@@ -27,9 +27,9 @@ The easiest way to get started with PocketPages is to use one of the starter kit
 The Minimal starter kit creates the absolute most minimal PocketPages app: a single `index.ejs` home page.
 
 ```bash
-npx tiged benallfree/pocketpages/starters/minimal .
-cd minimal
-npm i
+mkdir auth
+cd auth
+npx tiged benallfree/pocketpages/packages/starters/auth . && sed -i 's/"workspace://g' package.json
 pocketbase --dir=pb_data --dev serve
 ```
 
@@ -52,9 +52,12 @@ For more detail, see https://github.com/benallfree/pocketpages/blob/master/start
 The `daisyui` starter kit incorporates Daisy UI and Tailwind.
 
 ```bash
-npx tiged benallfree/pocketpages/starters/daisyui .
+mkdir daisyui
 cd daisyui
-npm i
+npx tiged benallfree/pocketpages/packages/starters/daisyui .
+rm package.json
+npm init -y
+npm install pocketpages
 pocketbase --dir=pb_data --dev serve
 ```
 
@@ -81,9 +84,12 @@ This kit helps you deploy via Github Action to fly.io. It requires `deploy-fly-m
 This kit helps you get started with the [htmx](https://htmx.org/) project. See the [starter kit README](https://github.com/benallfree/pocketpages/blob/master/starters/htmx/README.md) for more details.
 
 ```bash
-npx tiged benallfree/pocketpages/starters/htmx .
+mkdir htmx
 cd htmx
-npm i
+npx tiged benallfree/pocketpages/packages/starters/htmx .
+rm package.json
+npm init -y
+npm install pocketpages
 pocketbase --dir=pb_data --dev serve
 ```
 
@@ -96,9 +102,12 @@ This kit provides a VSCode/Cursor configuration for PocketPages. See the [starte
 This kit provides a starter kit based on the [MVP.css](https://andybrewer.github.io/mvp/) project. MVP.css is a minimal styling solution for building fast, modern web apps. It takes all the guesswork out of styling your project, leaving you to focus on features and functionality.
 
 ```bash
-npx tiged benallfree/pocketpages/starters/mvp .
+mkdir mvp
 cd mvp
-npm i
+npx tiged benallfree/pocketpages/packages/starters/mvp .
+rm package.json
+npm init -y
+npm install pocketpages
 pocketbase --dir=pb_data --dev serve
 ```
 
@@ -115,9 +124,12 @@ This kit demonstrates Multi Page App (MPA) authentication using PocketPages. It 
 - Local mail testing setup with MailDev
 
 ```bash
-npx tiged benallfree/pocketpages/starters/auth .
+mkdir auth
 cd auth
-npm i
+npx tiged benallfree/pocketpages/packages/starters/auth .
+rm package.json
+npm init -y
+npm install pocketpages
 pocketbase --dir=pb_data --dev serve
 ```
 
