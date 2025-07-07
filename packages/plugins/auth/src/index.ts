@@ -159,16 +159,26 @@ const authPluginFactory: PluginFactory = (config) => {
        * If the route is protected, check the auth
        */
       // https://github.com/benallfree/pocketbase/blob/f38700982c1b46ac1a51ff59e985fae6fc332ccb/apis/middlewares.go#L181
-      const cookieToken = safeParseJson(request.cookies<any>('pb_auth'))?.token
-      dbg(`pb_auth cookie token: ${cookieToken || `<none>`}`)
-
-      if (cookieToken) {
+      const cookieRecordAuth = safeParseJson(request.cookies<any>('pb_auth'))
+      if (cookieRecordAuth?.token) {
         try {
-          const authRecord = $app.findAuthRecordByToken(cookieToken)
-          dbg(`cookie token swapped for auth record: ${authRecord.id}`)
-          request.event.auth = authRecord
+          const validAuthRecord = $app.findAuthRecordByToken(cookieRecordAuth.token)
+          if (!validAuthRecord) {
+            dbg(`invalid auth token found in cookie: ${cookieRecordAuth.token}`)
+            response.cookie('pb_auth', '')
+            return
+          }
+          
+          // Attempt to use the record set during authWith* methods (these may be enriched)
+          let authRecord;
+          if (cookieRecordAuth.record) {
+            authRecord = cookieRecordAuth.record;
+          } else {
+            authRecord = validAuthRecord;
+          }
+
           request.auth = authRecord
-          request.authToken = cookieToken
+          request.authToken = cookieRecordAuth.token
         } catch (e) {
           dbg(`error fetching auth record: ${e}`)
         }
