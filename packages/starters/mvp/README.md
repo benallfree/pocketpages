@@ -5,7 +5,8 @@ This starter kit is based on the [MVP.css](https://andybrewer.github.io/mvp/) pr
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/starters/mvp .
+mkdir mvp
 cd mvp
+npx tiged benallfree/pocketpages/packages/starters/mvp . && sed -i 's/"workspace://g' package.json
 pocketbase --dir=pb_data --dev serve
 ```
