@@ -364,24 +364,36 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     }
   } catch (e) {
     error(e)
-    const message = (() => {
-      const m = `${e}`
-      if (m.includes('Value is not an object'))
-        return `${m} - are you referencing a symbol missing from require() or resolve()?`
-      return `${e}`
-    })()
+    
     if (e instanceof BadRequestError) {
+      const message = config.debug ? `${e}` : 'Bad Request'
       return response.html(400, message)
     }
-    const stackTrace =
-      e instanceof Error
-        ? e.stack
-            ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
-            .replaceAll(__hooks, '')
-        : ''
-    return response.html(
-      500,
-      `<html><body><h1>PocketPages Error</h1><pre><code>${escapeXml(message)}\n${escapeXml(stackTrace)}</code></pre></body></html>`
-    )
+    
+    // In production, don't leak error details or stack traces
+    if (config.debug) {
+      const message = (() => {
+        const m = `${e}`
+        if (m.includes('Value is not an object'))
+          return `${m} - are you referencing a symbol missing from require() or resolve()?`
+        return `${e}`
+      })()
+      const stackTrace =
+        e instanceof Error
+          ? e.stack
+              ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
+              .replaceAll(__hooks, '')
+          : ''
+      return response.html(
+        500,
+        `<html><body><h1>PocketPages Error</h1><pre><code>${escapeXml(message)}\n${escapeXml(stackTrace)}</code></pre></body></html>`
+      )
+    } else {
+      // Generic error message in production
+      return response.html(
+        500,
+        `<html><body><h1>Internal Server Error</h1><p>Something went wrong. Please try again later.</p></body></html>`
+      )
+    }
   }
 }
