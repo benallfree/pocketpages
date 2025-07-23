@@ -4,5 +4,5 @@ module.exports = {
     'pocketpages-plugin-js-sdk',
     'pocketpages-plugin-ejs',
   ],
-  debug: true,
+  debug: false,
 }

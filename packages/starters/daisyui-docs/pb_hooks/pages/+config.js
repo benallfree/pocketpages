@@ -3,5 +3,5 @@ module.exports = {
     { name: 'pocketpages-plugin-ejs', extensions: ['.ejs', '.md'] },
     'pocketpages-plugin-marked',
   ],
-  debug: true,
+  debug: false,
 }
