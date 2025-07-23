@@ -159,30 +159,27 @@ const authPluginFactory: PluginFactory = (config) => {
        * If the route is protected, check the auth
        */
       // https://github.com/benallfree/pocketbase/blob/f38700982c1b46ac1a51ff59e985fae6fc332ccb/apis/middlewares.go#L181
-      const cookieRecordAuth = safeParseJson(request.cookies<any>('pb_auth'))
-      if (cookieRecordAuth?.token) {
-        try {
+      const cookieRecordAuth = safeParseJson(request.cookies('pb_auth')) as AuthData
+      if (typeof cookieRecordAuth !== 'object' || !cookieRecordAuth?.token) {
+        dbg(`invalid auth token found in cookie: ${cookieRecordAuth.token}`)
+        response.cookie('pb_auth', '')
+        return
+      }
+
+      request.authToken = cookieRecordAuth.token
+
+      try {
           const validAuthRecord = $app.findAuthRecordByToken(cookieRecordAuth.token)
           if (!validAuthRecord) {
             dbg(`invalid auth token found in cookie: ${cookieRecordAuth.token}`)
             response.cookie('pb_auth', '')
             return
           }
-          
-          // Attempt to use the record set during authWith* methods (these may be enriched)
-          let authRecord;
-          if (cookieRecordAuth.record) {
-            authRecord = cookieRecordAuth.record;
-          } else {
-            authRecord = validAuthRecord;
-          }
 
-          request.auth = authRecord
-          request.authToken = cookieRecordAuth.token
+          request.auth = validAuthRecord
         } catch (e) {
           dbg(`error fetching auth record: ${e}`)
         }
-      }
     },
     onExtendContextApi: ({ api }) => {
       const pb = () => api.pb() as PocketBase
