@@ -1,5 +1,16 @@
 # pocketpages
 
+## 0.19.0
+
+### Minor Changes
+
+- 1e55ca2: Add `verbose` debugging option to debug core pocketpages operations
+
+### Patch Changes
+
+- 314441c: Do not display +config.js loading error if the file is not present
+- c47a0ee: Update `minimal` starter to use Tailwind
+
 ## 0.18.2
 
 ### Patch Changes
