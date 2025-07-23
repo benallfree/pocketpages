@@ -445,54 +445,55 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   } catch (e) {
     error(e)
     
+    const message = (() => {
+      const m = `${e}`
+      if (m.includes('Value is not an object'))
+        return `${m} - are you referencing a symbol missing from require() or resolve()?`
+      return `${e}`
+    })()
+    
+    const stackTrace = config.debug && e instanceof Error
+      ? e.stack
+          ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
+          .replaceAll(__hooks, '')
+      : ''
+
     if (e instanceof BadRequestError) {
       // Try to find custom 400 error route
       const errorRoute = findErrorRoute(400, routes)
       if (errorRoute) {
-        const errorMessage = config.debug ? `${e}` : 'Bad Request'
         const errorHandled = handleErrorRoute(
           400,
           errorRoute,
           request,
           response,
           plugins,
-          { message: errorMessage, debug: config.debug }
+          { 
+            message: message,
+            stackTrace: stackTrace,
+            debug: config.debug 
+          }
         )
         if (errorHandled) return
       }
       
       // Fallback to simple response
-      const message = config.debug ? `${e}` : 'Bad Request'
-      return response.html(400, message)
+      return response.html(400, config.debug ? message : 'Bad Request')
     }
-    
+
     // Try to find custom 500 error route
     const errorRoute = findErrorRoute(500, routes)
-    if (errorRoute) {
-      const errorMessage = (() => {
-        if (!config.debug) return 'Internal Server Error'
-        const m = `${e}`
-        if (m.includes('Value is not an object'))
-          return `${m} - are you referencing a symbol missing from require() or resolve()?`
-        return `${e}`
-      })()
-      
-      const stackTrace = config.debug && e instanceof Error
-        ? e.stack
-            ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
-            .replaceAll(__hooks, '')
-        : ''
-      
+    if (errorRoute) {      
       const errorHandled = handleErrorRoute(
         500,
         errorRoute,
         request,
         response,
         plugins,
-        { 
-          message: errorMessage, 
-          stackTrace,
-          debug: config.debug 
+        {
+          message: message,
+          stackTrace: stackTrace,
+          debug: config.debug
         }
       )
       if (errorHandled) return
@@ -500,18 +501,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     
     // Fallback to original error handling if no custom route found
     if (config.debug) {
-      const message = (() => {
-        const m = `${e}`
-        if (m.includes('Value is not an object'))
-          return `${m} - are you referencing a symbol missing from require() or resolve()?`
-        return `${e}`
-      })()
-      const stackTrace =
-        e instanceof Error
-          ? e.stack
-              ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
-              .replaceAll(__hooks, '')
-          : ''
       return response.html(
         500,
         `<html><body><h1>PocketPages Error</h1><pre><code>${escapeXml(message)}\n${escapeXml(stackTrace)}</code></pre></body></html>`
