@@ -1,5 +1,11 @@
 # pocketpages-plugin-js-sdk
 
+## 0.2.0
+
+### Minor Changes
+
+- c310f0d: Use authToken if provided on request
+
 ## 0.1.0
 
 ### Minor Changes
