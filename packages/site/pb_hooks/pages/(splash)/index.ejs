@@ -13,19 +13,19 @@
           <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">
             PocketPages
           </h1>
+          <div>
+            <pre><code class="language-bash ">npm create pocketpages</code></pre>
+
+          </div>
         </div>
 
         <!-- Subtitle -->
         <div class="max-w-2xl animate-fade-in-up animation-delay-200">
           <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-base-content/90 mb-4">
             No-Build Multi-Page Apps for 
-            <span class="text-accent font-black">PocketBase JSVM</span>
+            <span class="text-accent font-black">PocketBase</span>
           </h2>
-          <p class="text-base sm:text-lg text-base-content/70 leading-relaxed">
-            Server-side rendered web applications with zero compilation steps. Perfect for 
-            <span class="text-secondary font-semibold">HTMX</span>, <span class="text-secondary font-semibold">Alpine.js</span>, <span class="text-secondary font-semibold">VanJS</span>, 
-            and other no-build frontend technologies.
-          </p>
+         
         </div>
 
         <!-- CTA Buttons -->
@@ -73,7 +73,7 @@
   <div class="bg-base-100 py-20">
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Why Choose PocketPages?</h2>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Why PocketPages is Better</h2>
         <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
           Zero compilation, zero bundling, zero build steps. Just write code and deploy - frontend and backend.
         </p>
@@ -300,40 +300,12 @@ const user = $app.dao().findRecordById('users', userId)
           </div>
         </div>
 
-        <div class="text-center mt-12">
-          <div class="alert alert-success inline-flex items-center">
-            <svg class="size-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <div>
-              <strong>No build required!</strong> Just include your libraries via CDN and start coding.
-            </div>
-          </div>
-        </div>
+       
       </div>
     </div>
   </div>
 
-  <!-- Quickstart Section -->
-  <div class="bg-gradient-to-r from-neutral to-neutral-focus text-neutral-content py-20">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl sm:text-4xl font-bold mb-4">Get Started in Minutes</h2>
-          <p class="text-lg text-neutral-content/80">
-            Follow these simple steps to create your first PocketPages application.
-          </p>
-        </div>
-        
-        <div class="card bg-neutral-800/50 backdrop-blur border border-neutral-content/10">
-          <div class="card-body">
-            <%- include(`quickstart.ejs`) %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <style>
   @keyframes fade-in {
