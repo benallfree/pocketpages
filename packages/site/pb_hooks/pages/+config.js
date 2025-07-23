@@ -1,4 +1,5 @@
 module.exports = {
+  debug: true,
   plugins: [
     {
       name: `pocketpages-plugin-ejs`,

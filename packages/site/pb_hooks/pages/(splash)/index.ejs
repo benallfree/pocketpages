@@ -1,27 +1,376 @@
-<div class="hero min-h-screen bg-base-200">
-  <div class="hero-content text-center max-w-2xl">
-    <div class="flex flex-col items-center">
-      <h1 class="text-5xl font-bold mb-2">PocketPages</h1>
-      <img src="apple-touch-icon.png" />
-      <div class="text-3xl font-bold mb-2">
-        Build faster with Server-Side web pages - no build chain or complicated
-        tech stack required.
+<div class="min-h-screen bg-gradient-to-br from-base-100 via-base-200 to-base-300">
+  <!-- Hero Section -->
+  <div class="hero min-h-screen">
+    <div class="hero-content text-center max-w-4xl">
+      <div class="flex flex-col items-center space-y-8">
+        <!-- Logo and Title -->
+        <div class="flex flex-col items-center space-y-4 animate-fade-in">
+          <div class="avatar not-prose">
+            <div class="size-16 sm:size-20 rounded-full ring ring-accent ring-offset-base-100 ring-offset-2">
+              <img src="apple-touch-icon.png" alt="PocketPages Logo" />
+            </div>
+          </div>
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">
+            PocketPages
+          </h1>
+        </div>
+
+        <!-- Subtitle -->
+        <div class="max-w-2xl animate-fade-in-up animation-delay-200">
+          <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-base-content/90 mb-4">
+            No-Build Multi-Page Apps for 
+            <span class="text-accent font-black">PocketBase JSVM</span>
+          </h2>
+          <p class="text-base sm:text-lg text-base-content/70 leading-relaxed">
+            Server-side rendered web applications with zero compilation steps. Perfect for 
+            <span class="text-secondary font-semibold">HTMX</span>, <span class="text-secondary font-semibold">Alpine.js</span>, <span class="text-secondary font-semibold">VanJS</span>, 
+            and other no-build frontend technologies.
+          </p>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md animate-fade-in-up animation-delay-400">
+          <a href="/docs/overview" class="btn btn-accent btn-lg flex-1 shadow-lg hover:shadow-xl transition-all duration-300">
+            <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253z"></path>
+            </svg>
+            Read the Docs
+          </a>
+          <a href="/docs/installation" class="btn btn-outline btn-lg flex-1 hover:btn-secondary transition-all duration-300">
+            <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            Quick Start
+          </a>
+        </div>
+
+        <!-- Code Preview Card -->
+        <div class="card bg-base-100 shadow-2xl border border-base-300 w-full max-w-2xl animate-fade-in-up animation-delay-600">
+          <div class="card-body p-0">
+            <div class="bg-base-200 px-4 py-2 rounded-t-2xl border-b border-base-300">
+              <div class="flex items-center space-x-2">
+                <div class="size-3 bg-error rounded-full"></div>
+                <div class="size-3 bg-warning rounded-full"></div>
+                <div class="size-3 bg-success rounded-full"></div>
+                <span class="text-sm text-base-content/60 ml-4">pb_hooks/pages/index.ejs</span>
+              </div>
+            </div>
+            <div class="p-4">
+              <pre><code class="language-ejs text-sm"><%%= `Hello, PocketPages!` %></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Browser Mockup -->
+        <div class="w-full max-w-2xl animate-fade-in-up animation-delay-800">
+          <%- include(`browser.ejs`, { content: `Hello, PocketPages!` }) %>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <div class="text-left w-full overflow ">
-        <pre><code class="language-ejs ">// pb_hooks/pages/index.ejs
-<%%= `Hello, PocketPages!` %></code></pre>
+  <!-- Features Section -->
+  <div class="bg-base-100 py-20">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Why Choose PocketPages?</h2>
+        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+          Zero compilation, zero bundling, zero build steps. Just write code and deploy - frontend and backend.
+        </p>
       </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <!-- Feature 1 -->
+        <div class="card bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 hover:shadow-lg transition-all duration-300">
+          <div class="card-body text-center">
+            <div class="size-12 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="size-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="card-title justify-center text-xl mb-2">Zero Build Steps</h3>
+            <p class="text-base-content/70">No compilation anywhere. Write HTMX, Alpine.js, or VanJS and see changes instantly.</p>
+          </div>
+        </div>
 
-      <%- include(`browser.ejs`, { content: `Hello, PocketPages!` }) %>
+        <!-- Feature 2 -->
+        <div class="card bg-gradient-to-br from-secondary/10 to-secondary/5 border border-secondary/20 hover:shadow-lg transition-all duration-300">
+          <div class="card-body text-center">
+            <div class="size-12 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="size-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 002 2V9zM9 9h6v6H9V9z"></path>
+              </svg>
+            </div>
+            <h3 class="card-title justify-center text-xl mb-2">Server-Side Rendered</h3>
+            <p class="text-base-content/70">Pages render on the server using PocketBase JSVM. Fast, SEO-friendly, and reliable.</p>
+          </div>
+        </div>
 
-      <div class="bg-neutral-300 p-4 sm:p-10 rounded-md mt-4 w-full flex flex-col items-center">
-        <div class="text-2xl font-bold">Quickstart</div>
-        <%- include(`quickstart.ejs`) %>
-        <div class=" items-center flex flex-col w-full max-w-[320px] sm:max-w-full">
-          <a href="/docs/overview" class="btn btn-accent mt-4 w-full">Read the Docs</a>
+        <!-- Feature 3 -->
+        <div class="card bg-gradient-to-br from-success/10 to-success/5 border border-success/20 hover:shadow-lg transition-all duration-300">
+          <div class="card-body text-center">
+            <div class="size-12 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="size-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+              </svg>
+            </div>
+            <h3 class="card-title justify-center text-xl mb-2">PocketBase Native</h3>
+            <p class="text-base-content/70">Built specifically for PocketBase JSVM (Goja). Access your data, auth, and APIs directly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MPA Benefits Section -->
+  <div class="bg-gradient-to-r from-base-200 to-base-300 py-20">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-4">Why Multi-Page Apps Matter</h2>
+          <p class="text-lg text-base-content/70 max-w-3xl mx-auto">
+            While SPAs dominate the conversation, MPAs offer proven benefits for most web applications. 
+            PocketPages brings this architecture to PocketBase's powerful backend.
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Comparison -->
+          <div class="space-y-6">
+            <div class="card bg-base-100/80 backdrop-blur border border-base-300">
+              <div class="card-body">
+                <h3 class="card-title text-success mb-4">✓ MPA Advantages</h3>
+                <ul class="space-y-3">
+                  <li class="flex items-start space-x-3">
+                    <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+                      <div class="size-2 bg-success rounded-full"></div>
+                    </div>
+                    <span><strong>Instant Page Loads:</strong> Server renders HTML, browser shows content immediately</span>
+                  </li>
+                  <li class="flex items-start space-x-3">
+                    <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+                      <div class="size-2 bg-success rounded-full"></div>
+                    </div>
+                    <span><strong>SEO by Default:</strong> Search engines get fully rendered HTML</span>
+                  </li>
+                  <li class="flex items-start space-x-3">
+                    <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+                      <div class="size-2 bg-success rounded-full"></div>
+                    </div>
+                    <span><strong>Progressive Enhancement:</strong> Works without JavaScript, enhanced with it</span>
+                  </li>
+                  <li class="flex items-start space-x-3">
+                    <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+                      <div class="size-2 bg-success rounded-full"></div>
+                    </div>
+                    <span><strong>Simpler Mental Model:</strong> Each URL = one page, like the web was designed</span>
+                  </li>
+                  <li class="flex items-start space-x-3">
+                    <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+                      <div class="size-2 bg-success rounded-full"></div>
+                    </div>
+                    <span><strong>Zero Compilation:</strong> No build steps anywhere - frontend or backend</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Example -->
+          <div class="space-y-6">
+            <div class="card bg-neutral text-neutral-content shadow-xl">
+              <div class="card-body p-0">
+                <div class="bg-neutral-800 px-4 py-2 rounded-t-2xl border-b border-neutral-600">
+                  <div class="flex items-center space-x-2">
+                    <div class="size-3 bg-error rounded-full"></div>
+                    <div class="size-3 bg-warning rounded-full"></div>
+                    <div class="size-3 bg-success rounded-full"></div>
+                    <span class="text-sm text-neutral-content/60 ml-4">pb_hooks/pages/users/[id].ejs</span>
+                  </div>
+                </div>
+                <div class="p-6">
+                  <pre class="text-sm leading-relaxed"><code class="language-javascript">// Server-side data loading in PocketBase JSVM
+const userId = $request.pathParam('id')
+const user = $app.dao().findRecordById('users', userId)
+
+// Template renders with live data
+<%%= user.name %> joined <%%= formatDate(user.created) %></code></pre>
+                </div>
+              </div>
+            </div>
+            
+            <div class="alert alert-info">
+              <svg class="size-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div>
+                <h4 class="font-bold">PocketBase JSVM Integration</h4>
+                <div class="text-sm">Direct access to your database, authentication, and APIs server-side.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No-Build Ecosystem Section -->
+  <div class="bg-base-100 py-20">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-4">Perfect for No-Build Frontend</h2>
+          <p class="text-lg text-base-content/70 max-w-3xl mx-auto">
+            Drop in your favorite no-build frontend library and start building. No webpack configs, no bundlers, no compile steps.
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <!-- HTMX -->
+          <div class="card bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 hover:shadow-lg transition-all duration-300">
+            <div class="card-body text-center p-6">
+              <div class="text-3xl font-black text-blue-600 mb-2">htmx</div>
+              <p class="text-sm text-blue-700">High power tools for HTML</p>
+            </div>
+          </div>
+
+          <!-- Alpine.js -->
+          <div class="card bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 hover:shadow-lg transition-all duration-300">
+            <div class="card-body text-center p-6">
+              <div class="text-2xl font-bold text-emerald-600 mb-2">Alpine.js</div>
+              <p class="text-sm text-emerald-700">Minimal framework for HTML</p>
+            </div>
+          </div>
+
+          <!-- VanJS -->
+          <div class="card bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 hover:shadow-lg transition-all duration-300">
+            <div class="card-body text-center p-6">
+              <div class="text-2xl font-bold text-amber-600 mb-2">VanJS</div>
+              <p class="text-sm text-amber-700">Ultra-lightweight reactive UI</p>
+            </div>
+          </div>
+
+          <!-- Vanilla JS -->
+          <div class="card bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 hover:shadow-lg transition-all duration-300">
+            <div class="card-body text-center p-6">
+              <div class="text-2xl font-bold text-purple-600 mb-2">Vanilla JS</div>
+              <p class="text-sm text-purple-700">Pure JavaScript, no dependencies</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Example -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- HTMX Example -->
+          <div class="card bg-base-200 shadow-lg">
+            <div class="card-body p-0">
+              <div class="bg-base-300 px-4 py-2 rounded-t-2xl border-b border-base-400">
+                <span class="text-sm text-base-content/70">HTMX + PocketPages</span>
+              </div>
+              <div class="p-4">
+                <pre class="text-sm"><code class="language-html">&lt;%%- include('header.ejs') %&gt;
+
+&lt;div hx-get="/api/todos" 
+     hx-trigger="load"
+     hx-target="#todo-list"&gt;
+  Loading todos...
+&lt;/div&gt;
+
+&lt;div id="todo-list"&gt;&lt;/div&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alpine.js Example -->
+          <div class="card bg-base-200 shadow-lg">
+            <div class="card-body p-0">
+              <div class="bg-base-300 px-4 py-2 rounded-t-2xl border-b border-base-400">
+                <span class="text-sm text-base-content/70">Alpine.js + PocketPages</span>
+              </div>
+              <div class="p-4">
+                <pre class="text-sm"><code class="language-html">&lt;div x-data="{ todos: &lt;%%= JSON.stringify(todos) %&gt; }"&gt;
+  &lt;template x-for="todo in todos"&gt;
+    &lt;div x-text="todo.title"
+         :class="{ 'completed': todo.done }"&gt;
+    &lt;/div&gt;
+  &lt;/template&gt;
+&lt;/div&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <div class="alert alert-success inline-flex items-center">
+            <svg class="size-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <strong>No build required!</strong> Just include your libraries via CDN and start coding.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quickstart Section -->
+  <div class="bg-gradient-to-r from-neutral to-neutral-focus text-neutral-content py-20">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-4">Get Started in Minutes</h2>
+          <p class="text-lg text-neutral-content/80">
+            Follow these simple steps to create your first PocketPages application.
+          </p>
+        </div>
+        
+        <div class="card bg-neutral-800/50 backdrop-blur border border-neutral-content/10">
+          <div class="card-body">
+            <%- include(`quickstart.ejs`) %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out forwards;
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+  }
+  
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+    opacity: 0;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+    opacity: 0;
+  }
+  
+  .animation-delay-600 {
+    animation-delay: 0.6s;
+    opacity: 0;
+  }
+  
+  .animation-delay-800 {
+    animation-delay: 0.8s;
+    opacity: 0;
+  }
+</style>
