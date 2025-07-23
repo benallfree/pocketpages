@@ -1,5 +1,11 @@
 # pocketpages-plugin-auth
 
+## 0.2.1
+
+### Patch Changes
+
+- a05520c: Enh: auth now uses cookieToken rather than newToken (more efficient)
+
 ## 0.2.0
 
 ### Minor Changes

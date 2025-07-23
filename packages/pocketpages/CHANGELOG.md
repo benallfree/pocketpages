@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.18.2
+
+### Patch Changes
+
+- 46d4cd8: Fix: show detailed errors in debug mode only
+
 ## 0.18.1
 
 ### Patch Changes
