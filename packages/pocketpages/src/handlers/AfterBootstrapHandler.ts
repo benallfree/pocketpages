@@ -73,7 +73,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
       }
     })(),
   }
-  if (config.debug) {
+  if (config.debug === 'verbose') {
     $app.store().set('__pocketpages_debug', true)
   }
   keys(config).forEach((key) => {

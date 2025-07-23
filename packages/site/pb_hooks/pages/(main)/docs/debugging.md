@@ -17,9 +17,22 @@ pocketbase serve --dev
 
 Without the `--dev` flag, all `dbg()` output is suppressed, making your production logs cleaner and more focused on important information.
 
+## Exception Details
+
+The most common debugging need is to see detailed error information when something goes wrong. Enable exception details and stack traces by setting `debug: true` in your `+config.js`:
+
+```javascript
+module.exports = {
+  plugins: ['pocketpages-plugin-ejs'],
+  debug: true, // Show detailed error information and stack traces
+}
+```
+
+This is helpful for troubleshooting errors in your application without overwhelming you with internal PocketPages details.
+
 ## Plugin Debugging
 
-Each plugin can have its own debug output enabled or disabled. By default, plugin debugging is disabled. You can enable it for specific plugins in your `+config.js` file:
+When developing or troubleshooting plugins, you can enable debug output for specific plugins. By default, plugin debugging is disabled. Enable it for specific plugins in your `+config.js` file:
 
 ```javascript
 module.exports = {
@@ -39,17 +52,17 @@ module.exports = {
 
 See [Configuration](/docs/config) for more details about plugin configuration.
 
-## Core Debugging
+## Verbose Core Debugging
 
-PocketPages core debugging is disabled by default. While rarely needed, you can enable it by setting the top-level `debug` option in your `+config.js`:
+For detailed information about PocketPages internal operations like routes, parameters, and other core behavior, set `debug: 'verbose'`:
 
 ```javascript
 module.exports = {
   plugins: ['pocketpages-plugin-ejs'],
-  debug: true, // Enable core debugging
+  debug: 'verbose', // Enable detailed core debugging output
 }
 ```
 
-This will output detailed information about routes, parameters, and other internal details that can be helpful when troubleshooting core PocketPages behavior.
+This will output comprehensive information about PocketPages internal operations, which can be helpful when troubleshooting core functionality.
 
-> **Note**: Enabling core debugging can produce a lot of output. It's recommended to only enable it when specifically debugging PocketPages core functionality.
+> **Note**: Enabling verbose debugging can produce a lot of output. It's recommended to only enable it when specifically debugging PocketPages core functionality.
