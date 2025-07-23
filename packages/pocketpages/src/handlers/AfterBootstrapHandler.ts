@@ -2,10 +2,10 @@ import { forEach, keys } from '@s-libs/micro-dash'
 import { error, info } from 'pocketbase-log'
 import { fs } from 'pocketbase-node'
 import { dbg } from '../lib/debug'
+import { globalApi } from '../lib/globalApi'
 import { pagesRoot } from '../lib/helpers'
 import { loadPlugins } from '../lib/loadPlugins'
 import { Cache, PagesConfig, PagesInitializerFunc } from '../lib/types'
-import { globalApi } from '../lib/globalApi'
 
 export type Route = {
   relativePath: string
@@ -59,6 +59,9 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
     debug: false,
     ...(() => {
       try {
+        if (!fs.existsSync(configPath)) {
+          return {}
+        }
         const mod = require(configPath)
         if (typeof mod === 'function') {
           return mod(globalApi) as Partial<PagesConfig>
