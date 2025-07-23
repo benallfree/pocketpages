@@ -1,0 +1,36 @@
+{
+  "name": "create-pocketpages",
+  "version": "0.0.1",
+  "description": "Create a new PocketPages project",
+  "type": "module",
+  "bin": {
+    "create-pocketpages": "index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "pocketpages",
+    "pocketbase",
+    "scaffold",
+    "create",
+    "starter",
+    "template"
+  ],
+  "author": {
+    "name": "Ben Allfree",
+    "github": "benallfree"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benallfree/pocketpages/tree/main/packages/create-pocketpages"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^12.8.2",
+    "tiged": "^2.12.7"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
