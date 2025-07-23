@@ -27,6 +27,7 @@
     "build:plugins:sse": "cd packages/plugins/sse && bun run build",
     "publish": "bun run build && concurrently 'bun run publish:*'",
     "publish:pocketpages": "cd packages/pocketpages && bun publish",
+    "publish:create-pocketpages": "cd packages/create-pocketpages && bun publish",
     "publish:plugins:auth": "cd packages/plugins/auth && bun publish",
     "publish:plugins:ejs": "cd packages/plugins/ejs && bun publish",
     "publish:plugins:js-sdk": "cd packages/plugins/js-sdk && bun publish",
