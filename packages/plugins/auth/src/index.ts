@@ -162,19 +162,21 @@ const authPluginFactory: PluginFactory = (config) => {
       const cookieRecordAuth = safeParseJson(request.cookies<any>('pb_auth'))
       if (cookieRecordAuth?.token) {
         try {
-          const validAuthRecord = $app.findAuthRecordByToken(cookieRecordAuth.token)
+          const validAuthRecord = $app.findAuthRecordByToken(
+            cookieRecordAuth.token
+          )
           if (!validAuthRecord) {
             dbg(`invalid auth token found in cookie: ${cookieRecordAuth.token}`)
             response.cookie('pb_auth', '')
             return
           }
-          
+
           // Attempt to use the record set during authWith* methods (these may be enriched)
-          let authRecord;
+          let authRecord
           if (cookieRecordAuth.record) {
-            authRecord = cookieRecordAuth.record;
+            authRecord = cookieRecordAuth.record
           } else {
-            authRecord = validAuthRecord;
+            authRecord = validAuthRecord
           }
 
           request.auth = authRecord
@@ -308,12 +310,16 @@ const authPluginFactory: PluginFactory = (config) => {
       }
 
       api.signIn = (authData: RecordAuthResponse<AuthModel>) => {
+        const { record, token } = authData
+        if (!record) {
+          throw new Error('No auth record found')
+        }
         dbg(
-          `signing in with token and saving to pb_auth cookie: ${authData.record.id} ${authData.token}`
+          `signing in with token and saving to pb_auth cookie: ${record.id} ${token}`
         )
         api.response.cookie(`pb_auth`, {
-          token: authData.token,
-          record: toPlainObject(authData.record),
+          token,
+          record: toPlainObject(record),
         })
       }
     },
