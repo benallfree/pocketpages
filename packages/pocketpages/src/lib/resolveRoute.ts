@@ -1,5 +1,5 @@
 import * as qs from 'qs-lite'
-import URLParse from 'url-parse'
+import type URLParse from 'url-parse'
 import { Route } from '../handlers/AfterBootstrapHandler'
 import { dbg } from './debug'
 import { fingerprint } from './fingerprint'

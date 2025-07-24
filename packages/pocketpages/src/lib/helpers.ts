@@ -1,6 +1,5 @@
 import { fs } from 'pocketbase-node'
 import { stringify } from 'pocketbase-stringify'
-import {} from 'url-parse'
 import { ResolveOptions } from './types'
 
 export const pagesRoot = $filepath.join(__hooks, `pages`)
