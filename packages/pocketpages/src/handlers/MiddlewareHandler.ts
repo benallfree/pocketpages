@@ -23,6 +23,41 @@ import {
   RedirectOptions,
 } from '../lib/types'
 
+type PocketBaseApiError = Error & {
+  value: {
+    status: number
+    message: string
+  }
+}
+
+export type PocketPagesError = Error & {
+  status: number
+  message: string
+  originalError: Error
+}
+
+function PocketPagesError(
+  status: number,
+  message: string,
+  originalError: Error
+): PocketPagesError {
+  const e = new Error(message) as PocketPagesError
+  e.status = status
+  e.originalError = originalError
+  return e as PocketPagesError
+}
+
+function isApiError(err: any): err is PocketBaseApiError {
+  return (
+    err instanceof Error &&
+    'value' in err &&
+    typeof err.value === 'object' &&
+    err.value !== null &&
+    'status' in err.value &&
+    'message' in err.value
+  )
+}
+
 const escapeXml = (unsafe: string = '') => {
   return unsafe.replace(/[<>&'"]/g, (c) => {
     switch (c) {
@@ -146,6 +181,15 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   }
 
   const response: PagesResponse = {
+    error: (() => {
+      let _error: Error | null = null
+      return (err?: Error) => {
+        if (err !== undefined) {
+          _error = err
+        }
+        return _error!
+      }
+    })(),
     status: (() => {
       let _status = 200
       return (status?: number) => {
@@ -208,73 +252,13 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
   let resolvedRoute = resolveRoute(request.url, routes)
 
-  /**
-   * If it doesn't match any known route, pass it on
-   */
-  dbg(`resolvedRoute`, resolvedRoute)
-  if (!resolvedRoute) {
-    // Otherwise, pass it on to PocketBase to handle
-    dbg(`No route matched for ${url}, passing on to PocketBase`)
-    try {
-      return next()
-    } catch (err) {
-      dbg(`PocketBase route resulted in error ${err} (${JSON.stringify(err)})`)
-      type ApiError = {
-        value: {
-          status: number
-          message: string
-        }
-      }
-      function isApiError(err: any): err is ApiError {
-        return (
-          err instanceof Error &&
-          'value' in err &&
-          typeof err.value === 'object' &&
-          err.value !== null &&
-          'status' in err.value &&
-          'message' in err.value
-        )
-      }
-      if (isApiError(err)) {
-        const { status, message } = err.value
-        response.status(status)
-        /**
-         * Error resolution plan:
-         *
-         * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
-         *
-         * 1. `${status}`
-         * 2. `${status.slice(0, 2)}xx`
-         * 3. `${status.slice(0, 1)}xx`
-         * 4. `error`
-         */
-        const check1 = `${status}`
-        const check2 = `${status.toString().slice(0, 2)}xx`
-        const check3 = `${status.toString().slice(0, 1)}xx`
-        const check4 = `error`
-        for (const check of [check1, check2, check3, check4]) {
-          const tryUrl = new URL(
-            [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
-          )
-          dbg(`Trying ${tryUrl}`)
-          resolvedRoute = resolveRoute(tryUrl, routes)
-          if (resolvedRoute) {
-            break
-          }
-        }
-        if (!resolvedRoute) {
-          throw err
-        }
-      } else {
-        throw err
-      }
+  const renderRoute = () => {
+    dbg(`Rendering route ${request.url}`)
+    if (!resolvedRoute) {
+      throw new Error(`Can't render route, no route matched for ${url}`)
     }
-  }
-
-  const { route, params } = resolvedRoute
-  const { absolutePath, relativePath } = route
-
-  try {
+    const { route, params } = resolvedRoute
+    const { absolutePath, relativePath } = route
     /**
      * If the file exists but no plugin handles it, serve statically
      */
@@ -361,6 +345,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     }
 
     function done() {
+      dbg(`Done executing middleware`)
       // Execute loaders
       {
         const methods = ['load', method.toLowerCase(), method]
@@ -379,6 +364,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       //@ts-ignore
       delete api.echo
 
+      dbg(`Executing plugins onRender`)
       let content = plugins.reduce((content, plugin) => {
         return (
           plugin.onRender?.({
@@ -427,14 +413,9 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       }
       throw new Error(`No plugin handled the response`)
     }
-  } catch (e) {
-    error(e)
+  }
 
-    if (e instanceof BadRequestError) {
-      const message = config.debug ? `${e}` : 'Bad Request'
-      return response.html(400, message)
-    }
-
+  const renderError = (e: PocketPagesError) => {
     // In production, don't leak error details or stack traces
     if (config.debug) {
       const message = (() => {
@@ -461,5 +442,70 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       )
     }
   }
-  next()
+
+  dbg(`resolvedRoute`, resolvedRoute)
+
+  try {
+    // If there is no resolved route, pass it on to PocketBase to handle
+    // If an error comes back, we'll handle it here
+    if (!resolvedRoute) {
+      dbg(`No route matched for ${request.url}`)
+      return e.next()
+    }
+    // If there is a resolved route, render it
+    // If an error comes back, we'll handle it here
+    renderRoute()
+  } catch (e) {
+    const _e = wrapError(e)
+    error(
+      `PocketBase route resulted in error for ${request.url.toString()}: ${stringify(_e)}`
+    )
+
+    response.error(_e)
+
+    const { status, message } = _e
+    response.status(status)
+    /**
+     * Error resolution plan:
+     *
+     * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
+     *
+     * 1. `${status}`
+     * 2. `${status.slice(0, 2)}xx`
+     * 3. `${status.slice(0, 1)}xx`
+     * 4. `error`
+     */
+    const check1 = `${status}`
+    const check2 = `${status.toString().slice(0, 2)}xx`
+    const check3 = `${status.toString().slice(0, 1)}xx`
+    const check4 = `error`
+    for (const check of [check1, check2, check3, check4]) {
+      const tryUrl = new URL(
+        [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
+      )
+      dbg(`Trying ${tryUrl}`)
+      resolvedRoute = resolveRoute(tryUrl, routes)
+      if (resolvedRoute) {
+        try {
+          return renderRoute()
+        } catch (e) {
+          const _e = wrapError(e)
+          return renderError(_e)
+        }
+      }
+    }
+    renderError(_e)
+  } finally {
+    next()
+  }
+}
+
+function wrapError(e: any): PocketPagesError {
+  if (isApiError(e)) {
+    return PocketPagesError(e.value.status, e.value.message, e)
+  }
+  if (e instanceof Error) {
+    return PocketPagesError(500, `${e}`, e)
+  }
+  return PocketPagesError(500, `${e}`, new Error(`${e}`))
 }

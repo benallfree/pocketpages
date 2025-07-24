@@ -152,6 +152,7 @@ export type PagesRequest = {
 }
 
 export type PagesResponse = {
+  error: (err?: Error) => Error
   status: (status?: number) => number
   file: (path: string) => void
   write: (s: string) => void
