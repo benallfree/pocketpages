@@ -177,13 +177,10 @@ const authPluginFactory: PluginFactory = (config) => {
             response.cookie('pb_auth', '')
             return
           }
+          $apis.enrichRecord(request.event, validAuthRecord)
 
           // Attempt to use the record set during authWith* methods (these may be enriched)
-          const authRecord =
-            $app.findAuthRecordByToken(cookieRecordAuth.token) ??
-            validAuthRecord
-
-          request.auth = authRecord
+          request.auth = validAuthRecord
           request.authToken = cookieRecordAuth.token
         } catch (e) {
           dbg(`error fetching auth record: ${e}`)
