@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @plugin "daisyui" {
-  themes:
-    light --cupcake,
-    dark --prefersdark;
+  themes: synthwave --default;
 }
 @plugin "@tailwindcss/typography";
 

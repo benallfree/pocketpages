@@ -45,21 +45,9 @@
         </div>
 
         <!-- Code Preview Card -->
-        <div class="card bg-base-100 shadow-2xl border border-base-300 w-full max-w-2xl animate-fade-in-up animation-delay-600">
-          <div class="card-body p-0">
-            <div class="bg-base-200 px-4 py-2 rounded-t-2xl border-b border-base-300">
-              <div class="flex items-center space-x-2">
-                <div class="size-3 bg-error rounded-full"></div>
-                <div class="size-3 bg-warning rounded-full"></div>
-                <div class="size-3 bg-success rounded-full"></div>
-                <span class="text-sm text-base-content/60 ml-4">pb_hooks/pages/index.ejs</span>
-              </div>
-            </div>
-            <div class="p-4">
-              <pre><code class="language-ejs text-sm"><%%= `Hello, PocketPages!` %></code></pre>
-            </div>
-          </div>
-        </div>
+      
+            <pre><code class="language-ejs text-sm">&lt;!-- pb_hooks/pages/index.ejs --&gt;
+&lt;%= `Hello, PocketPages!` %&gt;</code></pre>
 
         <!-- Browser Mockup -->
         <div class="w-full max-w-2xl animate-fade-in-up animation-delay-800">
@@ -268,7 +256,7 @@ const user = $app.dao().findRecordById('users', userId)
                 <span class="text-sm text-base-content/70">HTMX + PocketPages</span>
               </div>
               <div class="p-4">
-                <pre class="text-sm"><code class="language-html">&lt;%%- include('header.ejs') %&gt;
+                <pre class="text-sm"><code class="language-html">&lt;%- include('header.ejs') %&gt;
 
 &lt;div hx-get="/api/todos" 
      hx-trigger="load"
