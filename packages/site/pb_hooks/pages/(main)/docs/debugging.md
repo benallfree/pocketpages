@@ -54,7 +54,11 @@ See [Configuration](/docs/config) for more details about plugin configuration.
 
 ## Verbose Core Debugging
 
-For detailed information about PocketPages internal operations like routes, parameters, and other core behavior, set `debug: 'verbose'`:
+For detailed information about PocketPages internal operations like routes, parameters, and other core behavior, you can enable verbose debugging in two ways:
+
+### Configuration File
+
+Set `debug: 'verbose'` in your `+config.js`:
 
 ```javascript
 module.exports = {
@@ -63,6 +67,16 @@ module.exports = {
 }
 ```
 
-This will output comprehensive information about PocketPages internal operations, which can be helpful when troubleshooting core functionality.
+### Environment Variable
+
+Alternatively, set the `DEBUG` environment variable to `1` or `true`:
+
+```bash
+DEBUG=1 pocketbase serve
+# or
+DEBUG=true pocketbase serve
+```
+
+Both methods will output comprehensive information about PocketPages internal operations, which can be helpful when troubleshooting core functionality.
 
 > **Note**: Enabling verbose debugging can produce a lot of output. It's recommended to only enable it when specifically debugging PocketPages core functionality.

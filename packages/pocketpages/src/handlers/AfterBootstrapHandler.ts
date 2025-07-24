@@ -38,6 +38,16 @@ export const LOADER_METHODS = [
   'delete',
 ] as const
 
+const toBoolean = (value: string | boolean | undefined) => {
+  if (typeof value === 'boolean') {
+    return value
+  }
+  if (typeof value === 'string') {
+    return ['true', '1', 'yes', 'on', 'enabled'].includes(value.toLowerCase())
+  }
+  return false
+}
+
 export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   info(`pocketpages startup`)
 
@@ -56,7 +66,7 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   // dbg({ configPath })
   const config: PagesConfig = {
     plugins: [`pocketpages-plugin-ejs`],
-    debug: false,
+    debug: toBoolean(process.env.DEBUG) ? 'verbose' : false,
     ...(() => {
       try {
         if (!fs.existsSync(configPath)) {
@@ -230,9 +240,9 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
       return route
     })
     .filter((r) => r.segments.length > 0)
-  // dbg({ routes })
+  dbg({ routes })
 
-  // dbg({ config })
+  dbg({ config })
 
   const cache: Cache = { routes, config }
   // dbg({ cache })
