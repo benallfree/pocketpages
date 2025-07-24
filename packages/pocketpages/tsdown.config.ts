@@ -5,6 +5,7 @@ export default defineConfig({
     index: 'src/index.ts',
   },
   format: ['cjs'],
+  dts: true,
   clean: true,
   outDir: 'dist',
   external: ['pocketpages', /^[^tsdown]$/, /pocketbase-.*/],
