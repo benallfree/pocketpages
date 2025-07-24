@@ -1,0 +1,88 @@
+<div class="space-y-8">
+  <!-- Header Section -->
+  <div class="text-center space-y-4">
+    <h1
+      class="text-4xl font-bold text-gray-900 bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent"
+    >
+      DataStar Realtime Demo
+    </h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      This demo shows you how to use DataStar to build a realtime app with
+      PocketPages.
+    </p>
+  </div>
+
+  <!-- Chat Sections -->
+  <section class="grid md:grid-cols-2 gap-6">
+    <aside class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+        <div class="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
+        Chat Connection #1
+      </h2>
+
+      <div hx-ext="pocketbase-sse" class="space-y-3">
+        <div
+          sse-swap="chat"
+          hx-swap="beforeend"
+          class="min-h-[200px] max-h-[300px] overflow-y-auto bg-gray-50 rounded-lg p-4 border border-gray-200"
+        >
+          <!-- Content from SSE will be appended here -->
+        </div>
+      </div>
+    </aside>
+
+    <aside class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+        <div class="w-3 h-3 bg-blue-500 rounded-full mr-3 animate-pulse"></div>
+        Chat Connection #2
+      </h2>
+
+      <div hx-ext="pocketbase-sse" class="space-y-3">
+        <div
+          sse-swap="chat"
+          hx-swap="beforeend"
+          class="min-h-[200px] max-h-[300px] overflow-y-auto bg-gray-50 rounded-lg p-4 border border-gray-200"
+        >
+          <!-- Content from SSE will be appended here -->
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Chat Form -->
+  <article class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Send a Message</h3>
+    <form
+      hx-post="/api/chat"
+      hx-swap="none"
+      hx-on::after-request="if(event.detail.successful) { this.reset(); this.querySelector('input[name=message]').focus() }"
+      class="flex gap-3"
+    >
+      <input
+        type="text"
+        name="message"
+        placeholder="Type your message..."
+        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all duration-200"
+      />
+      <button
+        type="submit"
+        class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+      >
+        Send
+      </button>
+    </form>
+  </article>
+
+  <!-- Counter Section -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+    <div class="flex items-center justify-between">
+      <span class="text-lg font-medium text-gray-700">Counter</span>
+      <button
+        data-on-click="@get('/api/count')"
+        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+      >
+        <%- include('count.ejs') %>
+      </button>
+    </div>
+  </div>
+</div>
