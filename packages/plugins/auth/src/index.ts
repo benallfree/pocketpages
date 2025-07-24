@@ -52,7 +52,7 @@ export type CreateUserOptions = {
 const safeParseJson = (value: string | undefined) => {
   if (!value) return value
   try {
-    return JSON.parse(value)
+    return JSON.parse(value) as unknown
   } catch {
     return value
   }
@@ -159,23 +159,29 @@ const authPluginFactory: PluginFactory = (config) => {
        * If the route is protected, check the auth
        */
       // https://github.com/benallfree/pocketbase/blob/f38700982c1b46ac1a51ff59e985fae6fc332ccb/apis/middlewares.go#L181
-      const cookieRecordAuth = safeParseJson(request.cookies<any>('pb_auth'))
+      const cookieRecordAuth = safeParseJson(
+        request.cookies('pb_auth')
+      ) as AuthData
+      if (typeof cookieRecordAuth !== 'object') {
+        dbg(`invalid auth cookie found in cookie: ${cookieRecordAuth}`)
+        response.cookie('pb_auth', '')
+        return
+      }
       if (cookieRecordAuth?.token) {
         try {
-          const validAuthRecord = $app.findAuthRecordByToken(cookieRecordAuth.token)
+          const validAuthRecord = $app.findAuthRecordByToken(
+            cookieRecordAuth.token
+          )
           if (!validAuthRecord) {
             dbg(`invalid auth token found in cookie: ${cookieRecordAuth.token}`)
             response.cookie('pb_auth', '')
             return
           }
-          
+
           // Attempt to use the record set during authWith* methods (these may be enriched)
-          let authRecord;
-          if (cookieRecordAuth.record) {
-            authRecord = cookieRecordAuth.record;
-          } else {
-            authRecord = validAuthRecord;
-          }
+          const authRecord =
+            $app.findAuthRecordByToken(cookieRecordAuth.token) ??
+            validAuthRecord
 
           request.auth = authRecord
           request.authToken = cookieRecordAuth.token
@@ -308,12 +314,16 @@ const authPluginFactory: PluginFactory = (config) => {
       }
 
       api.signIn = (authData: RecordAuthResponse<AuthModel>) => {
+        const { record, token } = authData
+        if (!record) {
+          throw new Error('No auth record found')
+        }
         dbg(
-          `signing in with token and saving to pb_auth cookie: ${authData.record.id} ${authData.token}`
+          `signing in with token and saving to pb_auth cookie: ${record.id} ${token}`
         )
         api.response.cookie(`pb_auth`, {
-          token: authData.token,
-          record: toPlainObject(authData.record),
+          token,
+          record: toPlainObject(record),
         })
       }
     },
