@@ -1,5 +1,12 @@
 # pocketpages-plugin-auth
 
+## 0.2.2
+
+### Patch Changes
+
+- 7d9eab4: Fix: fetch auth record from cookie token
+- e4987ba: Fix: do not allow signIn() without a valid auth record
+
 ## 0.2.1
 
 ### Patch Changes

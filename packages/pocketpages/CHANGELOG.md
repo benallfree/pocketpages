@@ -1,5 +1,15 @@
 # pocketpages
 
+## 0.20.0
+
+### Minor Changes
+
+- 92b14b4: Add support for DEBUG env var
+
+### Patch Changes
+
+- 7fe3aa1: Fix: restored Typescript typings
+
 ## 0.19.0
 
 ### Minor Changes
