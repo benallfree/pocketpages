@@ -1,0 +1,77 @@
+<!-- slot:title -->
+<%= response.status() %> | PocketPages
+
+<!-- slot:content -->
+<!-- Error section -->
+<div class="glass-card p-12 animate-fade-in-up">
+  <div class="space-y-6">
+    <div class="inline-block">
+      <h1
+        class="text-8xl md:text-9xl font-bold error-gradient animate-pulse-slow"
+      >
+        <%= response.status() %>
+      </h1>
+    </div>
+    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+      Oops! Page Not Found
+    </h2>
+    <p
+      class="text-lg md:text-xl text-white/90 font-light tracking-wide max-w-2xl mx-auto"
+    >
+      The page you're looking for seems to have vanished into the digital void.
+      Don't worry, even the best explorers get lost sometimes!
+    </p>
+    <div
+      class="w-24 h-1 bg-gradient-to-r from-red-400 to-orange-500 mx-auto rounded-full"
+    ></div>
+  </div>
+</div>
+
+<!-- Helpful options -->
+<div class="grid md:grid-cols-3 gap-6 mt-12">
+  <div
+    class="glass-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer"
+  >
+    <div class="text-4xl mb-4">🏠</div>
+    <h3 class="text-xl font-semibold text-white mb-2">Go Home</h3>
+    <p class="text-white/70">Return to the homepage and start fresh</p>
+  </div>
+  <div
+    class="glass-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer"
+  >
+    <div class="text-4xl mb-4">🔍</div>
+    <h3 class="text-xl font-semibold text-white mb-2">Search</h3>
+    <p class="text-white/70">Maybe try searching for what you need</p>
+  </div>
+  <div
+    class="glass-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer"
+  >
+    <div class="text-4xl mb-4">📚</div>
+    <h3 class="text-xl font-semibold text-white mb-2">Browse Docs</h3>
+    <p class="text-white/70">Check out our documentation and guides</p>
+  </div>
+</div>
+
+<!-- CTA buttons -->
+<div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
+  <a href="/" class="btn-primary"> ← Back to Home </a>
+  <button
+    onclick="history.back()"
+    class="px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300"
+  >
+    Go Back
+  </button>
+</div>
+
+<!-- Fun error message -->
+<div class="glass-card p-6 mt-8 max-w-2xl mx-auto">
+  <div class="text-white/80 text-sm">
+    <p class="mb-2">🤖 <strong>Error Code:</strong> LOST_IN_CYBERSPACE</p>
+    <p class="mb-2">
+      🔧 <strong>Suggested Fix:</strong> Try a different URL or head back home
+    </p>
+    <p>
+      💡 <strong>Pro Tip:</strong> Double-check the spelling in your address bar
+    </p>
+  </div>
+</div>

@@ -8,9 +8,7 @@ export type PageDataLoaderFunc<TData = any> = (
   api: Omit<PagesRequestContext<TData>, 'data'>
 ) => object
 
-export type MiddlewareNextFunc = (
-  data?: object
-) => void
+export type MiddlewareNextFunc = (data?: object) => void
 
 export type MiddlewareLoaderFunc<TData = any> = (
   api: PagesRequestContext<TData>,
@@ -154,6 +152,7 @@ export type PagesRequest = {
 }
 
 export type PagesResponse = {
+  status: (status?: number) => number
   file: (path: string) => void
   write: (s: string) => void
   redirect: (path: string, status?: number) => void

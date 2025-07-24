@@ -70,9 +70,9 @@ export const parseSlots = (input: string) => {
 
 const defaultResponder: Plugin = {
   name: 'builtin',
-  onResponse: ({ content, api, route }) => {
+  onResponse: ({ content, api }) => {
     const { response } = api
-    response.html(200, content)
+    response.html(response.status(), content)
     return true
   },
 }
@@ -146,6 +146,15 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   }
 
   const response: PagesResponse = {
+    status: (() => {
+      let _status = 200
+      return (status?: number) => {
+        if (status !== undefined) {
+          _status = status
+        }
+        return _status
+      }
+    })(),
     file: (path: string) => {
       return e.fileFS($os.dirFS($filepath.dir(path)), $filepath.base(path))
     },
@@ -156,9 +165,11 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       e.redirect(status, path)
     },
     json: (status: number, data: any) => {
+      response.status(status)
       e.json(status, data)
     },
     html: (status: number, data: string) => {
+      response.status(status)
       e.html(status, data)
     },
     header: (name: string, value?: string) => {
@@ -195,15 +206,69 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   const plugins = loadPlugins(cache)
   plugins.forEach((plugin) => plugin.onRequest?.({ request, response }))
 
-  const resolvedRoute = resolveRoute(request.url, routes)
+  let resolvedRoute = resolveRoute(request.url, routes)
 
   /**
    * If it doesn't match any known route, pass it on
    */
+  dbg(`resolvedRoute`, resolvedRoute)
   if (!resolvedRoute) {
     // Otherwise, pass it on to PocketBase to handle
     dbg(`No route matched for ${url}, passing on to PocketBase`)
-    return next()
+    try {
+      return next()
+    } catch (err) {
+      dbg(`PocketBase route resulted in error ${err} (${JSON.stringify(err)})`)
+      type ApiError = {
+        value: {
+          status: number
+          message: string
+        }
+      }
+      function isApiError(err: any): err is ApiError {
+        return (
+          err instanceof Error &&
+          'value' in err &&
+          typeof err.value === 'object' &&
+          err.value !== null &&
+          'status' in err.value &&
+          'message' in err.value
+        )
+      }
+      if (isApiError(err)) {
+        const { status, message } = err.value
+        response.status(status)
+        /**
+         * Error resolution plan:
+         *
+         * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
+         *
+         * 1. `${status}`
+         * 2. `${status.slice(0, 2)}xx`
+         * 3. `${status.slice(0, 1)}xx`
+         * 4. `error`
+         */
+        const check1 = `${status}`
+        const check2 = `${status.toString().slice(0, 2)}xx`
+        const check3 = `${status.toString().slice(0, 1)}xx`
+        const check4 = `error`
+        for (const check of [check1, check2, check3, check4]) {
+          const tryUrl = new URL(
+            [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
+          )
+          dbg(`Trying ${tryUrl}`)
+          resolvedRoute = resolveRoute(tryUrl, routes)
+          if (resolvedRoute) {
+            break
+          }
+        }
+        if (!resolvedRoute) {
+          throw err
+        }
+      } else {
+        throw err
+      }
+    }
   }
 
   const { route, params } = resolvedRoute
@@ -364,12 +429,12 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     }
   } catch (e) {
     error(e)
-    
+
     if (e instanceof BadRequestError) {
       const message = config.debug ? `${e}` : 'Bad Request'
       return response.html(400, message)
     }
-    
+
     // In production, don't leak error details or stack traces
     if (config.debug) {
       const message = (() => {
@@ -396,4 +461,5 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       )
     }
   }
+  next()
 }
