@@ -52,25 +52,7 @@
   <!-- Chat Form -->
   <article class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
     <h3 class="text-lg font-semibold text-gray-800 mb-4">Send a Message</h3>
-    <form
-      hx-post="/api/chat"
-      hx-swap="none"
-      hx-on::after-request="if(event.detail.successful) { this.reset(); this.querySelector('input[name=message]').focus() }"
-      class="flex gap-3"
-    >
-      <input
-        type="text"
-        name="message"
-        placeholder="Type your message..."
-        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all duration-200"
-      />
-      <button
-        type="submit"
-        class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-      >
-        Send
-      </button>
-    </form>
+    <%- include('chat-form.ejs') %>
   </article>
 
   <!-- Counter Section -->

@@ -1,0 +1,10 @@
+<script server>
+  const { message } = body()
+  // sseSend('chat')
+</script>
+<%- include('chat-form.ejs') %>
+<script>
+  const form = document.getElementById('chat-form')
+  form.reset()
+  form.querySelector('input[name="message"]').focus()
+</script>
