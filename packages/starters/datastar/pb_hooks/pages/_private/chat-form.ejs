@@ -1,16 +1,16 @@
-<form class="flex gap-3" id="chat-form">
+<div id="chat-form" class="flex gap-3">
   <input
     type="text"
     name="message"
     placeholder="Type your message..."
     class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all duration-200"
-    value=""
+    data-bind-message
   />
   <button
     type="submit"
-    data-on-click="@get('/api/chat', {contentType: 'form'})"
     class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+    data-on-click="@get('/api/chat')"
   >
     Send
   </button>
-</form>
+</div>
