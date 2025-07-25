@@ -57,6 +57,9 @@ const ssePluginFactory: PluginFactory = (config) => {
       }
 
       api.sseSend = sseSend
+      api.realtime = {
+        send: sseSend,
+      }
     },
     onResponse: ({ api, content }) => {
       const { stringify, response } = api

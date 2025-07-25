@@ -98,6 +98,40 @@ const datastarPluginFactory: PluginFactory = (config) => {
         api.echo('\n')
       }
       api.datastar = {
+        realtime: {
+          patchSignals: (
+            signals: string,
+            options?: Partial<PatchSignalsOptions>
+          ) => {
+            api.realtime.send(
+              'datastar',
+              api.stringify({
+                type: EventType.PatchSignals,
+                el: null,
+                argsRaw: {
+                  signals,
+                  ...options,
+                },
+              })
+            )
+          },
+          patchElements: (
+            elements: string,
+            options?: Partial<PatchElementsOptions>
+          ) => {
+            api.realtime.send(
+              'datastar',
+              api.stringify({
+                type: EventType.PatchElements,
+                el: null,
+                argsRaw: {
+                  elements,
+                  ...options,
+                },
+              })
+            )
+          },
+        },
         patchElements: (
           elements: string,
           options?: Partial<PatchElementsOptions>

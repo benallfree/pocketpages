@@ -1,7 +1,21 @@
 <script server>
+  const messages = store('messages') || []
+
+  dbg('chat', request.url)
+  const { from, message } = request.url.query.datastar
+  messages.push({
+    from,
+    message,
+  })
+  store('messages', messages)
   datastar.patchSignals(
     stringify({
       message: '',
+    })
+  )
+  datastar.realtime.patchElements(
+    include('chat-box.ejs', {
+      messages,
     })
   )
 </script>
