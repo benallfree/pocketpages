@@ -1,7 +1,7 @@
 <script server>
   // Save the message to ephemeral store
   const messages = store('messages') || []
-  const { from, message } = request.url.query.datastar
+  const { from, message } = datastar.readSignals(request, {})
   messages.push({
     from,
     message,
