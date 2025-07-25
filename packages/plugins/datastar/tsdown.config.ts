@@ -7,4 +7,7 @@ export default defineConfig({
   format: ['cjs'],
   clean: true,
   outDir: 'dist',
+  loader: {
+    html: 'text',
+  },
 })

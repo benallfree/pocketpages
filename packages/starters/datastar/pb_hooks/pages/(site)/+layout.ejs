@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%=meta('title') || 'DataStar Starter Kit'%></title>
+    <title><%=meta('title') || 'Datastar Starter Kit'%></title>
     <meta
       name="description"
       content="<%=meta('description') || 'Modern web applications with DataStar and PocketPages'%>"
@@ -57,39 +57,7 @@
       rel="stylesheet"
     />
 
-    <script
-      type="module"
-      src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"
-    ></script>
-    <%- slots.head %>
-    <script>
-      const source = new EventSource('/api/realtime') // URL to your SSE endpoint
-      source.addEventListener('PB_CONNECT', function (event) {
-        const e = JSON.parse(event.data)
-        console.log('PB_CONNECT event:', e)
-        const { clientId } = e
-        fetch(`/api/realtime`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            clientId,
-            subscriptions: ['datastar'],
-          }),
-        }).catch(console.error)
-      })
-
-      source.addEventListener('datastar', function (event) {
-        const e = JSON.parse(event.data)
-        console.log('datastar event:', e)
-        document.dispatchEvent(
-          new CustomEvent('datastar-fetch', {
-            detail: e,
-          })
-        )
-      })
-    </script>
+    <%- slots.head %> <%- slots.datastar %>
   </head>
 
   <body

@@ -1,21 +1,24 @@
 <script server>
+  // Save the message to ephemeral store
   const messages = store('messages') || []
-
-  dbg('chat', request.url)
   const { from, message } = request.url.query.datastar
   messages.push({
     from,
     message,
   })
   store('messages', messages)
-  datastar.patchSignals(
-    stringify({
-      message: '',
-    })
-  )
+
+  // Broadcast the chatbox to all clients
   datastar.realtime.patchElements(
     include('chat-box.ejs', {
       messages,
+    })
+  )
+
+  // Clear the message input
+  datastar.patchSignals(
+    stringify({
+      message: '',
     })
   )
 </script>

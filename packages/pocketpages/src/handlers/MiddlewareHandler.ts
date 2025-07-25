@@ -41,9 +41,11 @@ const escapeXml = (unsafe: string = '') => {
   })
 }
 
-export const parseSlots = (input: string) => {
+export const extractSlotContent = (
+  input: string,
+  slots: Record<string, string>
+) => {
   const regex = /<!--\s*slot:(\w+)\s*-->([\s\S]*?)(?=<!--\s*slot:\w+\s*-->|$)/g
-  const slots: Record<string, string> = {}
   let lastIndex = 0
   let cleanedContent = ''
   let match: RegExpExecArray | null
@@ -52,7 +54,7 @@ export const parseSlots = (input: string) => {
     const name = match[1]
     const content = match[2]?.trim()
     if (name && content) {
-      slots[name] = content
+      slots[name] = [slots[name], content].filter(Boolean).join(`\n`)
       // Add the content between the last match and this slot tag
       cleanedContent += input.slice(lastIndex, match.index)
       lastIndex = match.index + match[0].length
@@ -312,6 +314,14 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       api.data = data
       // dbg(`Final api:`, { params: api.params, data: api.data })
 
+      plugins.forEach((plugin) => {
+        plugin.onBeforeRender?.({
+          api,
+          route,
+          filePath: absolutePath,
+          plugins,
+        })
+      })
       let content = plugins.reduce((content, plugin) => {
         return (
           plugin.onRender?.({
@@ -343,10 +353,17 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       /**
        * Render the content in the layout
        */
+      const res = extractSlotContent(content, api.slots)
+      api.slot = res.slots.default || res.content
       route.layouts.forEach((layoutPath) => {
-        const res = parseSlots(content)
-        api.slots = res.slots
-        api.slot = res.slots.default || res.content
+        plugins.forEach((plugin) => {
+          plugin.onBeforeRender?.({
+            api,
+            route,
+            filePath: layoutPath,
+            plugins,
+          })
+        })
         content = plugins.reduce((content, plugin) => {
           return (
             plugin.onRender?.({
