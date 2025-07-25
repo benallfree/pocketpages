@@ -165,6 +165,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       if (value === undefined) {
         return e.response.header().get(name) || ''
       }
+      dbg(`header: ${name} ${value}`)
       e.response.header().set(name, value)
       return value
     },
@@ -229,6 +230,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       echo: (...args) => {
         const s = echo(...args)
         response.write(s)
+        dbg(`echo: ${s}`)
         return s
       },
       formData: request.formData,
@@ -311,9 +313,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       api.data = data
       // dbg(`Final api:`, { params: api.params, data: api.data })
 
-      //@ts-ignore
-      delete api.echo
-
       let content = plugins.reduce((content, plugin) => {
         return (
           plugin.onRender?.({
@@ -325,6 +324,11 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
           }) ?? content
         )
       }, '')
+
+      // If the content type is not text/html, we don't need to parse it or render it in a layout
+      if (response.header('Content-Type') !== 'text/html') {
+        return true
+      }
 
       try {
         dbg(`Attempting to parse as JSON`)
@@ -364,12 +368,12 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     }
   } catch (e) {
     error(e)
-    
+
     if (e instanceof BadRequestError) {
       const message = config.debug ? `${e}` : 'Bad Request'
       return response.html(400, message)
     }
-    
+
     // In production, don't leak error details or stack traces
     if (config.debug) {
       const message = (() => {

@@ -86,8 +86,11 @@ const datastarPluginFactory: PluginFactory = (config) => {
           retryDuration?: DurationInMilliseconds
         }
       ) {
+        dbg('send', { eventType, dataLines, options })
         api.response.header('Content-Type', 'text/event-stream')
-        api.echo(`eventType: ${eventType}\n`)
+        api.response.header('Cache-Control', 'no-cache')
+        api.response.header('Connection', 'keep-alive')
+        api.echo(`event: ${eventType}\n`)
         if (options?.eventId) api.echo(`id: ${options?.eventId}\n`)
         if (options?.retryDuration)
           api.echo(`retry: ${options?.retryDuration}\n`)

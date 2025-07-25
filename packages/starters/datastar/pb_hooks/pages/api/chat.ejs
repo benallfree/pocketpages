@@ -1,5 +1,7 @@
 <script server>
-  const { message } = body()
-  // sseSend('chat')
+  datastar.patchSignals(
+    stringify({
+      message: '',
+    })
+  )
 </script>
-<%- include('chat-form.ejs') %>
