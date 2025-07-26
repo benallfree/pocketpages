@@ -20,7 +20,7 @@ HTMX is a powerful library that allows you to access modern browser features dir
 
 ```javascript
 module.exports = {
-  plugins: ['pocketpages-plugin-ejs', 'pocketpages-plugin-sse'],
+  plugins: ['pocketpages-plugin-ejs', 'pocketpages-plugin-realtime'],
 }
 ```
 
@@ -343,7 +343,7 @@ PocketPages provides Server-Sent Events (SSE) integration with HTMX for realtime
 <!-- pages/api/chat.ejs -->
 <%%
   const { message } = body()
-  sseSend('chat')
+  realtime.send('chat')
 %>
 <div>
   <%%= message %>
@@ -354,8 +354,7 @@ PocketPages provides Server-Sent Events (SSE) integration with HTMX for realtime
 
 1. **Server-Side Events**
 
-   - The `sseSend(topic)` function broadcasts rendered content to all subscribers
-   - Content after the `sseSend()` call is captured and sent
+   - The `realtime.send(topic, message)` function broadcasts rendered content to all subscribers
    - Multiple clients can receive updates simultaneously
 
 2. **Client-Side Reception**

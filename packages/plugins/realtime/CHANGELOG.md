@@ -1,4 +1,4 @@
-# pocketpages-plugin-sse
+# pocketpages-plugin-realtime
 
 ## 0.1.0
 

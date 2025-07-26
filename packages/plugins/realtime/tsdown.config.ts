@@ -9,16 +9,13 @@ export default defineConfig({
   format: ['cjs'],
   clean: true,
   outDir: 'dist',
-  loader: {
-    html: 'text',
-  },
   onSuccess: (context) => {
     // copy README.md to docs location
     fs.copyFileSync(
       path.resolve(__dirname, './README.md'),
       path.resolve(
         __dirname,
-        '../../site/pb_hooks/pages/(main)/docs/plugins/datastar.md'
+        '../../site/pb_hooks/pages/(main)/docs/plugins/sse.md'
       )
     )
     console.log('README.md copied to docs location')

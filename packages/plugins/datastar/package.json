@@ -15,7 +15,7 @@
     "pocketpages": "workspace:>=0.16.0"
   },
   "dependencies": {
-    "pocketpages-plugin-sse": "workspace:>=0.1.0"
+    "pocketpages-plugin-realtime": "workspace:>=0.1.0"
   },
   "files": [
     "dist",
