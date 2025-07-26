@@ -28,6 +28,12 @@ This project uses the PocketBase JSVM. In code samples, nothing is awaitable and
 - Use `<%%=` for variable interpolation.
 - Use `<%%` for control flow like `if` statements.
 
+For Markdown in packages/site only:
+
+- Escape the EJS start tag `<%` by using `<%%`
+- Use `<%%=` for variable interpolation.
+- Use `<%%` for control flow like `if` statements.
+
 # Generating code
 
 - never run package managers
