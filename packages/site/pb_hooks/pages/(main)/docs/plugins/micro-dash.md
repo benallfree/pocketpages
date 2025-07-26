@@ -1,8 +1,3 @@
----
-title: Micro Dash Plugin
-description: Lightweight utility functions for data manipulation in PocketPages applications.
----
-
 # Micro Dash Plugin
 
 The Micro Dash plugin (`pocketpages-plugin-micro-dash`) provides a set of lightweight utility functions for data manipulation, based on the `@s-libs/micro-dash` library.
@@ -52,7 +47,7 @@ function shuffle<T>(array: T[]): T[]
 ### Collection Operations
 
 ```ejs
-<%%
+<%%%
   // Iterate over arrays or objects
   forEach([1, 2, 3], (value) => {
     echo(value)
@@ -70,7 +65,7 @@ function shuffle<T>(array: T[]): T[]
 ### Object Operations
 
 ```ejs
-<%%
+<%%%
   // Merge objects
   const merged = merge(
     { a: 1 },
@@ -92,7 +87,7 @@ function shuffle<T>(array: T[]): T[]
 ### Array Operations
 
 ```ejs
-<%%
+<%%%
   // Shuffle an array
   const numbers = [1, 2, 3, 4, 5]
   const shuffled = shuffle(numbers)

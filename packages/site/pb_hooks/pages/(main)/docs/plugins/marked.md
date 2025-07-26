@@ -1,8 +1,3 @@
----
-title: Markdown Plugin
-description: Process Markdown files with frontmatter support, automatic asset fingerprinting, and heading IDs.
----
-
 # Markdown Plugin
 
 The Markdown plugin (`pocketpages-plugin-marked`) processes `.md` files through the Marked parser, adding support for frontmatter, automatic asset fingerprinting, and heading IDs. It works in conjunction with the EJS plugin to enable dynamic content within Markdown files.
@@ -66,8 +61,8 @@ author: John Doe
 Access frontmatter in templates using the `meta()` function:
 
 ```ejs
-<title><%%= meta('title') %></title>
-<meta name="description" content="<%%= meta('description') %>">
+<title><%%%= meta('title') %></title>
+<meta name="description" content="<%%%= meta('description') %>">
 ```
 
 ### Automatic Asset Fingerprinting
@@ -105,18 +100,18 @@ Renders as:
 Since Markdown files are processed through EJS first, you can include dynamic content:
 
 ```markdown
-# User Profile: <%%= user.name %>
+# User Profile: <%%%= user.name %>
 
-<<%=`script server`%>>
+<<%%=`script server`%>>
 const posts = pb.collection('posts').getFullList()
 </script>
 
 ## Recent Posts
 
-<%% for (const post of posts) { %>
+<%%% for (const post of posts) { %>
 
-- [<%%= post.title %>](<%%= post.url %>)
-  <%% } %>
+- [<%%%= post.title %>](<%%%= post.url %>)
+  <%%% } %>
 ```
 
 ## Processing Order
@@ -134,20 +129,20 @@ title: Getting Started
 layout: docs
 ---
 
-# <%%= meta('title') %>
+# <%%%= meta('title') %>
 
-<<%=`script server`%>>
+<<%%=`script server`%>>
 const features = pb.collection('features').getFullList()
 </script>
 
 ## Key Features
 
-<%% features.forEach(feature => { %>
+<%%% features.forEach(feature => { %>
 
-### <%%= feature.name %>
+### <%%%= feature.name %>
 
-<%%= feature.description %>
+<%%%= feature.description %>
 
-![<%%= feature.name %>](<%%= feature.image %>)
-<%% }) %>
+![<%%%= feature.name %>](<%%%= feature.image %>)
+<%%% }) %>
 ```

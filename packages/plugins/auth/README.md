@@ -1,4 +1,4 @@
-# Authentication Plugin
+# PocketPages Authentication Plugin
 
 The Authentication plugin (`pocketpages-plugin-auth`) provides a complete authentication system for PocketPages applications, supporting multiple authentication methods including password, OTP, OAuth2, and anonymous authentication.
 

@@ -53,7 +53,7 @@ You can also export a function that takes the [globalApi](/docs/global-api) as a
 This allows you to leverage things like `env()` and more in your config.
 
 ```javascript
-module.exports = function(api) {
+module.exports = function (api) {
   return {
     plugins: [
       {
@@ -63,7 +63,7 @@ module.exports = function(api) {
       'pocketpages-plugin-ejs',
     ],
     debug: true,
-  };
+  }
 }
 ```
 
