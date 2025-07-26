@@ -156,7 +156,7 @@ export type PagesResponse = {
   redirect: (path: string, status?: number) => void
   json: (status: number, data: any) => void
   html: (status: number, data: string) => void
-  header: (name: string, value?: string) => void
+  header: (name: string, value?: string) => string | undefined
   cookie: <T>(
     name: string,
     value: T,
