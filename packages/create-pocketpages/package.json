@@ -7,7 +7,8 @@
     "create-pocketpages": "index.js"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "starters.json"
   ],
   "keywords": [
     "pocketpages",

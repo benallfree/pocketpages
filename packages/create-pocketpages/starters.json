@@ -1,0 +1,49 @@
+{
+  "starters": [
+    {
+      "name": "minimal",
+      "description": "A minimal PocketPages starter with just the basics",
+      "value": "minimal",
+      "instructions": ["pocketbase serve --dir=pb_data --dev"]
+    },
+    {
+      "name": "mvp",
+      "description": "MVP.css starter - A minimalist CSS framework",
+      "value": "mvp",
+      "instructions": ["pocketbase serve --dir=pb_data --dev"]
+    },
+    {
+      "name": "auth",
+      "description": "Complete authentication system with multiple login methods",
+      "value": "auth",
+      "instructions": [
+        "pocketbase serve --dir=pb_data --dev",
+        "bunx maildev  # For testing email functionality"
+      ]
+    },
+    {
+      "name": "daisyui",
+      "description": "Tailwind CSS with DaisyUI components",
+      "value": "daisyui",
+      "instructions": [
+        "npm run dev:css  # Start Tailwind CSS watcher",
+        "pocketbase serve --dir=pb_data --dev"
+      ]
+    },
+    {
+      "name": "daisyui-docs",
+      "description": "Documentation site template with DaisyUI and navigation",
+      "value": "daisyui-docs",
+      "instructions": [
+        "npm run dev:css  # Start Tailwind CSS watcher",
+        "pocketbase serve --dir=pb_data --dev"
+      ]
+    },
+    {
+      "name": "htmx",
+      "description": "HTMX integration for dynamic interactions",
+      "value": "htmx",
+      "instructions": ["pocketbase serve --dir=pb_data --dev"]
+    }
+  ]
+}
