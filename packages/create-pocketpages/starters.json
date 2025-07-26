@@ -44,6 +44,12 @@
       "description": "HTMX integration for dynamic interactions",
       "value": "htmx",
       "instructions": ["pocketbase serve --dir=pb_data --dev"]
+    },
+    {
+      "name": "datastar",
+      "description": "DataStar integration for realtime web applications",
+      "value": "datastar",
+      "instructions": ["pocketbase serve --dir=pb_data --dev"]
     }
   ]
 }

@@ -1,0 +1,14 @@
+<div id="chat-box" class="space-y-3">
+  <div
+    class="min-h-[200px] max-h-[300px] overflow-y-auto bg-gray-50 rounded-lg p-4 border border-gray-200"
+  >
+    <% for (const message of store('messages')||[]) { %>
+      <div class="flex items-start gap-3">
+        <span class="text-2xl"><%= message.from %></span>
+        <div class="bg-white rounded-lg px-4 py-2 shadow text-gray-800">
+          <span class="block break-words"><%= message.message %></span>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>

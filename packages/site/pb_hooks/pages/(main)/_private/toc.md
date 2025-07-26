@@ -41,6 +41,7 @@
 
 - [Overview](/docs/plugins)
 - [Authentication](/docs/plugins/auth)
+- [Datastar](/docs/plugins/datastar)
 - [EJS](/docs/plugins/ejs)
 - [JS SDK](/docs/plugins/js-sdk)
 - [Markdown](/docs/plugins/marked)

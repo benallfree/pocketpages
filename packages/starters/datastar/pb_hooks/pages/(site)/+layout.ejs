@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%=meta('title') || 'Datastar Starter Kit'%></title>
+    <meta
+      name="description"
+      content="<%=meta('description') || 'Modern web applications with DataStar and PocketPages'%>"
+    />
+    <meta
+      property="og:title"
+      content="<%=meta('title') || 'DataStar Starter Kit'%>"
+    />
+    <meta
+      property="og:description"
+      content="<%=meta('description') || 'Modern web applications with DataStar and PocketPages'%>"
+    />
+    <meta
+      property="og:image"
+      content="<%=meta('image') || '/android-chrome-512x512.png'%>"
+    />
+    <meta
+      property="og:url"
+      content="<%=meta('path') ? `${meta('path')}` : meta('url') || `${request.url}`%>"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                200: '#bfdbfe',
+                300: '#93c5fd',
+                400: '#60a5fa',
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e3a8a',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <%- slots.head %> <%- datastar.scripts() %>
+  </head>
+
+  <body
+    class="h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 font-sans antialiased"
+  >
+    <div class="min-h-full flex flex-col">
+      <main class="flex-1 container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto"><%-slots.body || slot%></div>
+      </main>
+    </div>
+  </body>
+</html>

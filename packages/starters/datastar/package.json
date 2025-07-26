@@ -1,0 +1,28 @@
+{
+  "name": "pocketpages-starter-datastar",
+  "version": "0.0.2",
+  "private": true,
+  "dependencies": {
+    "pocketpages": "workspace:>=0.20.0",
+    "pocketpages-plugin-datastar": "workspace:>=0.0.1"
+  },
+  "files": [
+    "pb_hooks",
+    "*.md"
+  ],
+  "description": "A starter project for PocketPages with Datastar",
+  "author": {
+    "name": "Ben Allfree",
+    "github": "benallfree"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benallfree/pocketpages/tree/main/packages/starters/datastar"
+  },
+  "keywords": [
+    "pocketpages",
+    "starter",
+    "datastar"
+  ],
+  "license": "MIT"
+}
