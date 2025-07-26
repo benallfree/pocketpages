@@ -23,14 +23,6 @@ const _realtimeSend = (name: string, data: string, filter: RealtimeFilter) => {
 const realtimePluginFactory: PluginFactory = (config) => {
   const { dbg } = config
 
-  const deferredRealtime: {
-    topic: string
-    filter: RealtimeFilter
-  } = {
-    topic: '',
-    filter: () => false, //Noop
-  }
-
   return {
     name: 'sse',
     onExtendContextApi: ({ api }) => {
@@ -41,43 +33,15 @@ const realtimePluginFactory: PluginFactory = (config) => {
         return api.auth?.id ? client.get('auth')?.id === api.auth?.id : true
       }
 
-      function send(
-        topic: string,
-        message: string,
-        filter?: RealtimeFilter
-      ): void
-      function send(topic: string, filter?: RealtimeFilter): void
-      function send(
-        topic: string,
-        messageOrFilter: string | RealtimeFilter = DefaultSseFilter,
-        filter: RealtimeFilter = DefaultSseFilter
-      ): void {
-        const isDeferred = typeof messageOrFilter === 'function'
-        if (isDeferred) {
-          deferredRealtime.topic = topic
-          deferredRealtime.filter = messageOrFilter as RealtimeFilter
-          dbg('Deferred SSE', { deferredSse: deferredRealtime })
-          return
-        }
-        return _realtimeSend(topic, messageOrFilter as string, filter)
-      }
-
       api.realtime = {
-        send,
+        send(
+          topic: string,
+          message: string,
+          filter: RealtimeFilter = DefaultSseFilter
+        ): void {
+          return _realtimeSend(topic, message, filter)
+        },
       }
-    },
-    onResponse: ({ api, content }) => {
-      const { stringify, response } = api
-      dbg('Deferred realtime send', { deferredRealtime })
-
-      if (!deferredRealtime.topic) return false
-
-      _realtimeSend(
-        deferredRealtime.topic,
-        stringify(content),
-        deferredRealtime.filter
-      )
-      return true
     },
   }
 }

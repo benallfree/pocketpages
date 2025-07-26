@@ -10,14 +10,15 @@ export default defineConfig({
   clean: true,
   outDir: 'dist',
   onSuccess: (context) => {
-    // copy README.md to docs location
-    fs.copyFileSync(
-      path.resolve(__dirname, './README.md'),
-      path.resolve(
-        __dirname,
-        '../../site/pb_hooks/pages/(main)/docs/plugins/sse.md'
-      )
+    // copy README.md to docs location, replacing <% with <%%
+    const src = path.resolve(__dirname, './README.md')
+    const dest = path.resolve(
+      __dirname,
+      '../../site/pb_hooks/pages/(main)/docs/plugins/realtime.md'
     )
-    console.log('README.md copied to docs location')
+    let content = fs.readFileSync(src, 'utf8')
+    content = content.replace(/<%/g, '<%%')
+    fs.writeFileSync(dest, content)
+    console.log('README.md copied to docs location with EJS tags escaped')
   },
 })

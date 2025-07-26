@@ -40,13 +40,13 @@
 # Official Plugins
 
 - [Overview](/docs/plugins)
-- [EJS](/docs/plugins/ejs)
-- [Markdown](/docs/plugins/markdown)
-- [Realtime](/docs/plugins/realtime)
 - [Authentication](/docs/plugins/auth)
+- [Datastar](/docs/plugins/datastar)
+- [EJS](/docs/plugins/ejs)
 - [JS SDK](/docs/plugins/js-sdk)
+- [Markdown](/docs/plugins/markdown)
 - [Micro Dash](/docs/plugins/micro-dash)
-- [Authoring](/docs/plugins/authoring)
+- [Realtime](/docs/plugins/realtime)
 
 # Global API Reference
 
