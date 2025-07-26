@@ -324,6 +324,13 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
         )
       }, '')
 
+      // If the content type is not text/html, we don't need to parse it or render it in a layout
+      const contentType = response.header('Content-Type')
+      dbg(`Content-Type: ${contentType}`)
+      if (contentType && contentType !== 'text/html') {
+        return true
+      }
+
       try {
         dbg(`Attempting to parse as JSON`)
         const parsed = JSON.parse(content)
