@@ -25,6 +25,7 @@ export const globalApi: PagesGlobalContext = {
     if (value === undefined) {
       return $app.store<any>().get(name)
     }
+    globalApi.dbg(`store: ${name}`, value)
     $app.store<any>().set(name, value)
   },
   ...log,
