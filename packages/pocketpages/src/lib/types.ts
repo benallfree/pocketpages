@@ -71,12 +71,6 @@ export type HandlesContext = {
   filePath: string
 }
 
-export type BeforeRenderContext = PluginContextBase & {
-  api: PagesRequestContext
-  filePath: string
-  plugins: Plugin[]
-}
-
 export type RenderContext = PluginContextBase & {
   api: PagesRequestContext
   content: string
@@ -101,7 +95,6 @@ export type RequestContext = {
 export type Plugin = {
   name: string
   onRequest?: (context: RequestContext) => void
-  onBeforeRender?: (context: BeforeRenderContext) => void
   onRender?: (context: RenderContext) => string
   handles?: (context: HandlesContext) => boolean
   onExtendContextApi?: (context: ExtendContextApiContext) => void
