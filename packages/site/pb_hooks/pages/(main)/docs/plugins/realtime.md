@@ -38,6 +38,16 @@ Sends a message to all subscribed clients.
 <%%= context.realtime.send('updates', 'New data available') %>
 ```
 
+### Chat Example
+
+```javascript
+// pages/api/chat.ejs
+<script server>
+  const {message} = body() realtime.send('chat',
+  stringify(include(`chat-msg.ejs`, {message})))
+</script>
+```
+
 ### With Custom Filter
 
 ```javascript

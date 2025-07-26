@@ -47,6 +47,7 @@
 - [Markdown](/docs/plugins/marked)
 - [Micro Dash](/docs/plugins/micro-dash)
 - [Realtime](/docs/plugins/realtime)
+- [Authoring](/docs/plugins/authoring)
 
 # Global API Reference
 

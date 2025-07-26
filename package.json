@@ -11,7 +11,14 @@
   "scripts": {
     "dev": "bun run --filter='*' dev",
     "build": "bun run --filter='*' build",
-    "publish": "bun run build && bun run --filter='*' publish",
+    "publish": "concurrently 'bun:publish:*'",
+    "publish:pocketpages": "cd packages/pocketpages && bun publish",
+    "publish:auth": "cd packages/plugins/auth && bun publish",
+    "publish:ejs": "cd packages/plugins/ejs && bun publish",
+    "publish:js-sdk": "cd packages/plugins/js-sdk && bun publish",
+    "publish:marked": "cd packages/plugins/marked && bun publish",
+    "publish:micro-dash": "cd packages/plugins/micro-dash && bun publish",
+    "publish:realtime": "cd packages/plugins/realtime && bun publish",
     "fix": "prettier --write ."
   },
   "prettier": {

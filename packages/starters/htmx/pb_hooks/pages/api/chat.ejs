@@ -1,4 +1,4 @@
 <script server>
   const { message } = body()
-  realtime.send('chat', include(`chat-message.ejs`, { message }))
+  realtime.send('chat', stringify(include(`chat-msg.ejs`, { message })))
 </script>
