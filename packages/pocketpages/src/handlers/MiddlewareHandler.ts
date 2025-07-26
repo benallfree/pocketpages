@@ -353,7 +353,8 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       /**
        * Render the content in the layout
        */
-      const res = extractSlotContent(content, api.slots)
+      const res = extractSlotContent(content, {})
+      api.slots = res.slots
       api.slot = res.slots.default || res.content
       route.layouts.forEach((layoutPath) => {
         plugins.forEach((plugin) => {

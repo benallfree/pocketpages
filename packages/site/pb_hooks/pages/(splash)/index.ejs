@@ -213,7 +213,7 @@ const user = $app.dao().findRecordById('users', userId)
           </p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
           <!-- HTMX -->
           <div class="card bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 hover:shadow-lg transition-all duration-300">
             <div class="card-body text-center p-6">
@@ -227,6 +227,14 @@ const user = $app.dao().findRecordById('users', userId)
             <div class="card-body text-center p-6">
               <div class="text-2xl font-bold text-emerald-600 mb-2">Alpine.js</div>
               <p class="text-sm text-emerald-700">Minimal framework for HTML</p>
+            </div>
+          </div>
+
+          <!-- Datastar -->
+          <div class="card bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 hover:shadow-lg transition-all duration-300">
+            <div class="card-body text-center p-6">
+              <div class="text-2xl font-bold text-indigo-600 mb-2">Datastar</div>
+              <p class="text-sm text-indigo-700">Reactive UI with data binding</p>
             </div>
           </div>
 
@@ -248,7 +256,7 @@ const user = $app.dao().findRecordById('users', userId)
         </div>
 
         <!-- Code Example -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- HTMX Example -->
           <div class="card bg-base-200 shadow-lg">
             <div class="card-body p-0">
@@ -276,12 +284,36 @@ const user = $app.dao().findRecordById('users', userId)
                 <span class="text-sm text-base-content/70">Alpine.js + PocketPages</span>
               </div>
               <div class="p-4">
-                <pre class="text-sm"><code class="language-html">&lt;div x-data="{ todos: &lt;%%= JSON.stringify(todos) %&gt; }"&gt;
+                <pre class="text-sm"><code class="language-html">&lt;div x-data="{ todos: &lt;%= JSON.stringify(todos) %&gt; }"&gt;
   &lt;template x-for="todo in todos"&gt;
     &lt;div x-text="todo.title"
          :class="{ 'completed': todo.done }"&gt;
     &lt;/div&gt;
   &lt;/template&gt;
+&lt;/div&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Datastar Example -->
+          <div class="card bg-base-200 shadow-lg">
+            <div class="card-body p-0">
+              <div class="bg-base-300 px-4 py-2 rounded-t-2xl border-b border-base-400">
+                <span class="text-sm text-base-content/70">Datastar + PocketPages</span>
+              </div>
+              <div class="p-4">
+                <pre class="text-sm"><code class="language-html">&lt;input type="text" 
+       name="message" 
+       data-bind-message /&gt;
+
+&lt;button data-on-click="@get('/api/chat')"&gt;
+  Send
+&lt;/button&gt;
+
+&lt;div id="chat-box"&gt;
+  &lt;% for (const msg of store('messages')||[]) { %&gt;
+    &lt;div&gt;&lt;%= msg.message %&gt;&lt;/div&gt;
+  &lt;% } %&gt;
 &lt;/div&gt;</code></pre>
               </div>
             </div>
