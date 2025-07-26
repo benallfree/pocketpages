@@ -6,7 +6,7 @@ description: Access URL route parameters in PocketPages templates using the para
 # `params` - Route Parameters
 
 - **Type**: Object
-- **Description**: The `params` object contains routing parameters derived from placeholder directory and file names (parts of the path wrapped in square brackets). For query string parameters, use `request.url.query` which automatically parses JSON values when possible.
+- **Description**: The `params` object contains routing parameters derived from placeholder directory and file names (parts of the path wrapped in square brackets). For query string parameters, you'll need to parse them manually from `request.url`.
 
 ## Route Parameters
 
@@ -81,18 +81,17 @@ if (!product || product.category !== category) {
 ## Important Notes
 
 1. `params` only contains route parameters (from square brackets in paths)
-2. Query string parameters are available via `request.url.query` with automatic JSON parsing
-3. All route parameter values are strings
+2. Query string parameters are not directly supported - you'll need to parse them manually from `request.url`
+3. All parameter values are strings
 4. Route parameters are required - if a route parameter is missing, the page won't match
 
-For query string parameters, you can access them through `request.url.query` which automatically parses JSON values when possible:
+For query string parameters, you can parse them manually from the request URL:
 
 ```ejs
 <%%
-// URL: /products/electronics/123?sort=price&order=desc&filters={"category":"electronics"}
-const { query } = request.url
-const sort = query.sort                    // "price"
-const order = query.order                  // "desc"
-const filters = query.filters              // { category: "electronics" } (parsed JSON)
+// URL: /products/electronics/123?sort=price&order=desc
+const url = new URL(request.url)
+const sort = url.searchParams.get('sort')
+const order = url.searchParams.get('order')
 %>
 ```

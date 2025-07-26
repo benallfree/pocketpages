@@ -29,10 +29,8 @@ module.exports = function (api) {
   // Global API functions are available directly from api
   api.dbg('Processing data:', api.stringify(data))
 
-  const parsed = api.url(
-    'https://example.com/path?q=search&filters={"status":"active"}'
-  )
-  return { query: parsed.query.q, filters: parsed.query.filters }
+  const parsed = api.url('https://example.com/path?q=search')
+  return parsed.searchParams.get('q')
 }
 ```
 
@@ -49,12 +47,11 @@ module.exports = function (api) {
   // JSON handling
   const str = stringify({ hello: "world" });
 
-  // URL parsing with JSON query parameters
-  const parsed = url('https://example.com/path?q=search&filters={"category":"electronics"}');
+  // URL parsing
+  const parsed = url('https://example.com/path?q=search');
 %>
 
-<p>Search param: <%%= parsed.query.q %></p>
-<p>Filters: <%%= stringify(parsed.query.filters) %></p>
+<p>Search param: <%%= parsed.searchParams.get('q') %></p>
 
 <%%
   // Environment variable access
@@ -72,7 +69,7 @@ The Global API provides these core utility functions:
 
 - **URL Handling**
 
-  - `url(path: string)` - Parse URLs with automatic query string parsing and JSON value parsing
+  - `url(path: string)` - Parse URLs with automatic query string parsing
 
 - **Data Handling**
 

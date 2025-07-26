@@ -225,7 +225,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
     const api: PagesRequestContext<any> = {
       ...globalApi,
-      params: { ...request.url.query, ...params },
+      params,
       echo: (...args) => {
         const s = echo(...args)
         response.write(s)
