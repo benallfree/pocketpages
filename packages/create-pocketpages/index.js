@@ -9,9 +9,34 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// Load starters configuration from JSON file
-const startersConfigPath = join(__dirname, 'starters.json')
-const startersConfig = JSON.parse(readFileSync(startersConfigPath, 'utf8'))
+// Load starters configuration with fallback
+async function loadStartersConfig() {
+  const localStartersConfigPath = join(__dirname, 'starters.json')
+
+  try {
+    // First attempt to fetch from GitHub
+    const response = await fetch(
+      'https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/create-pocketpages/starters.json'
+    )
+    if (response.ok) {
+      const startersConfig = await response.json()
+      console.log('📥 Loaded starters configuration from GitHub')
+      return startersConfig
+    }
+  } catch (error) {
+    console.log('📥 Could not fetch from GitHub, using local configuration')
+  }
+
+  // Fallback to local file
+  const startersConfig = JSON.parse(
+    readFileSync(localStartersConfigPath, 'utf8')
+  )
+  console.log('📥 Loaded starters configuration from local file')
+  return startersConfig
+}
+
+// Load starters configuration
+const startersConfig = await loadStartersConfig()
 const STARTERS = startersConfig.starters
 
 function cleanupWorkspaceDependencies(targetDir) {
