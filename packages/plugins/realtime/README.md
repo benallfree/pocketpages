@@ -1,8 +1,3 @@
----
-title: Realtime Plugin
-description: Add Server-Sent Events (SSE) support to PocketPages for real-time updates and notifications.
----
-
 # Realtime Plugin
 
 Server-Sent Events (SSE) plugin for PocketPages that enables real-time communication between server and clients.

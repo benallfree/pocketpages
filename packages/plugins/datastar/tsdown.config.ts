@@ -1,6 +1,5 @@
-import fs from 'fs'
-import path from 'path'
 import { defineConfig } from 'tsdown'
+import { onSuccess } from '../onSuccess'
 
 export default defineConfig({
   entry: {
@@ -12,16 +11,5 @@ export default defineConfig({
   loader: {
     html: 'text',
   },
-  onSuccess: (context) => {
-    // copy README.md to docs location, replacing <% with <%%
-    const src = path.resolve(__dirname, './README.md')
-    const dest = path.resolve(
-      __dirname,
-      '../../site/pb_hooks/pages/(main)/docs/plugins/datastar.md'
-    )
-    let content = fs.readFileSync(src, 'utf8')
-    content = content.replace(/<%/g, '<%%')
-    fs.writeFileSync(dest, content)
-    console.log('README.md copied to docs location with EJS tags escaped')
-  },
+  onSuccess: onSuccess('datastar'),
 })
