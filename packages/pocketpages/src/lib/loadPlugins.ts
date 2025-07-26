@@ -49,11 +49,11 @@ export const loadPlugins = (cache: Cache): Plugin[] => {
 
   return [
     ...config.plugins.map((pluginConfigItem) => {
-      const normalizedPlugin = normalizePlugin(pluginConfigItem)
-
-      const extra = omit(normalizedPlugin, 'fn') as PluginOptions
-
       try {
+        const normalizedPlugin = normalizePlugin(pluginConfigItem)
+
+        const extra = omit(normalizedPlugin, 'fn') as PluginOptions
+
         const factoryConfig: PluginFactoryConfig = {
           pagesRoot,
           config,
@@ -68,7 +68,7 @@ export const loadPlugins = (cache: Cache): Plugin[] => {
         systemDbg(`loaded plugin ${plugin.name}`)
         return plugin
       } catch (e) {
-        error(`error loading plugin`, { plugin: pluginConfigItem, error: e })
+        error(`${e}`, pluginConfigItem)
         throw e
       }
     }),
