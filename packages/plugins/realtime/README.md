@@ -35,7 +35,7 @@ Sends a message to all subscribed clients.
 
 ```javascript
 // pages/api/notify.ejs
-<%%= context.realtime.send('updates', 'New data available') %>
+<%= context.realtime.send('updates', 'New data available') %>
 ```
 
 ### Chat Example
@@ -52,7 +52,7 @@ Sends a message to all subscribed clients.
 
 ```javascript
 // pages/api/private.ejs
-<%%= context.realtime.send('private', 'Secret message', (clientId, client) => {
+<%= context.realtime.send('private', 'Secret message', (clientId, client) => {
   return client.get('auth')?.id === context.auth?.id
 }) %>
 ```
@@ -86,7 +86,7 @@ Create an SSE endpoint that clients can connect to:
 
 ```javascript
 // pages/api/realtime.ejs
-<%%= context.pb.sse.subscribe('updates', 'private') %>
+<%= context.pb.sse.subscribe('updates', 'private') %>
 ```
 
 This creates the WebSocket/SSE connection endpoint that the PocketBase client connects to automatically.

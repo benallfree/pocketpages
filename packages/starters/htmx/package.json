@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "pocketpages": "workspace:>=0.20.0",
-    "pocketpages-plugin-sse": "workspace:>=0.1.0"
+    "pocketpages-plugin-realtime": "workspace:>=0.0.1"
   },
   "files": [
     "pb_hooks",

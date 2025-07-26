@@ -1,4 +1,12 @@
-# pocketpages-plugin-sse
+# pocketpages-plugin-realtime
+
+## 0.0.1
+
+Initial release. Renamed `pocketpages-plugin-sse` to `pocketpages-plugin-realtime` and redid API.
+
+---
+
+History: pocketpages-plugin-sse
 
 ## 0.1.0
 

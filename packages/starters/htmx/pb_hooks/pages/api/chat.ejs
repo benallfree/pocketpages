@@ -1,9 +1,4 @@
 <script server>
-  const {
-    message
-  } = body()
-  sseSend('chat')
+  const { message } = body()
+  realtime.send('chat', stringify(include(`chat-msg.ejs`, { message })))
 </script>
-<div>
-  <%= message %>
-</div>
