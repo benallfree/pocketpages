@@ -6,12 +6,6 @@ alwaysApply: true
 
 This project uses the PocketBase JSVM. In code samples, nothing is awaitable and we do not use the PocketBase JS SDK at all. All demo code should use the PocketBase JSVM API.
 
-# Code sample syntax
-
-- Escape the EJS start tag `<%` by using `<%%`
-- Use `<%%=` for variable interpolation.
-- Use `<%%` for control flow like `if` statements.
-
 # Documentation Style
 
 - Do not include summary sections
@@ -30,6 +24,12 @@ This project uses the PocketBase JSVM. In code samples, nothing is awaitable and
 - If there are no code snippets, wrap the beginning and end of your answer in backticks and markdown as the language.
 - If there are code snippets, indent the code snippets with two spaces and the correct language for proper rendering. Indentations level 0 and 4 is not allowed.
 - If a markdown code block is indented with any value other than 2 spaces, automatically fix it
+
+For Markdown in packages/site only:
+
+- Escape the EJS start tag `<%` by using `<%%`
+- Use `<%%=` for variable interpolation.
+- Use `<%%` for control flow like `if` statements.
 
 # Generating code
 
