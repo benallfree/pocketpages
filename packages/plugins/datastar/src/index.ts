@@ -99,6 +99,9 @@ const datastarPluginFactory: PluginFactory = (config) => {
         api.echo('\n')
       }
       api.datastar = {
+        scripts() {
+          return loader
+        },
         realtime: {
           patchSignals: (
             signals: string,
@@ -353,11 +356,6 @@ elements.forEach((element) => {
           }
         },
       }
-    },
-    onBeforeRender(context) {
-      const { api } = context
-      api.slots.head = [api.slots.head, loader].filter(Boolean).join(`\n`)
-      dbg('onBeforeRender', api.slots)
     },
   }
 }

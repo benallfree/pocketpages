@@ -22,6 +22,14 @@ module.exports = {
 }
 ```
 
+Add to your `+layout.ejs` or similar:
+
+```html
+<head>
+  <%- datastar.scripts() %>
+</head>
+```
+
 ## API Reference
 
 ### Core Methods
