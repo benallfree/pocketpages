@@ -164,6 +164,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       if (value === undefined) {
         return e.response.header().get(name) || ''
       }
+      dbg(`header: ${name} ${value}`)
       e.response.header().set(name, value)
       return value
     },
@@ -228,6 +229,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       echo: (...args) => {
         const s = echo(...args)
         response.write(s)
+        dbg(`echo: ${s}`)
         return s
       },
       formData: request.formData,
@@ -309,9 +311,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
       api.data = data
       // dbg(`Final api:`, { params: api.params, data: api.data })
-
-      //@ts-ignore
-      delete api.echo
 
       let content = plugins.reduce((content, plugin) => {
         return (
