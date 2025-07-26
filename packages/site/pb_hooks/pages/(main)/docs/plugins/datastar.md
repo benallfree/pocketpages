@@ -210,7 +210,7 @@ $app.runInTransaction(() => {
 })
 
 // Return updated counter
-<%- include('count.ejs') %>
+<%%- include('count.ejs') %>
 ```
 
 ### Form Handling
@@ -233,7 +233,7 @@ The plugin automatically injects the Datastar loader script. Use DataStar attrib
 
 ```html
 <button data-on-click="@get('/api/increment')">
-  Count: <span data-bind-count><%= store('count') %></span>
+  Count: <span data-bind-count><%%= store('count') %></span>
 </button>
 
 <form data-on-submit="@post('/api/submit')">
