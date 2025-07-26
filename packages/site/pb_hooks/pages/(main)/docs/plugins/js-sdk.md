@@ -1,8 +1,3 @@
----
-title: JS SDK Plugin
-description: Adds PocketBase JavaScript SDK support to PocketPages with configurable authentication handling and JSVM compatibility.
----
-
 # JS SDK Plugin
 
 The JS SDK plugin (`pocketpages-plugin-js-sdk`) provides a JSVM-compatible version of the PocketBase JavaScript SDK, making it easy to interact with your PocketBase collections and authentication system.
@@ -51,7 +46,7 @@ const client = pb(options?: PocketBaseClientOptions)
 To get a client with the current request's authentication context:
 
 ```ejs
-<%%
+<%%%
   // Get an authenticated client for the current request
   const client = pb({ request })
 
@@ -66,7 +61,7 @@ To get a client with the current request's authentication context:
 To get an unauthenticated client:
 
 ```ejs
-<%%
+<%%%
   // Get an anonymous client
   const client = pb()
 %>
@@ -88,7 +83,7 @@ This means:
 ### Example: Working with Collections
 
 ```ejs
-<%%
+<%%%
   const client = pb({ request })
 
   // Create a record
@@ -108,7 +103,7 @@ This means:
 ### Example: Authentication
 
 ```ejs
-<%%
+<%%%
   const client = pb({ request })
 
   try {

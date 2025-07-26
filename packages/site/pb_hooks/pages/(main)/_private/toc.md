@@ -41,7 +41,7 @@
 
 - [Overview](/docs/plugins)
 - [EJS](/docs/plugins/ejs)
-- [Markdown](/docs/plugins/markdown)
+- [Markdown](/docs/plugins/marked)
 - [Realtime](/docs/plugins/realtime)
 - [Authentication](/docs/plugins/auth)
 - [JS SDK](/docs/plugins/js-sdk)
