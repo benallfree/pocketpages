@@ -28,7 +28,7 @@ description: Access HTTP request details including method, headers, and query pa
 ### `url`
 
 - Type: `URLParse<string>`
-- Description: A parsed URL object containing query parameters and other URL components
+- Description: A parsed URL object containing query parameters and other URL components. Query string values are automatically parsed as JSON when possible, falling back to string values if parsing fails.
 
 ### `formData()`
 

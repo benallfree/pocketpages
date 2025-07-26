@@ -4,7 +4,21 @@ import { default as parse } from 'url-parse'
 import { PagesGlobalContext } from './types'
 
 export const globalApi: PagesGlobalContext = {
-  url: (path: string) => parse(path, true),
+  url: (path: string) => {
+    const url = parse(path, true)
+    // Attempt JSON.parse for each query parameter
+    const parsedQuery: Record<string, any> = {}
+    for (const [key, value] of Object.entries(url.query)) {
+      try {
+        parsedQuery[key] = JSON.parse(value as string)
+      } catch {
+        // If JSON.parse fails, keep the original string value
+        parsedQuery[key] = value
+      }
+    }
+    url.set('query', parsedQuery)
+    return url
+  },
   stringify,
   env: (key: string) => process.env[key] ?? '',
   store: (name: string, value?: any) => {

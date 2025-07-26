@@ -8,9 +8,7 @@ export type PageDataLoaderFunc<TData = any> = (
   api: Omit<PagesRequestContext<TData>, 'data'>
 ) => object
 
-export type MiddlewareNextFunc = (
-  data?: object
-) => void
+export type MiddlewareNextFunc = (data?: object) => void
 
 export type MiddlewareLoaderFunc<TData = any> = (
   api: PagesRequestContext<TData>,
@@ -19,10 +17,9 @@ export type MiddlewareLoaderFunc<TData = any> = (
 
 export type PagesParams = Record<string, string | string[] | undefined>
 
+export type Url = ReturnType<typeof parse<PagesParams>>
 export type PagesGlobalContext = {
-  url: (
-    path: string
-  ) => ReturnType<typeof parse<Record<string, string | undefined>>>
+  url: (url: string) => Url
   stringify: typeof stringify
   env: (key: string) => string
   store: {
@@ -143,7 +140,7 @@ export type PagesRequest = {
   auth?: core.Record
   authToken?: string
   method: PagesMethods
-  url: parse<string>
+  url: Url
   formData: () => Record<string, any>
   body: () => Record<string, any> | string
   header: (name: string) => string

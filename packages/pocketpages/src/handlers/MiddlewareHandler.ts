@@ -5,7 +5,6 @@ import { error } from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
 import { globalApi } from 'src/lib/globalApi'
-import { default as parse, default as URL } from 'url-parse'
 import { dbg } from '../lib/debug'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
 import { loadPlugins } from '../lib/loadPlugins'
@@ -101,7 +100,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     event: e,
     auth: e.auth,
     method: method.toUpperCase() as PagesMethods,
-    url: parse(url.string()),
+    url: globalApi.url(url.string()),
     formData: () => e.requestInfo().body,
     body: () => e.requestInfo().body,
     header: (name: string) => {
@@ -225,7 +224,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
     const api: PagesRequestContext<any> = {
       ...globalApi,
-      params,
+      params: { ...request.url.query, ...params },
       echo: (...args) => {
         const s = echo(...args)
         response.write(s)
@@ -259,7 +258,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
               route.assetPrefix,
               path
             )
-        const assetRoute = resolveRoute(new URL(fullAssetPath), routes)
+        const assetRoute = resolveRoute(globalApi.url(fullAssetPath), routes)
         // dbg({ fullAssetPath, shortAssetPath, assetRoute })
         if (!assetRoute) {
           return `${shortAssetPath}`
@@ -364,12 +363,12 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     }
   } catch (e) {
     error(e)
-    
+
     if (e instanceof BadRequestError) {
       const message = config.debug ? `${e}` : 'Bad Request'
       return response.html(400, message)
     }
-    
+
     // In production, don't leak error details or stack traces
     if (config.debug) {
       const message = (() => {
