@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "bun run --filter='*' dev",
     "build": "bun run --filter='*' build",
-    "publish": "bun run build && bun run --filter='*' publish"
+    "publish": "bun run build && bun run --filter='*' publish",
+    "fix": "prettier --write ."
   },
   "prettier": {
     "singleQuote": true,
