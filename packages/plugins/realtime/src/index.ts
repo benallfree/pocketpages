@@ -1,23 +1,28 @@
 import type { PluginFactory } from 'pocketpages'
 
-export type RealtimeFilter = (clientId: string, client: any) => boolean
+export type ClientId = string
 
-const _realtimeSend = (name: string, data: string, filter: RealtimeFilter) => {
-  const payload = new SubscriptionMessage({
-    name,
-    data,
-  })
+// https://pocketbase.io/jsvm/interfaces/subscriptions.Client.html
+export type Client = {
+  hasSubscription: (topic: string) => boolean
+  send: (payload: SubscriptionMessage) => void
+  id: () => ClientId
+}
 
-  const clients = $app.subscriptionsBroker().clients()
+export type RealtimeFilter = (
+  clientId: ClientId,
+  client: Client,
+  topic: string,
+  message: string
+) => boolean
 
-  const filteredClients = Object.entries(clients).filter(
-    ([clientId, client]) =>
-      client.hasSubscription(name) && filter(clientId, client)
-  )
-
-  filteredClients.forEach(([clientId, client]) => {
-    client.send(payload)
-  })
+const DefaultSseFilter: RealtimeFilter = (
+  clientId: ClientId,
+  client: Client,
+  topic: string,
+  message: string
+) => {
+  return client.hasSubscription(topic)
 }
 
 const realtimePluginFactory: PluginFactory = (config) => {
@@ -26,20 +31,28 @@ const realtimePluginFactory: PluginFactory = (config) => {
   return {
     name: 'sse',
     onExtendContextApi: ({ api }) => {
-      const DefaultSseFilter: RealtimeFilter = (
-        clientId: string,
-        client: any
-      ) => {
-        return api.auth?.id ? client.get('auth')?.id === api.auth?.id : true
-      }
-
       api.realtime = {
         send(
           topic: string,
           message: string,
           filter: RealtimeFilter = DefaultSseFilter
         ): void {
-          return _realtimeSend(topic, message, filter)
+          const payload = new SubscriptionMessage({
+            name: topic,
+            data: message,
+          })
+
+          const clients = $app.subscriptionsBroker().clients() as Record<
+            ClientId,
+            Client
+          >
+
+          for (const clientId in clients) {
+            const client = clients[clientId]!
+            if (filter(clientId, client, topic, message)) {
+              client.send(payload)
+            }
+          }
         },
       }
     },
