@@ -12,6 +12,7 @@ export const onSuccess = (pluginName: string) => () => {
   )
   let content = fs.readFileSync(src, 'utf8')
   content = content.replace(/<%/g, '<%%')
+  content = content.replace(/<script server>/g, "<script <%='server'%>>")
   fs.writeFileSync(dest, content)
   console.log(`${src} -> ${dest}`)
 }
