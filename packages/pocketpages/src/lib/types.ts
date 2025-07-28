@@ -23,7 +23,7 @@ export type PagesGlobalContext = {
   stringify: typeof stringify
   env: (key: string) => string
   store: {
-    (name: string, value: any): void
+    <T>(name: string, value: T): T
     (name: string): any
   }
 } & typeof log
