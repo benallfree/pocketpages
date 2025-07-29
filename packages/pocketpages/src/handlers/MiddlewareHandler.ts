@@ -492,7 +492,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     const check3 = `${status.toString().slice(0, 1)}xx`
     const check4 = `error`
     for (const check of [check1, check2, check3, check4]) {
-      const tryUrl = new URL(
+      const tryUrl = globalApi.url(
         [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
       )
       dbg(`Trying ${tryUrl}`)
