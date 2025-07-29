@@ -250,10 +250,30 @@ The plugin automatically injects the Datastar loader script. Use DataStar attrib
 </form>
 ```
 
+### Hash Change Events
+
+The plugin automatically listens for browser hash changes and dispatches a custom `hashchange` event.
+
+With this event, you can do a "SPA lite" approach where changes to the URL hash can trigger actions.
+You can listen for this event to handle hash-based navigation:
+
+```html
+<div data-on-hashchange="@get(`/update?topic`+evt.detail.hash)">
+  <!-- Content that responds to hash changes -->
+</div>
+```
+
+The event detail includes:
+
+- `oldURL` - Previous URL
+- `newURL` - New URL
+- `hash` - Current hash value
+
 ## Event Types
 
 - `datastar-patch-elements` - DOM element updates
 - `datastar-patch-signals` - Signal updates
+- `hashchange` - Browser hash change events
 
 ## Default Values
 
@@ -261,3 +281,7 @@ The plugin automatically injects the Datastar loader script. Use DataStar attrib
 - `DefaultElementsUseViewTransitions`: false
 - `DefaultPatchSignalsOnlyIfMissing`: false
 - `DefaultElementPatchMode`: 'outer'
+
+```
+
+```
