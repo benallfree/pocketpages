@@ -36,6 +36,13 @@ const realtimePluginFactory: PluginFactory = (config) => {
     name: 'sse',
     onExtendContextApi: ({ api }) => {
       api.realtime = {
+        getClientById(clientId: ClientId): Client {
+          const clients = $app.subscriptionsBroker().clients() as Record<
+            ClientId,
+            Client
+          >
+          return clients[clientId]!
+        },
         send(topic: string, message: string, options?: RealtimeOptions): void {
           const payload = new SubscriptionMessage({
             name: topic,

@@ -24,5 +24,8 @@
     "starter",
     "datastar"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "pockethost": {
+    "instanceName": "datastar-chat"
+  }
 }

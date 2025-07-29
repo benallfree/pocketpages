@@ -86,6 +86,13 @@ For hypermedia frameworks, you may wish to send HTML. The easiest way to do that
 
 The plugin extends the context API with a `realtime` object:
 
+### `realtime.getClientById(clientId)`
+
+Retrieves a specific realtime client by their ID.
+
+- **clientId** (string): The unique identifier of the client
+- **returns** (Client): The client object or undefined if not found
+
 ### `realtime.send(topic, message, options?)`
 
 Sends a message to all subscribed clients.
