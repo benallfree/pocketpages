@@ -47,18 +47,5 @@
         })
       )
     })
-
-    // Listen for hash changes and dispatch custom event
-    window.addEventListener('hashchange', function (event) {
-      document.dispatchEvent(
-        new CustomEvent('hashchange', {
-          detail: {
-            oldURL: event.oldURL,
-            newURL: event.newURL,
-            hash: window.location.hash,
-          },
-        })
-      )
-    })
   }
 </script>
