@@ -59,13 +59,11 @@ Here is a filter that sends the message to all authenticated clients.
 // pages/_private/sendAlert.js
 
 const sendAlert = (context, message) => {
-  context.realtime.send(
-    `alert`,
-    message,
-    (clientId, client, topic, message) => {
+  context.realtime.send(`alert`, message, {
+    filter: (clientId, client, topic, message) => {
       return client.get('auth')?.id
-    }
-  )
+    },
+  })
 }
 ```
 
@@ -88,13 +86,14 @@ For hypermedia frameworks, you may wish to send HTML. The easiest way to do that
 
 The plugin extends the context API with a `realtime` object:
 
-### `realtime.send(topic, message, filter?)`
+### `realtime.send(topic, message, options?)`
 
 Sends a message to all subscribed clients.
 
 - **topic** (string): The subscription topic name
 - **message** (string): The message to send
-- **filter** (function, optional): Custom filter function to target specific clients
+- **options** (object, optional): Configuration options
+  - **filter** (function, optional): Custom filter function to target specific clients
 
 ```ts
 const DefaultSseFilter: RealtimeFilter = (

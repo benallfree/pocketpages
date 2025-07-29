@@ -9,6 +9,10 @@ export type Client = {
   id: () => ClientId
 }
 
+export type RealtimeOptions = {
+  filter?: RealtimeFilter
+}
+
 export type RealtimeFilter = (
   clientId: ClientId,
   client: Client,
@@ -32,11 +36,7 @@ const realtimePluginFactory: PluginFactory = (config) => {
     name: 'sse',
     onExtendContextApi: ({ api }) => {
       api.realtime = {
-        send(
-          topic: string,
-          message: string,
-          filter: RealtimeFilter = DefaultSseFilter
-        ): void {
+        send(topic: string, message: string, options?: RealtimeOptions): void {
           const payload = new SubscriptionMessage({
             name: topic,
             data: message,
@@ -46,6 +46,8 @@ const realtimePluginFactory: PluginFactory = (config) => {
             ClientId,
             Client
           >
+
+          const filter = options?.filter ?? DefaultSseFilter
 
           for (const clientId in clients) {
             const client = clients[clientId]!
