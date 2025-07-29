@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.22.0
+
+### Minor Changes
+
+- 8df3b91: store() returns new value after setting
+
 ## 0.21.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "pocketpages-plugin-datastar",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Datastar backend SDK plugin for PocketPages",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,10 +12,10 @@
     "pocketbase-jsvm": "^0.25.10001",
     "tsdown": "^0.12.7",
     "typescript": "^5.7.3",
-    "pocketpages": "workspace:>=0.16.0"
+    "pocketpages": "workspace:>=0.22.0"
   },
   "dependencies": {
-    "pocketpages-plugin-realtime": "workspace:>=0.0.1"
+    "pocketpages-plugin-realtime": "workspace:>=0.1.0"
   },
   "files": [
     "dist",
