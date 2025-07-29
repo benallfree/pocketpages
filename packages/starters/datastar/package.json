@@ -2,14 +2,6 @@
   "name": "pocketpages-starter-datastar",
   "version": "0.0.2",
   "private": true,
-  "dependencies": {
-    "pocketpages": "workspace:>=0.22.0",
-    "pocketpages-plugin-datastar": "workspace:>=0.1.1"
-  },
-  "files": [
-    "pb_hooks",
-    "*.md"
-  ],
   "description": "A starter project for PocketPages with Datastar",
   "author": {
     "name": "Ben Allfree",
@@ -25,7 +17,21 @@
     "datastar"
   ],
   "license": "MIT",
+  "scripts": {
+    "deploy": "phio deploy"
+  },
+  "dependencies": {
+    "pocketpages": "workspace:>=0.22.0",
+    "pocketpages-plugin-datastar": "workspace:>=0.1.1"
+  },
+  "files": [
+    "pb_hooks",
+    "*.md"
+  ],
   "pockethost": {
     "instanceName": "datastar-chat"
+  },
+  "devDependencies": {
+    "phio": "^0.3.5"
   }
 }
