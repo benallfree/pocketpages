@@ -1,9 +1,4 @@
----
-title: EJS Plugin
-description: Process EJS templates with enhanced features like server-side scripting blocks and smart partial resolution.
----
-
-# EJS Plugin
+# PocketPages EJS Plugin
 
 The EJS plugin (`pocketpages-plugin-ejs`) is included with PocketPages by default and provides template processing using the EJS (Embedded JavaScript) templating engine. You only need to explicitly include it in your `+config.js` if you want to modify its configuration or if you're adding other plugins.
 
@@ -36,16 +31,16 @@ module.exports = {
 
 ### Server Script Blocks
 
-The plugin adds support for `<<%=`script server`%>>` blocks as an alternative to `<%%` `%>` delimiters:
+The plugin adds support for `<<%%=`script server`%>>` blocks as an alternative to `<%%%` `%>` delimiters:
 
 ```ejs
 <!-- Both are equivalent -->
-<%% const message = 'Hello' %>
-<<%=`script server`%>>
+<%%% const message = 'Hello' %>
+<<%%=`script server`%>>
   const message = 'Hello'
 </script>
 
-<%%= message %>
+<%%%= message %>
 ```
 
 ### Smart Partial Resolution
@@ -67,13 +62,13 @@ Includes are resolved by searching up the directory tree for `_private` director
 <!-- 7. ./root/_private/header -->
 <!-- 8. ./root/_private/header.ejs -->
 <!-- 9. ./root/_private/header.md -->
-<%%- include('header', { title: 'My Page' }) %>
+<%%%- include('header', { title: 'My Page' }) %>
 ```
 
 You can still include files with explicit extensions:
 
 ```ejs
-<%%- include('header.ejs', { title: 'My Page' }) %>
+<%%%- include('header.ejs', { title: 'My Page' }) %>
 ```
 
 ### Echo Helper
@@ -81,7 +76,7 @@ You can still include files with explicit extensions:
 A convenient `echo()` function is provided for outputting content:
 
 ```ejs
-<%%
+<%%%
   // Automatically stringifies objects
   echo({ hello: 'world' })
 
@@ -109,15 +104,15 @@ module.exports = {
 This allows you to use EJS features in your Markdown content:
 
 ```ejs
-# Welcome <%%= user.name %>
+# Welcome <%%%= user.name %>
 
-<<%=`script server`%>>
+<<%%=`script server`%>>
   const posts = pb.collection('posts').getFullList()
 </script>
 
-<%% for (const post of posts) { %>
-- [<%%= post.title %>](<%%= post.url %>)
-<%% } %>
+<%%% for (const post of posts) { %>
+- [<%%%= post.title %>](<%%%= post.url %>)
+<%%% } %>
 ```
 
 ## Default Configuration

@@ -1,0 +1,51 @@
+<script
+  type="module"
+  defer
+  src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"
+></script>
+<script language="javascript">
+  const patchSignals = (signals) => {
+    document.dispatchEvent(
+      new CustomEvent('datastar-fetch', {
+        detail: {
+          type: 'datastar-patch-signals',
+          el: null,
+          argsRaw: {
+            signals: JSON.stringify(signals),
+          },
+        },
+      })
+    )
+  }
+
+  {
+    const source = new EventSource('/api/realtime') // URL to your SSE endpoint
+    source.addEventListener('PB_CONNECT', function (event) {
+      const e = JSON.parse(event.data)
+      // console.log('PB_CONNECT event:', e)
+      const { clientId } = e
+      fetch(`/api/realtime`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clientId,
+          subscriptions: ['datastar'],
+        }),
+      }).catch(console.error)
+
+      patchSignals({ clientId })
+    })
+
+    source.addEventListener('datastar', function (event) {
+      const e = JSON.parse(event.data)
+      // console.log('datastar event:', e)
+      document.dispatchEvent(
+        new CustomEvent('datastar-fetch', {
+          detail: e,
+        })
+      )
+    })
+  }
+</script>

@@ -1,0 +1,52 @@
+<script server>
+  // Save the message to ephemeral store
+  const { clientId, roomName, from, message } = datastar.readSignals(
+    request,
+    {}
+  )
+
+  $app.runInTransaction(() => {
+    const messages = store(`room_${roomName}`) || []
+
+    const sanitizedMessage = message
+      .replace(/<script>/g, '')
+      .replace(/<\/script>/g, '')
+      .trim()
+    if (sanitizedMessage.length > 0) {
+      messages.push({
+        from,
+        message: sanitizedMessage,
+      })
+      store(`room_${roomName}`, messages)
+    }
+  })
+
+  const client = api.realtime.getClientById(clientId)
+  client.set(`roomName`, roomName)
+
+  dbg(`${clientId} sent a message to ${roomName}`)
+
+  // Broadcast the chatbox to all clients
+  datastar.realtime.patchElements(
+    include('chat-messages.ejs', {
+      roomName,
+      messages: store(`room_${roomName}`),
+    }),
+    {},
+    {
+      filter: (clientId, client, topic, message) => {
+        dbg(`${clientId} roomName is ${client.get(`roomName`)}`)
+        const shouldSend = client.get(`roomName`) === roomName
+        dbg(`${clientId} should send: ${shouldSend}`)
+        return shouldSend
+      },
+    }
+  )
+
+  // Clear the message input
+  datastar.patchSignals(
+    stringify({
+      message: '',
+    })
+  )
+</script>

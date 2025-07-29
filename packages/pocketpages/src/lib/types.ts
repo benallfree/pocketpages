@@ -17,14 +17,13 @@ export type MiddlewareLoaderFunc<TData = any> = (
 
 export type PagesParams = Record<string, string | string[] | undefined>
 
+export type Url = ReturnType<typeof parse<PagesParams>>
 export type PagesGlobalContext = {
-  url: (
-    path: string
-  ) => ReturnType<typeof parse<Record<string, string | undefined>>>
+  url: (url: string) => Url
   stringify: typeof stringify
   env: (key: string) => string
   store: {
-    (name: string, value: any): void
+    <T>(name: string, value: T): T
     (name: string): any
   }
 } & typeof log
@@ -141,7 +140,7 @@ export type PagesRequest = {
   auth?: core.Record
   authToken?: string
   method: PagesMethods
-  url: parse<string>
+  url: Url
   formData: () => Record<string, any>
   body: () => Record<string, any> | string
   header: (name: string) => string
@@ -159,7 +158,7 @@ export type PagesResponse = {
   redirect: (path: string, status?: number) => void
   json: (status: number, data: any) => void
   html: (status: number, data: string) => void
-  header: (name: string, value?: string) => void
+  header: (name: string, value?: string) => string | undefined
   cookie: <T>(
     name: string,
     value: T,

@@ -1,13 +1,14 @@
 {
   "name": "create-pocketpages",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Create a new PocketPages project",
   "type": "module",
   "bin": {
     "create-pocketpages": "index.js"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "starters.json"
   ],
   "keywords": [
     "pocketpages",

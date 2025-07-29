@@ -1,5 +1,36 @@
 # pocketpages
 
+## 0.22.0
+
+### Minor Changes
+
+- 8df3b91: store() returns new value after setting
+
+## 0.21.0
+
+### Minor Changes
+
+- e8c3d96: Early return custom content types (proceed only if text/html)
+- 7c30af9: Update params to include querystring values
+- f0ed079: Automatically recursively parse URL querystring in request.url and globalApi.url
+
+### Patch Changes
+
+- 8c540ba: Fix: update header method to return string or undefined
+- c01bf43: Improve invalid plugin error logic
+- 31b4b38: add debug logging for header and echo responses in MiddlewareHandler
+- 3317d2e: Add store() debugging output
+
+## 0.20.0
+
+### Minor Changes
+
+- 92b14b4: Add support for DEBUG env var
+
+### Patch Changes
+
+- 7fe3aa1: Fix: restored Typescript typings
+
 ## 0.19.0
 
 ### Minor Changes

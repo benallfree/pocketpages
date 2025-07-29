@@ -1,9 +1,7 @@
-import * as qs from 'qs-lite'
-import type URLParse from 'url-parse'
 import { Route } from '../handlers/AfterBootstrapHandler'
 import { dbg } from './debug'
 import { fingerprint } from './fingerprint'
-import { Cache, PagesParams } from './types'
+import { Cache, PagesParams, Url } from './types'
 
 export type ResolvedRoute = {
   route: Route
@@ -11,14 +9,14 @@ export type ResolvedRoute = {
 }
 
 export const resolveRoute = (
-  url: URLParse<string>,
+  url: Url,
   routes: Route[]
 ): ResolvedRoute | null => {
   const { config } = $app.store<Cache>().get(`pocketpages`)
 
   const urlPath = url.pathname.slice(1)
   // dbg(`***resolveRoute`, { url, urlPath })
-  const params: PagesParams = qs.parse(url.query.slice(1))
+  const params: PagesParams = url.query
   const tryFnames = [urlPath || 'index']
   if (tryFnames[0] !== 'index') {
     tryFnames.push(`${urlPath}/index`)

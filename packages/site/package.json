@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch",
     "build": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css",
-    "publish": "bun run build && phio deploy"
+    "deploy": "phio deploy"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.11",
@@ -29,7 +29,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "pocketpages": "workspace:>=0.19.0",
+    "pocketpages": "workspace:>=0.20.0",
     "pocketpages-plugin-marked": "workspace:>=0.1.0"
   },
   "files": [

@@ -1,0 +1,6 @@
+<script server>
+  $app.runInTransaction(() => {
+    store('count', (store('count') || 1) + 1)
+  })
+</script>
+<%- include('count.ejs') %>

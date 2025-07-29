@@ -5,7 +5,6 @@ import { error } from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
 import { globalApi } from 'src/lib/globalApi'
-import { default as parse, default as URL } from 'url-parse'
 import { dbg } from '../lib/debug'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
 import { loadPlugins } from '../lib/loadPlugins'
@@ -136,7 +135,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     event: e,
     auth: e.auth,
     method: method.toUpperCase() as PagesMethods,
-    url: parse(url.string()),
+    url: globalApi.url(url.string()),
     formData: () => e.requestInfo().body,
     body: () => e.requestInfo().body,
     header: (name: string) => {
@@ -220,6 +219,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       if (value === undefined) {
         return e.response.header().get(name) || ''
       }
+      dbg(`header: ${name} ${value}`)
       e.response.header().set(name, value)
       return value
     },
@@ -278,6 +278,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       echo: (...args) => {
         const s = echo(...args)
         response.write(s)
+        dbg(`echo: ${s}`)
         return s
       },
       formData: request.formData,
@@ -308,7 +309,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
               route.assetPrefix,
               path
             )
-        const assetRoute = resolveRoute(new URL(fullAssetPath), routes)
+        const assetRoute = resolveRoute(globalApi.url(fullAssetPath), routes)
         // dbg({ fullAssetPath, shortAssetPath, assetRoute })
         if (!assetRoute) {
           return `${shortAssetPath}`
@@ -361,9 +362,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       api.data = data
       // dbg(`Final api:`, { params: api.params, data: api.data })
 
-      //@ts-ignore
-      delete api.echo
-
       dbg(`Executing plugins onRender`)
       let content = plugins.reduce((content, plugin) => {
         return (
@@ -376,6 +374,13 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
           }) ?? content
         )
       }, '')
+
+      // If the content type is not text/html, we don't need to parse it or render it in a layout
+      const contentType = response.header('Content-Type')
+      dbg(`Content-Type: ${contentType}`)
+      if (contentType && contentType !== 'text/html') {
+        return true
+      }
 
       try {
         dbg(`Attempting to parse as JSON`)
@@ -416,6 +421,13 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   }
 
   const renderError = (e: PocketPagesError) => {
+    error(e)
+
+    if (e instanceof BadRequestError) {
+      const message = config.debug ? `${e}` : 'Bad Request'
+      return response.html(400, message)
+    }
+
     // In production, don't leak error details or stack traces
     if (config.debug) {
       const message = (() => {

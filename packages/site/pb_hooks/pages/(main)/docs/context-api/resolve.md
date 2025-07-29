@@ -140,12 +140,10 @@ module.exports = {
 // products/_private/queries.js
 module.exports = {
   getActiveProducts: () => {
-    return $app
-      .findRecordsByExpr('products', 'status = ?', ['active'])
+    return $app.findRecordsByExpr('products', 'status = ?', ['active'])
   },
   getCategoryProducts: (categoryId) => {
-    return $app
-      .findRecordsByExpr('products', 'category = ?', [categoryId])
+    return $app.findRecordsByExpr('products', 'category = ?', [categoryId])
   },
 }
 ```

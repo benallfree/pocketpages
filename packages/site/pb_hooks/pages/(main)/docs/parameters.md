@@ -42,35 +42,39 @@ Access route parameters through `params` in your templates:
 
 ## Query Parameters
 
-Query parameters come from the URL's query string (after the `?`). They're also available through `params`:
+Query parameters come from the URL's query string (after the `?`). They're available through `params` and also through `request.url.query` with automatic JSON parsing:
 
 ```
-/products/123?sort=latest&highlight=true
+/products/123?sort=latest&highlight=true&filters={"category":"electronics"}
 ```
 
-Access them the same way in templates:
+Access them in templates:
 
 ```ejs
+<!-- Using params (string values only) -->
 <p>Sort by: <%%= params.sort %></p>
 <p>Highlight: <%%= params.highlight %></p>
+
+<!-- Using request.url.query (with JSON parsing) -->
+<p>Filters: <%%= stringify(request.url.query.filters) %></p>
 ```
 
 ## Parameter Priority
 
-Query parameters override route parameters when they have the same name:
+Route parameters take priority over query parameters when they have the same name:
 
 ```
 /products/123?productId=789
 ```
 
-Here, `params.productId` will be `789`, not `123`.
+Here, `params.productId` will be `123` (from the route), not `789` (from the query string).
 
 ## Complete Example
 
 URL:
 
 ```
-/products/123/reviews/456?sort=latest&highlight=true
+/products/123/reviews/456?sort=latest&highlight=true&filters={"category":"electronics","price":{"min":100}}
 ```
 
 Template:
@@ -80,4 +84,8 @@ Template:
 <h2>Review: <%%= params.reviewId %></h2>
 <p>Sort by: <%%= params.sort %></p>
 <p>Highlight: <%%= params.highlight %></p>
+
+<!-- Access JSON query parameters -->
+<p>Category: <%%= request.url.query.filters.category %></p>
+<p>Min Price: <%%= request.url.query.filters.price.min %></p>
 ```

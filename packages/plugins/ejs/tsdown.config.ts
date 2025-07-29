@@ -1,4 +1,5 @@
 import { defineConfig } from 'tsdown'
+import { onSuccess } from '../onSuccess'
 
 export default defineConfig({
   entry: {
@@ -7,4 +8,5 @@ export default defineConfig({
   format: ['cjs'],
   clean: true,
   outDir: 'dist',
+  onSuccess: onSuccess('ejs'),
 })
