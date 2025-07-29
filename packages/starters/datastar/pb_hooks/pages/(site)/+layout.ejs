@@ -57,7 +57,7 @@
       rel="stylesheet"
     />
 
-    <%- slots.head %> <%- datastar.scripts() %>
+    <%- slots.head %> <%- datastar.scripts() %> <%- include('from.ejs') %>
   </head>
 
   <body
@@ -65,7 +65,23 @@
   >
     <div class="min-h-full flex flex-col">
       <main class="flex-1 container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto"><%-slots.body || slot%></div>
+        <div class="max-w-4xl mx-auto">
+          <div class="space-y-8">
+            <!-- Header Section -->
+            <div class="text-center space-y-4">
+              <h1
+                class="text-4xl font-bold text-gray-900 bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent"
+              >
+                DataStar Realtime Demo
+              </h1>
+              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                This demo shows you how to use DataStar to build a realtime app
+                with PocketPages.
+              </p>
+            </div>
+            <%-slots.body || slot%> <%- include('count.ejs') %>
+          </div>
+        </div>
       </main>
     </div>
   </body>

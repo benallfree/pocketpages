@@ -1,0 +1,71 @@
+<script server>
+ 
+  const signals= datastar.readSignals(
+    request,
+    {}
+  )
+</script>
+
+<div id="chat" data-signals-room-name="'<%= roomName %>'" data-signals-from="from"  >
+  <section class="grid md:grid-cols-3 gap-6">
+    <!-- Rooms Sidebar -->
+    <aside class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Rooms</h2>
+      <div class="space-y-2">
+        <a href="/general"
+          class="blockw-full text-left px-3 py-2 rounded-lg "
+          data-class-bg-primary-500="$roomName=='general'"
+        >
+          <span class="text-gray-600">#</span>
+          <span class="font-medium text-gray-800">general</span>
+        </a>
+        <a href="/help"
+          class="block w-full text-left px-3 py-2 rounded-lg "
+          data-class-bg-primary-500="$roomName=='help'"
+        >
+          <span class="text-gray-600">#</span>
+          <span class="font-medium text-gray-800">help</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Chat Box -->
+    <aside class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 md:col-span-2">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+        <div class="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
+        Chat
+      </h2>
+
+      <div class="space-y-3">
+        <div class="min-h-[200px] max-h-[300px] overflow-y-auto bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <%- include('chat-messages.ejs', { messages }) %>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <article class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 mt-10">
+    <div class="flex gap-3">
+      <input type="hidden" name="from" data-bind-from value=""/>
+      <div
+        class="flex-none w-32 px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 flex items-center justify-center text-2xl"
+        data-text="$from"
+      >
+      </div>
+      <input
+        type="text"
+        name="message"
+        placeholder="Type your message..."
+        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all duration-200"
+        data-bind-message
+      />
+      <button
+        type="submit"
+        class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        data-on-click="@get('/api/chat')"
+      >
+        Send
+      </button>
+    </div>
+  </article>
+</div>
