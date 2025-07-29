@@ -107,6 +107,7 @@ const datastarPluginFactory: PluginFactory = (config) => {
             signals: string,
             options?: Partial<PatchSignalsOptions>
           ) => {
+            dbg(`Sending realtime patchSignals: ${signals}`)
             api.realtime.send(
               'datastar',
               api.stringify({
@@ -123,6 +124,7 @@ const datastarPluginFactory: PluginFactory = (config) => {
             elements: string,
             options?: Partial<PatchElementsOptions>
           ) => {
+            dbg(`Sending realtime patchElements: ${elements}`)
             api.realtime.send(
               'datastar',
               api.stringify({
@@ -168,6 +170,7 @@ const datastarPluginFactory: PluginFactory = (config) => {
             }
           }
 
+          dbg(`Sending patchElements: ${dataLines}`)
           send(EventType.PatchElements, dataLines, {
             eventId: opts.eventId,
             retryDuration: opts.retryDuration,
@@ -199,6 +202,7 @@ const datastarPluginFactory: PluginFactory = (config) => {
             }
           }
 
+          dbg(`Sending patchSignals: ${dataLines}`)
           send(EventType.PatchSignals, dataLines, {
             eventId: opts.eventId,
             retryDuration: opts.retryDuration,
