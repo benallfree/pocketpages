@@ -269,6 +269,29 @@ The event detail includes:
 - `newURL` - New URL
 - `hash` - Current hash value
 
+### Client-Side Helper Functions
+
+#### `patchSignals(signals)`
+
+A client-side helper function that dispatches a `datastar-fetch` event to patch signals. This function is automatically available in the global scope when the datastar plugin is loaded.
+
+```javascript
+// Patch signals from client-side JavaScript
+patchSignals({ count: 42, message: 'Hello' })
+
+// Patch signals with complex data
+patchSignals({
+  user: { id: 123, name: 'John' },
+  settings: { theme: 'dark' },
+})
+```
+
+This function is particularly useful for:
+
+- Updating signals from client-side event handlers
+- Syncing state between different parts of your application
+- Triggering signal updates from custom JavaScript code
+
 ## Event Types
 
 - `datastar-patch-elements` - DOM element updates

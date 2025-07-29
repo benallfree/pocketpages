@@ -2,7 +2,21 @@
   type="module"
   src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"
 ></script>
-<script>
+<script language="javascript">
+  const patchSignals = (signals) => {
+    document.dispatchEvent(
+      new CustomEvent('datastar-fetch', {
+        detail: {
+          type: 'datastar-patch-signals',
+          el: null,
+          argsRaw: {
+            signals: JSON.stringify(signals),
+          },
+        },
+      })
+    )
+  }
+
   {
     const source = new EventSource('/api/realtime') // URL to your SSE endpoint
     source.addEventListener('PB_CONNECT', function (event) {
