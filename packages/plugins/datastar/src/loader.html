@@ -33,6 +33,8 @@
           subscriptions: ['datastar'],
         }),
       }).catch(console.error)
+
+      patchSignals({ clientId })
     })
 
     source.addEventListener('datastar', function (event) {

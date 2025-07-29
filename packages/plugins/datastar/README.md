@@ -292,6 +292,32 @@ This function is particularly useful for:
 - Syncing state between different parts of your application
 - Triggering signal updates from custom JavaScript code
 
+#### `$clientId` Signal
+
+The `$clientId` signal is automatically set when the realtime connection is established. This signal contains the unique client identifier assigned by PocketBase's realtime system.
+
+```html
+<!-- Display the client ID -->
+<div data-text="$clientId"></div>
+
+<!-- Use in conditional rendering -->
+<div data-if="$clientId">
+  Connected with ID: <span data-text="$clientId"></span>
+</div>
+
+<!-- Use in data attributes -->
+<button data-on-click="@get('/api/action')" data-client-id="$clientId">
+  Perform Action
+</button>
+```
+
+The `$clientId` is useful for:
+
+- Identifying the current client in realtime communications
+- Debugging connection issues
+- Creating client-specific functionality
+- Tracking user sessions
+
 ## Event Types
 
 - `datastar-patch-elements` - DOM element updates
