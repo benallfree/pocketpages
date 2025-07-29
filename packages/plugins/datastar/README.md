@@ -175,13 +175,40 @@ datastar.prefetch(['/page1', '/page2'])
 
 ### Realtime Methods
 
-#### `datastar.realtime.patchElements(elements, options?)`
+#### `datastar.realtime.patchElements(elements, patchOptions?, realtimeOptions?)`
 
 Broadcasts element updates to all connected clients.
 
 ```javascript
+// Basic usage
 datastar.realtime.patchElements('<div>Broadcast message</div>')
+
+// With patch options
+datastar.realtime.patchElements('<div>Broadcast message</div>', {
+  selector: '#target',
+  mode: 'inner',
+  useViewTransition: true,
+})
+
+// With realtime options for custom filtering
+datastar.realtime.patchElements(
+  '<div>Broadcast message</div>',
+  {},
+  {
+    filter: (clientId, client, topic, message) => {
+      // Only send to authenticated clients
+      return client.get('auth')?.id
+    },
+  }
+)
 ```
+
+**Parameters:**
+
+- `elements` (string) - HTML content to broadcast
+- `patchOptions` (object, optional) - Element patch configuration
+- `realtimeOptions` (object, optional) - Realtime delivery options
+  - `filter` (function, optional) - Custom filter function to target specific clients
 
 #### `datastar.realtime.patchSignals(signals, options?)`
 
