@@ -9,6 +9,9 @@ import { dbg } from '../lib/debug'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
 import { loadPlugins } from '../lib/loadPlugins'
 import { resolveRoute } from '../lib/resolveRoute'
+import { PocketBaseApiError, PocketPagesError } from '../lib/errors'
+import { PocketPagesError as PocketPagesErrorFn } from '../lib/errors'
+
 import {
   Cache,
   MiddlewareLoaderFunc,
@@ -21,30 +24,6 @@ import {
   Plugin,
   RedirectOptions,
 } from '../lib/types'
-
-type PocketBaseApiError = Error & {
-  value: {
-    status: number
-    message: string
-  }
-}
-
-export type PocketPagesError = Error & {
-  status: number
-  message: string
-  originalError: Error
-}
-
-function PocketPagesError(
-  status: number,
-  message: string,
-  originalError: Error
-): PocketPagesError {
-  const e = new Error(message) as PocketPagesError
-  e.status = status
-  e.originalError = originalError
-  return e as PocketPagesError
-}
 
 function isApiError(err: any): err is PocketBaseApiError {
   return (
@@ -495,7 +474,6 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       const tryUrl = globalApi.url(
         [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
       )
-      dbg(`Trying ${tryUrl}`)
       resolvedRoute = resolveRoute(tryUrl, routes)
       if (resolvedRoute) {
         try {
@@ -514,10 +492,14 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 
 function wrapError(e: any): PocketPagesError {
   if (isApiError(e)) {
-    return PocketPagesError(e.value.status, e.value.message, e)
+    return PocketPagesErrorFn(e.value.status, e.value.message, e)
   }
+  // users can `throw PocketPagesErrorFn(...)`
+  if (e && typeof e === 'object' && 'status' in e && 'originalError' in e) {
+    return e as PocketPagesError
+  }  
   if (e instanceof Error) {
-    return PocketPagesError(500, `${e}`, e)
+    return PocketPagesErrorFn(500, `${e}`, e)
   }
-  return PocketPagesError(500, `${e}`, new Error(`${e}`))
+  return PocketPagesErrorFn(500, `${e}`, new Error(`${e}`))
 }
