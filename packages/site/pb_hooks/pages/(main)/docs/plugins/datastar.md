@@ -264,7 +264,7 @@ if (formData.name && formData.email) {
 
 ## Client-Side Integration
 
-The plugin automatically injects the Datastar loader script. Use DataStar attributes in your HTML:
+The plugin automatically injects the Datastar loader script. Use Datastar attributes in your HTML:
 
 ```html
 <button data-on-click="@get('/api/increment')">
