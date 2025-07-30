@@ -1,0 +1,59 @@
+<script server>
+if (request.method === 'POST') {
+    const data = body()
+
+    const { action } = params
+
+    if (action === 'throw') {
+        throw new Error('This is a test error')
+    } else if (action === 'runtimeError') {
+        // Simulate a runtime error
+        const obj = null
+        obj.someProperty = 'This will throw a runtime error'
+    } else if (action === 'throwApi') {
+        throw pocketPagesError(500, 'This is a test API error')
+    } else if (action === 'throwApiCustomStatus') {
+        const customStatus = data.customStatus || 500
+        throw pocketPagesError(customStatus, 'This is a test API error with custom status code')
+    }
+}
+</script>
+
+<!-- slot:content -->
+<h2>Error Handling Examples</h2>
+
+ <article>
+  <form method="POST" action="/index?action=throw">
+    <header>Throw a Generic Error</header>
+    <code>throw new Error('This is a test error');</code>
+    <button type="submit">Throw Error</button>
+  </form>
+</article>
+
+ <article>
+  <form method="POST" action="/index?action=runtimeError">
+    <header>Generate a Runtime Error</header>
+    <code>const a = null; a.b = 42;</code>
+    <button type="submit">Runtime Error</button>
+  </form>
+</article>
+
+<article>
+  <form method="POST" action="/index?action=throwApi">
+    <header>Throw an API Error - 500</header>
+    <code>throw pocketPagesError(500, 'This is a test API error');</code>
+    <button type="submit">Throw</button>
+  </form>
+</article>
+
+<article>
+  <form method="POST" action="/index?action=throwApiCustomStatus">
+    <header>Throw an API Error - Custom Status Code</header>
+    <p>To test the various error wildcard routes (404, 403, 40x, 4xx, 504, 50x, 5xx, error.ejs (catch-all)) try entering specific 400 and 500 status codes.</p>
+    <code>throw pocketPagesError(customStatus, 'This is a test API error with custom status code');</code>
+    <fieldset role="group">
+      <input name="customStatus" value="404" />
+      <button type="submit">Throw</button>
+    </fieldset>
+  </form>
+</article>
