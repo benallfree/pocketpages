@@ -2,7 +2,6 @@ import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as parse } from 'url-parse'
 import { PagesGlobalContext } from './types'
-import { PocketPagesError as PocketPagesErrorFn } from '../lib/errors'
 
 export const globalApi: PagesGlobalContext = {
   url: (path: string) => {
@@ -30,6 +29,5 @@ export const globalApi: PagesGlobalContext = {
     $app.store<any>().set(name, value)
     return value
   },
-  pocketPagesError: PocketPagesErrorFn,
   ...log,
 }

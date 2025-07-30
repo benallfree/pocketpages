@@ -496,10 +496,6 @@ function wrapError(e: any): PocketPagesError {
   if (isApiError(e)) {
     return PocketPagesErrorFn(e.value.status, e.value.message, e)
   }
-  // users can `throw PocketPagesErrorFn(...)`
-  if (e && typeof e === 'object' && 'status' in e && 'originalError' in e) {
-    return e as PocketPagesError
-  }  
   if (e instanceof Error) {
     return PocketPagesErrorFn(500, `${e}`, e)
   }

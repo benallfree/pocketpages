@@ -3,7 +3,6 @@ import * as log from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { default as parse } from 'url-parse'
 import { Route } from '../handlers/AfterBootstrapHandler'
-import { PocketPagesError as PocketPagesErrorFn } from '../lib/errors'
 
 export type PageDataLoaderFunc<TData = any> = (
   api: Omit<PagesRequestContext<TData>, 'data'>
@@ -26,8 +25,7 @@ export type PagesGlobalContext = {
   store: {
     <T>(name: string, value: T): T
     (name: string): any
-  },
-  pocketPagesError: typeof PocketPagesErrorFn
+  }
 } & typeof log
 
 export type ResolveOptions = {
