@@ -458,16 +458,18 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     response.status(status)
     /**
      * Error resolution plan:
+     * 
+     *  404, 403, 40x, 4xx, 504, 50x, 5xx, error
      *
      * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
      *
      * 1. `${status}`
-     * 2. `${status.slice(0, 2)}xx`
+     * 2. `${status.slice(0, 2)}x`
      * 3. `${status.slice(0, 1)}xx`
      * 4. `error`
      */
     const check1 = `${status}`
-    const check2 = `${status.toString().slice(0, 2)}xx`
+    const check2 = `${status.toString().slice(0, 2)}x`
     const check3 = `${status.toString().slice(0, 1)}xx`
     const check4 = `error`
     for (const check of [check1, check2, check3, check4]) {
