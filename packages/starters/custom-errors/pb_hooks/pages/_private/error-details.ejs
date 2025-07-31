@@ -16,13 +16,20 @@
 <br />
 
 <div>
-  <p><%% stringify(response.error().originalError) %>: </p>
-  <code><%- stringify(response.error().originalError) %></code>
+  <p><%% stringify(response.error().message) %>: </p>
+  <code><%- stringify(response.error().message) %></code>
 </div>
 
 <br />
 
 <div>
-  <p><%% stringify(response.error().message) %>: </p>
-  <code><%- stringify(response.error().message) %></code>
+  <p><%% stringify(response.error().data) %>: </p>
+  <code><%- stringify(response.error().data) %></code>
+</div>
+
+<br />
+
+<div>
+  <p><%% stringify(response.error().pocketbaseApiError) %>: </p>
+  <code><%- stringify(response.error().pocketbaseApiError) %></code>
 </div>

@@ -1,23 +1,14 @@
-export type PocketBaseApiError = Error & {
-  value: {
-    status: number
-    message: string
+export class PocketPagesError extends Error {
+  constructor(
+    public status: number,
+    public message: string,
+    public data?: any,
+    public pocketbaseApiError?: ApiError | null) {
+    super(message)
   }
-}
 
-export type PocketPagesError = Error & {
-  status: number
-  message: string
-  originalError: Error
-}
-
-export function PocketPagesError(
-  status: number,
-  message: string,
-  originalError: Error
-): PocketPagesError {
-  const e = new Error(message) as PocketPagesError
-  e.status = status
-  e.originalError = originalError
-  return e
+  toString(): string {
+    const dataStr = this.data ? ` Data: ${JSON.stringify(this.data)}` : ''
+    return `PocketPagesError: ${this.message} (Status: ${this.status})${dataStr}`
+  }
 }
