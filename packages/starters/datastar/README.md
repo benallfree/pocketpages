@@ -1,12 +1,12 @@
-# DataStar Starter Kit
+# Datastar Starter Kit
 
-This starter kit demonstrates how to build realtime web applications using [DataStar](https://github.com/starfederation/datastar) with PocketPages. It includes a live chat demo and counter example.
+This starter kit demonstrates how to build realtime web applications using [Datastar](https://github.com/starfederation/datastar) with PocketPages. It includes a live chat demo and counter example.
 
 ## Features
 
 - Realtime chat with emoji avatars
 - Live counter with instant updates
-- DataStar signal management
+- Datastar signal management
 - Server-sent events (SSE) integration
 - Modern UI with Tailwind CSS
 
@@ -19,6 +19,14 @@ npm i
 pocketbase serve --dir=pb_data --dev
 ```
 
+## Setup
+
+The starter kit is pre-configured with the required Datastar setup:
+
+1. **Plugin Configuration** (`+config.js`): Includes the datastar plugin
+2. **Script Injection** (`+layout.ejs`): Includes `<%- datastar.scripts() %>` in the `<head>` section
+3. **Realtime Integration**: Configured for realtime updates
+
 ## Usage
 
 1. Start the server and visit `http://127.0.0.1:8090`
@@ -30,10 +38,10 @@ pocketbase serve --dir=pb_data --dev
 
 - **Chat System**: Real-time messaging with random emoji avatars
 - **Counter**: Simple state management with live updates
-- **DataStar Integration**: Server-side signal reading and client-side binding
+- **Datastar Integration**: Server-side signal reading and client-side binding
 - **Realtime Broadcasting**: Updates sent to all connected clients
 
-## DataStar Features Demonstrated
+## Datastar Features Demonstrated
 
 - `datastar.patchElements()` - DOM updates
 - `datastar.patchSignals()` - Signal management

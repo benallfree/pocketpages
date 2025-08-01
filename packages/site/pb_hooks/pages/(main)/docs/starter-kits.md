@@ -21,4 +21,4 @@ Available starter kits:
 - **daisyui** – Tailwind CSS with DaisyUI components
 - **daisyui-docs** – Documentation site template with DaisyUI and navigation
 - **htmx** – HTMX integration for dynamic interactions
-- **datastar** – Realtime chat and counter demo using DataStar and PocketPages.
+- **datastar** – Realtime chat and counter demo using Datastar and PocketPages.
