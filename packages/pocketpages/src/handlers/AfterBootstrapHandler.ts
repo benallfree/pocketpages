@@ -182,8 +182,8 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
             $filepath
               .join(pagesRoot, ...pathParts, `+layout.*`)
               // Escape glob [] syntax used in parameter routing
-              .replace('[', '\\[')
-              .replace(']', '\\]')
+              .replace(/\[/g, '\\[')
+              .replace(/\]/g, '\\]')
           )
           // dbg({ pathParts, maybeLayouts })
           if (maybeLayouts && maybeLayouts.length > 0) {
