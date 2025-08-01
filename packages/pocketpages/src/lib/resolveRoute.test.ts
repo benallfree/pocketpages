@@ -58,3 +58,49 @@ test("returns null for no match", () => {
   const result = resolveRoute(url as any, routes as any);
   expect(result).toBeNull();
 });
+
+test("static route is matched before param route for /products/new", () => {
+  const routes = [
+    baseRoute({
+      segments: [
+        { nodeName: "products" },
+        { nodeName: "", paramName: "id" },
+      ],
+      relativePath: "products/[id]",
+    }),
+    baseRoute({
+      segments: [
+        { nodeName: "products" },
+        { nodeName: "new" },
+      ],
+      relativePath: "products/new",
+    }),
+  ];
+  const url = { pathname: "/products/new", query: {} };
+  const result = resolveRoute(url as any, routes as any);
+  expect(result?.route.relativePath).toBe("products/new");
+  expect(result?.params.id).toBeUndefined();
+});
+
+test("param route is matched for /products/123 when static does not match", () => {
+  const routes = [
+    baseRoute({
+      segments: [
+        { nodeName: "products" },
+        { nodeName: "", paramName: "id" },
+      ],
+      relativePath: "products/[id]",
+    }),
+    baseRoute({
+      segments: [
+        { nodeName: "products" },
+        { nodeName: "new" },
+      ],
+      relativePath: "products/new",
+    }),
+  ];
+  const url = { pathname: "/products/123", query: {} };
+  const result = resolveRoute(url as any, routes as any);
+  expect(result?.route.relativePath).toBe("products/[id]");
+  expect(result?.params.id).toBe("123");
+});
