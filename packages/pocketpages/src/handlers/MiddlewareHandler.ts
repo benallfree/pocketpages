@@ -9,6 +9,8 @@ import { dbg } from '../lib/debug'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
 import { loadPlugins } from '../lib/loadPlugins'
 import { resolveRoute } from '../lib/resolveRoute'
+import { PocketPagesError  } from '../lib/errors'
+
 import {
   Cache,
   MiddlewareLoaderFunc,
@@ -21,41 +23,7 @@ import {
   Plugin,
   RedirectOptions,
 } from '../lib/types'
-
-type PocketBaseApiError = Error & {
-  value: {
-    status: number
-    message: string
-  }
-}
-
-export type PocketPagesError = Error & {
-  status: number
-  message: string
-  originalError: Error
-}
-
-function PocketPagesError(
-  status: number,
-  message: string,
-  originalError: Error
-): PocketPagesError {
-  const e = new Error(message) as PocketPagesError
-  e.status = status
-  e.originalError = originalError
-  return e as PocketPagesError
-}
-
-function isApiError(err: any): err is PocketBaseApiError {
-  return (
-    err instanceof Error &&
-    'value' in err &&
-    typeof err.value === 'object' &&
-    err.value !== null &&
-    'status' in err.value &&
-    'message' in err.value
-  )
-}
+import _default from 'dist'
 
 const escapeXml = (unsafe: string = '') => {
   return unsafe.replace(/[<>&'"]/g, (c) => {
@@ -420,7 +388,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     }
   }
 
-  const renderError = (e: PocketPagesError) => {
+  const renderError = (e: ApiError) => {
     error(e)
 
     if (e instanceof BadRequestError) {
@@ -470,32 +438,35 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
   } catch (e) {
     const _e = wrapError(e)
     error(
-      `PocketBase route resulted in error for ${request.url.toString()}: ${stringify(_e)}`
+      `PocketBase route resulted in error`,
+      "url", request.url.toString(),
+      "error", _e.toString(),
     )
 
     response.error(_e)
 
-    const { status, message } = _e
+    const { status } = _e
     response.status(status)
     /**
      * Error resolution plan:
+     * 
+     *  404, 403, 40x, 4xx, 504, 50x, 5xx, error
      *
      * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
      *
      * 1. `${status}`
-     * 2. `${status.slice(0, 2)}xx`
+     * 2. `${status.slice(0, 2)}x`
      * 3. `${status.slice(0, 1)}xx`
      * 4. `error`
      */
     const check1 = `${status}`
-    const check2 = `${status.toString().slice(0, 2)}xx`
+    const check2 = `${status.toString().slice(0, 2)}x`
     const check3 = `${status.toString().slice(0, 1)}xx`
     const check4 = `error`
     for (const check of [check1, check2, check3, check4]) {
       const tryUrl = globalApi.url(
         [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
       )
-      dbg(`Trying ${tryUrl}`)
       resolvedRoute = resolveRoute(tryUrl, routes)
       if (resolvedRoute) {
         try {
@@ -513,11 +484,24 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
 }
 
 function wrapError(e: any): PocketPagesError {
-  if (isApiError(e)) {
-    return PocketPagesError(e.value.status, e.value.message, e)
+
+  // How to tell if e is ApiError?
+  if (e && typeof e === 'object' && 'status' in e && 'message' in e) {
+    const { status, message, data } = e as any // Type assertion to bypass TS
+    error("Creating PocketPagesError from ApiError", "status", status, "message", message, "data", data)
+    return new PocketPagesError(
+      status, 
+      message,
+      data,
+      e
+    );
   }
+
   if (e instanceof Error) {
-    return PocketPagesError(500, `${e}`, e)
+    error("Creating PocketPagesError from Error", "message", e.message, "stack", e.stack);
+    return new PocketPagesError(500, e.message)
   }
-  return PocketPagesError(500, `${e}`, new Error(`${e}`))
+
+  error("Creating PocketPagesError from unknown type", "error", e);
+  return new PocketPagesError(500, e.message)
 }
