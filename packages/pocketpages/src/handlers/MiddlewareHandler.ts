@@ -6,10 +6,10 @@ import { stringify } from 'pocketbase-stringify'
 import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
 import { globalApi } from 'src/lib/globalApi'
 import { dbg } from '../lib/debug'
+import { normalizeError, PocketPagesError } from '../lib/errors'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
 import { loadPlugins } from '../lib/loadPlugins'
 import { resolveRoute } from '../lib/resolveRoute'
-import { PocketPagesError  } from '../lib/errors'
 
 import {
   Cache,
@@ -23,7 +23,6 @@ import {
   Plugin,
   RedirectOptions,
 } from '../lib/types'
-import _default from 'dist'
 
 const escapeXml = (unsafe: string = '') => {
   return unsafe.replace(/[<>&'"]/g, (c) => {
@@ -388,37 +387,21 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     }
   }
 
-  const renderError = (e: ApiError) => {
+  const renderError = (e: PocketPagesError) => {
     error(e)
-
-    if (e instanceof BadRequestError) {
-      const message = config.debug ? `${e}` : 'Bad Request'
-      return response.html(400, message)
-    }
 
     // In production, don't leak error details or stack traces
     if (config.debug) {
-      const message = (() => {
-        const m = `${e}`
-        if (m.includes('Value is not an object'))
-          return `${m} - are you referencing a symbol missing from require() or resolve()?`
-        return `${e}`
-      })()
-      const stackTrace =
-        e instanceof Error
-          ? e.stack
-              ?.replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
-              .replaceAll(__hooks, '')
-          : ''
-      return response.html(
-        500,
-        `<html><body><h1>PocketPages Error</h1><pre><code>${escapeXml(message)}\n${escapeXml(stackTrace)}</code></pre></body></html>`
-      )
+      const message =
+        `<html><body><h1>PocketPages Error (${e.status})</h1><pre><code>${e.message ? `${escapeXml(e.message)}\n` : ''}${e.context ? `\n${escapeXml(e.context)}` : ''}\n${escapeXml(e.stack)}</code></pre></body></html>`
+          .replaceAll(pagesRoot, '/' + $filepath.base(pagesRoot))
+          .replaceAll(__hooks, '')
+      return response.html(e.status, message)
     } else {
       // Generic error message in production
       return response.html(
-        500,
-        `<html><body><h1>Internal Server Error</h1><p>Something went wrong. Please try again later.</p></body></html>`
+        e.status,
+        `<html><body><h1>Internal Server Error (${e.status})</h1><p>Something went wrong. Please try again later.</p></body></html>`
       )
     }
   }
@@ -436,72 +419,52 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     // If an error comes back, we'll handle it here
     renderRoute()
   } catch (e) {
-    const _e = wrapError(e)
+    const _e = normalizeError(e)
     error(
       `PocketBase route resulted in error`,
-      "url", request.url.toString(),
-      "error", _e.toString(),
+      'url',
+      request.url.toString(),
+      'error',
+      _e.toString()
     )
 
     response.error(_e)
 
     const { status } = _e
     response.status(status)
-    /**
-     * Error resolution plan:
-     * 
-     *  404, 403, 40x, 4xx, 504, 50x, 5xx, error
-     *
-     * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
-     *
-     * 1. `${status}`
-     * 2. `${status.slice(0, 2)}x`
-     * 3. `${status.slice(0, 1)}xx`
-     * 4. `error`
-     */
-    const check1 = `${status}`
-    const check2 = `${status.toString().slice(0, 2)}x`
-    const check3 = `${status.toString().slice(0, 1)}xx`
-    const check4 = `error`
-    for (const check of [check1, check2, check3, check4]) {
-      const tryUrl = globalApi.url(
-        [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
-      )
-      resolvedRoute = resolveRoute(tryUrl, routes)
-      if (resolvedRoute) {
-        try {
-          return renderRoute()
-        } catch (e) {
-          const _e = wrapError(e)
-          return renderError(_e)
+    if (config.debug) {
+      renderError(_e)
+    } else {
+      /**
+       * Error resolution plan:
+       *
+       *  404, 403, 40x, 4xx, 504, 50x, 5xx, error
+       *
+       * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
+       *
+       * 1. `${status}`
+       * 2. `${status.slice(0, 2)}x`
+       * 3. `${status.slice(0, 1)}xx`
+       * 4. `error`
+       */
+      const check1 = `${status}`
+      const check2 = `${status.toString().slice(0, 2)}x`
+      const check3 = `${status.toString().slice(0, 1)}xx`
+      const check4 = `error`
+      for (const check of [check1, check2, check3, check4]) {
+        const tryUrl = globalApi.url(
+          [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
+        )
+        resolvedRoute = resolveRoute(tryUrl, routes)
+        if (resolvedRoute) {
+          try {
+            return renderRoute()
+          } catch (e) {
+            const _e = normalizeError(e)
+            return renderError(_e)
+          }
         }
       }
     }
-    renderError(_e)
-  } finally {
-    next()
   }
-}
-
-function wrapError(e: any): PocketPagesError {
-
-  // How to tell if e is ApiError?
-  if (e && typeof e === 'object' && 'status' in e && 'message' in e) {
-    const { status, message, data } = e as any // Type assertion to bypass TS
-    error("Creating PocketPagesError from ApiError", "status", status, "message", message, "data", data)
-    return new PocketPagesError(
-      status, 
-      message,
-      data,
-      e
-    );
-  }
-
-  if (e instanceof Error) {
-    error("Creating PocketPagesError from Error", "message", e.message, "stack", e.stack);
-    return new PocketPagesError(500, e.message)
-  }
-
-  error("Creating PocketPagesError from unknown type", "error", e);
-  return new PocketPagesError(500, e.message)
 }

@@ -1,49 +1,56 @@
 <script server>
-if (request.method === 'POST') {
-    const data = body()
+  const { action, pocketbaseApiError, customStatus } = params
 
-    const { action } = params
-
-    if (action === 'throw') {
-        throw new Error('This is a test error')
-    } else if (action === 'runtimeError') {
-        const obj = null
-        obj.someProperty = 'This will throw a runtime error'
-    } else if (action === 'throwPocketbaseApiErrorCustomStatus') {
-        const customStatus = data.customStatus || 500
-        throw new ApiError(customStatus, 'This is a test API error with custom status code', { x: 1 });
-    } else if (action === 'pocketbaseApiError') {
-      const errorType = data.pocketbaseApiError || 'BadRequestError'
-      if (errorType === 'BadRequestError') {
-        throw new BadRequestError('This is a test Pocketbase API error', { x: 1 });
-      } else if (errorType === 'UnauthorizedError') {
-        throw new UnauthorizedError('This is a test Pocketbase API error', { x: 1 });
-      } else if (errorType === 'ForbiddenError') {
-        throw new ForbiddenError('This is a test Pocketbase API error', { x: 1 });
-      } else if (errorType === 'NotFoundError') {
-        throw new NotFoundError('This is a test Pocketbase API error', { x: 1 });
-      } else if (errorType === 'TooManyrequestsError') {
-        throw new TooManyrequestsError('This is a test Pocketbase API error', { x: 1 });
-      } else if (errorType === 'InternalServerError') {
-        throw new InternalServerError('This is a test Pocketbase API error', { x: 1 });
-      }
+  if (action === 'throw') {
+    throw new Error('This is a test error')
+  } else if (action === 'runtimeError') {
+    const obj = null
+    obj.someProperty = 'This will throw a runtime error'
+  } else if (action === 'throwPocketbaseApiErrorCustomStatus') {
+    throw new ApiError(customStatus || 500, 'ApiError', { x: 1 })
+  } else if (action === 'pocketbaseApiError') {
+    const errorType = pocketbaseApiError || 'BadRequestError'
+    if (errorType === 'BadRequestError') {
+      throw new BadRequestError('BadRequestError', {
+        x: 1,
+      })
+    } else if (errorType === 'UnauthorizedError') {
+      throw new UnauthorizedError('UnauthorizedError', {
+        x: 1,
+      })
+    } else if (errorType === 'ForbiddenError') {
+      throw new ForbiddenError('ForbiddenError', {
+        x: 1,
+      })
+    } else if (errorType === 'NotFoundError') {
+      throw new NotFoundError('NotFoundError', { x: 1 })
+    } else if (errorType === 'TooManyrequestsError') {
+      throw new TooManyrequestsError('TooManyrequestsError', {
+        x: 1,
+      })
+    } else if (errorType === 'InternalServerError') {
+      throw new InternalServerError('InternalServerError', {
+        x: 1,
+      })
     }
-}
+  }
 </script>
 
 <!-- slot:content -->
 <h2>Error Handling Examples</h2>
 
- <article>
-  <form method="POST" action="/index?action=throw">
+<article>
+  <form method="GET">
+    <input type="hidden" name="action" value="throw" />
     <header>Throw a Generic Error</header>
     <code>throw new Error('This is a test error');</code>
     <button type="submit">Throw Error</button>
   </form>
 </article>
 
- <article>
-  <form method="POST" action="/index?action=runtimeError">
+<article>
+  <form method="GET">
+    <input type="hidden" name="action" value="runtimeError" />
     <header>Generate a Runtime Error</header>
     <code>const a = null; a.b = 42;</code>
     <button type="submit">Runtime Error</button>
@@ -51,10 +58,22 @@ if (request.method === 'POST') {
 </article>
 
 <article>
-  <form method="POST" action="/index?action=throwPocketbaseApiErrorCustomStatus">
+  <form method="GET">
+    <input
+      type="hidden"
+      name="action"
+      value="throwPocketbaseApiErrorCustomStatus"
+    />
     <header>Throw an API Error - Custom Status Code</header>
-    <p>To test the various error wildcard routes (404, 403, 40x, 4xx, 504, 50x, 5xx, error.ejs (catch-all)) try entering specific 400 and 500 status codes.</p>
-    <code>throw new ApiError(customStatus, 'This is a test API error with custom status code');</code>
+    <p>
+      To test the various error wildcard routes (404, 403, 40x, 4xx, 504, 50x,
+      5xx, error.ejs (catch-all)) try entering specific 400 and 500 status
+      codes.
+    </p>
+    <code
+      >throw new ApiError(customStatus, 'This is a test API error with custom
+      status code');</code
+    >
     <fieldset role="group">
       <input name="customStatus" value="404" />
       <button type="submit">Throw</button>
@@ -63,14 +82,17 @@ if (request.method === 'POST') {
 </article>
 
 <article>
-  <form method="POST" action="/index?action=pocketbaseApiError">
+  <form method="GET">
+    <input type="hidden" name="action" value="pocketbaseApiError" />
     <header>Throw an Pocketbase API Error</header>
     <code>throw new BadRequestError(500);</code>
 
-    <select name="pocketbaseApiError" aria-label="Select a PocketBase API error..." required>
-      <option selected disabled value="">
-        Select a PocketBase error
-      </option>
+    <select
+      name="pocketbaseApiError"
+      aria-label="Select a PocketBase API error..."
+      required
+    >
+      <option selected disabled value="">Select a PocketBase error</option>
       <option value="BadRequestError">Bad Request (400)</option>
       <option value="UnauthorizedError">Unauthorized (401)</option>
       <option value="ForbiddenError">Forbidden (403)</option>
