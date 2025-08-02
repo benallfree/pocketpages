@@ -435,35 +435,46 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     if (config.debug) {
       renderError(_e)
     } else {
-      /**
-       * Error resolution plan:
-       *
-       *  404, 403, 40x, 4xx, 504, 50x, 5xx, error
-       *
-       * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
-       *
-       * 1. `${status}`
-       * 2. `${status.slice(0, 2)}x`
-       * 3. `${status.slice(0, 1)}xx`
-       * 4. `error`
-       */
-      const check1 = `${status}`
-      const check2 = `${status.toString().slice(0, 2)}x`
-      const check3 = `${status.toString().slice(0, 1)}xx`
-      const check4 = `error`
-      for (const check of [check1, check2, check3, check4]) {
-        const tryUrl = globalApi.url(
-          [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
-        )
-        resolvedRoute = resolveRoute(tryUrl, routes)
-        if (resolvedRoute) {
-          try {
+      try {
+        dbg(`Trying to resolve route for ${request.url}`)
+        /**
+         * Error resolution plan:
+         *
+         *  404, 403, 40x, 4xx, 504, 50x, 5xx, error
+         *
+         * Attempt `resolveRoute` with request.url walking up the path to the root as follows:
+         *
+         * 1. `${status}`
+         * 2. `${status.slice(0, 2)}x`
+         * 3. `${status.slice(0, 1)}xx`
+         * 4. `error`
+         */
+        const check1 = `${status}`
+        const check2 = `${status.toString().slice(0, 2)}x`
+        const check3 = `${status.toString().slice(0, 1)}xx`
+        const check4 = `error`
+        for (const check of [check1, check2, check3, check4]) {
+          const tryUrl = globalApi.url(
+            [...request.url.toString().split(`/`).slice(0, -1), check].join(`/`)
+          )
+          console.log(`***got here: ${tryUrl}`)
+
+          dbg(`Trying to resolve route for ${tryUrl}`)
+          resolvedRoute = resolveRoute(tryUrl, routes)
+          if (resolvedRoute) {
             return renderRoute()
-          } catch (e) {
-            const _e = normalizeError(e)
-            return renderError(_e)
           }
         }
+      } catch (e) {
+        const _e = normalizeError(e)
+        error(
+          `Error rendering error route`,
+          'url',
+          request.url.toString(),
+          'error',
+          _e.toString()
+        )
+        return renderError(_e)
       }
     }
   }
