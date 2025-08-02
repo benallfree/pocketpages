@@ -21,7 +21,8 @@
     "publish:realtime": "cd packages/plugins/realtime && bun publish",
     "publish:create-pocketpages": "cd packages/create-pocketpages && bun publish",
     "publish:datastar": "cd packages/plugins/datastar && bun publish",
-    "fix": "prettier --write ."
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write ."
   },
   "prettier": {
     "singleQuote": true,
