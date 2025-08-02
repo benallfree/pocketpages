@@ -1,5 +1,11 @@
 # create-pocketpages
 
+## 0.1.1
+
+### Patch Changes
+
+- 1822c74: Datastar spelling corrections
+
 ## 0.1.0
 
 ### Minor Changes

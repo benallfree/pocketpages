@@ -1,5 +1,12 @@
 # pocketpages
 
+## 0.22.1
+
+### Patch Changes
+
+- 5f35eaa: Fix: escape glob syntax for layout routing with multiple params route (#84)
+- 5f35eaa: Feat: Algolia site search
+
 ## 0.22.0
 
 ### Minor Changes
