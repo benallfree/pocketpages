@@ -1,0 +1,26 @@
+{
+  "name": "PocketPages Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [8090],
+  "portsAttributes": {
+    "8090": {
+      "label": "PocketBase Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "bun install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}
