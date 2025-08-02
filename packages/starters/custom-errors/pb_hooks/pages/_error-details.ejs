@@ -1,0 +1,15 @@
+<h3>Error Details</h3>
+
+<% [
+  'status',
+  'message',
+  'filename',
+  'line',
+  'col',
+  'context',
+  'stack',
+].forEach(name => { %>
+  <%- include(`_error-detail.ejs`, { 'name': name }) %>
+<% }) %>
+
+

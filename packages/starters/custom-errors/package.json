@@ -1,0 +1,30 @@
+{
+  "name": "pocketpages-starter-custom-errors",
+  "private": true,
+  "version": "0.0.2",
+  "dependencies": {
+    "pocketpages": "workspace:>=0.20.0"
+  },
+  "pockethost": {
+    "instanceId": "custom-errors"
+  },
+  "files": [
+    "pb_hooks",
+    "*.md"
+  ],
+  "description": "A custom-errors starter project for PocketPages",
+  "author": {
+    "name": "Ben Allfree",
+    "github": "benallfree"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benallfree/pocketpages/tree/main/packages/starters/custom-errors"
+  },
+  "keywords": [
+    "pocketpages",
+    "starter",
+    "custom-errors"
+  ],
+  "license": "MIT"
+}

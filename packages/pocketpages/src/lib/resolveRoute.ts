@@ -3,7 +3,15 @@ import { dbg } from './debug'
 import { fingerprint } from './fingerprint'
 import { Cache, PagesParams, Url } from './types'
 
-export const resolveRoute = (url: Url, routes: Route[]) => {
+export type ResolvedRoute = {
+  route: Route
+  params: PagesParams
+}
+
+export const resolveRoute = (
+  url: Url,
+  routes: Route[]
+): ResolvedRoute | null => {
   const { config } = $app.store<Cache>().get(`pocketpages`)
 
   const urlPath = url.pathname.slice(1)
