@@ -43,7 +43,9 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
     templatePath: string,
     isDir: boolean
   ) {
-    dbg(`ejs resolveInclude ${includePath} from ${templatePath}`)
+    dbg(
+      `ejs resolveInclude ${includePath} from ${templatePath} <${isDir ? 'dir' : 'file'}>`
+    )
     // Handle absolute paths (starting with /)
     if (isDir) {
       return path.resolve(pagesRoot, includePath)
@@ -72,12 +74,20 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
 
     // Handle relative paths by searching up the directory tree
     let currentPath = path.dirname(templatePath)
+
+    const triedPaths: string[] = []
     while (currentPath.length >= pagesRoot.length) {
       const attemptPath = path.resolve(currentPath, `_private`, includePath)
+      if (!attemptPath.startsWith(pagesRoot)) {
+        dbg(`skipping ${attemptPath} in ${pagesRoot}`)
+        break
+      }
+      dbg(`trying ${attemptPath} in ${pagesRoot}`)
       const foundPath = tryExtensions(attemptPath)
       if (foundPath) {
         return foundPath
       }
+      triedPaths.push(attemptPath)
 
       // If we're at pagesRoot and still haven't found it, fall back to default behavior
       if (currentPath === pagesRoot) {
@@ -88,7 +98,9 @@ const ejsPluinFactory: PluginFactory<EjsPluginOptions> = (config, extra) => {
     }
 
     throw new Error(
-      `No partial '${includePath}' found in any _private directory`
+      `No partial '${includePath}' found in any _private directory. Tried: ${triedPaths.join(
+        ', '
+      )}`
     )
   }
 
