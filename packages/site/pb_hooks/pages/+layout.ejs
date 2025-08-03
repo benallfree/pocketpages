@@ -87,7 +87,7 @@
           0 -3px 6px 0 color-mix(in srgb, var(--color-primary) 12%, transparent);
       }
     </style>
-    <%- slots.head %>
+    <%- datastar.scripts({ spa: { scope: '#toc', selector: '#content' } }) %> <%- slots.head %>
   </head>
 
   <body>

@@ -7,5 +7,6 @@ module.exports = {
       debug: true,
     },
     'pocketpages-plugin-marked',
+    'pocketpages-plugin-datastar',
   ],
 }
