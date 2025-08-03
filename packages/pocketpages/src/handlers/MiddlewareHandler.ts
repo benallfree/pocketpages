@@ -328,6 +328,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       const contentType = response.header('Content-Type')
       dbg(`Content-Type: ${contentType}`)
       if (contentType && contentType !== 'text/html') {
+        dbg(`Skipping layout for non-HTML content`, content)
         return true
       }
 
