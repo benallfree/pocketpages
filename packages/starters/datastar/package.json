@@ -21,7 +21,7 @@
     "deploy": "phio deploy"
   },
   "dependencies": {
-    "pocketpages": "workspace:>=0.22.2",
+    "pocketpages": "workspace:>=0.22.3",
     "pocketpages-plugin-datastar": "workspace:>=0.2.0"
   },
   "files": [

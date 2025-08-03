@@ -1,5 +1,13 @@
 # pocketpages
 
+## 0.22.3
+
+### Patch Changes
+
+- 1fdcbeb: Fix bad publish
+- Updated dependencies [1fdcbeb]
+  - pocketpages-plugin-ejs@0.1.2
+
 ## 0.22.2
 
 ### Patch Changes

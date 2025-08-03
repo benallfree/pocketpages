@@ -1,5 +1,11 @@
 # pocketpages-plugin-ejs
 
+## 0.1.2
+
+### Patch Changes
+
+- 1fdcbeb: Fix bad publish
+
 ## 0.1.1
 
 ### Patch Changes

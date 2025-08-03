@@ -29,7 +29,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "pocketpages": "workspace:>=0.22.2",
+    "pocketpages": "workspace:>=0.22.3",
     "pocketpages-plugin-datastar": "workspace:^0.2.0",
     "pocketpages-plugin-marked": "workspace:>=0.1.0"
   },
