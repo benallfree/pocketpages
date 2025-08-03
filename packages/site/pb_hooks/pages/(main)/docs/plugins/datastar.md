@@ -28,6 +28,122 @@ Add to your `+layout.ejs` or similar:
 
 **Important:** The `datastar.scripts()` call must be included in the `<head>` section of your HTML. This injects the Datastar loader script which is required for all Datastar functionality to work.
 
+### Script Options
+
+The `datastar.scripts()` function accepts optional configuration:
+
+```ejs
+<head>
+  <%%- datastar.scripts(
+    {
+      spa: {
+        scope: 'body', // CSS selector for SPA scope
+        selector: 'app' // Optional selector for content updates
+      },
+      realtime: true // Enable realtime functionality
+    }
+  ) %>
+</head>
+```
+
+**Options:**
+
+- `spa` (object, optional) - Enables Single Page Application mode
+  - `scope` (string) - CSS selector for the scope where `<a>` tags will be converted to SPA navigation
+  - `selector` (string, optional) - CSS selector for content updates. When specified, the `Datastar-Selector` header is sent with requests and the returned content is patched into the matching DOM element using the Datastar `selector` directive. This remedies cases where parent/container divs are lost because they were in `+layout.*` files and layouts are disabled when `Datastar-Request: true` is detected.
+- `realtime` (boolean, optional) - Enables realtime functionality for broadcasting updates to all connected clients
+
+## SPA Mode
+
+When SPA mode is enabled, the plugin automatically converts all `<a>` tags within the specified scope to use client-side navigation instead of full page reloads. This creates a smooth single-page application experience.
+
+### How SPA Mode Works
+
+1. **Link Interception**: All `<a>` tags within the specified scope are automatically modified to prevent default navigation
+2. **History Management**: Clicking links updates the browser history using `pushState()` without page reloads
+3. **Content Updates**: The target page content is fetched and injected into the DOM
+4. **Back/Forward Support**: Browser back/forward buttons work correctly with SPA navigation
+
+### SPA Configuration Examples
+
+```html
+<!-- Basic SPA with body scope -->
+<head>
+  <%%- datastar.scripts({ spa: { scope: 'body' } }) %>
+</head>
+
+<!-- SPA with specific selector for content updates -->
+<head>
+  <%%- datastar.scripts({ spa: { scope: 'nav', selector: 'main-content' } }) %>
+</head>
+
+<!-- SPA with realtime enabled -->
+<head>
+  <%%- datastar.scripts({ spa: { scope: 'body' }, realtime: true }) %>
+</head>
+```
+
+### SPA Behavior
+
+- **Scope**: Only `<a>` tags within the specified CSS selector are converted to SPA navigation
+- **Selector**: If `selector` is provided, the `Datastar-Selector` header is sent with requests and returned content is patched into the matching DOM element using the Datastar `selector` directive. This remedies cases where parent/container divs are lost because they were in `+layout.*` files and layouts are disabled when `Datastar-Request: true` is detected
+- **History**: Browser history is properly managed for back/forward navigation
+- **Headers**: The `Datastar-Request: true` header is automatically sent with requests to disable layouts
+
+### SPA Example
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <%%- datastar.scripts({ spa: { scope: 'nav', selector: 'content' } }) %>
+  </head>
+  <body>
+    <nav>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/profile">Profile</a>
+      <a href="/settings">Settings</a>
+    </nav>
+
+    <div id="content">
+      <!-- Page content will be updated here -->
+    </div>
+  </body>
+</html>
+```
+
+In this example, clicking navigation links will update only the `#content` div without full page reloads.
+
+### Layout Behavior with SPA
+
+When SPA mode is enabled, the `Datastar-Request: true` header is automatically sent with requests. This header disables layout rendering (`+layout.*` files) to prevent duplicate HTML structure from being returned.
+
+**Why this matters:**
+
+- Layout files typically contain the page structure (navigation, footer, etc.)
+- When layouts are disabled, only the page-specific content is returned
+- This can cause issues if your page content expects to be wrapped in a specific container div that was defined in the layout
+
+**The `selector` option solves this by:**
+
+- Sending the `Datastar-Selector` header with requests
+- Using the Datastar `selector` directive to patch content into the matching DOM element
+- Providing the missing container that would normally come from the layout
+- Ensuring proper DOM structure for content updates
+
+**Example scenario:**
+
+```html
+<!-- +layout.ejs -->
+<div id="main-content"><%%- content %></div>
+
+<!-- page.ejs -->
+<h1>Page Title</h1>
+<p>Page content...</p>
+```
+
+Without the `selector` option, SPA requests would return just `<h1>Page Title</h1><p>Page content...</p>` and patch it into the entire page. With `selector: 'main-content'`, the content is patched into the `#main-content` element using the Datastar `selector` directive, ensuring it goes into the correct container.
+
 ## API Reference
 
 ### Core Methods

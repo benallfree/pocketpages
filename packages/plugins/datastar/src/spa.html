@@ -1,0 +1,37 @@
+<script>
+  {
+    const headers = {}
+    if ('{{selector}}') {
+      headers['Datastar-Selector'] = '{{selector}}'
+    }
+
+    // Wait for DOM to be fully loaded before adding the popstate div
+    const addPopstateDiv = () => {
+      var popstateDiv = document.createElement('div')
+      popstateDiv.setAttribute(
+        'data-on-popstate__window',
+        `url=event.state?.datastar?.url;if(!url) return;@get(url, {headers: ${JSON.stringify(headers)}})`
+      )
+      document.body.appendChild(popstateDiv)
+    }
+
+    // Add the div when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', addPopstateDiv)
+    } else {
+      addPopstateDiv()
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var e = document.querySelector('{{scope}}')
+      if (!e) return
+      var links = e.querySelectorAll('a')
+      links.forEach(function (a) {
+        a.setAttribute(
+          'data-on-click',
+          `evt.preventDefault();e=evt.target;href=e.getAttribute('href');history.pushState({datastar: {url: href, }}, '', href);@get(href, {headers: ${JSON.stringify(headers)}})`
+        )
+      })
+    })
+  }
+</script>
