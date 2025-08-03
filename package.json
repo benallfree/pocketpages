@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "bun run --filter='*' dev",
     "build": "bun run --filter='*' build",
+    "deploy": "bun run --filter='*' deploy",
     "publish": "concurrently 'bun:publish:*'",
     "publish:pocketpages": "cd packages/pocketpages && bun publish",
     "publish:auth": "cd packages/plugins/auth && bun publish",
