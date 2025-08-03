@@ -2,23 +2,17 @@
   <!-- Desktop sidebar - always visible on large screens -->
   <aside class="hidden lg:block lg:w-80 lg:flex-shrink-0">
     <div
-      class="h-screen sticky top-0 bg-gradient-to-b from-base-100 to-base-200 border-r border-base-300"
+      class="sticky bg-gradient-to-b from-base-100 to-base-200 border-r border-base-300"
+      style="top: 1rem; height: calc(100vh - 2rem)"
     >
-      <!-- Desktop header -->
-      <div class="p-6 border-b border-base-300/50">
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-8 bg-primary rounded-full"></div>
-          <h2 class="text-lg font-bold text-base-content">Contents</h2>
-        </div>
-      </div>
-
       <!-- Navigation content with TOC -->
       <nav
-        class="p-4 overflow-y-auto h-full docs-nav-scroll"
+        class="p-4 overflow-y-auto docs-nav-scroll"
         role="navigation"
         aria-label="Documentation navigation"
+        style="height: 100%"
       >
-        <div class="docs-toc-navigation space-y-2">
+        <div class="docs-toc-navigation space-y-2" id="toc">
           <%- include(`toc.md`) %>
         </div>
       </nav>
@@ -30,7 +24,7 @@
     <article
       class="docs-content prose prose-base max-w-4xl mx-auto pointer-coarse:prose-lg"
     >
-      <%- slots.body || slot %>
+      <div id="content"><%- slots.body || slot %></div>
     </article>
   </main>
 </div>
