@@ -14,11 +14,7 @@ Add to your `+config.js`:
 
 ```javascript
 module.exports = {
-  plugins: [
-    'pocketpages-plugin-ejs',
-    'pocketpages-plugin-datastar',
-    'pocketpages-plugin-realtime',
-  ],
+  plugins: ['pocketpages-plugin-datastar', 'pocketpages-plugin-realtime'],
 }
 ```
 
@@ -29,6 +25,8 @@ Add to your `+layout.ejs` or similar:
   <%%- datastar.scripts() %>
 </head>
 ```
+
+**Important:** The `datastar.scripts()` call must be included in the `<head>` section of your HTML. This injects the Datastar loader script which is required for all Datastar functionality to work.
 
 ## API Reference
 
@@ -219,6 +217,8 @@ datastar.realtime.patchSignals(stringify({ globalCount: 100 }))
 ```
 
 ## Examples
+
+**Note:** All examples assume you have included `<%%- datastar.scripts() %>` in your HTML `<head>` section as shown in the Configuration section above.
 
 ### Chat Application
 
