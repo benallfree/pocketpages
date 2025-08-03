@@ -1,5 +1,11 @@
 # pocketpages
 
+## 0.22.2
+
+### Patch Changes
+
+- 097d937: Add debugging output for non-html content
+
 ## 0.22.1
 
 ### Patch Changes

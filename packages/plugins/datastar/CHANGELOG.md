@@ -1,5 +1,11 @@
 # pocketpages-plugin-datastar
 
+## 0.2.0
+
+### Minor Changes
+
+- d86fe39: Add SPA support
+
 ## 0.1.2
 
 ### Patch Changes

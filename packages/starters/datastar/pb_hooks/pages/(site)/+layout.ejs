@@ -57,7 +57,7 @@
       rel="stylesheet"
     />
 
-    <%- slots.head %> <%- datastar.scripts() %> <%- include('from.ejs') %>
+    <%- slots.head %> <%- datastar.scripts({realtime: true}) %> <%- include('from.ejs') %>
   </head>
 
   <body

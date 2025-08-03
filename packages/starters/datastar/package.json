@@ -21,8 +21,8 @@
     "deploy": "phio deploy"
   },
   "dependencies": {
-    "pocketpages": "workspace:>=0.22.0",
-    "pocketpages-plugin-datastar": "workspace:>=0.1.1"
+    "pocketpages": "workspace:>=0.22.2",
+    "pocketpages-plugin-datastar": "workspace:>=0.2.0"
   },
   "files": [
     "pb_hooks",
