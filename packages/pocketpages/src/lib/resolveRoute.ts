@@ -29,19 +29,21 @@ export const resolveRoute = (
       .filter((p) => p)
     // dbg(`incoming parts`, parts)
 
-
     // Sort routes to prioritize exact matches over parameter matches
     // Routes with higher specificity (more exact segments) should be checked first
     const sortedRoutes = routes.slice().sort((a, b) => {
       const getSpecificity = (route: Route) =>
-        route.segments.reduce((acc, segment) => acc + (segment.paramName ? 1 : 10), 0);
-      const aSpecificity = getSpecificity(a);
-      const bSpecificity = getSpecificity(b);
+        route.segments.reduce(
+          (acc, segment) => acc + (segment.paramName ? 1 : 10),
+          0
+        )
+      const aSpecificity = getSpecificity(a)
+      const bSpecificity = getSpecificity(b)
       if (aSpecificity !== bSpecificity) {
-        return bSpecificity - aSpecificity; // Sort by specificity, descending
+        return bSpecificity - aSpecificity // Sort by specificity, descending
       }
-      return 0;
-    });
+      return 0
+    })
 
     for (const route of sortedRoutes) {
       // dbg(`checking route`, route)

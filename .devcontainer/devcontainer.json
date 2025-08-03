@@ -13,10 +13,7 @@
   "postCreateCommand": "bun install",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss"
-      ],
+      "extensions": ["esbenp.prettier-vscode", "bradlc.vscode-tailwindcss"],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true

@@ -3,7 +3,7 @@
 This devcontainer provides a complete development environment for PocketPages with:
 
 - **PocketBase v0.29.0** - Pre-installed and ready to use
-- **Bun** - Fast JavaScript runtime and package manager  
+- **Bun** - Fast JavaScript runtime and package manager
 - **VS Code extensions** - Prettier and Tailwind CSS support
 
 ## Quick Start
