@@ -1,4 +1,9 @@
 <script server>
+  // Allow admin requests to pass through
+  if (request.url.pathname.startsWith('/_')) {
+    return request.event.next()
+  }
+
   const { roomName } = params
   const messages = store(`room_${roomName}`) || []
 </script>
