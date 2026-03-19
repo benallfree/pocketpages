@@ -25,6 +25,7 @@ module.exports = {
 
 - **`host`**: PocketBase server URL (default: `'http://localhost:8090'`)
 - **`debug`**: Enable debug output for the plugin (default: `false`)
+- **`passRateLimitHeaders`**: Forward the PocketBase rate-limiter trusted proxy header on every `pb()` call (default: `false`). Can also be set per-call — see [Forwarding Trusted Proxy Headers](#forwarding-trusted-proxy-headers).
 
 ## Usage
 
@@ -35,6 +36,9 @@ type PocketBaseClientOptions = {
   auth?: core.Record    // Auth record to use
   host?: string        // PocketBase host URL
   request?: Request    // Current request context
+  passRateLimitHeaders?: boolean // Forward PB rate-limiter trusted proxy header (default: false)
+  header?: (name: string) => string | undefined // Custom header resolver
+  remoteIP?: string    // Remote IP fallback when header is absent
 }
 
 // Get a PocketBase client
@@ -79,6 +83,42 @@ This means:
 - Multiple calls with the same auth context reuse the same client
 - Different users get different client instances
 - Anonymous requests share a common unauthenticated client
+
+When `passRateLimitHeaders` is enabled and a header value can be resolved, the plugin returns a **fresh, uncached** client for that call. Reusing a cached client across requests with different forwarded IPs would let `beforeSend` (which is client-level state) leak one request's identity into another. Bypassing the cache on this path avoids that contamination and prevents cache growth keyed by remote IP.
+
+### Forwarding Trusted Proxy Headers
+
+When PocketBase is behind a reverse proxy, it can be configured to trust a specific header (e.g. `CF-Connecting-IP` or `X-Forwarded-For`) for rate limiting. Set this up under **PocketBase Settings → Rate limiting → Trusted proxy headers**.
+
+To forward that header on SDK requests so PocketBase applies rate limits correctly per real client IP:
+
+```javascript
+// +config.js — enable globally for all pb() calls
+module.exports = {
+  plugins: [
+    ['pocketpages-plugin-js-sdk', { passRateLimitHeaders: true }],
+  ],
+}
+```
+
+Or opt in per-call:
+
+```ejs
+<%%%
+  // passRateLimitHeaders can be set on a single call instead of globally
+  const client = pb({ request, passRateLimitHeaders: true })
+  const records = client.collection('posts').getFullList()
+%>
+```
+
+**How the header is determined:**
+
+- **Name** — read from `$app.settings().trustedProxy.headers[0]` (the first header configured in PocketBase Settings → Rate limiting → Trusted proxy headers). If none is configured, forwarding is skipped even when `passRateLimitHeaders` is `true`.
+- **Value** — resolved from the incoming request in this order:
+  1. `options.header(name)` — custom header resolver passed by the caller
+  2. `options.request.header(name)` — header from the current PocketPages request
+  3. `options.remoteIP` — explicit remote IP from the caller
+  4. `options.request.event.remoteIP()` — remote IP from the current PocketPages request event
 
 ### Example: Working with Collections
 
