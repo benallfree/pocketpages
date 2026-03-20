@@ -4,6 +4,8 @@
 
 PocketPages lets you build full-stack web apps on top of PocketBase without a separate backend. Pages are EJS templates, routing is file-based, and the runtime API gives you access to the request context, database, auth, and more.
 
+Pocketpages runs as a PocketBase hook, inside the PocketPage JSVM which is powered by GoJa. Goja is an implementation of ECMAScript 5.1 in pure Go. The [PocketBase JSVM documentation is here](https://pocketbase.io/jsvm/). More information on GoJa can be found [here](https://github.com/dop251/goja).
+
 ## Introduction
 
 - [Overview](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/overview.md): What PocketPages is, how it works, and why it exists
