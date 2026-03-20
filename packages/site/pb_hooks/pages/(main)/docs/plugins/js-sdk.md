@@ -95,9 +95,7 @@ To forward that header on SDK requests so PocketBase applies rate limits correct
 ```javascript
 // +config.js — enable globally for all pb() calls
 module.exports = {
-  plugins: [
-    ['pocketpages-plugin-js-sdk', { passRateLimitHeaders: true }],
-  ],
+  plugins: [['pocketpages-plugin-js-sdk', { passRateLimitHeaders: true }]],
 }
 ```
 
