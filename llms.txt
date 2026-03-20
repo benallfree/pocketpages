@@ -1,0 +1,97 @@
+# PocketPages
+
+> PocketPages is a 23KB pluggable Multi-Page Application (MPA) preprocessor for PocketBase. It uses an EJS template engine by default and a flexible plugin system for routing, templating, authentication, and more — all running server-side inside PocketBase's JSVM.
+
+PocketPages lets you build full-stack web apps on top of PocketBase without a separate backend. Pages are EJS templates, routing is file-based, and the runtime API gives you access to the request context, database, auth, and more.
+
+Pocketpages runs as a PocketBase hook, inside the PocketPage JSVM which is powered by GoJa. Goja is an implementation of ECMAScript 5.1 in pure Go. The [PocketBase JSVM documentation is here](https://pocketbase.io/jsvm/). More information on GoJa can be found [here](https://github.com/dop251/goja).
+
+## Introduction
+
+- [Overview](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/overview.md): What PocketPages is, how it works, and why it exists
+
+## Getting Started
+
+- [Installation](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/installation.md): How to install PocketPages into a PocketBase project
+- [Starter Kits](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/starter-kits.md): Pre-built project templates to get up and running fast
+- [Upgrading](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/upgrading.md): How to upgrade between versions
+
+## Basics
+
+- [Creating a Page](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/creating-a-page.md): How to create your first page
+- [Directory Structure](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/directory-structure.md): How files and folders map to routes
+- [Routing](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/routing.md): File-based routing rules and conventions
+- [Accessing Parameters](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/parameters.md): Route params, query strings, and request body
+- [Loading Data](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/loading-data.md): How to load data server-side before rendering
+- [JSON](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/json.md): Returning JSON responses from pages
+
+## Templating
+
+- [Partials](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/partials.md): Reusable template fragments
+- [Layouts](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/layouts.md): Wrapping pages in shared layout templates
+
+## Security and Content
+
+- [Private Files](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/private-files.md): Files that are processed server-side but not served directly
+- [Middleware](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/middleware.md): Per-route and global request middleware
+- [Asset Management](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/asset-management.md): Serving static assets and cache-busting
+- [Static Content](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/static-content.md): Serving raw static files
+- [Managing Secrets](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/secrets.md): Environment variables and secrets handling
+
+## Configuration
+
+- [+config.js](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/config.md): Project-level configuration file
+- [Caching](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/caching.md): Response caching strategies
+- [Debugging](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/debugging.md): Debugging tips and tools
+- [Going Live](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/deploying.md): Deploying PocketPages to production
+
+## Official Plugins
+
+- [Plugins Overview](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/index.md): How the plugin system works
+- [Authentication](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/auth.md): Built-in auth plugin (login, logout, token refresh)
+- [Datastar](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/datastar.md): Datastar reactive UI integration
+- [EJS](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/ejs.md): EJS templating engine plugin
+- [JS SDK](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/js-sdk.md): PocketBase JS SDK access inside templates
+- [Markdown](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/marked.md): Render Markdown content in pages
+- [Micro Dash](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/micro-dash.md): Lodash-compatible utility functions
+- [Realtime](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/realtime.md): Server-sent events and realtime subscriptions
+- [Plugin Authoring](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/plugins/authoring.md): How to write your own plugin
+
+## Global API Reference
+
+- [Overview](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/global-api/index.md): Globals available in all templates and scripts
+- [dbg / info / warn / error](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/global-api/log.md): Logging utilities
+- [env](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/global-api/env.md): Access environment variables
+- [store](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/global-api/store.md): Persistent key-value store
+- [stringify](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/global-api/stringify.md): JSON serialization helper
+- [url](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/global-api/url.md): URL construction and parsing helpers
+
+## Context API Reference
+
+- [Overview](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/index.md): The request context object passed to every page
+- [auth](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/auth.md): Current user auth state
+- [api](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/api.md): PocketBase API access
+- [asset](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/asset.md): Asset URL helpers
+- [body](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/body.md): Parsed request body
+- [data](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/data.md): Data loaded by +load.js
+- [echo](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/echo.md): Write raw output to the response
+- [formData](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/form-data.md): Access submitted form fields
+- [meta](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/meta.md): Set page metadata (title, description, etc.)
+- [params](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/params.md): Route and query parameters
+- [redirect / flash](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/redirect.md): Redirect responses and flash messages
+- [request](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/request.md): Raw request object
+- [resolve](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/resolve.md): Resolve file paths relative to the current page
+- [response](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/context-api/response.md): Raw response object
+
+## Going Further
+
+- [JSVM](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/jsvm.md): PocketBase JavaScript VM environment and limitations
+
+## Guides
+
+- [HTMX Integration](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/htmx.md): Using HTMX with PocketPages
+- [Custom Domains on Fly + Cloudflare](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/speedruns/custom-domain-fly-cloudflare.md): Set up a custom domain on Fly.io with Cloudflare
+- [Custom Domains on pockethost.io](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/speedruns/custom-domain-pockethost.md): Set up a custom domain on pockethost.io
+- [Google OAuth2](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/speedruns/google-oauth2/index.md): Google OAuth2 login integration
+- [Outgoing Email with Amazon SES](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/speedruns/ses/index.md): Send email via Amazon SES
+- [Setting up a new email domain in Google Suite](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/speedruns/gs-gmail/index.md): Configure Google Workspace email for your domain
