@@ -15,6 +15,8 @@ export type PocketBaseClientOptions = {
   request?: PagesRequest
 }
 
+const toPlainObject = (value: unknown) => JSON.parse(JSON.stringify(value))
+
 const jsSdkPluginFactory: PluginFactory<JSSdkPluginOptions> = (
   config,
   extra
@@ -22,35 +24,45 @@ const jsSdkPluginFactory: PluginFactory<JSSdkPluginOptions> = (
   const { globalApi } = config
   const { dbg } = globalApi
 
-  const newClient = (host: string, auth?: core.Record, authToken?: string) => {
+  const newClient = (host: string) => {
     const pb = new PocketBase(host)
-    if (auth) {
-      dbg(`auth`, typeof auth, auth)
-      const token = authToken ?? auth.newAuthToken()
-      pb.authStore.save(token, JSON.parse(JSON.stringify(auth)))
-      dbg(
-        `created new PocketBase client for ${host} with saved auth: ${auth.id} ${token}`
-      )
-    } else {
-      dbg(`created new PocketBase client for ${host}`)
-    }
+    dbg(`created new PocketBase client for ${host}`)
     return pb
   }
 
   const pbCache = new Map<string, PocketBase>()
+
+  const syncAuthStore = (
+    pb: PocketBase,
+    host: string,
+    auth?: core.Record,
+    authToken?: string
+  ) => {
+    if (!auth) {
+      pb.authStore.clear()
+      dbg(`cleared PocketBase auth store for ${host}`)
+      return pb
+    }
+
+    const token = authToken ?? auth.newAuthToken()
+    pb.authStore.save(token, toPlainObject(auth))
+    dbg(`synced PocketBase auth store for ${host}: ${auth.id} ${token}`)
+    return pb
+  }
 
   globalApi.pb = (options?: Partial<PocketBaseClientOptions>) => {
     const host = options?.host ?? extra?.host ?? `http://localhost:8090`
     const auth = options?.auth ?? options?.request?.auth
     const authToken = options?.request?.authToken
     const key = `${host}-${auth?.id}`
-    if (pbCache.has(key)) {
-      return pbCache.get(key)
+    const cachedPb = pbCache.get(key)
+    if (cachedPb) {
+      return syncAuthStore(cachedPb, host, auth, authToken)
     }
     dbg(`creating new pb client for ${key}`)
-    const pb = newClient(host, auth, authToken)
+    const pb = newClient(host)
     pbCache.set(key, pb)
-    return pb
+    return syncAuthStore(pb, host, auth, authToken)
   }
 
   return {
