@@ -40,7 +40,6 @@ const jsSdkPluginFactory: PluginFactory<JSSdkPluginOptions> = (
   ) => {
     if (!auth) {
       pb.authStore.clear()
-      dbg(`cleared PocketBase auth store for ${host}`)
       return pb
     }
 
