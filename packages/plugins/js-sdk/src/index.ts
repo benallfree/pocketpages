@@ -59,7 +59,7 @@ const jsSdkPluginFactory: PluginFactory<JSSdkPluginOptions> = (
     if (cachedPb) {
       return syncAuthStore(cachedPb, host, auth, authToken)
     }
-    dbg(`creating new pb client for ${key}`)
+    dbg(`creating new pb client with cache key: ${key}`)
     const pb = newClient(host)
     pbCache.set(key, pb)
     return syncAuthStore(pb, host, auth, authToken)
