@@ -163,7 +163,7 @@ const authPluginFactory: PluginFactory = (config) => {
         request.cookies('pb_auth')
       ) as AuthData
       if (typeof cookieRecordAuth !== 'object') {
-        dbg(`invalid auth cookie found in cookie: ${cookieRecordAuth}`)
+        dbg(`invalid auth cookie format: ${cookieRecordAuth}`)
         response.cookie('pb_auth', '')
         return
       }
