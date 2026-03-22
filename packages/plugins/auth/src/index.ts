@@ -185,6 +185,7 @@ const authPluginFactory: PluginFactory = (config) => {
           request.authToken = cookieRecordAuth.token
         } catch (e) {
           dbg(`error fetching auth record: ${e}`)
+          response.cookie('pb_auth', '', { maxAge: 0 })
         }
       }
     },
