@@ -159,12 +159,13 @@ const authPluginFactory: PluginFactory = (config) => {
        * If the route is protected, check the auth
        */
       // https://github.com/benallfree/pocketbase/blob/f38700982c1b46ac1a51ff59e985fae6fc332ccb/apis/middlewares.go#L181
-      const cookieRecordAuth = safeParseJson(
-        request.cookies('pb_auth')
-      ) as AuthData
+      const rawCookie = request.cookies<string>('pb_auth')
+      if (!rawCookie) return
+
+      const cookieRecordAuth = safeParseJson(rawCookie) as AuthData
       if (typeof cookieRecordAuth !== 'object') {
-        dbg(`invalid auth cookie found in cookie: ${cookieRecordAuth}`)
-        response.cookie('pb_auth', '')
+        dbg(`invalid auth cookie format: ${cookieRecordAuth}`)
+        response.cookie('pb_auth', '', { maxAge: 0 })
         return
       }
       if (cookieRecordAuth?.token) {
@@ -174,7 +175,7 @@ const authPluginFactory: PluginFactory = (config) => {
           )
           if (!validAuthRecord) {
             dbg(`invalid auth token found in cookie: ${cookieRecordAuth.token}`)
-            response.cookie('pb_auth', '')
+            response.cookie('pb_auth', '', { maxAge: 0 })
             return
           }
           $apis.enrichRecord(request.event, validAuthRecord)
@@ -184,6 +185,7 @@ const authPluginFactory: PluginFactory = (config) => {
           request.authToken = cookieRecordAuth.token
         } catch (e) {
           dbg(`error fetching auth record: ${e}`)
+          response.cookie('pb_auth', '', { maxAge: 0 })
         }
       }
     },
@@ -307,7 +309,7 @@ const authPluginFactory: PluginFactory = (config) => {
       }
 
       api.signOut = () => {
-        api.response.cookie(`pb_auth`, '')
+        api.response.cookie(`pb_auth`, '', { maxAge: 0 })
       }
 
       api.signIn = (authData: RecordAuthResponse<AuthModel>) => {
