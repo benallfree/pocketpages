@@ -9,7 +9,7 @@ description: Learn how PocketPages uses _private directories to organize and pro
 
 PocketPages has two special naming conventions:
 
-1. Directories named `_private` are used for private files and are never publicly routable
+1. Directories named `_private` are used for private files and are never publicly routable. Beware! Any files that begin with an underscore `_` or a hyphen `-` will not be routable.
 2. Files that begin with `+` (like `+load.js` and `+layout.ejs`) are special PocketPages files and are not routable
 
 Examples:
