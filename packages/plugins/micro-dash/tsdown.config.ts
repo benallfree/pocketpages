@@ -1,5 +1,5 @@
 import { defineConfig } from 'tsdown'
-import { onSuccess } from '../onSuccess'
+import { onSuccess } from '../onSuccess.ts'
 
 export default defineConfig({
   entry: {

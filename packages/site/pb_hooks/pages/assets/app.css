@@ -1366,9 +1366,6 @@
   .sticky {
     position: sticky;
   }
-  .top-0 {
-    top: calc(var(--spacing) * 0);
-  }
   .hero-content {
     isolation: isolate;
     display: flex;
@@ -2546,9 +2543,6 @@
   }
   .h-full {
     height: 100%;
-  }
-  .h-screen {
-    height: 100vh;
   }
   .min-h-full {
     min-height: 100%;
