@@ -66,7 +66,7 @@ module.exports = function (api) {
 
 ## The `data` object
 
-Available as `data` in the page **and in every layout**: middleware results merged with loader results. Partials only see what you pass to `include()`.
+Available as `data` in the page, **every layout**, and every partial (partials inherit the context): middleware results merged with loader results.
 
 ## Rendering, JSON, and layouts
 

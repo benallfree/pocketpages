@@ -182,7 +182,7 @@ Fixed in the next patch release, so upgrading is the real fix. On old versions, 
 ## Templates, partials, and modules
 
 - `<% code %>`, `<%= escaped %>`, `<%- raw %>`. `<script server> … </script>` is an editor-friendly alias for `<% … %>`.
-- `include('card.ejs', { title })` searches `_private/` in the current dir, then each parent up to `pages/`. The extension is optional. A leading `/` means relative to `pages/` (e.g. `/blog/_private/card.ejs`). Pass only the data a partial needs. Don't pass `api`.
+- `include('card.ejs', { title })` searches `_private/` in the current dir, then each parent up to `pages/`. The extension is optional. A leading `/` means relative to `pages/` (e.g. `/blog/_private/card.ejs`). Partials inherit the full context (`request`, `data`, `auth`, plugin functions), with your passed object merged on top. Variables the parent declared with `const`/`let` are **not** inherited, so pass those explicitly.
 - `resolve('queries')` uses the same upward `_private/` search, for `.js`/`.json` modules. A leading `/` means **`pages/_private/` + path**, which differs from `include`. Options: `{ mode: 'raw' | 'script' | 'style' }`.
 - Inside `_private` modules there are no template globals. Use `require('pocketpages').globalApi` for `env`, `dbg`, `stringify`, etc., or pass what's needed in as arguments.
 

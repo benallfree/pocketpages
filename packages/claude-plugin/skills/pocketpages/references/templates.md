@@ -31,7 +31,8 @@ Default engine: `pocketpages-plugin-ejs` (handles `.ejs`; configurable `extensio
 Resolution for a bare name: `<page dir>/_private/<name>`, then `<parent>/_private/<name>`, and so on up to `pages/_private/<name>`. The first match wins, so a child `_private` overrides an ancestor's. The error message lists every path tried.
 
 - Included files go through EJS, then **through the other plugins** for their extension. Including `intro.md` with the marked plugin renders Markdown after EJS.
-- Partials see **only** the locals you pass, not the page context. Pass plain values, not `api`, so partials stay pure. If a partial needs `asset()` or `meta()`, pass the function or its result explicitly.
+- **What a partial can see:** a shallow copy of the including template's context (`params`, `data`, `request`, `auth`, `asset`, `meta`, plugin functions like `pb()`), with the object you pass merged on top (your keys win). Variables the parent declared inside `<% %>` (`const posts = …`) are **not** part of the context, so pass those explicitly: `include('list.ejs', { posts })`.
+- Partials can therefore read the request and perform side effects. The auth starter's login partials each handle their own form POST. That's handy, but for reusable display components, prefer passing plain values so the partial stays predictable.
 - Prefer hoisting shared partials up to a common ancestor's `_private/` over reaching into sibling directories.
 - Don't rely on `../name` "level jumping". It resolves to `<dir>/name` beside `_private`, not to the parent's `_private`. Use an absolute `/…/_private/…` path instead.
 

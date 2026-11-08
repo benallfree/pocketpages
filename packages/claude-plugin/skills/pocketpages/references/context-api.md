@@ -7,7 +7,7 @@ Every page, layout, middleware, and loader receives this object. In EJS each key
 | Member | Signature | Notes |
 |---|---|---|
 | `params` | `Record<string, string \| undefined>` | Query string **and** route params. Route params win on name clashes. Query values are JSON-parsed when possible (`?n=5` → `5`, `?f={"a":1}` → object). `__flash` carries redirect messages |
-| `data` | `object` | Merged middleware + loader results. Not passed to partials |
+| `data` | `object` | Merged middleware + loader results. Also visible in partials (they inherit the context) |
 | `auth` | `core.Record \| undefined` | The authenticated record. Header-based by default, cookie-based with the auth plugin. Use `auth.get('email')`, `auth.id`, `auth.verified()`, `auth.isSuperuser()` |
 | `formData` | `() => object` | **Function.** Parsed body (`e.requestInfo().body`): form-encoded, multipart, or JSON. Unchecked checkboxes are absent |
 | `body` | `() => object \| string` | Same as `formData()` |
