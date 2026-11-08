@@ -156,32 +156,32 @@
       "name": "pocketpages-starter-auth",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:>=0.22.3",
-        "pocketpages-plugin-auth": "workspace:>=0.2.2",
-        "pocketpages-plugin-js-sdk": "workspace:>=0.2.0",
+        "pocketpages": ">=0.22.4",
+        "pocketpages-plugin-auth": ">=0.3.0",
+        "pocketpages-plugin-js-sdk": ">=0.3.0",
       },
     },
     "packages/starters/daisyui": {
       "name": "pocketpages-starter-daisyui",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:>=0.22.4",
+        "pocketpages": ">=0.22.4",
       },
     },
     "packages/starters/daisyui-docs": {
       "name": "pocketpages-starter-daisyui-docs",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:>=0.22.4",
-        "pocketpages-plugin-marked": "workspace:>=0.1.1",
+        "pocketpages": ">=0.22.4",
+        "pocketpages-plugin-marked": ">=0.1.1",
       },
     },
     "packages/starters/datastar": {
       "name": "pocketpages-starter-datastar",
       "version": "0.0.3",
       "dependencies": {
-        "pocketpages": "workspace:>=0.22.3",
-        "pocketpages-plugin-datastar": "workspace:>=0.2.0",
+        "pocketpages": ">=0.22.4",
+        "pocketpages-plugin-datastar": ">=0.2.0",
       },
       "devDependencies": {
         "pockethost": "^4.2.0",
@@ -191,22 +191,22 @@
       "name": "pocketpages-starter-htmx",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:>=0.22.3",
-        "pocketpages-plugin-realtime": "workspace:>=0.0.1",
+        "pocketpages": ">=0.22.4",
+        "pocketpages-plugin-realtime": ">=0.2.0",
       },
     },
     "packages/starters/minimal": {
       "name": "pocketpages-starter-minimal",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:>=0.22.3",
+        "pocketpages": ">=0.22.4",
       },
     },
     "packages/starters/mvp": {
       "name": "pocketpages-starter-mvp",
       "version": "0.0.2",
       "dependencies": {
-        "pocketpages": "workspace:>=0.22.3",
+        "pocketpages": ">=0.22.4",
       },
     },
   },

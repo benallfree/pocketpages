@@ -17,7 +17,7 @@
     "daisyui"
   ],
   "dependencies": {
-    "pocketpages": "workspace:>=0.22.4"
+    "pocketpages": ">=0.22.4"
   },
   "files": [
     "pb_hooks",

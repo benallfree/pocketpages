@@ -19,8 +19,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "pocketpages": "workspace:>=0.22.4",
-    "pocketpages-plugin-marked": "workspace:>=0.1.1"
+    "pocketpages": ">=0.22.4",
+    "pocketpages-plugin-marked": ">=0.1.1"
   },
   "files": [
     "pb_hooks",
