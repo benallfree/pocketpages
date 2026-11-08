@@ -114,6 +114,15 @@
         </span>
         <span class="brand-name">PocketPages</span>
       </a>
+      <% const ppVersion = resolve('pp-version') %>
+      <% if (ppVersion) { %>
+      <a
+        class="version"
+        href="https://github.com/benallfree/pocketpages/blob/main/packages/pocketpages/CHANGELOG.md"
+        target="_blank"
+        title="PocketPages <%= ppVersion %> changelog"
+      >v<%= ppVersion %></a>
+      <% } %>
       <nav aria-label="Site">
         <ul class="nav-links">
           <li><a href="/docs" <%- section === 'docs' ? 'aria-current="page"' : '' %>>Docs</a></li>

@@ -139,6 +139,25 @@
       display: none;
     }
   }
+  /* pocketpages version pill next to the title; links to the changelog */
+  .version {
+    margin-left: -0.25rem;
+    padding: 0.125rem 0.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-primary) 25%, transparent);
+    border-radius: var(--radius-full);
+    background: color-mix(in oklab, var(--color-primary) 8%, transparent);
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    &:hover {
+      background: color-mix(in oklab, var(--color-primary) 14%, transparent);
+    }
+    @media (width < 30rem) {
+      display: none;
+    }
+  }
   .header-tools {
     display: flex;
     align-items: center;
