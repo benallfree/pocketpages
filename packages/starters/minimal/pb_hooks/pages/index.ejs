@@ -4,9 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PocketPages - Build Fast</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      .gradient-bg {
+      /* Base */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          sans-serif,
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Noto Color Emoji';
+        line-height: 1.5;
         background: linear-gradient(
           135deg,
           #7c3aed 0%,
@@ -14,12 +32,150 @@
           #14b8a6 100%
         );
       }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* Animated background blobs */
+      .blobs {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .blob {
+        position: absolute;
+        width: 20rem;
+        height: 20rem;
+        border-radius: 9999px;
+        mix-blend-mode: multiply;
+        filter: blur(24px);
+        opacity: 0.7;
+        animation: blob 7s infinite;
+      }
+      .blob-1 {
+        top: -10rem;
+        right: -10rem;
+        background: #d8b4fe;
+      }
+      .blob-2 {
+        bottom: -10rem;
+        left: -10rem;
+        background: #fde047;
+        animation-delay: 2s;
+      }
+      .blob-3 {
+        top: 10rem;
+        left: 10rem;
+        background: #f9a8d4;
+        animation-delay: 4s;
+      }
+
+      /* Layout */
+      .page {
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .content {
+        max-width: 56rem;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .content > * + * {
+        margin-top: 2rem;
+      }
+
       .glass-card {
         backdrop-filter: blur(16px);
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 1rem;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+
+      /* Hero */
+      .hero {
+        padding: 3rem;
+        animation: fade-in-up 1s ease-out;
+      }
+      .hero > * + * {
+        margin-top: 1.5rem;
+      }
+      .title-wrap {
+        display: inline-block;
+      }
+      .title {
+        font-size: 3.75rem;
+        line-height: 1;
+        font-weight: 700;
+        background: linear-gradient(
+          90deg,
+          #a855f7 0%,
+          #ec4899 50%,
+          #3b82f6 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+      .tagline {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        font-weight: 300;
+        letter-spacing: 0.025em;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .divider {
+        width: 6rem;
+        height: 0.25rem;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 9999px;
+        background: linear-gradient(to right, #c084fc, #3b82f6);
+      }
+
+      /* Feature cards */
+      .features {
+        display: grid;
+        gap: 1.5rem;
+      }
+      .feature {
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .feature:hover {
+        transform: scale(1.05);
+      }
+      .feature-icon {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      .feature h3 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+      .feature p {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* Buttons */
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
       }
       .btn-primary {
         padding: 1rem 2rem;
@@ -35,127 +191,81 @@
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         transform: scale(1.05);
       }
-      .text-gradient {
-        background: linear-gradient(
-          90deg,
-          #a855f7 0%,
-          #ec4899 50%,
-          #3b82f6 100%
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
+      .btn-secondary {
+        padding: 1rem 2rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        font-weight: 600;
+        border-radius: 0.75rem;
+        transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
       }
-    </style>
-  </head>
-  <body class="min-h-screen gradient-bg overflow-hidden relative">
-    <!-- Animated background elements -->
-    <div class="absolute inset-0 overflow-hidden">
-      <div
-        class="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
-      ></div>
-      <div
-        class="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"
-      ></div>
-      <div
-        class="absolute top-40 left-40 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"
-      ></div>
-    </div>
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
 
-    <!-- Main content -->
-    <div
-      class="relative z-10 min-h-screen flex items-center justify-center p-4"
-    >
-      <div class="text-center space-y-8 max-w-4xl mx-auto">
-        <!-- Hero section -->
-        <div class="glass-card p-12 animate-fade-in-up">
-          <div class="space-y-6">
-            <div class="inline-block">
-              <h1
-                class="text-6xl md:text-8xl font-bold text-gradient animate-pulse-slow"
-              >
-                PocketPages
-              </h1>
-            </div>
-            <p
-              class="text-xl md:text-2xl text-white/90 font-light tracking-wide"
-            >
-              Build lightning-fast web applications with the power of PocketBase
-            </p>
-            <div
-              class="w-24 h-1 bg-gradient-to-r from-purple-400 to-blue-500 mx-auto rounded-full"
-            ></div>
-          </div>
-        </div>
+      /* Floating particles */
+      .particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+      .particle {
+        position: absolute;
+        border-radius: 9999px;
+        animation: float 6s ease-in-out infinite;
+      }
+      .particle-1 {
+        top: 5rem;
+        left: 5rem;
+        width: 0.5rem;
+        height: 0.5rem;
+        background: rgba(255, 255, 255, 0.3);
+      }
+      .particle-2 {
+        top: 10rem;
+        right: 8rem;
+        width: 0.25rem;
+        height: 0.25rem;
+        background: rgba(216, 180, 254, 0.5);
+        animation-delay: 1s;
+      }
+      .particle-3 {
+        bottom: 8rem;
+        left: 8rem;
+        width: 0.75rem;
+        height: 0.75rem;
+        background: rgba(147, 197, 253, 0.4);
+        animation-delay: 2s;
+      }
+      .particle-4 {
+        bottom: 5rem;
+        right: 5rem;
+        width: 0.5rem;
+        height: 0.5rem;
+        background: rgba(249, 168, 212, 0.5);
+        animation-delay: 3s;
+      }
 
-        <!-- Feature cards -->
-        <div class="grid md:grid-cols-3 gap-6 mt-12">
-          <div
-            class="glass-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            <div class="text-4xl mb-4">⚡</div>
-            <h3 class="text-xl font-semibold text-white mb-2">
-              Lightning Fast
-            </h3>
-            <p class="text-white/70">
-              Server-side rendering with PocketBase's powerful backend
-            </p>
-          </div>
-          <div
-            class="glass-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            <div class="text-4xl mb-4">🚀</div>
-            <h3 class="text-xl font-semibold text-white mb-2">Zero Config</h3>
-            <p class="text-white/70">
-              Get started in seconds with minimal setup required
-            </p>
-          </div>
-          <div
-            class="glass-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            <div class="text-4xl mb-4">🎨</div>
-            <h3 class="text-xl font-semibold text-white mb-2">Beautiful UI</h3>
-            <p class="text-white/70">
-              Stunning designs with modern CSS frameworks like UnoCSS
-            </p>
-          </div>
-        </div>
+      /* Larger screens */
+      @media (min-width: 640px) {
+        .actions {
+          flex-direction: row;
+        }
+      }
+      @media (min-width: 768px) {
+        .title {
+          font-size: 6rem;
+        }
+        .tagline {
+          font-size: 1.5rem;
+          line-height: 2rem;
+        }
+        .features {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
 
-        <!-- CTA buttons -->
-        <div
-          class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12"
-        >
-          <a href="https://pocketpages.dev" class="btn-primary"
-            >Get Started →</a
-          >
-          <a
-            href="https://pocketpages.dev/docs"
-            class="px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300"
-          >
-            View Docs
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Floating particles -->
-    <div class="fixed inset-0 pointer-events-none">
-      <div
-        class="absolute top-20 left-20 w-2 h-2 bg-white/30 rounded-full animate-float"
-      ></div>
-      <div
-        class="absolute top-40 right-32 w-1 h-1 bg-purple-300/50 rounded-full animate-float animation-delay-1000"
-      ></div>
-      <div
-        class="absolute bottom-32 left-32 w-3 h-3 bg-blue-300/40 rounded-full animate-float animation-delay-2000"
-      ></div>
-      <div
-        class="absolute bottom-20 right-20 w-2 h-2 bg-pink-300/50 rounded-full animate-float animation-delay-3000"
-      ></div>
-    </div>
-
-    <style>
+      /* Animations */
       @keyframes blob {
         0% {
           transform: translate(0px, 0px) scale(1);
@@ -170,7 +280,6 @@
           transform: translate(0px, 0px) scale(1);
         }
       }
-
       @keyframes float {
         0%,
         100% {
@@ -180,7 +289,6 @@
           transform: translateY(-20px);
         }
       }
-
       @keyframes fade-in-up {
         from {
           opacity: 0;
@@ -191,38 +299,65 @@
           transform: translateY(0);
         }
       }
-
-      .animate-blob {
-        animation: blob 7s infinite;
-      }
-
-      .animate-float {
-        animation: float 6s ease-in-out infinite;
-      }
-
-      .animate-fade-in-up {
-        animation: fade-in-up 1s ease-out;
-      }
-
-      .animation-delay-1000 {
-        animation-delay: 1s;
-      }
-
-      .animation-delay-2000 {
-        animation-delay: 2s;
-      }
-
-      .animation-delay-3000 {
-        animation-delay: 3s;
-      }
-
-      .animation-delay-4000 {
-        animation-delay: 4s;
-      }
-
-      .animate-pulse-slow {
-        animation: pulse 3s ease-in-out infinite;
-      }
     </style>
+  </head>
+  <body>
+    <!-- Animated background elements -->
+    <div class="blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Main content -->
+    <div class="page">
+      <div class="content">
+        <!-- Hero section -->
+        <div class="glass-card hero">
+          <div class="title-wrap">
+            <h1 class="title">PocketPages</h1>
+          </div>
+          <p class="tagline">
+            Build lightning-fast web applications with the power of PocketBase
+          </p>
+          <div class="divider"></div>
+        </div>
+
+        <!-- Feature cards -->
+        <div class="features">
+          <div class="glass-card feature">
+            <div class="feature-icon">⚡</div>
+            <h3>Lightning Fast</h3>
+            <p>Server-side rendering with PocketBase's powerful backend</p>
+          </div>
+          <div class="glass-card feature">
+            <div class="feature-icon">🚀</div>
+            <h3>Zero Config</h3>
+            <p>Get started in seconds with minimal setup required</p>
+          </div>
+          <div class="glass-card feature">
+            <div class="feature-icon">🎨</div>
+            <h3>Beautiful UI</h3>
+            <p>Stunning designs with modern CSS frameworks like UnoCSS</p>
+          </div>
+        </div>
+
+        <!-- CTA buttons -->
+        <div class="actions">
+          <a href="https://pocketpages.dev" class="btn-primary">Get Started →</a>
+          <a href="https://pocketpages.dev/docs" class="btn-secondary">
+            View Docs
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating particles -->
+    <div class="particles">
+      <div class="particle particle-1"></div>
+      <div class="particle particle-2"></div>
+      <div class="particle particle-3"></div>
+      <div class="particle particle-4"></div>
+    </div>
   </body>
 </html>
