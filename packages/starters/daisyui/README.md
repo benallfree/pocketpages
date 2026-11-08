@@ -5,11 +5,13 @@ This setup provides a minimal **PocketPages** app styled with **Tailwind CSS** a
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/packages/starters/daisyui daisyui
-cd daisyui
+npm create pocketpages@latest daisyui my-app
+cd my-app
 npm i
 pocketbase serve --dir=pb_data --dev
 ```
+
+Or copy the starter without the scaffolding tool: `npx tiged benallfree/pocketpages/packages/starters/daisyui my-app`.
 
 ## Styling
 

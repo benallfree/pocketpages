@@ -5,11 +5,13 @@ Demonstrates how to use Markdown pages by creating a docs site. Styling uses **T
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/packages/starters/daisyui-docs daisyui-docs
-cd daisyui-docs
+npm create pocketpages@latest daisyui-docs my-docs
+cd my-docs
 npm i
 pocketbase serve --dir=pb_data --dev
 ```
+
+Or copy the starter without the scaffolding tool: `npx tiged benallfree/pocketpages/packages/starters/daisyui-docs my-docs`.
 
 ## Styling
 

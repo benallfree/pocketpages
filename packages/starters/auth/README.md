@@ -5,24 +5,31 @@ This starter kit shows how to do Multi Page App (MPA) auth with PocketPages and 
 ## Installation
 
 ```bash
-npm create pocketpages auth my-auth-app
+npm create pocketpages@latest auth my-auth-app
 cd my-auth-app
 npm i
-bunx maildev                            # catches outgoing mail at http://localhost:1080
 pocketbase serve --dir=pb_data --dev    # run from the project folder
 ```
+
+In a second terminal, start maildev to catch outgoing mail at http://localhost:1080:
+
+```bash
+bunx maildev
+```
+
+Or copy the starter without the scaffolding tool: `npx tiged benallfree/pocketpages/packages/starters/auth my-auth-app`.
 
 Mail goes to maildev (`localhost:1025`) by default, so every email flow works locally without a real mail provider.
 
 ## Sign-in methods
 
-| Method | Notes |
-|---|---|
-| Password | `/auth/register`, then `/auth/login` |
-| Anonymous | Creates a throwaway passwordless account. Needs password auth enabled |
-| OTP | Emails a one-time code. Works for unverified users too, and a successful OTP sign-in marks the email verified. Requesting a code for an unknown email creates a passwordless account |
-| OAuth2 | Shows a button per configured provider. Google is configured from env vars (below) |
-| MFA | Opt-in per user from `/account`. When it's on, signing in takes a password **and** an emailed code, in either order (`/auth/login/mfa`) |
+| Method    | Notes                                                                                                                                                                                |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Password  | `/auth/register`, then `/auth/login`                                                                                                                                                 |
+| Anonymous | Creates a throwaway passwordless account. Needs password auth enabled                                                                                                                |
+| OTP       | Emails a one-time code. Works for unverified users too, and a successful OTP sign-in marks the email verified. Requesting a code for an unknown email creates a passwordless account |
+| OAuth2    | Shows a button per configured provider. Google is configured from env vars (below)                                                                                                   |
+| MFA       | Opt-in per user from `/account`. When it's on, signing in takes a password **and** an emailed code, in either order (`/auth/login/mfa`)                                              |
 
 Email flows: `/auth/verify` (resend verification), `/auth/forgot` → `/auth/confirm/{token}/password-reset`, and `/account/change-email` → `/auth/confirm/{token}/email-change`.
 
@@ -30,14 +37,14 @@ Email flows: `/auth/verify` (resend verification), `/auth/forgot` → `/auth/con
 
 Migrations set everything up. Settings that need credentials or a public URL come from environment variables, read once when the migrations run (`pb_migrations/*_env_config.js`):
 
-| Variable | Purpose |
-|---|---|
-| `APP_URL` | Public URL, used in email links and the OAuth2 redirect |
-| `APP_NAME` | App name shown in emails |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_TLS` | Outgoing mail. Unset means local maildev |
-| `MAIL_SENDER_ADDRESS`, `MAIL_SENDER_NAME` | The "From" address |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth2. Unset means no OAuth2 providers |
-| `POCKETBASE_URL` | Where the auth plugin reaches PocketBase's API (read by `+config.js`). Defaults to `http://localhost:8090` |
+| Variable                                                               | Purpose                                                                                                    |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `APP_URL`                                                              | Public URL, used in email links and the OAuth2 redirect                                                    |
+| `APP_NAME`                                                             | App name shown in emails                                                                                   |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_TLS` | Outgoing mail. Unset means local maildev                                                                   |
+| `MAIL_SENDER_ADDRESS`, `MAIL_SENDER_NAME`                              | The "From" address                                                                                         |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`                             | Google OAuth2. Unset means no OAuth2 providers                                                             |
+| `POCKETBASE_URL`                                                       | Where the auth plugin reaches PocketBase's API (read by `+config.js`). Defaults to `http://localhost:8090` |
 
 For Google, add `<APP_URL>/auth/oauth/confirm` as an authorized redirect URI in the Google Cloud console.
 

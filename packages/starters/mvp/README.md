@@ -5,7 +5,10 @@ This starter kit is based on the [MVP.css](https://andybrewer.github.io/mvp/) pr
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/starters/mvp .
-cd mvp
-pocketbase --dir=pb_data --dev serve
+npm create pocketpages@latest mvp my-app
+cd my-app
+npm i
+pocketbase serve --dir=pb_data --dev
 ```
+
+Or copy the starter without the scaffolding tool: `npx tiged benallfree/pocketpages/packages/starters/mvp my-app`.

@@ -5,8 +5,10 @@ This starter kit is based on the [htmx](https://htmx.org/) project. It is design
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/packages/starters/htmx .
-cd htmx
+npm create pocketpages@latest htmx my-app
+cd my-app
 npm i
 pocketbase serve --dir=pb_data --dev
 ```
+
+Or copy the starter without the scaffolding tool: `npx tiged benallfree/pocketpages/packages/starters/htmx my-app`.

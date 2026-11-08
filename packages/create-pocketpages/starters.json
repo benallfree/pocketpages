@@ -18,26 +18,20 @@
       "value": "auth",
       "instructions": [
         "pocketbase serve --dir=pb_data --dev",
-        "bunx maildev  # For testing email functionality"
+        "bunx maildev  # in a second terminal, to catch outgoing mail"
       ]
     },
     {
       "name": "daisyui",
-      "description": "Tailwind CSS with DaisyUI components",
+      "description": "Tailwind CSS and DaisyUI from a CDN, no build step",
       "value": "daisyui",
-      "instructions": [
-        "npm run dev:css  # Start Tailwind CSS watcher",
-        "pocketbase serve --dir=pb_data --dev"
-      ]
+      "instructions": ["pocketbase serve --dir=pb_data --dev"]
     },
     {
       "name": "daisyui-docs",
       "description": "Documentation site template with DaisyUI and navigation",
       "value": "daisyui-docs",
-      "instructions": [
-        "npm run dev:css  # Start Tailwind CSS watcher",
-        "pocketbase serve --dir=pb_data --dev"
-      ]
+      "instructions": ["pocketbase serve --dir=pb_data --dev"]
     },
     {
       "name": "htmx",
