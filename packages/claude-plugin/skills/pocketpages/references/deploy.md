@@ -4,11 +4,11 @@ PocketPages is just PocketBase hooks, so deploying means deploying a PocketBase 
 
 ## What to ship
 
-| Ship | Never ship |
-|---|---|
+| Ship                                                                      | Never ship                             |
+| ------------------------------------------------------------------------- | -------------------------------------- |
 | `pb_hooks/` (includes `pages/`), `pb_migrations/`, `pb_public/` (if used) | `pb_data/` (your local DB and uploads) |
-| `package.json` + lockfile, `patches/` | `.env` and other secrets |
-| production `node_modules` (the PocketHost CLI does this for you) | `devDependencies` |
+| `package.json` + lockfile, `patches/`                                     | `.env` and other secrets               |
+| production `node_modules` (the PocketHost CLI does this for you)          | `devDependencies`                      |
 
 Pre-flight checklist:
 
@@ -52,7 +52,14 @@ pockethost logs                 # look for "pocketpages startup" and any boot er
 
 ## Fly.io (self-hosted)
 
-Advanced. Copy the starter (`deploy-fly-ga` for GitHub Actions or `deploy-fly-manual`) from `node_modules/pocketpages/starters/` or the repo, which gives you a `Dockerfile` and `fly.toml`. Then run `fly launch` and `fly deploy`. Mount a volume for `pb_data`. Set secrets with `fly secrets set`.
+Every starter includes a `Dockerfile` (`FROM ghcr.io/benallfree/pocketpages-fly:0.40`), `.dockerignore` and `fly.toml`; copy them from any starter into an existing app. The base image installs the app's npm `dependencies` and serves with `--dir=/pb_data`.
+
+- First deploy: `fly launch --copy-config --name my-app --no-deploy --ha=false`, then `fly deploy`. The `fly.toml` mounts a volume at `/pb_data`.
+- Run exactly one machine: SQLite allows one writer and a volume attaches to one machine.
+- Superuser: `fly ssh console -C "pocketbase superuser upsert EMAIL PASS --dir=/pb_data"`.
+- Secrets: `fly secrets set NAME=value`, read with `env('NAME')`.
+
+Guide: https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly
 
 ## After deploying
 

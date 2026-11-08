@@ -20,3 +20,14 @@ Or copy the starter without the scaffolding tool: `npx tiged benallfree/pocketpa
 Add your own CSS in the `<style type="text/tailwindcss">` block in the layout. It supports `@apply` and Tailwind's theme variables. The `prose` styles there stand in for Tailwind's typography plugin, which can't run in the browser build, and cover common Markdown: headings, lists, quotes, code and tables. Add rules there for anything else your docs need.
 
 To switch themes, change the `cupcake.css` link and `data-theme` on `<html>`. See [daisyUI themes](https://daisyui.com/docs/themes/).
+
+## Deploy to Fly.io
+
+This starter includes a `Dockerfile` and `fly.toml` built on the [pocketpages-fly](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) image:
+
+```bash
+fly launch --copy-config --name my-app --no-deploy --ha=false
+fly deploy
+```
+
+See the [pocketpages-fly guide](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) for creating a superuser, secrets and volumes.

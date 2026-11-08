@@ -1,0 +1,4 @@
+# Keep local data and installed packages out of the image.
+pb_data
+node_modules
+.git

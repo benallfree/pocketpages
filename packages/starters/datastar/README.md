@@ -51,3 +51,14 @@ The starter kit is pre-configured with the required Datastar setup:
 - `datastar.realtime.*` - Broadcasting to all clients
 - Client-side data binding with `data-bind:*` attributes
 - Event handling with `data-on:click` attributes
+
+## Deploy to Fly.io
+
+This starter includes a `Dockerfile` and `fly.toml` built on the [pocketpages-fly](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) image:
+
+```bash
+fly launch --copy-config --name my-app --no-deploy --ha=false
+fly deploy
+```
+
+See the [pocketpages-fly guide](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) for creating a superuser, secrets and volumes.

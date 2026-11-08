@@ -1,0 +1,32 @@
+# Fly.io config. First deploy:
+#   fly launch --copy-config --name my-app --no-deploy --ha=false
+#   fly deploy
+# Guide: https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly
+
+app = "pocketpages-starter-htmx"
+primary_region = "sjc"
+
+[build]
+  # Builds the Dockerfile in this folder.
+
+[http_service]
+  internal_port = 8090
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+# PocketBase keeps its database and uploads in /pb_data. SQLite allows one
+# writer, so run a single machine with this volume attached.
+[mounts]
+  source = "pb_data"
+  destination = "/pb_data"
+  initial_size = "1gb"
+  auto_extend_size_threshold = 80
+  auto_extend_size_increment = "1gb"
+  auto_extend_size_limit = "10gb"

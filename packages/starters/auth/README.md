@@ -71,3 +71,14 @@ The migrations point PocketBase's email templates at this app's pages:
 3. Email change: `{APP_URL}/auth/confirm/{TOKEN}/email-change`
 
 If you build your own app, set the same URLs under `Collections > users > Options > Mail templates`.
+
+## Deploy to Fly.io
+
+This starter includes a `Dockerfile` and `fly.toml` built on the [pocketpages-fly](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) image:
+
+```bash
+fly launch --copy-config --name my-app --no-deploy --ha=false
+fly deploy
+```
+
+See the [pocketpages-fly guide](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) for creating a superuser, secrets and volumes.
