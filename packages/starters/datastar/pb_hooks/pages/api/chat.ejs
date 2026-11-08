@@ -5,6 +5,17 @@
     {}
   )
 
+  // Reject requests without the signals the chat UI sends (bare GETs, stale tabs, bots)
+  const isText = (v) => typeof v === 'string' && v.trim().length > 0
+  if (!isText(roomName) || typeof message !== 'string' || !isText(clientId)) {
+    response.json(400, { error: 'roomName, message and clientId signals are required' })
+    return
+  }
+  if (!api.realtime.getClientById(clientId)) {
+    response.json(400, { error: 'Unknown realtime client. Reload the page to reconnect.' })
+    return
+  }
+
   $app.runInTransaction(() => {
     const messages = store(`room_${roomName}`) || []
 
