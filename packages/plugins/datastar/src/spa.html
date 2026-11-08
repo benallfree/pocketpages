@@ -32,7 +32,7 @@
       scope.querySelectorAll('a[href]').forEach((a) => {
         a.setAttribute(
           'data-on:click',
-          `if (evt.button !== 0 || evt.metaKey || evt.ctrlKey || evt.shiftKey || evt.altKey || el.target || el.origin !== location.origin) return; evt.preventDefault(); const href = el.getAttribute('href'); history.pushState({ datastar: { url: href } }, '', href); @get(href, ${getOptions})`
+          `if (evt.button !== 0 || evt.metaKey || evt.ctrlKey || evt.shiftKey || evt.altKey || el.target || el.origin !== location.origin) return; evt.preventDefault(); const href = el.getAttribute('href'); history.pushState({ datastar: { url: href } }, '', href); window.scrollTo(0, 0); @get(href, ${getOptions})`
         )
       })
     }
