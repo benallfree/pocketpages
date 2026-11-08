@@ -14,7 +14,7 @@ Now it's one hand-written file. At the switch it was **22 KB, about 5 KB gzipped
 
 A few years ago, Tailwind was filling real gaps. Today the browser handles most of what we used it for:
 
-- **Custom properties** hold the theme. The synthwave palette is a dozen `--color-*` variables.
+- **Custom properties** hold the theme. The whole palette is a dozen `--color-*` variables. When we moved this site from a dark theme to the light one you're reading now, we changed those values and nothing else.
 - **Native nesting** keeps component styles together without a preprocessor.
 - **`@layer`** orders reset, tokens, layout, components and utilities, so specificity fights go away.
 - **`color-mix()`** replaces opacity utilities like `text-base-content/70`.

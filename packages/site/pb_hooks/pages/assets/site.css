@@ -28,33 +28,34 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Synthwave palette (same values the daisyUI theme used). The names
-   match daisyUI's so the DocSearch overrides in +layout.ejs keep working. */
+/* "Paper" palette: crisp white and cool gray, indigo first. The names
+   match daisyUI's so the DocSearch overrides in +layout.ejs keep working.
+   Code blocks and code windows stay dark on purpose. */
 @layer tokens {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
 
-    --color-base-100: oklch(15% 0.09 281.288);
-    --color-base-200: oklch(20% 0.09 281.288);
-    --color-base-300: oklch(25% 0.09 281.288);
-    --color-base-content: oklch(78% 0.115 274.713);
-    --color-primary: oklch(71% 0.202 349.761);
-    --color-primary-content: oklch(28% 0.109 3.907);
-    --color-secondary: oklch(82% 0.111 230.318);
-    --color-secondary-content: oklch(29% 0.066 243.157);
-    --color-accent: oklch(75% 0.183 55.934);
-    --color-accent-content: oklch(26% 0.079 36.259);
-    --color-neutral: oklch(45% 0.24 277.023);
-    --color-neutral-content: oklch(87% 0.065 274.039);
-    --color-info: oklch(74% 0.16 232.661);
-    --color-info-content: oklch(29% 0.066 243.157);
-    --color-success: oklch(77% 0.152 181.912);
-    --color-warning: oklch(90% 0.182 98.111);
-    --color-error: oklch(73.7% 0.121 32.639);
+    --color-base-100: oklch(100% 0 0);
+    --color-base-200: oklch(97.6% 0.005 270);
+    --color-base-300: oklch(92.8% 0.01 270);
+    --color-base-content: oklch(26% 0.03 270);
+    --color-primary: oklch(51% 0.21 275);
+    --color-primary-content: oklch(98.5% 0.01 275);
+    --color-secondary: oklch(58% 0.21 350);
+    --color-secondary-content: oklch(98.5% 0.01 350);
+    --color-accent: oklch(62% 0.19 42);
+    --color-accent-content: oklch(98.5% 0.01 42);
+    --color-neutral: oklch(25% 0.03 270);
+    --color-neutral-content: oklch(92% 0.01 270);
+    --color-info: oklch(93% 0.035 265);
+    --color-info-content: oklch(35% 0.12 270);
+    --color-success: oklch(55% 0.13 165);
+    --color-warning: oklch(76% 0.16 80);
+    --color-error: oklch(58% 0.21 25);
 
     --muted: color-mix(in oklab, var(--color-base-content) 70%, transparent);
     --faint: color-mix(in oklab, var(--color-base-content) 60%, transparent);
-    --line: color-mix(in oklab, var(--color-base-300) 50%, transparent);
+    --line: var(--color-base-300);
 
     --font-sans:
       ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
@@ -68,8 +69,8 @@
     --radius-lg: 1rem;
     --radius-full: 999px;
 
-    --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.25), 0 4px 6px -4px rgb(0 0 0 / 0.25);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    --shadow: 0 8px 20px -6px rgb(40 30 80 / 0.12), 0 2px 6px -2px rgb(40 30 80 / 0.08);
+    --shadow-xl: 0 20px 40px -12px rgb(40 30 80 / 0.22), 0 6px 12px -6px rgb(40 30 80 / 0.12);
 
     --sidebar-width: 20rem;
     --ease: 200ms ease;
@@ -143,13 +144,32 @@
     align-items: center;
     gap: 0.375rem;
     margin-left: auto;
-    & img {
-      width: 1rem;
-      height: 1rem;
+    & > * {
+      flex: none;
     }
-    & .icon-npm {
+  }
+  /* Monochrome icon drawn with a mask, so it takes the current text color */
+  .icon {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    background: currentColor;
+    mask: var(--icon) center / contain no-repeat;
+    &.icon-npm {
       width: 1.75rem;
       height: 1.75rem;
+    }
+  }
+  .icon-link {
+    display: grid;
+    place-items: center;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    color: var(--color-base-content);
+    opacity: 0.85;
+    &:hover {
+      opacity: 1;
+      color: var(--color-primary);
     }
   }
 
@@ -934,6 +954,9 @@
       padding: 0.5rem 0.875rem;
       border-radius: var(--radius);
       font-size: 0.9375rem;
+      @media (width < 30rem) {
+        padding-inline: 0.5rem;
+      }
       font-weight: 500;
       color: var(--muted);
       transition: all var(--ease);
