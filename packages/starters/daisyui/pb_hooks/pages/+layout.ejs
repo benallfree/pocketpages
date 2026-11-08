@@ -4,7 +4,193 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PocketPages</title>
-    <link href="<%=asset('/app.css')%>" rel="stylesheet" />
+    <!-- daisyUI + Tailwind from a CDN: no build step -->
+    <!-- Fix the layer order first, so utilities beat the prose styles below -->
+    <style>@layer theme, base, components, utilities;</style>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.50/daisyui.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5.7.50/theme/cupcake.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.5"></script>
+    <style type="text/tailwindcss">
+      /* Article typography. Tailwind's typography plugin can't run in the
+         browser build, so these are its `prose` styles for common Markdown elements
+         (headings, lists, quotes, code, tables), with colors taken from
+         the daisyUI theme. */
+      @layer components {
+        .prose {
+          --prose-body: color-mix(in oklab, var(--color-base-content) 80%, transparent);
+          --prose-bullets: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+          --prose-subtle: color-mix(in oklab, var(--color-base-content) 20%, transparent);
+          --prose-strong-border: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+          color: var(--prose-body);
+          max-width: 65ch;
+          font-size: 1rem;
+          line-height: 1.75;
+        }
+        .prose :where(p) {
+          margin-top: 1.25em;
+          margin-bottom: 1.25em;
+        }
+        .prose :where(h1) {
+          color: var(--color-base-content);
+          font-weight: 800;
+          font-size: 2.25em;
+          margin-top: 0;
+          margin-bottom: 0.8888889em;
+          line-height: 1.1111111;
+        }
+        .prose :where(a) {
+          color: var(--color-base-content);
+          text-decoration: underline;
+          font-weight: 500;
+        }
+        .prose :where(strong) {
+          color: var(--color-base-content);
+          font-weight: 600;
+        }
+        .prose :where(code):not(:where(pre *)) {
+          color: var(--color-base-content);
+          font-size: 0.875em;
+          padding: 1px 8px;
+          border-radius: var(--radius-selector);
+          background-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+        }
+        .prose :where(ul) {
+          list-style-type: disc;
+          margin-top: 1.25em;
+          margin-bottom: 1.25em;
+          padding-inline-start: 1.625em;
+        }
+        .prose :where(li) {
+          margin-top: 0.5em;
+          margin-bottom: 0.5em;
+        }
+        .prose :where(ul > li) {
+          padding-inline-start: 0.375em;
+        }
+        .prose :where(ul > li)::marker {
+          color: var(--prose-bullets);
+        }
+        .prose :where(pre) {
+          color: var(--color-neutral-content);
+          background-color: var(--color-neutral);
+          overflow-x: auto;
+          font-weight: 400;
+          font-size: 0.875em;
+          line-height: 1.7142857;
+          margin-top: 1.7142857em;
+          margin-bottom: 1.7142857em;
+          border-radius: 0.375rem;
+          padding: 0.8571429em 1.1428571em;
+        }
+        .prose :where(h2) {
+          color: var(--color-base-content);
+          font-weight: 700;
+          font-size: 1.5em;
+          margin-top: 2em;
+          margin-bottom: 1em;
+          line-height: 1.3333333;
+        }
+        .prose :where(h3) {
+          color: var(--color-base-content);
+          font-weight: 600;
+          font-size: 1.25em;
+          margin-top: 1.6em;
+          margin-bottom: 0.6em;
+          line-height: 1.6;
+        }
+        .prose :where(h4) {
+          color: var(--color-base-content);
+          font-weight: 600;
+          margin-top: 1.5em;
+          margin-bottom: 0.5em;
+          line-height: 1.5;
+        }
+        .prose :where(h2 code, h3 code, h4 code) {
+          color: inherit;
+        }
+        .prose :where(ol) {
+          list-style-type: decimal;
+          margin-top: 1.25em;
+          margin-bottom: 1.25em;
+          padding-inline-start: 1.625em;
+        }
+        .prose :where(ol > li) {
+          padding-inline-start: 0.375em;
+        }
+        .prose :where(ol > li)::marker {
+          font-weight: 400;
+          color: var(--color-base-content);
+        }
+        .prose :where(blockquote) {
+          font-weight: 500;
+          font-style: italic;
+          color: var(--color-base-content);
+          border-inline-start: 0.25rem solid var(--prose-subtle);
+          quotes: '\201C' '\201D' '\2018' '\2019';
+          margin-top: 1.6em;
+          margin-bottom: 1.6em;
+          padding-inline-start: 1em;
+        }
+        .prose :where(blockquote p:first-of-type)::before {
+          content: open-quote;
+        }
+        .prose :where(blockquote p:last-of-type)::after {
+          content: close-quote;
+        }
+        .prose :where(hr) {
+          border-top: 1px solid var(--prose-subtle);
+          margin-top: 3em;
+          margin-bottom: 3em;
+        }
+        .prose :where(img) {
+          margin-top: 2em;
+          margin-bottom: 2em;
+        }
+        .prose :where(table) {
+          width: 100%;
+          table-layout: auto;
+          margin-top: 2em;
+          margin-bottom: 2em;
+          font-size: 0.875em;
+          line-height: 1.7142857;
+        }
+        .prose :where(thead) {
+          border-bottom: 1px solid var(--prose-strong-border);
+        }
+        .prose :where(thead th) {
+          text-align: start;
+          color: var(--color-base-content);
+          font-weight: 600;
+          vertical-align: bottom;
+          padding: 0 0.5714286em 0.5714286em;
+        }
+        .prose :where(tbody tr) {
+          border-bottom: 1px solid var(--prose-subtle);
+        }
+        .prose :where(tbody tr:last-child) {
+          border-bottom-width: 0;
+        }
+        .prose :where(tbody td) {
+          vertical-align: baseline;
+          padding: 0.5714286em;
+        }
+        .prose :where(thead th:first-child, tbody td:first-child) {
+          padding-inline-start: 0;
+        }
+        .prose :where(thead th:last-child, tbody td:last-child) {
+          padding-inline-end: 0;
+        }
+        .prose :where(hr + *, h2 + *, h3 + *, h4 + *) {
+          margin-top: 0;
+        }
+        .prose :where(.prose > :first-child) {
+          margin-top: 0;
+        }
+        .prose :where(.prose > :last-child) {
+          margin-bottom: 0;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="drawer">

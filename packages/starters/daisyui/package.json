@@ -2,9 +2,6 @@
   "name": "pocketpages-starter-daisyui",
   "private": true,
   "version": "0.0.2",
-  "scripts": {
-    "dev:css": "tailwindcss -i ./pb_hooks/pages/app.tailwind.css -o ./pb_hooks/pages/app.css --watch"
-  },
   "description": "A starter project for PocketPages with DaisyUI",
   "author": {
     "name": "Ben Allfree",
@@ -19,11 +16,6 @@
     "starter",
     "daisyui"
   ],
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16",
-    "daisyui": "^4.12.23",
-    "tailwindcss": "^3.4.17"
-  },
   "dependencies": {
     "pocketpages": "workspace:>=0.22.4"
   },

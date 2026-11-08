@@ -1,13 +1,20 @@
 # DaisyUI PocketPages Starter Kit
 
-This setup provides a minimal **PocketPages** app integrated with **Tailwind CSS** and **DaisyUI**.
+This setup provides a minimal **PocketPages** app styled with **Tailwind CSS** and **DaisyUI**, loaded from a CDN. There is no CSS build step.
 
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/packages/starters/daisyui .
+npx tiged benallfree/pocketpages/packages/starters/daisyui daisyui
 cd daisyui
 npm i
-npm run dev
 pocketbase serve --dir=pb_data --dev
 ```
+
+## Styling
+
+`pb_hooks/pages/+layout.ejs` loads daisyUI 5 (with the `cupcake` theme) and the Tailwind CSS v4 browser build from jsDelivr. Use Tailwind and daisyUI classes in your pages and they are generated in the browser.
+
+Add your own CSS in the `<style type="text/tailwindcss">` block in the layout. It supports `@apply` and Tailwind's theme variables. The `prose` styles there stand in for Tailwind's typography plugin, which can't run in the browser build.
+
+To switch themes, change the `cupcake.css` link and `data-theme` on `<html>`. See [daisyUI themes](https://daisyui.com/docs/themes/).
