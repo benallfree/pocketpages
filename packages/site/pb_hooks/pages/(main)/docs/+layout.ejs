@@ -1,29 +1,15 @@
-<div class="lg:flex">
-  <!-- Desktop sidebar - always visible on large screens -->
-  <aside class="hidden lg:block lg:w-80 lg:flex-shrink-0">
-    <div
-      class="sticky bg-gradient-to-b from-base-100 to-base-200 border-r border-base-300"
-      style="top: 1rem; height: calc(100vh - 2rem)"
-    >
-      <!-- Navigation content with TOC -->
-      <nav
-        class="p-4 overflow-y-auto docs-nav-scroll"
-        role="navigation"
-        aria-label="Documentation navigation"
-        style="height: 100%"
-      >
-        <div class="docs-toc-navigation space-y-2" id="toc">
-          <%- include(`toc.md`) %>
-        </div>
+<div class="docs-layout">
+  <!-- Desktop sidebar; hidden below 64rem, where the drawer takes over -->
+  <aside class="docs-sidebar">
+    <div>
+      <nav class="docs-nav-scroll" aria-label="Documentation navigation">
+        <div class="docs-toc-navigation" id="toc"><%- include(`toc.md`) %></div>
       </nav>
     </div>
   </aside>
 
-  <!-- Content wrapper with adjusted prose sizing -->
-  <main class="flex-1 p-4 lg:p-8 max-w-none pb-safe">
-    <article
-      class="docs-content prose prose-base max-w-4xl mx-auto pointer-coarse:prose-lg"
-    >
+  <main class="docs-main">
+    <article class="prose">
       <div id="content"><%- slots.body || slot %></div>
     </article>
   </main>

@@ -1,10 +1,8 @@
-<div class="mockup-browser  border w-full">
-  <div class="mockup-browser-toolbar">
-    <div class="input">
-      <%= `http://localhost:8090` %>
-    </div>
+<div class="mockup-browser">
+  <div class="toolbar">
+    <div class="url"><%= `http://localhost:8090` %></div>
   </div>
-  <div class=" bg-base-100 text-left px-4 pb-32" <%- typeof bodyTags !== 'undefined' ? bodyTags : '' %>>
+  <div class="page" <%- typeof bodyTags !== 'undefined' ? bodyTags : '' %>>
     <%- content||`This page is empty.`%>
   </div>
 </div>

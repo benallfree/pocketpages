@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><%=meta('title') || 'PocketPages'%></title>
     <link href="<%=asset('/assets/prism.css')%>" rel="stylesheet" />
-    <link href="<%=asset(`/assets/app.css`)%>" rel="stylesheet" />
+    <link href="<%=asset(`/assets/site.css`)%>" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css" />
     <script src="https://cdn.jsdelivr.net/npm/@docsearch/js"></script>
     <meta name="algolia-site-verification" content="715D807F817B1875" />
@@ -91,35 +91,30 @@
   </head>
 
   <body>
-    <section class="-mt-px border-y border-border bg-background">
-      <div class="mx-auto max-w-screen-xl px-4 py-2">
-        <div class="flex flex-row items-center justify-end gap-1.5">
-          <div id="docsearch">Search</div>
-          <div>
-            <a href="https://www.npmjs.com/package/pocketpages" target="_blank">
-              <img
-                src="https://api.iconify.design/cib/npm.svg?color=%23e5e7eb" class="h-7 w-7" alt="npm"
-              />
-            </a>
-          </div>
-          <div>
-            <a href="https://github.com/benallfree/pocketpages" target="_blank">
-              <img
-                src="https://api.iconify.design/simple-icons/github.svg?color=%23e5e7eb"
-              />
-            </a>
-          </div>
-
-          <div>
-            <a href="https://discord.gg/nVTxCMEcGT" target="_blank">
-              <img
-                src="https://api.iconify.design/simple-icons/discord.svg?color=%23e5e7eb"
-              />
-            </a>
-          </div>
-        </div>
+    <header class="topbar">
+      <div class="container">
+        <div id="docsearch">Search</div>
+        <a href="https://www.npmjs.com/package/pocketpages" target="_blank">
+          <img
+            class="icon-npm"
+            src="https://api.iconify.design/cib/npm.svg?color=%23e5e7eb"
+            alt="npm"
+          />
+        </a>
+        <a href="https://github.com/benallfree/pocketpages" target="_blank">
+          <img
+            src="https://api.iconify.design/simple-icons/github.svg?color=%23e5e7eb"
+            alt="GitHub"
+          />
+        </a>
+        <a href="https://discord.gg/nVTxCMEcGT" target="_blank">
+          <img
+            src="https://api.iconify.design/simple-icons/discord.svg?color=%23e5e7eb"
+            alt="Discord"
+          />
+        </a>
       </div>
-    </section>
+    </header>
     <%- slots.body || slot%>
     <script src="<%=asset('/assets/prism.js')%>" defer></script>
     <script

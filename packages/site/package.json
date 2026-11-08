@@ -13,19 +13,12 @@
     "url": "https://github.com/benallfree/pocketpages/tree/main/packages/site"
   },
   "scripts": {
-    "dev": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css --watch",
-    "build": "tailwindcss -i ./pb_hooks/pages/assets/app.tailwind.css -o ./pb_hooks/pages/assets/app.css",
     "deploy": "pockethost deploy"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.11",
-    "@tailwindcss/typography": "^0.5.16",
-    "daisyui": "^5.0.46",
     "pocketbase-jsvm": "^0.23.10002",
     "pockethost": "^4.2.0",
-    "postcss-import": "^16.1.0",
     "prettier": "^3.3.3",
-    "tailwindcss": "^4.1.11",
     "typescript": "^5.6.2"
   },
   "dependencies": {
