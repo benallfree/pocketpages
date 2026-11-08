@@ -1,0 +1,46 @@
+<%
+  // The index renders its own header; a post gets a header built from its
+  // frontmatter (the marked plugin copies frontmatter into meta()).
+  const path = request.url.pathname.replace(/\/+$/, '')
+  const isIndex = path === '/blog'
+  const posts = isIndex ? [] : resolve('posts').list()
+  const i = posts.findIndex((p) => `/blog/${p.slug}` === path)
+  const post = posts[i]
+  const newer = i > 0 ? posts[i - 1] : null
+  const older = i >= 0 && i < posts.length - 1 ? posts[i + 1] : null
+%>
+<main class="blog">
+  <% if (isIndex || !post) { %>
+  <%- slots.body || slot %>
+  <% } else { %>
+  <article class="post">
+    <header class="post-header">
+      <a class="back-link" href="/blog">← All posts</a>
+      <% if (post.tags.length) { %>
+      <ul class="tags">
+        <% post.tags.forEach((tag) => { %><li><%= tag %></li><% }) %>
+      </ul>
+      <% } %>
+      <h1><%= post.title %></h1>
+      <% if (post.description) { %><p class="lead"><%= post.description %></p><% } %>
+      <div class="post-meta">
+        <% if (post.author) { %><span><%= post.author %></span><span aria-hidden="true">·</span><% } %>
+        <time datetime="<%= post.date %>"><%= post.dateLabel %></time>
+        <span aria-hidden="true">·</span>
+        <span><%= post.minutes %> min read</span>
+      </div>
+    </header>
+
+    <div class="prose post-body"><%- slots.body || slot %></div>
+
+    <nav class="post-nav" aria-label="More posts">
+      <% if (newer) { %>
+      <a href="/blog/<%= newer.slug %>"><small>Newer</small><%= newer.title %></a>
+      <% } else { %><span></span><% } %>
+      <% if (older) { %>
+      <a class="older" href="/blog/<%= older.slug %>"><small>Older</small><%= older.title %></a>
+      <% } %>
+    </nav>
+  </article>
+  <% } %>
+</main>

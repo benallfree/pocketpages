@@ -91,8 +91,37 @@
   </head>
 
   <body>
-    <header class="topbar">
-      <div class="container">
+    <% const section = request.url.pathname.split('/')[1] %>
+    <header class="site-header">
+      <% if (section === 'docs') { %>
+      <button
+        class="icon-btn lg-hidden"
+        popovertarget="mobile-nav"
+        aria-label="Open docs navigation"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          ></path>
+        </svg>
+      </button>
+      <% } %>
+      <a href="/" class="brand">
+        <span class="avatar">
+          <img src="<%=asset('/apple-touch-icon.png')%>" alt="" />
+        </span>
+        <span class="brand-name">PocketPages</span>
+      </a>
+      <nav aria-label="Site">
+        <ul class="nav-links">
+          <li><a href="/docs" <%- section === 'docs' ? 'aria-current="page"' : '' %>>Docs</a></li>
+          <li><a href="/blog" <%- section === 'blog' ? 'aria-current="page"' : '' %>>Blog</a></li>
+        </ul>
+      </nav>
+      <div class="header-tools">
         <div id="docsearch">Search</div>
         <a href="https://www.npmjs.com/package/pocketpages" target="_blank">
           <img

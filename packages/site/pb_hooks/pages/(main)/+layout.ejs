@@ -1,31 +1,9 @@
-<nav class="navbar">
-  <button
-    class="icon-btn lg-hidden"
-    popovertarget="mobile-nav"
-    aria-label="Open sidebar"
-  >
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M4 6h16M4 12h16M4 18h16"
-      ></path>
-    </svg>
-  </button>
-  <a href="/" class="brand">
-    <span class="avatar">
-      <img src="<%=asset('/apple-touch-icon.png')%>" alt="PocketPages Logo" />
-    </span>
-    PocketPages
-  </a>
-</nav>
-
 <%- slots.body || slot %>
 
-<!-- Mobile drawer: a native popover (light-dismiss and Esc for free) -->
+<% if (request.url.pathname.startsWith('/docs')) { %>
+<!-- Mobile docs drawer: a native popover (light-dismiss and Esc for free).
+     The button that opens it lives in the site header (+layout.ejs). -->
 <aside id="mobile-nav" class="mobile-nav" popover>
-  <% if (request.url.pathname.startsWith('/docs')) { %>
   <header>
     <h2>Contents</h2>
     <button
@@ -47,9 +25,5 @@
   <nav aria-label="Documentation navigation">
     <div class="docs-toc-navigation"><%- include(`toc.md`) %></div>
   </nav>
-  <% } else { %>
-  <ul class="simple-menu">
-    <li><a href="/docs">Docs</a></li>
-  </ul>
-  <% } %>
 </aside>
+<% } %>

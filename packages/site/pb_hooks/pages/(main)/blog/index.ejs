@@ -1,0 +1,33 @@
+<%
+  meta('title', 'Blog · PocketPages')
+  meta('description', 'News, releases and deep dives from the PocketPages project.')
+  const posts = resolve('posts').list()
+%>
+<header class="blog-hero">
+  <p class="eyebrow">The PocketPages Blog</p>
+  <h1>News from the no-build world</h1>
+  <p class="lead">
+    Releases, new plugins and starters, and notes on building server-rendered apps with PocketBase.
+  </p>
+</header>
+
+<ol class="post-list">
+  <% posts.forEach((post) => { %>
+  <li>
+    <article class="post-card">
+      <div class="post-meta">
+        <time datetime="<%= post.date %>"><%= post.dateLabel %></time>
+        <span aria-hidden="true">·</span>
+        <span><%= post.minutes %> min read</span>
+      </div>
+      <h2><a href="/blog/<%= post.slug %>"><%= post.title %></a></h2>
+      <p><%= post.description %></p>
+      <% if (post.tags.length) { %>
+      <ul class="tags">
+        <% post.tags.forEach((tag) => { %><li><%= tag %></li><% }) %>
+      </ul>
+      <% } %>
+    </article>
+  </li>
+  <% }) %>
+</ol>
