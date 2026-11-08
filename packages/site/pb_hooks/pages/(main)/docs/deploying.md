@@ -17,41 +17,49 @@ In under 30 seconds, you can provision a free instance with unlimited (Fair Use)
 
 ### Manual Deployment
 
-The easiest way to deploy is using the PocketHost.IO CLI utility (PHIO). Here's how:
+The easiest way to deploy is using the [PocketHost CLI](https://pockethost.io/docs/cli). Here's how:
 
-1. Install the PHIO CLI globally:
+1. Install the PocketHost CLI globally (Node.js 20+):
 
 ```bash
-npm i -g phio
+npm i -g pockethost
 ```
 
-2. Login to your PocketHost account:
+2. Log in with a personal access token from [Account → API Tokens](https://app.pockethost.io/account/tokens):
 
 ```bash
-phio login
+pockethost login
 ```
 
-3. Link your local project to your PocketHost instance:
+3. Link your local project to your PocketHost instance (this writes a `.pockethostconfig` file; commit it):
 
 ```bash
-phio link <instanceName>
+pockethost link <instanceName>
 ```
 
 4. Deploy your project:
 
 ```bash
-phio deploy
+pockethost deploy
 ```
+
+Use `pockethost dev` to watch for local changes and deploy them as you work.
+
+> **Upgrading from `phio`?** `phio` is now `pockethost`. Run `npm rm -g phio && npm i -g pockethost`. Your `.phioconfig` (or `pockethost` key in `package.json`) is migrated to `.pockethostconfig` automatically.
+
+> **Note:** PocketHost does not install npm packages. Only `pb_*` folders (never `pb_data`), `package.json`, `bun.lock(b)` and `patches/` are uploaded, so any npm code your hooks need must be bundled into `pb_hooks`.
 
 ### Github Actions Deployment
 
-To set up automated deployments using Github Actions:
+Create a token with write access to your instance, save it as the `POCKETHOST_TOKEN` repository secret, and add a deploy step to your workflow:
 
-```bash
-cp -r node_modules/pocketpages/starters/deploy-pockethost-ga .
+```yaml
+- run: npx pockethost@latest deploy <instanceName>
+  env:
+    POCKETHOST_TOKEN: ${{ secrets.POCKETHOST_TOKEN }}
 ```
 
-You'll need to set a few Github secrets. Look in the YAML file for details.
+See [Deploy from CI](https://pockethost.io/docs/deploy-from-ci) for more details.
 
 ## Deploy to Fly.io
 

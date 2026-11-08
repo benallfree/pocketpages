@@ -18,7 +18,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "deploy": "phio deploy"
+    "deploy": "pockethost deploy"
   },
   "dependencies": {
     "pocketpages": "workspace:>=0.22.3",
@@ -28,10 +28,7 @@
     "pb_hooks",
     "*.md"
   ],
-  "pockethost": {
-    "instanceName": "datastar-chat"
-  },
   "devDependencies": {
-    "phio": "^0.3.5"
+    "pockethost": "^4.0.0"
   }
 }
