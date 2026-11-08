@@ -432,7 +432,10 @@ The `$clientId` signal is automatically set when the realtime connection is esta
 </div>
 
 <!-- Use in data attributes -->
-<button data-on:click="@get('/api/action')" data-attr:data-client-id="$clientId">
+<button
+  data-on:click="@get('/api/action')"
+  data-attr:data-client-id="$clientId"
+>
   Perform Action
 </button>
 ```

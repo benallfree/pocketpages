@@ -110,16 +110,12 @@ interface User {
 }
 
 // Types are preserved
-const users: User[] = [
-  /*...*/
-]
+const users: User[] = [/*...*/]
 forEach(users, (user: User) => {
   // user is properly typed
 })
 
-const userObj: User = {
-  /*...*/
-}
+const userObj: User = {/*...*/}
 const partial = pick(userObj, 'id', 'name')
 // partial is Partial<Pick<User, 'id' | 'name'>>
 ```

@@ -21,7 +21,8 @@ migrate(
     if (env('APP_NAME')) settings.meta.appName = env('APP_NAME')
     if (env('MAIL_SENDER_ADDRESS'))
       settings.meta.senderAddress = env('MAIL_SENDER_ADDRESS')
-    if (env('MAIL_SENDER_NAME')) settings.meta.senderName = env('MAIL_SENDER_NAME')
+    if (env('MAIL_SENDER_NAME'))
+      settings.meta.senderName = env('MAIL_SENDER_NAME')
     if (env('SMTP_HOST')) {
       settings.smtp.enabled = true
       settings.smtp.host = env('SMTP_HOST')

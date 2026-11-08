@@ -19,9 +19,11 @@ Code runs in **Goja** (an ES5.1+ engine in Go) inside PocketBase. Before writing
 - **Records are Go objects.** Read fields with `record.get('title')`, not `record.title`. Set them with `record.set('title', v)`. (`record.id` works.)
 - **`$app` finder signatures are positional**, not option objects:
   ```js
-  $app.findRecordsByFilter('posts', 'status = {:s}', '-created', 20, 0, { s: 'published' })
+  $app.findRecordsByFilter('posts', 'status = {:s}', '-created', 20, 0, {
+    s: 'published',
+  })
   $app.findFirstRecordByFilter('users', 'email = {:e}', { e: email }) // throws if not found
-  $app.findRecordById('posts', id)                                    // throws if not found
+  $app.findRecordById('posts', id) // throws if not found
   ```
   Always bind user input with `{:name}` placeholders. Never interpolate it into filter strings.
 - Do **not** use the PocketBase JS SDK (`pb.collection(...)`) in server code unless the `pocketpages-plugin-js-sdk` plugin is configured. Prefer `$app`.
@@ -50,20 +52,20 @@ New project: `npm create pocketpages` (pick a starter: minimal, htmx, datastar, 
 
 ## File conventions (cheat sheet)
 
-| File / dir | Meaning |
-|---|---|
-| `foo.ejs` | Page at `/foo` |
-| `foo/index.ejs` | Page at `/foo` (and `/foo/`) |
-| `[id].ejs`, `[id]/index.ejs` | Route param → `params.id` |
-| `(group)/` | Route group: organizes files and scopes layouts. **Stripped from the URL** |
-| `+layout.ejs` | Wraps pages in this dir and below. Nested layouts apply inner→outer |
-| `+middleware.js` | Runs for every request under this dir, root→leaf |
-| `+load.js` | Loader, **only for pages in the same dir** |
-| `+get.js` `+post.js` `+put.js` `+patch.js` `+delete.js` | Method-specific loader, same dir only, runs after `+load.js` |
-| `+config.js` | Root only. Plugins + debug |
-| `_private/` | Partials for `include()` and modules for `resolve()`. Never routable |
-| any segment starting with `+`, `_`, or `-` | Not routable (file or directory) |
-| any other file (`.css`, `.png`, `.js`, `.html`) | Served statically |
+| File / dir                                              | Meaning                                                                    |
+| ------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `foo.ejs`                                               | Page at `/foo`                                                             |
+| `foo/index.ejs`                                         | Page at `/foo` (and `/foo/`)                                               |
+| `[id].ejs`, `[id]/index.ejs`                            | Route param → `params.id`                                                  |
+| `(group)/`                                              | Route group: organizes files and scopes layouts. **Stripped from the URL** |
+| `+layout.ejs`                                           | Wraps pages in this dir and below. Nested layouts apply inner→outer        |
+| `+middleware.js`                                        | Runs for every request under this dir, root→leaf                           |
+| `+load.js`                                              | Loader, **only for pages in the same dir**                                 |
+| `+get.js` `+post.js` `+put.js` `+patch.js` `+delete.js` | Method-specific loader, same dir only, runs after `+load.js`               |
+| `+config.js`                                            | Root only. Plugins + debug                                                 |
+| `_private/`                                             | Partials for `include()` and modules for `resolve()`. Never routable       |
+| any segment starting with `+`, `_`, or `-`              | Not routable (file or directory)                                           |
+| any other file (`.css`, `.png`, `.js`, `.html`)         | Served statically                                                          |
 
 ## Request lifecycle
 
@@ -85,7 +87,9 @@ Details, `next()` semantics, and status codes: [references/request-lifecycle.md]
 /** @type {import('pocketpages').PageDataLoaderFunc} */
 module.exports = function ({ params, response }) {
   try {
-    const post = $app.findFirstRecordByFilter('posts', 'slug = {:slug}', { slug: params.slug })
+    const post = $app.findFirstRecordByFilter('posts', 'slug = {:slug}', {
+      slug: params.slug,
+    })
     return { post }
   } catch (e) {
     response.html(404, 'Not found') // there is no response.status()
@@ -123,7 +127,7 @@ module.exports = function ({ params, response }) {
 ```js
 // pages/contact/+post.js
 module.exports = function ({ formData, redirect }) {
-  const body = formData()            // formData is a FUNCTION
+  const body = formData() // formData is a FUNCTION
   const col = $app.findCollectionByNameOrId('messages')
   const rec = new Record(col)
   rec.set('email', body.email)

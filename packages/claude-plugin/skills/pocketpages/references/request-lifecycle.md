@@ -54,6 +54,7 @@ module.exports = function (api) {
     next({ id: parseInt(api.params.id, 10) })
   }
   ```
+
 - Each middleware receives `{ ...api, data }` with data accumulated so far.
 - There is **no** method-specific middleware. `+get.js`/`+post.js` are leaf loaders, despite what some docs say.
 
@@ -79,7 +80,7 @@ Available as `data` in the page, **every layout**, and every partial (partials i
 There is no `response.status()`. Rendered pages always go out as **200**. For anything else:
 
 ```js
-response.html(404, '<h1>Not found</h1>')        // no layout
+response.html(404, '<h1>Not found</h1>') // no layout
 response.json(422, { errors })
 ```
 
@@ -102,8 +103,8 @@ redirect('/login', { status: 303, message: 'Please sign in' })
 ## Cookies and headers
 
 ```js
-request.header('HX-Request')            // '' when absent
-request.cookies()                       // all cookies, JSON values auto-parsed
+request.header('HX-Request') // '' when absent
+request.cookies() // all cookies, JSON values auto-parsed
 request.cookies('prefs')
 response.header('Cache-Control', 'no-store')
 response.cookie('prefs', { theme: 'dark' }, { httpOnly: true, maxAge: 86400 }) // objects are stringified; path defaults to '/'

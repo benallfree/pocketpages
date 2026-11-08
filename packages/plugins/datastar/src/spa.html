@@ -17,7 +17,10 @@
     // re-fetches its content.
     if (!history.state?.datastar?.url) {
       history.replaceState(
-        { ...history.state, datastar: { url: location.pathname + location.search } },
+        {
+          ...history.state,
+          datastar: { url: location.pathname + location.search },
+        },
         '',
         location.href
       )
@@ -32,7 +35,10 @@
         clearTimeout(scrollTimer)
         scrollTimer = setTimeout(() => {
           if (!history.state?.datastar) return
-          history.replaceState({ ...history.state, scrollY: window.scrollY }, '')
+          history.replaceState(
+            { ...history.state, scrollY: window.scrollY },
+            ''
+          )
         }, 150)
       },
       { passive: true }
