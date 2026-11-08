@@ -23,7 +23,8 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "dev": "tsdown --watch"
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit -p . && tsc -p tsconfig.test.json"
   },
   "dependencies": {
     "pocketbase-log": "^0.0.2",
@@ -33,11 +34,13 @@
   },
   "devDependencies": {
     "@s-libs/micro-dash": "^21.1.0",
-    "cookie": "^2.0.2",
-    "qs-lite": "^1.0.0",
-    "url-parse": "^1.5.10",
+    "@types/bun": "^1.4.4",
+    "@types/node": "^26.6.6",
     "@types/url-parse": "^1.4.11",
+    "cookie": "^2.0.2",
     "pocketbase-jsvm": "^0.40.60001",
-    "tsdown": "^0.12.7"
+    "qs-lite": "^1.0.0",
+    "tsdown": "^0.12.7",
+    "url-parse": "^1.5.10"
   }
 }

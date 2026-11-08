@@ -1,14 +1,15 @@
 import { expect, test } from 'bun:test'
 import { resolveRoute } from './resolveRoute'
 
-// Mock $app and $filepath globals for all tests
+// Mock $app and $filepath globals for all tests. The mocks only implement
+// what resolveRoute uses, so they're cast to the full JSVM types.
 globalThis.$app = {
   store: () => ({ get: () => ({ config: {} }) }),
-  logger: () => ({ debug: () => {} }), // evita erro do dbg
-}
+  logger: () => ({ debug: () => {} }), // keeps dbg() from throwing
+} as unknown as typeof $app
 globalThis.$filepath = {
   toSlash: (s: string) => s.replace(/\\/g, '/'),
-}
+} as unknown as typeof $filepath
 
 const baseRoute = (overrides = {}) => ({
   segments: [],

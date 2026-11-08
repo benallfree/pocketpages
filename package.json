@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "bun run --filter='*' dev",
     "build": "bun run --filter='*' build",
+    "typecheck": "bun run --filter='*' typecheck",
     "deploy": "bun run --filter='*' deploy",
     "publish": "concurrently 'bun:publish:*'",
     "publish:pocketpages": "cd packages/pocketpages && bun publish",

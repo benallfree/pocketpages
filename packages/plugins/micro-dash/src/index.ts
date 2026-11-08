@@ -1,6 +1,6 @@
 import { forEach, keys, merge, pick, shuffle, values } from '@s-libs/micro-dash'
 
-import { PluginFactory } from '../../../pocketpages/src/lib/types'
+import type { PluginFactory } from 'pocketpages'
 
 const microDashPluginFactory: PluginFactory = (config) => {
   const { globalApi } = config

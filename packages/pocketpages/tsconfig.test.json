@@ -1,0 +1,13 @@
+{
+  // Tests run under Bun, not PocketBase's JSVM, so they get Bun's types plus
+  // the JSVM globals ($app, $filepath, ...) without pocketbase-jsvm's
+  // require/process declarations, which clash with Node's.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["bun"],
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "noEmit": true
+  },
+  "include": ["src/**/*.test.ts", "../../node_modules/pocketbase-jsvm/jsvm.d.ts"]
+}

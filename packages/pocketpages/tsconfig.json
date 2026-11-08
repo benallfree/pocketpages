@@ -15,5 +15,7 @@
       "$util/*": ["src/lib/util/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  // Tests run under Bun and are checked by tsconfig.test.json
+  "exclude": ["src/**/*.test.ts"]
 }
