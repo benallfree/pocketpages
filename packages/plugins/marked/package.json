@@ -12,11 +12,6 @@
   "description": "",
   "dependencies": {
     "marked": "^15.0.7",
-    "remark-frontmatter": "^5.0.0",
-    "remark-frontmatter-yaml": "^1.3.0",
-    "remark-parse": "^11.0.0",
-    "remark-stringify": "^11.0.0",
-    "unified": "^11.0.5",
     "front-matter": "^4.0.2"
   },
   "devDependencies": {
