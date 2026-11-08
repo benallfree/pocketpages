@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>PocketPages MPA Auth</title>
-  <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.18.0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     header {
@@ -62,14 +62,6 @@
     <hr />
     <%- slot %>
   </main>
-  <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>
-  <script>
-    const pb = new PocketBase(window.location.origin)
-    console.log({
-      pb
-    })
-  </script>
-
 </body>
 
 </html>

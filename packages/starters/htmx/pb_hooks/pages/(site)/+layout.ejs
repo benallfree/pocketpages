@@ -10,10 +10,10 @@
   <meta property="og:description" content="<%=meta('description') || 'htmx starter kit'%>" />
   <meta property="og:image" content="<%=meta('image') || '/android-chrome-512x512.png'%>" />
   <meta property="og:url" content="<%=meta('path') ? `${meta('path')}` : meta('url') || `${request.url}`%>" />
-  <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.3/htmx.min.js" integrity="sha512-dQu3OKLMpRu85mW24LA1CUZG67BgLPR8Px3mcxmpdyijgl1UpCM1RtJoQP6h8UkufSnaHVRTUx98EQT9fcKohw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.18.0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.11/htmx.min.js" integrity="sha512-YdHy6FzjD4qoyI/yWGIbsKnJHe98r96np9XeYp3ovFL+0sNP/NbDrYlSLDr5a6Ndi5sRi9GgJj+suE7yLeUMNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <script src="https://unpkg.com/pocketbase-htmx-ext-sse"></script>
+  <script src="https://unpkg.com/pocketbase-htmx-ext-sse@0.0.3"></script>
   <%- slots.head %>
 </head>
 
