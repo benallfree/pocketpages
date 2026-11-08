@@ -29,7 +29,7 @@ If PocketHost MCP tools are available in the session, prefer them: list or creat
 
 ```bash
 npm i -g pockethost             # Node 20+
-pockethost login                # paste a personal access token (app.pockethost.io → Account → API Tokens)
+pockethost login                # paste a personal access token (pockethost.io/account/tokens)
 pockethost create my-app --link # or: pockethost link <existing-instance>   (writes .pockethostconfig, so commit it)
 pockethost secrets set STRIPE_SECRET_KEY   # prompts for the value
 pockethost deploy               # manifest diff, upload, atomic swap, restart

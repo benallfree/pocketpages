@@ -19,13 +19,13 @@ In under 30 seconds, you can provision a free instance with unlimited (Fair Use)
 
 The easiest way to deploy is using the [PocketHost CLI](https://pockethost.io/docs/cli). Here's how:
 
-1. Install the PocketHost CLI globally (Node.js 20+):
+1. Install the PocketHost CLI globally (Node.js 20+). You need version 4.2 or later:
 
 ```bash
 npm i -g pockethost
 ```
 
-2. Log in with a personal access token from [Account → API Tokens](https://app.pockethost.io/account/tokens):
+2. Log in with a personal access token from [Account → API Tokens](https://pockethost.io/account/tokens):
 
 ```bash
 pockethost login
@@ -37,9 +37,10 @@ pockethost login
 pockethost link <instanceName>
 ```
 
-4. Deploy your project:
+4. Install your dependencies, then deploy:
 
 ```bash
+npm install
 pockethost deploy
 ```
 
@@ -47,17 +48,22 @@ Use `pockethost dev` to watch for local changes and deploy them as you work.
 
 > **Upgrading from `phio`?** `phio` is now `pockethost`. Run `npm rm -g phio && npm i -g pockethost`. Your `.phioconfig` (or `pockethost` key in `package.json`) is migrated to `.pockethostconfig` automatically.
 
-> **Note:** PocketHost does not install npm packages. Only `pb_*` folders (never `pb_data`), `package.json`, `bun.lock(b)` and `patches/` are uploaded, so any npm code your hooks need must be bundled into `pb_hooks`.
+> **Packages ship with your deploy.** PocketHost doesn't run `npm install`. Instead, `pockethost deploy` uploads your production `node_modules`: `pocketpages`, every `pocketpages-plugin-*`, and anything else in `dependencies`, plus what they need. `devDependencies` (Tailwind, TypeScript and so on) stay home. It works with npm, pnpm and Bun, and only changed files upload. Run `pockethost deploy --dry-run` to see exactly what will ship.
+>
+> So make sure every package your pages, loaders and `+config.js` use is in `dependencies`, and install before you deploy. A `Cannot find module` error in `pockethost logs` usually means one wasn't.
 
 ### Github Actions Deployment
 
 Create a token with write access to your instance, save it as the `POCKETHOST_TOKEN` repository secret, and add a deploy step to your workflow:
 
 ```yaml
+- run: npm ci
 - run: npx pockethost@latest deploy <instanceName>
   env:
     POCKETHOST_TOKEN: ${{ secrets.POCKETHOST_TOKEN }}
 ```
+
+Install first (`npm ci` here) so your production `node_modules` is there to ship.
 
 See [Deploy from CI](https://pockethost.io/docs/deploy-from-ci) for more details.
 
