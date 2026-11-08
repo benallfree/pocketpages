@@ -8,7 +8,7 @@
 #
 # The ONBUILD steps below then copy the app in and install its npm packages.
 
-FROM alpine:3.22
+FROM alpine:3.24
 
 # PocketBase release to install. The image is tagged with this version.
 ARG PB_VERSION=0.40.6
