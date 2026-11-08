@@ -184,7 +184,9 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
         return value
       })()
       const serialized = cookie.serialize(name, stringifiedValue, _options)
-      response.header(`Set-Cookie`, serialized)
+      // Append, don't replace: a response may set several cookies.
+      dbg(`cookie: ${serialized}`)
+      e.response.header().add(`Set-Cookie`, serialized)
       return serialized
     },
   }
@@ -244,7 +246,7 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
           ..._options,
         }
         const parsed = globalApi.url(path)
-        parsed.query.__flash = options.message
+        if (options.message) parsed.query.__flash = options.message
         response.redirect(parsed.toString(), options.status)
       },
       slot: '',
