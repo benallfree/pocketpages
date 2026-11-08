@@ -47,6 +47,11 @@ export const resolveRoute = (
 
     for (const route of sortedRoutes) {
       // dbg(`checking route`, route)
+      // A route only matches a URL with exactly as many segments. Otherwise
+      // `about` would serve `/about/x/y`, `products/[id]` would capture
+      // `/products` (with an undefined param) before `products/index`, and
+      // `api/[x]` would swallow PocketBase's `/api/...` REST routes.
+      if (route.segments.length !== parts.length) continue
       const matched = route.segments.every((segment, i) => {
         const { nodeName, paramName } = segment
         if (paramName) return true // Match any value for param route segments
