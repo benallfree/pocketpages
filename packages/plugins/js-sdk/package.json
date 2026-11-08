@@ -1,6 +1,6 @@
 {
   "name": "pocketpages-plugin-js-sdk",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "PocketBase JS SDK for JSVM",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
     "pocketbase-jsvm": "^0.25.10001",
     "tsdown": "^0.12.7",
     "typescript": "^5.7.3",
-    "pocketpages": "workspace:>=0.16.0"
+    "pocketpages": "workspace:>=0.22.4"
   },
   "dependencies": {
     "pocketbase-js-sdk-jsvm": "^0.28.10001"

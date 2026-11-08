@@ -1,5 +1,11 @@
 # pocketpages-plugin-marked
 
+## 0.1.1
+
+### Patch Changes
+
+- 3a4ab38: Remove unused dependencies (`remark-frontmatter`, `remark-frontmatter-yaml`, `remark-parse`, `remark-stringify`, `unified`). The plugin only uses `marked` and `front-matter`. Apps now ship far fewer packages in their production `node_modules`.
+
 ## 0.1.0
 
 ### Minor Changes

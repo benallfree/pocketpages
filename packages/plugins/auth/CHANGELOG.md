@@ -1,5 +1,16 @@
 # pocketpages-plugin-auth
 
+## 0.3.0
+
+### Minor Changes
+
+- 6ca2b50: Support PocketBase MFA: `signInWithPassword()` and `signInWithOTP()` accept `{ mfaId }` to complete the second step after a first sign-in fails with a 401 whose `response.mfaId` is set.
+
+### Patch Changes
+
+- Updated dependencies [8c89297]
+  - pocketpages-plugin-js-sdk@0.3.0
+
 ## 0.2.2
 
 ### Patch Changes

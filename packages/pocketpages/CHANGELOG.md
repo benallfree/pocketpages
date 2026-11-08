@@ -1,5 +1,15 @@
 # pocketpages
 
+## 0.22.4
+
+### Patch Changes
+
+- ddb1be8: `response.cookie()` now appends a `Set-Cookie` header instead of replacing it, so setting several cookies in one request (for example signing in while clearing another cookie) keeps all of them.
+
+  `redirect()` only adds the `?__flash=` query parameter when a `message` is given, so plain redirects keep clean URLs.
+
+- c96cf16: Fix route matching to require the URL and route to have the same number of segments. Previously `about.ejs` also served `/about/x/y`, `products/[id]/` captured `/products` (with an undefined param) ahead of `products/index.ejs`, and param routes such as `pages/api/[x].ejs` swallowed deeper paths including PocketBase's own `/api/...` REST routes.
+
 ## 0.22.3
 
 ### Patch Changes
