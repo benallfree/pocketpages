@@ -5,9 +5,6 @@
   "dependencies": {
     "pocketpages": "workspace:>=0.22.3"
   },
-  "pockethost": {
-    "instanceId": "minimal"
-  },
   "files": [
     "pb_hooks",
     "*.md"
