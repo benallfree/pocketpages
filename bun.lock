@@ -146,10 +146,10 @@
         "pocketpages-plugin-marked": "workspace:>=0.1.1",
       },
       "devDependencies": {
-        "pocketbase-jsvm": "^0.23.10002",
-        "pockethost": "^4.2.0",
-        "prettier": "^3.3.3",
-        "typescript": "^5.6.2",
+        "pocketbase-jsvm": "^0.25.10001",
+        "pockethost": "^4.2.1",
+        "prettier": "^3.9.10",
+        "typescript": "^5.9.3",
       },
     },
     "packages/starters/auth": {
@@ -184,7 +184,7 @@
         "pocketpages-plugin-datastar": ">=0.2.0",
       },
       "devDependencies": {
-        "pockethost": "^4.2.0",
+        "pockethost": "^4.2.1",
       },
     },
     "packages/starters/htmx": {
@@ -621,7 +621,7 @@
 
     "pocketbase-stringify": ["pocketbase-stringify@0.1.0", "", {}, "sha512-6FRNwA7GKwazGaRw234mugolVh3At+rc2RrNDgZz3pBtzuMdISJtlyM0egcpiL6K2Ck8aNLpkH+UEy0pxwMDOw=="],
 
-    "pockethost": ["pockethost@4.2.0", "", { "dependencies": { "ssh2-sftp-client": "^12.1.1" }, "bin": { "pockethost": "dist/cli.js" } }, "sha512-UI/4eOzaL/11foL6cpDCbJhs9r6wPnjhzT/ZgPCEhX9ZJmX3sFZg829rK6WGbqC4bLIIxTNGjLeyOae7Y/5plw=="],
+    "pockethost": ["pockethost@4.2.1", "", { "dependencies": { "ssh2-sftp-client": "^12.1.1" }, "bin": { "pockethost": "dist/cli.js" } }, "sha512-4rd2fFLpq8L/bQtUBZlgW8Y9VW3zgyhfPUqb3SxjuB68mRwxQ6nSXdPQkzzfXoI6XGuCyvf1y60LYUB0EwCfIA=="],
 
     "pocketpages": ["pocketpages@workspace:packages/pocketpages"],
 
@@ -818,12 +818,6 @@
     "minizlib/minipass": ["minipass@3.3.6", "", { "dependencies": { "yallist": "^4.0.0" } }, "sha512-DxiNidxSEK+tHG6zOIklvNOwm3hvCrbUrdtzY74U6HKTJxvIDfOUL5W5P2Ghd3DTkhhKPYGqeNUIh5qcM4YBfw=="],
 
     "pocketbase-log/pocketbase-stringify": ["pocketbase-stringify@0.0.2", "", {}, "sha512-KqN6K1fmRpw62PJ7Ue4zwnTuGaYkZ2XPwY+3yrHrwbmXvutLalbDd8ipOORPZI8myLrN6xkMIWXvqoDjfgBo5A=="],
-
-    "pocketpages-site/pocketbase-jsvm": ["pocketbase-jsvm@0.23.10002", "", {}, "sha512-iPUHchoyGTVuEl6SmZsmOqaE+Xy77DUZWxo3+wTNSa2wKNAfmt9vrfnrrRG1gnBxWgV55e+ndyYjan13pH91Dw=="],
-
-    "pocketpages-site/prettier": ["prettier@3.5.1", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-hPpFQvHwL3Qv5AdRvBFMhnKo4tYxp0ReXiPn2bxkiohEX6mBeBwEpBSQTkD458RaaDKQMYSp4hX4UtfUTA5wDw=="],
-
-    "pocketpages-site/typescript": ["typescript@5.7.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw=="],
 
     "string-width/strip-ansi": ["strip-ansi@7.1.0", "", { "dependencies": { "ansi-regex": "^6.0.1" } }, "sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ=="],
 
