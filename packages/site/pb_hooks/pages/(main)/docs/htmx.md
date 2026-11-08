@@ -12,8 +12,13 @@ HTMX is a powerful library that allows you to access modern browser features dir
 1. Add HTMX and the SSE extension to your layout file:
 
 ```html
-<script src="https://unpkg.com/htmx.org@1.9.10"></script>
-<script src="https://unpkg.com/pocketbase-htmx-ext-sse"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.11/htmx.min.js"
+  integrity="sha512-YdHy6FzjD4qoyI/yWGIbsKnJHe98r96np9XeYp3ovFL+0sNP/NbDrYlSLDr5a6Ndi5sRi9GgJj+suE7yLeUMNQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script src="https://unpkg.com/pocketbase-htmx-ext-sse@0.0.3"></script>
 ```
 
 2. Enable the required plugins in your `+config.js`:
@@ -53,7 +58,10 @@ pb_hooks/
 PocketPages provides an HTMX starter kit that includes a basic setup with examples. You can create a new project using:
 
 ```bash
-cp -r node_modules/pocketpages/starters/htmx .
+npm create pocketpages@latest htmx my-app
+cd my-app
+npm i
+pocketbase serve --dir=pb_data --dev
 ```
 
 The starter kit includes:
