@@ -29,6 +29,6 @@
     "*.md"
   ],
   "devDependencies": {
-    "pockethost": "^4.0.0"
+    "pockethost": "^4.2.0"
   }
 }
