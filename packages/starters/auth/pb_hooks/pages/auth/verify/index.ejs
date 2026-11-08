@@ -1,0 +1,24 @@
+<script server>
+  if (!auth) {
+    redirect('/auth/login', { message: 'Log in to verify your account' })
+    return
+  }
+  if (auth.verified()) {
+    redirect('/account', { message: 'Your account is already verified.' })
+    return
+  }
+
+  let error = null
+  try {
+    requestVerification(auth.get('email'))
+    redirect('/account', {
+      message: `Verification email sent to ${auth.get('email')}. Check your inbox.`,
+    })
+    return
+  } catch (e) {
+    error = e.message
+  }
+</script>
+<h2>Verify your account</h2>
+<mark>Could not send the verification email: <%= error %></mark>
+<p>Check that mail is configured for this PocketBase instance (see README.md), then <a href="/auth/verify">try again</a>.</p>
