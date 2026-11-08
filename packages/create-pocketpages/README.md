@@ -20,12 +20,15 @@ pnpm create pocketpages
 
 ## Available Starters
 
-- **minimal** - A minimal PocketPages starter with just the basics
-- **mvp** - MVP.css starter - A minimalist CSS framework
-- **auth** - Complete authentication system with multiple login methods
-- **daisyui** - Tailwind CSS with DaisyUI components
-- **daisyui-docs** - Documentation site template with DaisyUI and navigation
-- **htmx** - HTMX integration for dynamic interactions
+| Starter | Description | Live demo |
+| --- | --- | --- |
+| **minimal** | A minimal PocketPages starter with just the basics | https://pocketpages-minimal.pockethost.io |
+| **mvp** | MVP.css starter, a minimalist CSS framework | https://pocketpages-mvp.pockethost.io |
+| **auth** | Every PocketBase sign-in method, plus verification, password reset and email change | https://pocketpages-auth.pockethost.io |
+| **daisyui** | Tailwind CSS with DaisyUI components | https://pocketpages-daisyui.pockethost.io |
+| **daisyui-docs** | Documentation site template with DaisyUI and navigation | https://pocketpages-daisyui-docs.pockethost.io |
+| **htmx** | HTMX integration for dynamic interactions | https://pocketpages-htmx.pockethost.io |
+| **datastar** | Realtime chat and counter using Datastar | https://pocketpages-datastar.pockethost.io |
 
 ## AI agent support
 
