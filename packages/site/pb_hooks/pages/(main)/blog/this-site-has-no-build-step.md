@@ -43,7 +43,9 @@ Utility classes put the styling in the HTML. The landing page had list items lik
 
 ```html
 <li class="flex items-start space-x-3">
-  <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+  <div
+    class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5"
+  >
     <div class="size-2 bg-success rounded-full"></div>
   </div>
   ...

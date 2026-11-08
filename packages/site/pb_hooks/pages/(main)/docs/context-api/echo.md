@@ -55,9 +55,7 @@ module.exports = function (api) {
   }
 
   // Continue to template rendering
-  return {
-    /* ... */
-  }
+  return {/* ... */}
 }
 ```
 

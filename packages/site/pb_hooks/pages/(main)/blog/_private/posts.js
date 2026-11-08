@@ -23,8 +23,7 @@ const MONTHS = [
 /** "2026-11-08" (or a Date from YAML) -> "November 8, 2026" */
 const formatDate = (value) => {
   if (!value) return ''
-  const iso =
-    value instanceof Date ? value.toISOString() : String(value).trim()
+  const iso = value instanceof Date ? value.toISOString() : String(value).trim()
   const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/)
   if (!m) return iso
   return `${MONTHS[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`
@@ -76,7 +75,9 @@ const list = () =>
     .filter((e) => !e.isDir() && e.name().endsWith('.md'))
     .map((e) => {
       const name = e.name()
-      const { attrs, body } = parse(toString($os.readFile(`${BLOG_DIR}/${name}`)))
+      const { attrs, body } = parse(
+        toString($os.readFile(`${BLOG_DIR}/${name}`))
+      )
       return {
         slug: name.replace(/\.md$/, ''),
         title: attrs.title || name,

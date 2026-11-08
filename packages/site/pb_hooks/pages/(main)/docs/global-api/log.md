@@ -30,9 +30,7 @@ module.exports = function (api) {
   warn('Deprecated feature used')
   error('Failed to load data:', error)
 
-  return {
-    /* ... */
-  }
+  return {/* ... */}
 }
 ```
 

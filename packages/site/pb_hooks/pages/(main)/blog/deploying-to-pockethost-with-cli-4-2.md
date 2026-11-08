@@ -59,12 +59,12 @@ The old FTP-based deploy starters are gone. The CLI replaces both of them.
 
 Each starter kit now runs live on PocketHost, deployed straight from the repo, so you can click around before you pick one:
 
-| Starter | Live demo |
-| --- | --- |
-| minimal | [pocketpages-minimal.pockethost.io](https://pocketpages-minimal.pockethost.io) |
-| mvp | [pocketpages-mvp.pockethost.io](https://pocketpages-mvp.pockethost.io) |
-| auth | [pocketpages-auth.pockethost.io](https://pocketpages-auth.pockethost.io) |
-| htmx | [pocketpages-htmx.pockethost.io](https://pocketpages-htmx.pockethost.io) |
+| Starter  | Live demo                                                                        |
+| -------- | -------------------------------------------------------------------------------- |
+| minimal  | [pocketpages-minimal.pockethost.io](https://pocketpages-minimal.pockethost.io)   |
+| mvp      | [pocketpages-mvp.pockethost.io](https://pocketpages-mvp.pockethost.io)           |
+| auth     | [pocketpages-auth.pockethost.io](https://pocketpages-auth.pockethost.io)         |
+| htmx     | [pocketpages-htmx.pockethost.io](https://pocketpages-htmx.pockethost.io)         |
 | datastar | [pocketpages-datastar.pockethost.io](https://pocketpages-datastar.pockethost.io) |
 
 The full list is on [Starter Kits](/docs/starter-kits), and the complete guide is in [Deploying to Production](/docs/deploying).
