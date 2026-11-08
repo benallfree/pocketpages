@@ -33,7 +33,15 @@ export type AuthData = {
 
 export type AuthOptions = {
   collection: string
+  /**
+   * Second step of PocketBase MFA: the `mfaId` from the first sign-in attempt,
+   * which failed with a 401 whose `response.mfaId` is set.
+   */
+  mfaId: string
 }
+
+const mfaQuery = (options?: Partial<AuthOptions>) =>
+  options?.mfaId ? { query: { mfaId: options.mfaId } } : undefined
 
 export type OAuth2RequestOptions = {
   cookieName: string
@@ -208,7 +216,7 @@ const authPluginFactory: PluginFactory = (config) => {
       ) => {
         const authData = pb()
           .collection(options?.collection ?? 'users')
-          .authWithPassword(email, password) as AuthData
+          .authWithPassword(email, password, mfaQuery(options)) as AuthData
 
         api.signIn(authData)
         return authData
@@ -228,9 +236,9 @@ const authPluginFactory: PluginFactory = (config) => {
       ) => {
         const authData = pb()
           .collection(options?.collection ?? 'users')
-          .authWithOTP(otpId, password.toString())
+          .authWithOTP(otpId, password.toString(), mfaQuery(options))
+        // PocketBase marks the email verified after a successful OTP sign-in.
         api.signIn(authData)
-        // TODO set user to verfied
         return authData as AuthData
       }
 
@@ -252,18 +260,21 @@ const authPluginFactory: PluginFactory = (config) => {
 
         const redirectUrl = `${$app.settings().meta.appURL}${options?.redirectPath ?? '/auth/oauth/confirm'}`
 
-        const authUrl = provider.authURL + redirectUrl
+        // authURL ends with `redirect_uri=`; the value must be URL-encoded
+        const authUrl = provider.authURL + encodeURIComponent(redirectUrl)
 
-        api.response.cookie(options?.cookieName ?? 'pp_oauth_state', {
-          ...api.pick(
-            provider,
-            'name',
-            'state',
-            'codeChallenge',
-            'codeVerifier'
-          ),
-          redirectUrl,
-        })
+        // Keep the PKCE verifier server-side only, and only briefly
+        api.response.cookie(
+          options?.cookieName ?? 'pp_oauth_state',
+          {
+            name: provider.name,
+            state: provider.state,
+            codeChallenge: provider.codeChallenge,
+            codeVerifier: provider.codeVerifier,
+            redirectUrl,
+          },
+          { httpOnly: true, sameSite: 'lax', maxAge: 10 * 60 }
+        )
 
         if (options?.autoRedirect ?? true) {
           api.response.redirect(authUrl)
@@ -304,6 +315,9 @@ const authPluginFactory: PluginFactory = (config) => {
             }
           )
 
+        api.response.cookie(options?.cookieName ?? 'pp_oauth_state', '', {
+          maxAge: 0,
+        })
         api.signIn(authData)
         return authData as AuthData
       }
