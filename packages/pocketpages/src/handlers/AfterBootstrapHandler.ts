@@ -96,6 +96,10 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
 
   const physicalFiles: string[] = []
   $filepath.walkDir(pagesRoot, (path, d, err) => {
+    if (err || !d) {
+      if (err) error(`Error walking ${path}: ${err}`)
+      return
+    }
     const isDir = d.isDir()
     if (isDir) {
       return
@@ -105,8 +109,10 @@ export const AfterBootstrapHandler: PagesInitializerFunc = (e) => {
   dbg({ physicalFiles })
 
   const routableFiles = physicalFiles.filter((f) => {
-    // Check if file name starts with +
-    const notRoutable = [/^[-+_]/]
+    // Never route: special files (+, -, _), dotfiles/dirs (.env, .git,
+    // .DS_Store; `.well-known` is allowed) and PocketBase hook files
+    // (*.pb.js / *.pb.ts).
+    const notRoutable = [/^[-+_]/, /^\.(?!well-known$)/, /\.pb\.(js|ts)$/]
     const pathParts = $filepath.toSlash(f).split('/')
     return !pathParts.some((part) => notRoutable.some((r) => r.test(part)))
   })

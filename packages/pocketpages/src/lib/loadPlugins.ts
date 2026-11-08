@@ -54,6 +54,16 @@ export const loadPlugins = (cache: Cache): Plugin[] => {
 
         const extra = omit(normalizedPlugin, 'fn') as PluginOptions
 
+        // The factory may call dbg() before it returns the plugin, so the
+        // label can't depend on the plugin object existing yet.
+        let label =
+          typeof pluginConfigItem === 'string'
+            ? pluginConfigItem
+            : typeof pluginConfigItem === 'object' &&
+                typeof (pluginConfigItem as any).name === 'string'
+              ? (pluginConfigItem as any).name
+              : 'plugin'
+
         const factoryConfig: PluginFactoryConfig = {
           pagesRoot,
           config,
@@ -61,10 +71,11 @@ export const loadPlugins = (cache: Cache): Plugin[] => {
           routes,
           dbg: (...args: any[]) =>
             extra.debug
-              ? globalApi.dbg(`[${plugin.name}]`, ...args)
-              : systemDbg(`[${plugin.name}]`, ...args),
+              ? globalApi.dbg(`[${label}]`, ...args)
+              : systemDbg(`[${label}]`, ...args),
         }
         const plugin = normalizedPlugin.fn(factoryConfig, extra)
+        label = plugin.name
         systemDbg(`loaded plugin ${plugin.name}`)
         return plugin
       } catch (e) {

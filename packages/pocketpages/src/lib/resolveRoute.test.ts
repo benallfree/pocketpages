@@ -173,3 +173,105 @@ test('param route is matched for /products/123 when static does not match', () =
   expect(result?.route.relativePath).toBe('products/[id]')
   expect(result?.params.id).toBe('123')
 })
+
+test('root param route does not shadow a directory index page', () => {
+  const routes = [
+    baseRoute({
+      segments: [{ nodeName: '', paramName: 'slug' }],
+      relativePath: '[slug]',
+    }),
+    baseRoute({
+      segments: [{ nodeName: 'about' }, { nodeName: 'index' }],
+      relativePath: 'about/index',
+    }),
+  ]
+  const result = resolveRoute(
+    { pathname: '/about', query: {} } as any,
+    routes as any
+  )
+  expect(result?.route.relativePath).toBe('about/index')
+  expect(result?.params.slug).toBeUndefined()
+  expect(
+    resolveRoute({ pathname: '/other', query: {} } as any, routes as any)
+      ?.params.slug
+  ).toBe('other')
+})
+
+test('nested param route does not shadow a deeper index page', () => {
+  const routes = [
+    baseRoute({
+      segments: [{ nodeName: 'products' }, { nodeName: '', paramName: 'id' }],
+      relativePath: 'products/[id]',
+    }),
+    baseRoute({
+      segments: [
+        { nodeName: 'products' },
+        { nodeName: 'new' },
+        { nodeName: 'index' },
+      ],
+      relativePath: 'products/new/index',
+    }),
+  ]
+  const result = resolveRoute(
+    { pathname: '/products/new', query: {} } as any,
+    routes as any
+  )
+  expect(result?.route.relativePath).toBe('products/new/index')
+})
+
+test('direct file wins over directory index when both are literal', () => {
+  const routes = [
+    baseRoute({
+      segments: [{ nodeName: 'about' }, { nodeName: 'index' }],
+      relativePath: 'about/index',
+    }),
+    baseRoute({ segments: [{ nodeName: 'about' }], relativePath: 'about' }),
+  ]
+  const result = resolveRoute(
+    { pathname: '/about', query: {} } as any,
+    routes as any
+  )
+  expect(result?.route.relativePath).toBe('about')
+})
+
+test('params are URL-decoded', () => {
+  const routes = [
+    baseRoute({
+      segments: [{ nodeName: 'p' }, { nodeName: '', paramName: 'name' }],
+      relativePath: 'p/[name]',
+    }),
+  ]
+  const result = resolveRoute(
+    { pathname: '/p/hello%20w%C3%B6rld', query: {} } as any,
+    routes as any
+  )
+  expect(result?.params.name).toBe('hello wörld')
+  // Malformed escapes don't throw
+  expect(
+    resolveRoute({ pathname: '/p/%E0%A4%A', query: {} } as any, routes as any)
+      ?.params.name
+  ).toBe('%E0%A4%A')
+})
+
+test('encoded literal segments match decoded file names', () => {
+  const routes = [
+    baseRoute({ segments: [{ nodeName: 'café' }], relativePath: 'café' }),
+  ]
+  expect(
+    resolveRoute({ pathname: '/caf%C3%A9', query: {} } as any, routes as any)
+      ?.route.relativePath
+  ).toBe('café')
+})
+
+test('route params do not mutate url.query', () => {
+  const routes = [
+    baseRoute({
+      segments: [{ nodeName: '', paramName: 'id' }],
+      relativePath: '[id]',
+    }),
+  ]
+  const query = { q: 'x' }
+  const result = resolveRoute({ pathname: '/123', query } as any, routes as any)
+  expect(result?.params).toEqual({ q: 'x', id: '123' })
+  expect(query).toEqual({ q: 'x' })
+})

@@ -1,10 +1,11 @@
-import { forEach, merge } from '@s-libs/micro-dash'
+import { merge } from '@s-libs/micro-dash'
 import type { SerializeOptions } from 'cookie'
 import * as cookie from 'cookie'
 import { error } from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
 import { globalApi } from 'src/lib/globalApi'
+import { default as parseUrl } from 'url-parse'
 import { dbg } from '../lib/debug'
 import { echo, mkMeta, mkResolve, pagesRoot } from '../lib/helpers'
 import { loadPlugins } from '../lib/loadPlugins'
@@ -144,20 +145,32 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     })(),
   }
 
+  // Set once a complete response (redirect, json, html, file) has been sent.
+  // Middleware, loaders and rendering stop as soon as this is true, so a
+  // guard that calls redirect() can't fall through to +post.js etc.
+  let responded = false
+  // Set once anything has been streamed with write()/echo (e.g. datastar SSE).
+  let wroteBody = false
+
   const response: PagesResponse = {
     file: (path: string) => {
+      responded = true
       return e.fileFS($os.dirFS($filepath.dir(path)), $filepath.base(path))
     },
     write: (s: string) => {
+      wroteBody = true
       e.response.write(s)
     },
     redirect: (path: string, status = 302) => {
+      responded = true
       e.redirect(status, path)
     },
     json: (status: number, data: any) => {
+      responded = true
       e.json(status, data)
     },
     html: (status: number, data: string) => {
+      responded = true
       e.html(status, data)
     },
     header: (name: string, value?: string) => {
@@ -245,8 +258,13 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
           message: '',
           ..._options,
         }
-        const parsed = globalApi.url(path)
-        if (options.message) parsed.query.__flash = options.message
+        if (!options.message) {
+          return response.redirect(path, options.status)
+        }
+        // Use raw query strings here; globalApi.url() JSON-parses values,
+        // which would mangle them on the way back out.
+        const parsed = parseUrl(path, true)
+        parsed.query.__flash = options.message
         response.redirect(parsed.toString(), options.status)
       },
       slot: '',
@@ -255,12 +273,16 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
         const shortAssetPath = path.startsWith('/')
           ? path
           : $filepath.join(route.assetPrefix, path)
+        // Must be rooted: resolveRoute() strips the leading `/` from pathname.
         const fullAssetPath = path.startsWith('/')
           ? path
-          : $filepath.join(
-              ...route.segments.slice(0, -2).map((s) => s.nodeName),
-              route.assetPrefix,
-              path
+          : '/' +
+            $filepath.toSlash(
+              $filepath.join(
+                ...route.segments.slice(0, -2).map((s) => s.nodeName),
+                route.assetPrefix,
+                path
+              )
             )
         const assetRoute = resolveRoute(globalApi.url(fullAssetPath), routes)
         // dbg({ fullAssetPath, shortAssetPath, assetRoute })
@@ -281,7 +303,11 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     _next()
 
     function _next(extra: object = {}) {
-      data = merge(data, extra)
+      if (responded) {
+        dbg(`Response already sent by middleware, stopping`)
+        return
+      }
+      data = merge(data, extra ?? {})
 
       if (idx >= route.middlewares.length) {
         return done()
@@ -301,14 +327,18 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
     function done() {
       // Execute loaders
       {
-        const methods = ['load', method.toLowerCase(), method]
-        forEach(methods, (method) => {
+        const methods = ['load', method.toLowerCase()]
+        for (const loaderMethod of methods) {
           const loaderFname =
-            route.loaders[method as keyof typeof route.loaders]
-          if (!loaderFname) return
+            route.loaders[loaderMethod as keyof typeof route.loaders]
+          if (!loaderFname) continue
           dbg(`Executing loader ${loaderFname}`)
-          data = merge(data, require(loaderFname)({ ...api, data }))
-        })
+          data = merge(data, require(loaderFname)({ ...api, data }) ?? {})
+          if (responded) {
+            dbg(`Response already sent by loader, stopping`)
+            return
+          }
+        }
       }
 
       api.data = data
@@ -326,21 +356,35 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
         )
       }, '')
 
+      // The template sent its own response (redirect, json, ...)
+      if (responded) return
+
       // If the content type is not text/html, we don't need to parse it or render it in a layout
       const contentType = response.header('Content-Type')
       dbg(`Content-Type: ${contentType}`)
-      if (contentType && contentType !== 'text/html') {
+      const mimeType = (contentType || '').split(';')[0]!.trim().toLowerCase()
+      if (mimeType && mimeType !== 'text/html') {
         dbg(`Skipping layout for non-HTML content`, content)
-        return true
+        // Streamed bodies (e.g. datastar SSE via echo) are already written.
+        if (!wroteBody) {
+          responded = true
+          e.string(200, content)
+        }
+        return
       }
 
-      try {
-        dbg(`Attempting to parse as JSON`)
-        const parsed = JSON.parse(content)
-        response.json(200, parsed)
-        return true
-      } catch (e) {
-        dbg(`Not JSON`)
+      // Only objects/arrays are treated as JSON, so a page that happens to
+      // render `42` or `true` is still served as HTML.
+      const trimmed = content.trim()
+      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+        try {
+          dbg(`Attempting to parse as JSON`)
+          const parsed = JSON.parse(trimmed)
+          response.json(200, parsed)
+          return
+        } catch (e) {
+          dbg(`Not JSON`)
+        }
       }
 
       /**
