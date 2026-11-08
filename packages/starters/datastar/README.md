@@ -47,5 +47,5 @@ The starter kit is pre-configured with the required Datastar setup:
 - `datastar.patchSignals()` - Signal management
 - `datastar.readSignals()` - Form data reading
 - `datastar.realtime.*` - Broadcasting to all clients
-- Client-side data binding with `data-bind-*` attributes
-- Event handling with `data-on-click` attributes
+- Client-side data binding with `data-bind:*` attributes
+- Event handling with `data-on:click` attributes
