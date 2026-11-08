@@ -1,0 +1,58 @@
+# Plugins and +config.js
+
+## +config.js
+
+```js
+// pb_hooks/pages/+config.js
+module.exports = {
+  plugins: ['pocketpages-plugin-ejs'],  // default if `plugins` omitted
+  debug: false,                         // true: error details in browser; 'verbose': internal traces
+}
+
+// or as a function of the global API:
+module.exports = (api) => ({
+  plugins: [{ name: 'pocketpages-plugin-js-sdk', host: api.env('PB_HOST') }, 'pocketpages-plugin-ejs'],
+  debug: api.env('PP_DEBUG') === '1',
+})
+```
+
+- **Setting `plugins` replaces the default.** Always list `pocketpages-plugin-ejs` yourself.
+- Only `plugins` and `debug` are valid keys. Anything else throws at boot. A config that throws while loading is logged and **ignored** (defaults are used), so watch the boot logs.
+- Plugin entry forms: `'pkg-name'` · `{ name: 'pkg-name', ...options }` · `factoryFn` · `{ fn: factoryFn, ...options }`. Options (except `name`/`fn`) go to the factory. The EJS plugin rejects unknown options.
+- **Order matters**: `onRender` runs in array order, each output feeding the next. Put EJS before marked so `.md` files can contain EJS.
+- Each plugin must be installed (`npm i pocketpages-plugin-x`) and listed in `dependencies`.
+
+## Official plugins
+
+| Package | Adds | Notes |
+|---|---|---|
+| `pocketpages-plugin-ejs` | `.ejs` rendering, `_private` include resolution, `<script server>` | Option: `extensions` (default `['.ejs']`) |
+| `pocketpages-plugin-marked` | `.md` pages/partials, front-matter → `meta()`, heading ids, image `asset()` | Option: `extensions` (default `['.md']`). Pair with EJS `extensions: ['.ejs', '.md']` listed first |
+| `pocketpages-plugin-js-sdk` | `pb(options?)` returns a PocketBase JS SDK client (sync, JSVM build) | Option: `host` (default `http://localhost:8090`). Pass `{ request }` to act as the current user. Prefer `$app` unless you need SDK semantics such as API rules |
+| `pocketpages-plugin-auth` | Cookie sessions (`pb_auth` cookie → `request.auth`/`auth`), plus `signInWithPassword(email, pw, {collection?})`, `registerWithPassword(email, pw, opts?)`, `signInWithOTP(otpId, code)`, `signInAnonymously()`, `requestOAuth2Login(provider, {redirectPath?, autoRedirect?})`, `signInWithOAuth2(state, code)`, `signIn(authData)` (sets the cookie from an SDK auth response), `signOut()`. Globals: `createUser`, `createAnonymousUser`, `createPaswordlessUser` (sic), `requestOTP(email)`, `requestVerification`, `confirmVerification` | **Requires the js-sdk plugin.** Starter order: `['pocketpages-plugin-auth', 'pocketpages-plugin-js-sdk', 'pocketpages-plugin-ejs']`. OAuth needs `appURL` set in PocketBase settings. See the `auth` starter |
+| `pocketpages-plugin-realtime` | `realtime.send(topic, message, { filter? })`, `realtime.getClientById(id)` | Pushes to clients subscribed through PocketBase's realtime SSE (`/api/realtime`). The default filter sends to clients subscribed to `topic` |
+| `pocketpages-plugin-datastar` | `datastar.scripts(opts?)` (put in `<head>`), plus SSE helpers for patching elements and signals, including `datastar.realtime.*` | Use together with the realtime plugin. See the `datastar` starter and https://pocketpages.dev/docs/plugins/datastar |
+| `pocketpages-plugin-micro-dash` | Globals `forEach`, `keys`, `values`, `merge`, `pick`, `shuffle` | Tiny lodash subset |
+
+## Writing a plugin
+
+```js
+/** @type {import('pocketpages').PluginFactory} */
+module.exports = (config, options) => {
+  // config: { pagesRoot, config, globalApi, routes, dbg }
+  // Runs per request (plugins are re-instantiated each request) and once at boot.
+  config.globalApi.siteName = options.siteName  // add a global
+  return {
+    name: 'my-plugin',
+    onRequest({ request, response }) {},              // before routing; e.g. set request.auth
+    handles({ route, filePath }) { return false },    // claim a file extension → it becomes a rendered route
+    onExtendContextApi({ api, route }) { api.now = () => new Date().toISOString() },
+    onRender({ content, api, filePath, route, plugins }) { return content }, // transform output; check filePath extension
+    onResponse({ content, api, route }) { return false },  // return true if you sent the response
+  }
+}
+```
+
+Register it inline (`plugins: [require('./_private/my-plugin'), 'pocketpages-plugin-ejs']`) or by package name. `onRender` must return the content unchanged for files it doesn't handle.
+
+Upstream docs: https://pocketpages.dev/docs/plugins/authoring
