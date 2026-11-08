@@ -11,15 +11,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "marked": "^15.0.7",
     "front-matter": "^4.0.2"
   },
   "devDependencies": {
-    "@s-libs/micro-dash": "^18.0.0",
+    "@s-libs/micro-dash": "^21.1.0",
     "chokidar-cli": "^3.0.0",
+    "marked": "^18.1.3",
     "pocketpages": "workspace:>=0.22.4",
     "tsdown": "^0.12.7",
-    "typescript": "^5.7.3"
+    "typescript": "^5.9.3"
   },
   "files": [
     "dist",

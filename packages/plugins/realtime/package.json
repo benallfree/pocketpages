@@ -12,7 +12,7 @@
     "chokidar-cli": "^3.0.0",
     "pocketbase-jsvm": "^0.25.10001",
     "tsdown": "^0.12.7",
-    "typescript": "^5.7.3",
+    "typescript": "^5.9.3",
     "pocketpages": "workspace:>=0.16.0"
   },
   "files": [

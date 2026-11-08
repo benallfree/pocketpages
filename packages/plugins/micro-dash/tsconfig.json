@@ -6,8 +6,8 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitAny": true,
     "target": "ES6",
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "resolveJsonModule": true
   },

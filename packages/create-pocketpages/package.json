@@ -30,10 +30,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "inquirer": "^12.8.2",
-    "tiged": "^2.12.7"
+    "inquirer": "^14.2.5",
+    "tiged": "^2.12.8"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "^20.17.0 || ^22.13.0 || >=23.5.0"
   }
 }

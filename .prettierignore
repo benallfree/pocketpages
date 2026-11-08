@@ -1,2 +1,4 @@
 prism.js
 packages/site/pb_hooks/pages/assets/app.css
+# Claude Code worktrees and local settings
+.claude/

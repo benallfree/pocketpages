@@ -1,6 +1,6 @@
 import { forEach, merge } from '@s-libs/micro-dash'
 import type { SerializeOptions } from 'cookie'
-import * as cookie from 'cookie'
+import { parseCookie, stringifySetCookie } from 'cookie'
 import { error } from 'pocketbase-log'
 import { stringify } from 'pocketbase-stringify'
 import { fingerprint as applyFingerprint } from 'src/lib/fingerprint'
@@ -121,12 +121,12 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
       const cookieFunc = <T = Record<string, any>>(name?: string): T => {
         if (!parsed) {
           const cookieHeader = request.header('Cookie')
-          const rawParsed = cookie.parse(cookieHeader || '')
+          const rawParsed = parseCookie(cookieHeader || '')
           // Parse all values once during initialization
           parsed = Object.fromEntries(
             Object.entries(rawParsed).map(([key, value]) => [
               key,
-              tryParseJson(value),
+              tryParseJson(value ?? ''),
             ])
           )
         }
@@ -183,7 +183,11 @@ export const MiddlewareHandler: PagesMiddlewareFunc = (e) => {
         }
         return value
       })()
-      const serialized = cookie.serialize(name, stringifiedValue, _options)
+      // Attributes go on the cookie object; `encode` is read from the options.
+      const serialized = stringifySetCookie(
+        { name, value: stringifiedValue, ..._options },
+        _options
+      )
       // Append, don't replace: a response may set several cookies.
       dbg(`cookie: ${serialized}`)
       e.response.header().add(`Set-Cookie`, serialized)

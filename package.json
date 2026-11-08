@@ -2,11 +2,11 @@
   "name": "pocketpages-monorepo",
   "private": true,
   "devDependencies": {
-    "@changesets/cli": "^2.28.0",
-    "concurrently": "^9.1.2",
-    "prettier": "^3.5.1",
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "typescript": "^5.7.3"
+    "@changesets/cli": "^2.31.1",
+    "concurrently": "^10.0.7",
+    "prettier": "^3.9.10",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "dev": "bun run --filter='*' dev",

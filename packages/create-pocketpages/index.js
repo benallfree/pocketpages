@@ -109,7 +109,7 @@ async function main() {
   if (!starter) {
     const starterAnswer = await inquirer.prompt([
       {
-        type: 'list',
+        type: 'select',
         name: 'starter',
         message: 'Which starter would you like to use?',
         choices: STARTERS.map((starter) => ({
