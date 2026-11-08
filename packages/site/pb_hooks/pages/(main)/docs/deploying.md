@@ -69,16 +69,21 @@ See [Deploy from CI](https://pockethost.io/docs/deploy-from-ci) for more details
 
 ## Deploy to Fly.io
 
-_Warning: Self-hosting is an advanced setup. I know Fly pretty well and it still took me an hour._
+Every starter kit includes a `Dockerfile`, `.dockerignore` and `fly.toml` built on the [pocketpages-fly](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) image. The image contains PocketBase, installs your app's npm `dependencies`, and keeps data on a volume at `/pb_data`. For an existing app, copy those three files from any starter.
 
-To set up Fly.io deployment:
+Install the [Fly CLI](https://fly.io/docs/flyctl/install/), sign in, then from your project folder:
 
 ```bash
-cp -r node_modules/pocketpages/starters/deploy-fly-ga .
+fly launch --copy-config --name my-app --no-deploy --ha=false
+fly deploy
 ```
 
-After this, you should see a `Dockerfile` and `fly.toml`.
+The first deploy creates a 1 GB volume that grows automatically. Run a single machine: PocketBase uses SQLite, which allows one writer, and a volume attaches to one machine.
 
-Use `fly launch` and `fly deploy` to create a Fly app and deploy it.
+Create your first superuser:
 
-For more information, see [Host for Free on Fly.io](https://github.com/pocketbase/pocketbase/discussions/537)
+```bash
+fly ssh console -C "pocketbase superuser upsert you@example.com 'a-long-password' --dir=/pb_data"
+```
+
+Set secrets with `fly secrets set NAME=value` and read them with `env('NAME')`. See the [pocketpages-fly guide](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) for more, and [Custom Domains on Fly + Cloudflare](/docs/speedruns/custom-domain-fly-cloudflare) to add your own domain.
