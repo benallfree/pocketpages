@@ -110,6 +110,71 @@
     </div>
   </div>
 
+  <!-- AI Agents Section -->
+  <div class="bg-base-100 pb-20">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div class="space-y-6">
+            <h2 class="text-3xl sm:text-4xl font-bold">Ready for AI Coding Agents</h2>
+            <p class="text-lg text-base-content/70">
+              Every new project includes the official PocketPages agent skill. Claude Code, Cursor, Codex, and other agents learn how PocketPages really works: file routing, loaders, layouts, and PocketBase's synchronous JSVM. That means fewer hallucinated <code>fetch</code> calls and <code>async</code> handlers.
+            </p>
+            <ul class="space-y-3">
+              <li class="flex items-start space-x-3">
+                <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+                  <div class="size-2 bg-success rounded-full"></div>
+                </div>
+                <span><strong>Zero setup:</strong> <code>npm create pocketpages</code> adds the skill and an <code>AGENTS.md</code></span>
+              </li>
+              <li class="flex items-start space-x-3">
+                <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+                  <div class="size-2 bg-success rounded-full"></div>
+                </div>
+                <span><strong>Existing projects:</strong> one Claude Code plugin install, or copy one folder</span>
+              </li>
+              <li class="flex items-start space-x-3">
+                <div class="size-5 bg-success/20 rounded-full flex items-center justify-center mt-0.5">
+                  <div class="size-2 bg-success rounded-full"></div>
+                </div>
+                <span><strong>Verified against the source:</strong> maintained alongside the framework code</span>
+              </li>
+            </ul>
+            <a href="/docs/ai-agents" class="btn btn-outline btn-lg hover:btn-secondary transition-all duration-300">
+              Set up your agent
+            </a>
+          </div>
+
+          <div class="card bg-neutral text-neutral-content shadow-xl">
+            <div class="card-body p-0">
+              <div class="bg-neutral-800 px-4 py-2 rounded-t-2xl border-b border-neutral-600">
+                <div class="flex items-center space-x-2">
+                  <div class="size-3 bg-error rounded-full"></div>
+                  <div class="size-3 bg-warning rounded-full"></div>
+                  <div class="size-3 bg-success rounded-full"></div>
+                  <span class="text-sm text-neutral-content/60 ml-4">my-pocketpages-app/</span>
+                </div>
+              </div>
+              <div class="p-6">
+                <pre class="text-sm leading-relaxed"><code class="language-bash">.claude/skills/pocketpages/  # agent skill
+AGENTS.md                    # rules for any agent
+CLAUDE.md                    # imports AGENTS.md
+pb_hooks/
+  pages/
+    index.ejs
+package.json
+
+# Existing project? In Claude Code:
+/plugin marketplace add benallfree/pocketpages
+/plugin install pocketpages@pocketpages</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MPA Benefits Section -->
   <div class="bg-gradient-to-r from-base-200 to-base-300 py-20">
     <div class="container mx-auto px-4">
@@ -177,12 +242,12 @@
                   </div>
                 </div>
                 <div class="p-6">
-                  <pre class="text-sm leading-relaxed"><code class="language-javascript">// Server-side data loading in PocketBase JSVM
-const userId = $request.pathParam('id')
-const user = $app.dao().findRecordById('users', userId)
+                  <pre class="text-sm leading-relaxed"><code class="language-javascript"><%% // Server-side data loading in PocketBase JSVM
+const user = $app.findRecordById('users', params.id)
+%>
 
-// Template renders with live data
-<%%= user.name %> joined <%%= formatDate(user.created) %></code></pre>
+&lt;!-- Template renders with live data --&gt;
+<%%= user.get('name') %> joined <%%= user.get('created') %></code></pre>
                 </div>
               </div>
             </div>

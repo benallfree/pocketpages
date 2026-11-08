@@ -6,6 +6,7 @@
 
 - [Installation](/docs/installation)
 - [Starter Kits](/docs/starter-kits)
+- [AI Coding Agents](/docs/ai-agents)
 - [Upgrading](/docs/upgrading)
 
 # Basics

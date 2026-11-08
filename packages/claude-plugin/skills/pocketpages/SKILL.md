@@ -44,7 +44,7 @@ pb_migrations/            # PocketBase schema migrations (JS)
 pb_data/                  # local DB, never deploy
 ```
 
-Run locally with `pocketbase serve --dev --dir=pb_data` (`--dev` enables `dbg()` output). PocketBase restarts automatically when `pb_hooks/` changes. **Route tables are built at boot**, so a new file only becomes a route after that restart.
+Run locally with `pocketbase serve --dev --dir=pb_data` **from the project root** (`--dev` enables `dbg()` output). PocketBase resolves `require()` from its working directory, not from `pb_hooks`, so starting it anywhere else (even with `--hooksDir`) makes `require('pocketpages')` fail with `GoError: Invalid module`. A brand-new `pb_data` with no superuser makes PocketBase open a browser to its installer. For headless or scripted runs, create one first with `pocketbase superuser upsert <email> <password> --dir=pb_data`. PocketBase restarts automatically when `pb_hooks/` changes. **Route tables are built at boot**, so a new file only becomes a route after that restart.
 
 New project: `npm create pocketpages` (pick a starter: minimal, htmx, datastar, auth, daisyui, …).
 

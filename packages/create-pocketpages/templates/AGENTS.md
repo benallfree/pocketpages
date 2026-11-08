@@ -16,7 +16,7 @@ This is a **PocketPages** site: server-rendered EJS pages that run inside Pocket
 
 ```bash
 npm install                            # dependencies are shipped on deploy, so install first
-pocketbase serve --dir=pb_data --dev   # local dev at http://localhost:8090; reloads on pb_hooks changes
+pocketbase serve --dir=pb_data --dev   # run from THIS folder (require() resolves from cwd); http://localhost:8090
 pockethost deploy                      # deploy to PocketHost (after `pockethost login` + `pockethost link`)
 ```
 

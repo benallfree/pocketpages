@@ -22,3 +22,5 @@ Available starter kits:
 - **daisyui-docs** – Documentation site template with DaisyUI and navigation
 - **htmx** – HTMX integration for dynamic interactions
 - **datastar** – Realtime chat and counter demo using Datastar and PocketPages.
+
+Every starter also comes ready for AI coding agents. It includes the PocketPages agent skill in `.claude/skills/pocketpages/`, plus an `AGENTS.md`. See [AI Coding Agents](/docs/ai-agents).

@@ -11,7 +11,7 @@ Installing PocketPages is easy.
 
 <%- include(`quickstart.ejs`) %>
 
-_Note: `--dir=pb_data` is necessary to tell PocketBase to use the current directory for data storage._
+_Note: run `pocketbase` from inside the project folder. PocketBase resolves `require()` calls (including `require('pocketpages')`) from the directory you start it in, so starting it elsewhere fails with `Invalid module`. `--dir=pb_data` tells PocketBase to keep its data in the project's `pb_data` folder._
 
 Browse to `http://localhost:8090` and with any luck at all, you'll see:
 

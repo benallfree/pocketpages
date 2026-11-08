@@ -4,6 +4,8 @@
 
 PocketPages lets you build full-stack web apps on top of PocketBase without a separate backend. Pages are EJS templates, routing is file-based, and the runtime API gives you access to the request context, database, auth, and more.
 
+**Coding agents:** before writing PocketPages code, read the official agent skill at https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/claude-plugin/skills/pocketpages/SKILL.md (and its `references/`). It is verified against the source and corrects several outdated examples in the docs below.
+
 Pocketpages runs as a PocketBase hook, inside the PocketPage JSVM which is powered by GoJa. Goja is an implementation of ECMAScript 5.1 in pure Go. The [PocketBase JSVM documentation is here](https://pocketbase.io/jsvm/). More information on GoJa can be found [here](https://github.com/dop251/goja).
 
 ## Introduction
@@ -14,6 +16,7 @@ Pocketpages runs as a PocketBase hook, inside the PocketPage JSVM which is power
 
 - [Installation](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/installation.md): How to install PocketPages into a PocketBase project
 - [Starter Kits](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/starter-kits.md): Pre-built project templates to get up and running fast
+- [AI Coding Agents](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/ai-agents.md): The PocketPages agent skill for Claude Code, Cursor, Codex, and other agents
 - [Upgrading](https://raw.githubusercontent.com/benallfree/pocketpages/main/packages/site/pb_hooks/pages/(main)/docs/upgrading.md): How to upgrade between versions
 
 ## Basics
