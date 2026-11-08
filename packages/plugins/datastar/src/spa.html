@@ -9,6 +9,10 @@
     }
     const getOptions = JSON.stringify({ headers })
 
+    // We restore scroll ourselves after the new content arrives; the browser's
+    // automatic restoration would fire before the swap and land in the wrong place.
+    history.scrollRestoration = 'manual'
+
     // Record the landing page in history state so navigating back to it
     // re-fetches its content.
     if (!history.state?.datastar?.url) {
@@ -19,11 +23,26 @@
       )
     }
 
+    // Keep the current entry's scroll position in history state so Back/Forward
+    // can return to it.
+    let scrollTimer
+    window.addEventListener(
+      'scroll',
+      () => {
+        clearTimeout(scrollTimer)
+        scrollTimer = setTimeout(() => {
+          if (!history.state?.datastar) return
+          history.replaceState({ ...history.state, scrollY: window.scrollY }, '')
+        }, 150)
+      },
+      { passive: true }
+    )
+
     const setup = () => {
       const popstateDiv = document.createElement('div')
       popstateDiv.setAttribute(
         'data-on:popstate__window',
-        `const url = evt.state?.datastar?.url; if (!url) return; @get(url, ${getOptions})`
+        `const url = evt.state?.datastar?.url; if (!url) return; const y = evt.state.scrollY || 0; @get(url, ${getOptions}).then(() => window.scrollTo({ top: y, behavior: 'instant' }))`
       )
       document.body.appendChild(popstateDiv)
 
@@ -32,7 +51,7 @@
       scope.querySelectorAll('a[href]').forEach((a) => {
         a.setAttribute(
           'data-on:click',
-          `if (evt.button !== 0 || evt.metaKey || evt.ctrlKey || evt.shiftKey || evt.altKey || el.target || el.origin !== location.origin) return; evt.preventDefault(); const href = el.getAttribute('href'); history.pushState({ datastar: { url: href } }, '', href); window.scrollTo(0, 0); @get(href, ${getOptions})`
+          `if (evt.button !== 0 || evt.metaKey || evt.ctrlKey || evt.shiftKey || evt.altKey || el.target || el.origin !== location.origin) return; evt.preventDefault(); const href = el.getAttribute('href'); history.replaceState({ ...history.state, scrollY: window.scrollY }, ''); history.pushState({ datastar: { url: href } }, '', href); window.scrollTo({ top: 0, behavior: 'instant' }); @get(href, ${getOptions})`
         )
       })
     }

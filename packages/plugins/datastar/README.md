@@ -62,7 +62,7 @@ When SPA mode is enabled, the plugin automatically converts all `<a>` tags withi
 1. **Link Interception**: All `<a>` tags within the specified scope are automatically modified to prevent default navigation
 2. **History Management**: Clicking links updates the browser history using `pushState()` without page reloads
 3. **Content Updates**: The target page content is fetched and injected into the DOM
-4. **Back/Forward Support**: Browser back/forward buttons work correctly with SPA navigation, including returning to the page you landed on
+4. **Back/Forward Support**: Browser back/forward buttons work correctly with SPA navigation, including returning to the page you landed on. Each page opens at the top, and Back/Forward return you to where you were scrolled
 
 Plain left-clicks are intercepted. Modified clicks (Cmd/Ctrl/Shift/Alt, middle-click), links with a `target` attribute, and links to other origins navigate normally.
 
