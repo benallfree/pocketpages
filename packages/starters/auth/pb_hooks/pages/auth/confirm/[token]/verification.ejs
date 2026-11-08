@@ -1,11 +1,16 @@
 <script server>
-  const {
-    token
-  } = params
-
-  confirmVerification(token)
-  redirect('/', {
-    message: 'Your account has been verified.',
-  })
+  const errorMessage = resolve('errors')
+  let error = null
+  try {
+    confirmVerification(params.token)
+    redirect('/', {
+      message: 'Your account has been verified.',
+    })
+    return
+  } catch (e) {
+    error = errorMessage(e)
+  }
 </script>
-<mark>Your account has been verified.</mark>
+<h2>Verify Account</h2>
+<mark>This verification link is invalid or has expired (<%= error %>).</mark>
+<p><a href="/auth/verify">Send a new verification email</a></p>

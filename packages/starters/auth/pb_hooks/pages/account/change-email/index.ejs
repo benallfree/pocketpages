@@ -1,8 +1,21 @@
 <script server>
+  const errorMessage = resolve('errors')
+  let error = null
+  let sentTo = null
+  const { email } = request.method === 'POST' ? body() : {}
+
   if (request.method === 'POST') {
-    const {
-      email
-    } = request.body()
+    if (!email || !email.trim()) {
+      error = 'Enter your new email address.'
+    } else {
+      try {
+        // Must act as the signed-in user, so pass the request to pb().
+        pb({ request }).collection('users').requestEmailChange(email.trim())
+        sentTo = email.trim()
+      } catch (e) {
+        error = errorMessage(e)
+      }
+    }
   }
 </script>
 
@@ -12,8 +25,15 @@
   Current email: <%= auth.get('email') %>
 </div>
 
+<% if (error) { %>
+<mark><%= error %></mark>
+<% } %>
 
+<% if (sentTo) { %>
+<p><mark>We've sent a confirmation link to <%= sentTo %>. Your email changes once you open it.</mark></p>
+<% } else { %>
 <form action="/account/change-email" method="post">
-  <input type="email" name="email" placeholder="New email address" value="<%= data.email %>" />
+  <input type="email" name="email" required placeholder="New email address" value="<%= email || '' %>" />
   <button type="submit">Change email</button>
 </form>
+<% } %>

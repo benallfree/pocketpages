@@ -1,0 +1,28 @@
+<script server>
+  const errorMessage = resolve('errors')
+  let error = null
+
+  if (request.method === 'POST') {
+    const { password } = body()
+    try {
+      pb().collection('users').confirmEmailChange(params.token, password)
+      // Changing the email invalidates existing sessions, so clear ours too.
+      signOut()
+      redirect('/auth/login', {
+        message: 'Your email address has been changed. Log in with your new email.',
+      })
+      return
+    } catch (e) {
+      error = errorMessage(e)
+    }
+  }
+</script>
+<h2>Confirm Email Change</h2>
+<% if (error) { %>
+<mark><%= error %></mark>
+<% } %>
+<form method="post">
+  <label>Current password</label>
+  <input name="password" type="password" required />
+  <button type="submit">Confirm New Email</button>
+</form>

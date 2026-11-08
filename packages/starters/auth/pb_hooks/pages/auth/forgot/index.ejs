@@ -1,9 +1,33 @@
+<script server>
+  let error = null
+  let sentTo = null
+  const { identity } = request.method === 'POST' ? body() : {}
+
+  if (request.method === 'POST') {
+    if (!identity || !identity.trim()) {
+      error = 'Enter the email address you registered with.'
+    } else {
+      try {
+        pb().collection('users').requestPasswordReset(identity.trim())
+      } catch (e) {
+        // Don't reveal whether the address exists; just log the failure.
+        warn(`password reset request failed for ${identity}: ${e.message}`)
+      }
+      sentTo = identity.trim()
+    }
+  }
+</script>
 <h2>Forgot Password</h2>
-<% if (data.error) { %>
-<mark><%= data.error %></mark>
+<% if (error) { %>
+<mark><%= error %></mark>
 <% } %>
+<% if (sentTo) { %>
+<p><mark>If an account exists for <%= sentTo %>, we've sent a link to reset your password.</mark></p>
+<p><a href="/auth/login">Back to login</a></p>
+<% } else { %>
 <form method="post">
-  <label>Login</label>
-  <input name="identity" value="<%= data.identity %>" />
+  <label>Email</label>
+  <input name="identity" type="email" required value="<%= identity || '' %>" />
   <button type="submit">Send Reset Email</button>
 </form>
+<% } %>
