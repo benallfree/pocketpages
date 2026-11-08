@@ -1,37 +1,46 @@
 <script>
   {
+    // Datastar 1.x attribute syntax: data-on:<event>__<modifier>.
+    // Note: Datastar rewrites `$name` in expressions to signal reads, so the
+    // expressions below must not contain `$`.
     const headers = {}
     if ('{{selector}}') {
       headers['Datastar-Selector'] = '{{selector}}'
     }
+    const getOptions = JSON.stringify({ headers })
 
-    // Wait for DOM to be fully loaded before adding the popstate div
-    const addPopstateDiv = () => {
-      var popstateDiv = document.createElement('div')
+    // Record the landing page in history state so navigating back to it
+    // re-fetches its content.
+    if (!history.state?.datastar?.url) {
+      history.replaceState(
+        { ...history.state, datastar: { url: location.pathname + location.search } },
+        '',
+        location.href
+      )
+    }
+
+    const setup = () => {
+      const popstateDiv = document.createElement('div')
       popstateDiv.setAttribute(
-        'data-on-popstate__window',
-        `url=event.state?.datastar?.url;if(!url) return;@get(url, {headers: ${JSON.stringify(headers)}})`
+        'data-on:popstate__window',
+        `const url = evt.state?.datastar?.url; if (!url) return; @get(url, ${getOptions})`
       )
       document.body.appendChild(popstateDiv)
-    }
 
-    // Add the div when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', addPopstateDiv)
-    } else {
-      addPopstateDiv()
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      var e = document.querySelector('{{scope}}')
-      if (!e) return
-      var links = e.querySelectorAll('a')
-      links.forEach(function (a) {
+      const scope = document.querySelector('{{scope}}')
+      if (!scope) return
+      scope.querySelectorAll('a[href]').forEach((a) => {
         a.setAttribute(
-          'data-on-click',
-          `evt.preventDefault();e=evt.target;href=e.getAttribute('href');history.pushState({datastar: {url: href, }}, '', href);@get(href, {headers: ${JSON.stringify(headers)}})`
+          'data-on:click',
+          `if (evt.button !== 0 || evt.metaKey || evt.ctrlKey || evt.shiftKey || evt.altKey || el.target || el.origin !== location.origin) return; evt.preventDefault(); const href = el.getAttribute('href'); history.pushState({ datastar: { url: href } }, '', href); @get(href, ${getOptions})`
         )
       })
-    })
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setup)
+    } else {
+      setup()
+    }
   }
 </script>

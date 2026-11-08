@@ -38,7 +38,7 @@ The `datastar.scripts()` function accepts optional configuration:
     {
       spa: {
         scope: 'body', // CSS selector for SPA scope
-        selector: 'app' // Optional selector for content updates
+        selector: '#app' // Optional selector for content updates
       },
       realtime: true // Enable realtime functionality
     }
@@ -62,7 +62,9 @@ When SPA mode is enabled, the plugin automatically converts all `<a>` tags withi
 1. **Link Interception**: All `<a>` tags within the specified scope are automatically modified to prevent default navigation
 2. **History Management**: Clicking links updates the browser history using `pushState()` without page reloads
 3. **Content Updates**: The target page content is fetched and injected into the DOM
-4. **Back/Forward Support**: Browser back/forward buttons work correctly with SPA navigation
+4. **Back/Forward Support**: Browser back/forward buttons work correctly with SPA navigation, including returning to the page you landed on
+
+Plain left-clicks are intercepted. Modified clicks (Cmd/Ctrl/Shift/Alt, middle-click), links with a `target` attribute, and links to other origins navigate normally.
 
 ### SPA Configuration Examples
 
@@ -74,7 +76,7 @@ When SPA mode is enabled, the plugin automatically converts all `<a>` tags withi
 
 <!-- SPA with specific selector for content updates -->
 <head>
-  <%%- datastar.scripts({ spa: { scope: 'nav', selector: 'main-content' } }) %>
+  <%%- datastar.scripts({ spa: { scope: 'nav', selector: '#main-content' } }) %>
 </head>
 
 <!-- SPA with realtime enabled -->
@@ -96,7 +98,7 @@ When SPA mode is enabled, the plugin automatically converts all `<a>` tags withi
 <!DOCTYPE html>
 <html>
   <head>
-    <%%- datastar.scripts({ spa: { scope: 'nav', selector: 'content' } }) %>
+    <%%- datastar.scripts({ spa: { scope: 'nav', selector: '#content' } }) %>
   </head>
   <body>
     <nav>
@@ -380,15 +382,15 @@ if (formData.name && formData.email) {
 
 ## Client-Side Integration
 
-The plugin automatically injects the Datastar loader script. Use Datastar attributes in your HTML:
+The plugin automatically injects the Datastar loader script, pinned to [Datastar](https://data-star.dev) v1.0.4. Datastar 1.0 uses a colon between the attribute name and its key (`data-on:click`, `data-bind:name`, `data-signals:count`, `data-class:active`, `data-attr:href`). The older hyphen form (`data-on-click`) is ignored. See the [Datastar attribute reference](https://data-star.dev/reference/attributes).
 
 ```html
-<button data-on-click="@get('/api/increment')">
-  Count: <span data-bind-count><%%= store('count') %></span>
+<button data-on:click="@get('/api/increment')">
+  Count: <span id="count"><%%= store('count') %></span>
 </button>
 
-<form data-on-submit="@post('/api/submit')">
-  <input name="name" data-bind-name />
+<form data-on:submit="@post('/api/submit')">
+  <input name="name" data-bind:name />
   <button type="submit">Submit</button>
 </form>
 ```
@@ -425,12 +427,12 @@ The `$clientId` signal is automatically set when the realtime connection is esta
 <div data-text="$clientId"></div>
 
 <!-- Use in conditional rendering -->
-<div data-if="$clientId">
+<div data-show="$clientId">
   Connected with ID: <span data-text="$clientId"></span>
 </div>
 
 <!-- Use in data attributes -->
-<button data-on-click="@get('/api/action')" data-client-id="$clientId">
+<button data-on:click="@get('/api/action')" data-attr:data-client-id="$clientId">
   Perform Action
 </button>
 ```

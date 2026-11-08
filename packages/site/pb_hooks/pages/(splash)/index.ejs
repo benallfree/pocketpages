@@ -369,9 +369,9 @@ const user = $app.findRecordById('users', params.id)
               <div class="p-4">
                 <pre class="text-sm"><code class="language-html">&lt;input type="text" 
        name="message" 
-       data-bind-message /&gt;
+       data-bind:message /&gt;
 
-&lt;button data-on-click="@get('/api/chat')"&gt;
+&lt;button data-on:click="@get('/api/chat')"&gt;
   Send
 &lt;/button&gt;
 
