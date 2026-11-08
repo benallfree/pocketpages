@@ -13,7 +13,7 @@ Every page, layout, middleware, and loader receives this object. In EJS each key
 | `body` | `() => object \| string` | Same as `formData()` |
 | `request` | `PagesRequest` | See below |
 | `response` | `PagesResponse` | See below |
-| `redirect` | `(path, { status?=302, message? }) => void` | Adds `?__flash=message`. **Doesn't stop execution, so `return` after it** |
+| `redirect` | `(path, { status?=302, message? }) => void` | Adds `?__flash=message` when a message is given. **Doesn't stop execution, so `return` after it** |
 | `meta` | `(key) => string \| undefined` / `(key, value) => string` | Per-request metadata (title, etc.) |
 | `asset` | `(path) => string` | Fingerprinted URL for a static file. See templates.md |
 | `resolve` | `(path, { mode?: 'require'\|'raw'\|'script'\|'style' }) => any` | Loads from `_private/` upward. A leading `/` means `pages/_private/…` |
@@ -44,7 +44,7 @@ Plugins add more: `pb()` (js-sdk); `signInWithPassword`, `signOut`, … (auth); 
 | `file` | `(absPath) => void` | Streams a file from disk |
 | `redirect` | `(path, status=302) => void` | Low level, no flash |
 | `header` | `(name) => string` / `(name, value) => string` | Setting replaces any existing value |
-| `cookie` | `(name, value, cookieSerializeOptions?) => string` | Non-string values are stringified. `path` defaults to `/`. Implemented via `header('Set-Cookie')`, so the last call per request wins |
+| `cookie` | `(name, value, cookieSerializeOptions?) => string` | Non-string values are stringified. `path` defaults to `/`. Appends a `Set-Cookie` header, so several cookies per response work. (In ≤ 0.22.3 it replaced the header, so only the last call survived.) |
 | `write` | `(string) => void` | Raw body write |
 
 There is no `response.status()`.

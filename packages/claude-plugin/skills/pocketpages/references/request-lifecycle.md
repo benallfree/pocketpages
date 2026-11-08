@@ -95,7 +95,7 @@ Layouts are skipped once you send the response yourself. For a styled 404, keep 
 redirect('/login', { status: 303, message: 'Please sign in' })
 ```
 
-- Default status 302. `message` is appended as `?__flash=...`. Read it on the next page via `params.__flash`.
+- Default status 302. `message` is appended as `?__flash=...` (≤ 0.22.3 always appended an empty `?__flash=`). Read it on the next page via `params.__flash`.
 - `redirect()` sets headers but **does not stop execution**. A `return` in a template stops that template. A `return` in a loader or one-arg middleware only ends that function: the rest of the chain and the page render still run (the client still follows the 302, but the page may throw on missing data). **The only real halt is two-arg middleware that doesn't call `next()`.** Use that for auth guards.
 - `response.redirect(path, status)` is the low-level version with no flash.
 
@@ -109,4 +109,4 @@ response.header('Cache-Control', 'no-store')
 response.cookie('prefs', { theme: 'dark' }, { httpOnly: true, maxAge: 86400 }) // objects are stringified; path defaults to '/'
 ```
 
-`response.header('Set-Cookie', …)` **sets** (replaces) the header, so only the last `response.cookie()` call in a request survives.
+`response.cookie()` appends a `Set-Cookie` header, so you can set or clear several cookies in one response. In ≤ 0.22.3 it replaced the header, so only the last call survived. `response.header('Set-Cookie', …)` still **replaces**.
