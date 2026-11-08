@@ -1,20 +1,24 @@
 <script server>
-  const {
-    state,
-    code
-  } = params
+  const { state, code, error: providerError } = params
 
-  let error = null
-  let authData = null
-  try {
-    authData = signInWithOAuth2(state, code)
-    response.redirect('/')
-  } catch (e) {
-    error = e.message
+  let error = providerError ? `The provider returned: ${providerError}` : null
+  if (!error) {
+    try {
+      signInWithOAuth2(state, code)
+      redirect('/', { message: 'Signed in with OAuth2.' })
+      return
+    } catch (e) {
+      // MFA is on for this user: finish with an emailed code
+      const mfa = resolve('mfa-state')
+      const mfaId = mfa.mfaIdFrom(e)
+      if (mfaId) {
+        error = 'Two-step verification is on for this account. Sign in with your password or a one-time code instead.'
+      } else {
+        error = resolve('errors')(e)
+      }
+    }
   }
 </script>
-<% if (error) { %>
-<mark>
-  <%=error%>
-</mark>
-<% } %>
+<h2>OAuth2 Login</h2>
+<mark>OAuth2 sign-in failed: <%= error %></mark>
+<p><a href="/auth/login">Back to login</a></p>

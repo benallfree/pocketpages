@@ -1,0 +1,47 @@
+<script server>
+  const mfa = resolve('mfa-state')
+  const errorMessage = resolve('errors')
+  const state = mfa.read(request)
+  if (!state) {
+    redirect('/auth/login', { message: 'Your sign-in expired. Please start again.' })
+    return
+  }
+
+  let error = null
+  if (request.method === 'POST') {
+    const { otpCode, password } = body()
+    try {
+      if (state.next === 'otp') {
+        signInWithOTP(state.otpId, otpCode || '', { mfaId: state.mfaId })
+      } else {
+        signInWithPassword(state.identity, password || '', { mfaId: state.mfaId })
+      }
+      mfa.clear(response)
+      redirect('/', { message: 'Signed in with two-step verification.' })
+      return
+    } catch (e) {
+      error = errorMessage(e)
+    }
+  }
+</script>
+<h2>Two-Step Verification</h2>
+<p>Signing in as <strong><%= state.identity %></strong>.</p>
+<% if (error) { %>
+<mark><%= error %></mark>
+<% } %>
+<% if (state.next === 'otp') { %>
+<p>We emailed you a one-time code. Enter it to finish signing in.</p>
+<form method="post">
+  <label>Code</label>
+  <input name="otpCode" inputmode="numeric" autocomplete="one-time-code" required />
+  <button type="submit">Verify</button>
+</form>
+<% } else { %>
+<p>Enter your password to finish signing in.</p>
+<form method="post">
+  <label>Password</label>
+  <input name="password" type="password" required />
+  <button type="submit">Verify</button>
+</form>
+<% } %>
+<p><a href="/auth/login">Start over</a></p>

@@ -1,3 +1,18 @@
+<script server>
+  if (request.method === 'POST' && body().mode === 'mfa') {
+    const user = $app.findRecordById('users', auth.id)
+    const enable = body().mfaEnabled === 'on'
+    user.set('mfaEnabled', enable)
+    $app.save(user)
+    redirect('/account', {
+      message: enable
+        ? 'Two-step verification is on. Next time you sign in, we will also email you a code.'
+        : 'Two-step verification is off.',
+    })
+    return
+  }
+  const mfaEnabled = auth.getBool('mfaEnabled')
+</script>
 <h2>Account</h2>
 <p>Welcome, <%= auth.get('email') %></p>
 <p>Status: <%= auth.verified() ? 'verified' : 'unverified' %></p>
@@ -5,3 +20,15 @@
 <ul>
   <li><a href="/account/change-email">Change email address</a></li>
 </ul>
+
+<h3>Two-Step Verification</h3>
+<p>Two-step verification is <strong><%= mfaEnabled ? 'on' : 'off' %></strong>. When it's on, signing in needs your password and a one-time code we email you.</p>
+<form method="post">
+  <input type="hidden" name="mode" value="mfa" />
+  <% if (mfaEnabled) { %>
+  <button type="submit">Turn off two-step verification</button>
+  <% } else { %>
+  <input type="hidden" name="mfaEnabled" value="on" />
+  <button type="submit">Turn on two-step verification</button>
+  <% } %>
+</form>

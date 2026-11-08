@@ -1,17 +1,18 @@
 <script server>
   let error = null
 
-  if (request.method === 'POST') {
-    try {
-      const url = requestOAuth2Login(body().provider)
-      response.redirect(url)
-    } catch (error) {
-      error = error.message
-    }
+  if (request.method !== 'POST') {
+    redirect('/auth/login')
+    return
+  }
+  try {
+    // Sets the PKCE state cookie and redirects to the provider
+    requestOAuth2Login(body().provider)
+    return
+  } catch (e) {
+    error = resolve('errors')(e)
   }
 </script>
-<% if (error) { %>
-<mark>
-  <%=error%>
-</mark>
-<% } %>
+<h2>OAuth2 Login</h2>
+<mark>Could not start OAuth2 login: <%= error %></mark>
+<p><a href="/auth/login">Back to login</a></p>

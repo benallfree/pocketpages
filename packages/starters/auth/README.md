@@ -1,56 +1,66 @@
 # MPA Auth Demo
 
-This starter kit shows how to do Multi Page App (MPA) auth using PocketPages.
+This starter kit shows how to do Multi Page App (MPA) auth with PocketPages and PocketBase's built-in auth: password, anonymous, one-time codes (OTP), OAuth2, and opt-in two-step verification (MFA). It also covers email verification, password reset, and email change.
 
 ## Installation
 
 ```bash
-npx tiged benallfree/pocketpages/packages/starters/auth .
-cd auth
+npm create pocketpages auth my-auth-app
+cd my-auth-app
 npm i
-pocketbase --dir=pb_data --dev serve
-bunx maildev
+bunx maildev                            # catches outgoing mail at http://localhost:1080
+pocketbase serve --dir=pb_data --dev    # run from the project folder
 ```
 
-## Notes
+Mail goes to maildev (`localhost:1025`) by default, so every email flow works locally without a real mail provider.
 
-### Anonymous Login
+## Sign-in methods
 
-Anonymous login only works if Password login is enabled.
+| Method | Notes |
+|---|---|
+| Password | `/auth/register`, then `/auth/login` |
+| Anonymous | Creates a throwaway passwordless account. Needs password auth enabled |
+| OTP | Emails a one-time code. Works for unverified users too, and a successful OTP sign-in marks the email verified. Requesting a code for an unknown email creates a passwordless account |
+| OAuth2 | Shows a button per configured provider. Google is configured from env vars (below) |
+| MFA | Opt-in per user from `/account`. When it's on, signing in takes a password **and** an emailed code, in either order (`/auth/login/mfa`) |
 
-### Password Login
+Email flows: `/auth/verify` (resend verification), `/auth/forgot` → `/auth/confirm/{token}/password-reset`, and `/account/change-email` → `/auth/confirm/{token}/email-change`.
 
-Password login is enabled by default in PocketBase.
+## Configuration
 
-### OTP Login
+Migrations set everything up. Settings that need credentials or a public URL come from environment variables, read once when the migrations run (`pb_migrations/*_env_config.js`):
 
-OTP login requires a verified email address.
+| Variable | Purpose |
+|---|---|
+| `APP_URL` | Public URL, used in email links and the OAuth2 redirect |
+| `APP_NAME` | App name shown in emails |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_TLS` | Outgoing mail. Unset means local maildev |
+| `MAIL_SENDER_ADDRESS`, `MAIL_SENDER_NAME` | The "From" address |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth2. Unset means no OAuth2 providers |
+| `POCKETBASE_URL` | Where the auth plugin reaches PocketBase's API (read by `+config.js`). Defaults to `http://localhost:8090` |
 
-### Using Password Reset
+For Google, add `<APP_URL>/auth/oauth/confirm` as an authorized redirect URI in the Google Cloud console.
 
-Password Reset requires PocketBase's mail to be configured. The simplest localhost test is as follows:
+## Deploying to PocketHost
 
+Set the variables as instance secrets **before the first deploy**, because the migrations only run once:
+
+```bash
+pockethost create my-auth-app --link
+pockethost secrets set APP_URL=https://my-auth-app.pockethost.io POCKETBASE_URL=https://my-auth-app.pockethost.io
+pockethost secrets set SMTP_HOST=... SMTP_PORT=587 SMTP_USERNAME=... MAIL_SENDER_ADDRESS=...
+pockethost secrets set SMTP_PASSWORD GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET   # prompts for each value
+pockethost deploy
 ```
-http://localhost:3000/reset-password
-```
 
-## App Configuration
+After the first deploy, change these settings in the PocketBase dashboard instead.
 
-> This starter kit is already configured. In your own app, you'll need to update these settings
+## Email templates
 
-**Step 1: Configure Mail Settings**
+The migrations point PocketBase's email templates at this app's pages:
 
-In the PocketBase admin panel, navigate to `Settings > Mail Settings` and set the mail provider info to:
+1. Verification: `{APP_URL}/auth/confirm/{TOKEN}/verification`
+2. Password reset: `{APP_URL}/auth/confirm/{TOKEN}/password-reset`
+3. Email change: `{APP_URL}/auth/confirm/{TOKEN}/email-change`
 
-Host: `localhost`
-Port: `1025`
-User: `(blank)`
-Password: `(blank)`
-
-**Step 2: Update Mail Template URLs**
-
-In the PocketBase admin panel, navigate to `Collections > Users > Edit > Options > Mail Templates` and update the URLs as follows:
-
-1. Verification template: `{APP_URL}/auth/confirm/{TOKEN}/verification`
-2. Reset Password template: `{APP_URL}/auth/confirm/{TOKEN}/password-reset`
-3. Confirm email reset template: `{APP_URL}/auth/confirm/{TOKEN}/email-change`
+If you build your own app, set the same URLs under `Collections > users > Options > Mail templates`.

@@ -1,15 +1,10 @@
 <script server>
-  let error = null
   const methods = pb().collection('users').listAuthMethods();
-  dbg({
-    methods
-  })
 </script>
 
 <h3>MFA Login</h3>
-<% if (error) { %>
-<mark><%= error %></mark>
-<% } %>
 <% if (!methods.mfa.enabled) { %>
 <mark>MFA Login is disabled. See README.md for details.</mark>
+<% } else { %>
+<p>Two-step verification is opt-in. Turn it on from your Account page. After that, signing in takes both your password and a one-time code we email you, in either order.</p>
 <% } %>

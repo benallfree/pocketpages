@@ -27,6 +27,14 @@
             message: 'Login successful'
           })
         } catch (e) {
+          // MFA is on for this user: finish with their password
+          const mfa = resolve('mfa-state')
+          const mfaId = mfa.mfaIdFrom(e)
+          if (mfaId) {
+            mfa.start(response, { mfaId, identity, next: 'password' })
+            redirect('/auth/login/mfa')
+            return
+          }
           error = e.message
         }
         break
