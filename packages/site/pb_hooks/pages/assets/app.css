@@ -2997,6 +2997,9 @@
   .py-20 {
     padding-block: calc(var(--spacing) * 20);
   }
+  .pb-20 {
+    padding-bottom: calc(var(--spacing) * 20);
+  }
   .pb-32 {
     padding-bottom: calc(var(--spacing) * 32);
   }
