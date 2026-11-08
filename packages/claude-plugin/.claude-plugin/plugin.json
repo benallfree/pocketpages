@@ -1,0 +1,12 @@
+{
+  "name": "pocketpages",
+  "description": "Build, debug, and deploy PocketPages sites (file-routed EJS pages running inside PocketBase).",
+  "author": {
+    "name": "Ben Allfree",
+    "url": "https://github.com/benallfree"
+  },
+  "homepage": "https://pocketpages.dev",
+  "repository": "https://github.com/benallfree/pocketpages",
+  "license": "MIT",
+  "keywords": ["pocketpages", "pocketbase", "pockethost", "ejs", "ssr"]
+}

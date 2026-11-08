@@ -5,6 +5,7 @@ import inquirer from 'inquirer'
 import { dirname, join } from 'path'
 import tiged from 'tiged'
 import { fileURLToPath } from 'url'
+import { installAgentSupport } from './agents.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -161,6 +162,12 @@ async function main() {
 
     // Clean up workspace dependencies
     cleanupWorkspaceDependencies(targetDir)
+
+    // Add the PocketPages agent skill + AGENTS.md
+    await installAgentSupport(targetDir, {
+      clone: (source, dest) =>
+        tiged(source, { cache: false, force: true }).clone(dest),
+    })
 
     console.log(`\n✅ Successfully created "${targetDir}"!`)
     console.log('\n📋 Next steps:')

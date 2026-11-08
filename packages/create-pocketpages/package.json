@@ -8,7 +8,9 @@
   },
   "files": [
     "index.js",
-    "starters.json"
+    "agents.js",
+    "starters.json",
+    "templates"
   ],
   "keywords": [
     "pocketpages",

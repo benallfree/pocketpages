@@ -1,0 +1,18 @@
+{
+  "name": "pocketpages",
+  "owner": {
+    "name": "Ben Allfree"
+  },
+  "metadata": {
+    "description": "Agent plugins for building sites with PocketPages."
+  },
+  "plugins": [
+    {
+      "name": "pocketpages",
+      "source": "./packages/claude-plugin",
+      "description": "Skill for authoring PocketPages sites: routing, loaders, middleware, layouts, the JSVM, plugins, and deploying to PocketHost.",
+      "category": "development",
+      "homepage": "https://pocketpages.dev"
+    }
+  ]
+}

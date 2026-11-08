@@ -26,3 +26,13 @@ pnpm create pocketpages
 - **daisyui** - Tailwind CSS with DaisyUI components
 - **daisyui-docs** - Documentation site template with DaisyUI and navigation
 - **htmx** - HTMX integration for dynamic interactions
+
+## AI agent support
+
+Every new project also gets:
+
+- `.claude/skills/pocketpages/`: the PocketPages authoring skill (from `packages/claude-plugin`)
+- `AGENTS.md`: short project rules read by most coding agents (an existing file is left alone)
+- `CLAUDE.md`: imports `AGENTS.md` for Claude Code
+
+If the skill can't be downloaded, project creation still succeeds and prints how to install it later.
