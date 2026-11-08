@@ -9,7 +9,7 @@
     "dev": "tsdown --watch"
   },
   "devDependencies": {
-    "pocketbase-jsvm": "^0.25.10001",
+    "pocketbase-jsvm": "^0.40.60001",
     "tsdown": "^0.12.7",
     "typescript": "^5.9.3",
     "pocketpages": "workspace:>=0.22.2"

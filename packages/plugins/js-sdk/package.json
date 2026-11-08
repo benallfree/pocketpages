@@ -11,7 +11,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
     "chokidar-cli": "^3.0.0",
-    "pocketbase-jsvm": "^0.25.10001",
+    "pocketbase-jsvm": "^0.40.60001",
     "tsdown": "^0.12.7",
     "typescript": "^5.9.3",
     "pocketpages": "workspace:>=0.22.4"

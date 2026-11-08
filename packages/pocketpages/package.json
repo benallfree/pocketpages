@@ -37,7 +37,7 @@
     "qs-lite": "^1.0.0",
     "url-parse": "^1.5.10",
     "@types/url-parse": "^1.4.11",
-    "pocketbase-jsvm": "^0.25.10001",
+    "pocketbase-jsvm": "^0.40.60001",
     "tsdown": "^0.12.7"
   }
 }

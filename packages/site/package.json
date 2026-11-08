@@ -16,7 +16,7 @@
     "deploy": "pockethost deploy"
   },
   "devDependencies": {
-    "pocketbase-jsvm": "^0.25.10001",
+    "pocketbase-jsvm": "^0.40.60001",
     "pockethost": "^4.2.1",
     "prettier": "^3.9.10",
     "typescript": "^5.9.3"
