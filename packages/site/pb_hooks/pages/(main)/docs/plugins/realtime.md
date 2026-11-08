@@ -26,7 +26,7 @@ In this basic example, we make an API call on an interval that causes SSE data t
 By default, messages are only sent to realtime clients that have subscribed to the topic.
 
 ```html
-<script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>
+<script src="https://unpkg.com/pocketbase@0.28.2/dist/pocketbase.umd.js"></script>
 <script>
   const pb = new PocketBase('http://127.0.0.1:8090')
 
