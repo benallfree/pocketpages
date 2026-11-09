@@ -101,6 +101,9 @@
   }
   pre {
     background-color: #282c34 !important;
+    /* Plain fences (no language) get no Prism color, so they'd inherit
+       the dark body text on this dark background. */
+    color: #ccc;
   }
   :focus-visible {
     outline: 2px solid var(--color-accent);
