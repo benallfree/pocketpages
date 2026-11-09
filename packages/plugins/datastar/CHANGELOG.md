@@ -1,5 +1,11 @@
 # pocketpages-plugin-datastar
 
+## 0.2.1
+
+### Patch Changes
+
+- bdaff72: Pin Datastar to v1.0.4 instead of the moving `@main` bundle, and switch the SPA helper to Datastar 1.0 attribute syntax (`data-on:click`, `data-on:popstate__window`). SPA navigation had silently fallen back to full page loads once `@main` moved to the colon syntax. The SPA helper now also scrolls the page to the top on link clicks (like a normal page load), restores the landing page and your scroll position on Back/Forward, and leaves modified clicks, `target` links and cross-origin links alone. Docs examples updated to 1.0 syntax.
+
 ## 0.2.0
 
 ### Minor Changes

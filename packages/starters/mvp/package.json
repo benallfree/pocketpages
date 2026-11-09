@@ -12,6 +12,6 @@
     "url": "https://github.com/benallfree/pocketpages/packages/starters/mvp"
   },
   "dependencies": {
-    "pocketpages": ">=0.22.4"
+    "pocketpages": ">=0.22.5"
   }
 }

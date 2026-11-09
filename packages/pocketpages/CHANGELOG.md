@@ -1,5 +1,35 @@
 # pocketpages
 
+## 0.22.5
+
+### Patch Changes
+
+- 9197a13: Dependency updates:
+
+  - `pocketpages`: bundle `cookie` 2 (switched to `parseCookie`/`stringifySetCookie`; `response.cookie()` and `request.cookies()` behave the same) and `@s-libs/micro-dash` 21. Declare `pocketbase-node` and `pocketbase-stringify` as dependencies; they were already required at runtime but were only installed because `pocketpages-plugin-ejs` depends on them.
+  - `pocketpages-plugin-marked`: update to `marked` 18 and bundle it into the plugin, since `marked` 16+ is ESM-only and can't be `require()`d by the PocketBase JSVM. `marked` is no longer installed as a runtime dependency.
+  - `pocketpages-plugin-micro-dash`: bundle `@s-libs/micro-dash` 21.
+  - `pocketpages-plugin-ejs`: `pocketbase-stringify` 0.1.0.
+  - `create-pocketpages`: `inquirer` 14. The starter picker now uses the `select` prompt, since inquirer 13 removed the `list` alias and 14 rejects unknown prompt types. Requires Node.js `^20.17.0 || ^22.13.0 || >=23.5.0` (`engines` updated to match).
+
+- 3751b86: Fix several request-handling bugs:
+
+  - A `redirect()` (or `json`/`html`/`file` response) from middleware or a loader now stops the request. Previously later middleware, loaders such as `+post.js`, and the page itself still ran.
+  - A param route like `[slug].ejs` no longer shadows a directory index page like `about/index.ejs`.
+  - Route params and path segments are URL-decoded.
+  - Route params no longer leak into `request.url.query`.
+  - `asset()` now fingerprints relative asset paths.
+  - `redirect(path, { message })` keeps the original query string intact instead of round-tripping it through JSON parsing.
+  - Pages that set a non-HTML `Content-Type` now send their rendered content, unless they already streamed a body with `echo`. `text/html; charset=...` is treated as HTML.
+  - Only object/array output is auto-served as JSON, so a page rendering `42` or `true` is sent as HTML.
+  - Dotfiles and dot-directories (except `.well-known`) and `*.pb.js`/`*.pb.ts` hook files under `pages/` are no longer served.
+  - `resolve('/...')` no longer hides syntax and runtime errors behind "No module found".
+  - A plugin factory can call `dbg()` while it is being created.
+
+- Updated dependencies [9197a13]
+- Updated dependencies [9197a13]
+  - pocketpages-plugin-ejs@0.2.0
+
 ## 0.22.4
 
 ### Patch Changes

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.2",
   "dependencies": {
-    "pocketpages": ">=0.22.4",
+    "pocketpages": ">=0.22.5",
     "pocketpages-plugin-auth": ">=0.3.0",
     "pocketpages-plugin-js-sdk": ">=0.3.0"
   },

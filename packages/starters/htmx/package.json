@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "private": true,
   "dependencies": {
-    "pocketpages": ">=0.22.4",
+    "pocketpages": ">=0.22.5",
     "pocketpages-plugin-realtime": ">=0.2.0"
   },
   "files": [
