@@ -8,5 +8,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   outDir: 'dist',
-  external: ['pocketpages', /^[^tsdown]$/, /pocketbase-.*/],
+  external: ['pocketpages', /^[^tsdown]$/, /^pocketbase-/],
 })

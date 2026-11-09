@@ -28,8 +28,9 @@ jobs:
       - name: Lint
         run: bun run lint
 
-      - name: Typecheck
-        run: bun run typecheck
-
       - name: Build all projects
         run: bun run build
+
+      # After the build: plugins get pocketpages' types from its built dist
+      - name: Typecheck
+        run: bun run typecheck
