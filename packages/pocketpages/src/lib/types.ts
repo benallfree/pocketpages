@@ -42,7 +42,7 @@ export type PagesRequestContext<TData = any> = {
   auth?: core.Record
   data?: TData
   echo: (...args: any[]) => string
-  formData: Record<string, any>
+  formData: () => Record<string, any>
   body: () => Record<string, any> | string
   meta: (key: string, value?: string) => string | undefined
   params: PagesParams

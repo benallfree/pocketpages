@@ -58,6 +58,10 @@ export const mkResolve =
       try {
         return _require(finalPath)
       } catch (e) {
+        // Only rewrite "not found"; let real errors (syntax, runtime) through
+        if (!(e instanceof NotFoundError)) {
+          throw e
+        }
         throw new Error(`No module '${finalPath}' found`)
       }
     }
