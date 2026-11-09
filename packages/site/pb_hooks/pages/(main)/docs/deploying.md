@@ -69,7 +69,7 @@ See [Deploy from CI](https://pockethost.io/docs/deploy-from-ci) for more details
 
 #### Several Apps in One Repo
 
-If one repository holds several apps, each with its own instance, one token with access to all of them is enough. Pass each instance's name to `pockethost deploy` from that app's folder:
+If one repository holds several apps, each with its own instance, one token with access to all of them is enough. When you add an app later, give the existing token access to its instance with **Edit** at [Account → API Tokens](https://pockethost.io/account/tokens). The token stays the same, so your repository secret doesn't change. Pass each instance's name to `pockethost deploy` from that app's folder:
 
 ```yaml
 - run: npx pockethost@latest deploy my-site
