@@ -56,7 +56,7 @@
       "version": "0.1.2",
       "dependencies": {
         "pocketbase-ejs": "^7.0.2001",
-        "pocketbase-node": "^0.0.3",
+        "pocketbase-node": "^0.0.4",
         "pocketbase-stringify": "^0.1.0",
       },
       "devDependencies": {
@@ -123,7 +123,7 @@
       "version": "0.22.4",
       "dependencies": {
         "pocketbase-log": "^0.0.2",
-        "pocketbase-node": "^0.0.3",
+        "pocketbase-node": "^0.0.4",
         "pocketbase-stringify": "^0.1.0",
         "pocketpages-plugin-ejs": "workspace:>=0.1.2",
       },
@@ -623,7 +623,7 @@
 
     "pocketbase-log": ["pocketbase-log@0.0.2", "", { "dependencies": { "pocketbase-stringify": "^0.0.2" } }, "sha512-d0thSPYopTZzC4I85hlN6hrZaQEX7BzHieovV45zqFfE3kl4rb65xITe3UDZ+/42IfCTEchaPbTUDP2yd1/E8g=="],
 
-    "pocketbase-node": ["pocketbase-node@0.0.3", "", {}, "sha512-ZGrRFRlJqSXDl63913ZoHdtmpXJcaKO1km8STlGDbUJY6A+4xRC84e31gM4frRwSNhW6HsgsqkmzAj+UkZkDLg=="],
+    "pocketbase-node": ["pocketbase-node@0.0.4", "", {}, "sha512-Al/+Vavb7N++4+Yx3dfJJZuXjR8LkGFta2YSvROOsMeiwxquOheFjafL8RIqs2Poq3/AwGUbFUm9YMMgcU4y6Q=="],
 
     "pocketbase-stringify": ["pocketbase-stringify@0.1.0", "", {}, "sha512-6FRNwA7GKwazGaRw234mugolVh3At+rc2RrNDgZz3pBtzuMdISJtlyM0egcpiL6K2Ck8aNLpkH+UEy0pxwMDOw=="],
 
@@ -830,6 +830,8 @@
     "micromatch/picomatch": ["picomatch@2.3.1", "", {}, "sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA=="],
 
     "minizlib/minipass": ["minipass@3.3.6", "", { "dependencies": { "yallist": "^4.0.0" } }, "sha512-DxiNidxSEK+tHG6zOIklvNOwm3hvCrbUrdtzY74U6HKTJxvIDfOUL5W5P2Ghd3DTkhhKPYGqeNUIh5qcM4YBfw=="],
+
+    "pocketbase-ejs/pocketbase-node": ["pocketbase-node@0.0.3", "", {}, "sha512-ZGrRFRlJqSXDl63913ZoHdtmpXJcaKO1km8STlGDbUJY6A+4xRC84e31gM4frRwSNhW6HsgsqkmzAj+UkZkDLg=="],
 
     "pocketbase-log/pocketbase-stringify": ["pocketbase-stringify@0.0.2", "", {}, "sha512-KqN6K1fmRpw62PJ7Ue4zwnTuGaYkZ2XPwY+3yrHrwbmXvutLalbDd8ipOORPZI8myLrN6xkMIWXvqoDjfgBo5A=="],
 

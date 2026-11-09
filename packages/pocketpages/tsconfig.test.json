@@ -9,5 +9,8 @@
     "lib": ["ESNext"],
     "noEmit": true
   },
-  "include": ["src/**/*.test.ts", "../../node_modules/pocketbase-jsvm/jsvm.d.ts"]
+  "include": [
+    "src/**/*.test.ts",
+    "../../node_modules/pocketbase-jsvm/jsvm.d.ts"
+  ]
 }
