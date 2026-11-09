@@ -67,6 +67,21 @@ Install first (`npm ci` here) so your production `node_modules` is there to ship
 
 See [Deploy from CI](https://pockethost.io/docs/deploy-from-ci) for more details.
 
+#### Several Apps in One Repo
+
+If one repository holds several apps, each with its own instance, one token with access to all of them is enough. Pass each instance's name to `pockethost deploy` from that app's folder:
+
+```yaml
+- run: npx pockethost@latest deploy my-site
+  working-directory: apps/site
+  env:
+    POCKETHOST_TOKEN: ${{ secrets.POCKETHOST_TOKEN }}
+```
+
+To deploy only the apps that changed, compare the pushed commits (`git diff --name-only ${{ github.event.before }} ${{ github.sha }}`) against each app's folder, then deploy the matches in a matrix job. Redeploy every app when shared code or the lockfile changes.
+
+The PocketPages repository does this for this site and every starter demo. Its [deploy workflow](https://github.com/benallfree/pocketpages/blob/main/.github/workflows/deploy.yml) is a working example you can copy.
+
 ## Deploy to Fly.io
 
 Every starter kit includes a `Dockerfile`, `.dockerignore` and `fly.toml` built on the [pocketpages-fly](https://github.com/benallfree/pocketpages/tree/main/docker/pocketpages-fly) image. The image contains PocketBase, installs your app's npm `dependencies`, and keeps data on a volume at `/pb_data`. For an existing app, copy those three files from any starter.

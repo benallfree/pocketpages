@@ -1,0 +1,127 @@
+name: Deploy to PocketHost
+
+# Deploys the docs site and the starter demos to their PocketHost instances.
+# A push to main deploys only the apps whose files changed; a change to shared
+# code (the engine, the plugins, the lockfile) deploys every app. Run it by hand
+# to deploy everything.
+#
+# Needs a POCKETHOST_TOKEN repository secret: a PocketHost API token with
+# deploy access to every instance listed in APPS below.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # folder => PocketHost instance name
+  APPS: |
+    packages/site pocketpages
+    packages/starters/auth pocketpages-auth
+    packages/starters/daisyui pocketpages-daisyui
+    packages/starters/daisyui-docs pocketpages-daisyui-docs
+    packages/starters/datastar pocketpages-datastar
+    packages/starters/htmx pocketpages-htmx
+    packages/starters/minimal pocketpages-minimal
+    packages/starters/mvp pocketpages-mvp
+  # A change under any of these deploys every app.
+  SHARED: |
+    packages/pocketpages/
+    packages/plugins/
+    bun.lock
+    .github/workflows/deploy.yml
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.pick.outputs.matrix }}
+      any: ${{ steps.pick.outputs.any }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Pick the apps to deploy
+        id: pick
+        env:
+          BEFORE: ${{ github.event.before }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          all=false
+          if [ "$EVENT" != "push" ]; then
+            echo "Manual run: deploying everything."
+            all=true
+          elif ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "No usable previous commit ($BEFORE): deploying everything."
+            all=true
+          else
+            changed=$(git diff --name-only "$BEFORE" "$GITHUB_SHA")
+            echo "Changed files:"; echo "$changed" | sed 's/^/  /'
+            while read -r prefix; do
+              [ -z "$prefix" ] && continue
+              if echo "$changed" | grep -q "^$prefix"; then
+                echo "Shared code changed ($prefix): deploying everything."
+                all=true
+              fi
+            done <<< "$SHARED"
+          fi
+
+          include='[]'
+          while read -r dir instance; do
+            [ -z "$dir" ] && continue
+            if [ "$all" = true ] || echo "$changed" | grep -q "^$dir/"; then
+              include=$(jq -c --arg d "$dir" --arg i "$instance" \
+                '. + [{dir: $d, instance: $i}]' <<< "$include")
+            fi
+          done <<< "$APPS"
+
+          echo "Deploying: $include"
+          echo "matrix={\"include\":$include}" >> "$GITHUB_OUTPUT"
+          if [ "$include" = '[]' ]; then
+            echo "any=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "any=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy:
+    needs: changes
+    if: needs.changes.outputs.any == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.changes.outputs.matrix) }}
+    name: deploy ${{ matrix.instance }}
+    # One deploy per instance at a time; a newer push waits for the running one.
+    concurrency:
+      group: deploy-${{ matrix.instance }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # Deploys ship the workspace packages' dist/ folders, which aren't in git.
+      - name: Build
+        run: bun run build
+
+      - name: Deploy
+        working-directory: ${{ matrix.dir }}
+        env:
+          POCKETHOST_TOKEN: ${{ secrets.POCKETHOST_TOKEN }}
+        run: |
+          node "$GITHUB_WORKSPACE/node_modules/pockethost/dist/cli.js" \
+            deploy "${{ matrix.instance }}" \
+            -m "GitHub Actions: ${{ github.event_name }} by ${{ github.actor }}"
