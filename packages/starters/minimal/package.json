@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.2",
   "dependencies": {
-    "pocketpages": ">=0.22.5"
+    "pocketpages": ">=0.22.6"
   },
   "files": [
     "pb_hooks",

@@ -1,5 +1,10 @@
 # Markdown Plugin
 
+> **PocketPages 0.x is retiring.** PocketPages v1 is built into [PocketBase CE](https://github.com/pockethost/pocketbase):
+> `brew install pockethost/tap/pocketbase`, then `pocketbase pages create myapp`. This npm package gets no new
+> releases. Apps on 0.x keep running where they run today. Moving an app:
+> [pocketpages.dev/docs/moving-from-0x](https://pocketpages.dev/docs/moving-from-0x).
+
 The Markdown plugin (`pocketpages-plugin-marked`) processes `.md` files through the Marked parser, adding support for frontmatter, automatic asset fingerprinting, and heading IDs. It works in conjunction with the EJS plugin to enable dynamic content within Markdown files.
 
 ## Installation

@@ -1,5 +1,11 @@
 # pocketpages-plugin-realtime
 
+## 0.2.1
+
+### Patch Changes
+
+- PocketPages 0.x is retiring: PocketPages v1 is built into PocketBase CE (`pocketbase pages create`). This release adds a notice to the README and, for `pocketpages` and `create-pocketpages`, a one-line notice at startup. No other changes.
+
 ## 0.2.0
 
 ### Minor Changes

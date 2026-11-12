@@ -1,6 +1,6 @@
 {
   "name": "pocketpages-plugin-realtime",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Realtime plugin for PocketPages",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
     "pocketbase-jsvm": "^0.40.60001",
     "tsdown": "^0.12.7",
     "typescript": "^5.9.3",
-    "pocketpages": "workspace:>=0.16.0"
+    "pocketpages": "workspace:>=0.22.6"
   },
   "files": [
     "dist",

@@ -1,5 +1,10 @@
 # PocketPages EJS Plugin
 
+> **PocketPages 0.x is retiring.** PocketPages v1 is built into [PocketBase CE](https://github.com/pockethost/pocketbase):
+> `brew install pockethost/tap/pocketbase`, then `pocketbase pages create myapp`. This npm package gets no new
+> releases. Apps on 0.x keep running where they run today. Moving an app:
+> [pocketpages.dev/docs/moving-from-0x](https://pocketpages.dev/docs/moving-from-0x).
+
 The EJS plugin (`pocketpages-plugin-ejs`) is included with PocketPages by default and provides template processing using the EJS (Embedded JavaScript) templating engine. You only need to explicitly include it in your `+config.js` if you want to modify its configuration or if you're adding other plugins.
 
 ## Configuration

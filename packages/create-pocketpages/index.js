@@ -36,6 +36,12 @@ async function loadStartersConfig() {
   return startersConfig
 }
 
+console.log(
+  '\n⚠️  PocketPages 0.x is retiring. PocketPages v1 is built into PocketBase CE:\n' +
+    '   brew install pockethost/tap/pocketbase && pocketbase pages create myapp\n' +
+    '   https://pocketpages.dev/docs/moving-from-0x\n'
+)
+
 // Load starters configuration
 const startersConfig = await loadStartersConfig()
 const STARTERS = startersConfig.starters

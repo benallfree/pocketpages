@@ -21,8 +21,8 @@
     "deploy": "pockethost deploy"
   },
   "dependencies": {
-    "pocketpages": ">=0.22.5",
-    "pocketpages-plugin-datastar": ">=0.2.1"
+    "pocketpages": ">=0.22.6",
+    "pocketpages-plugin-datastar": ">=0.2.2"
   },
   "files": [
     "pb_hooks",

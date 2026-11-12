@@ -1,5 +1,10 @@
 # PocketPages Authentication Plugin
 
+> **PocketPages 0.x is retiring.** PocketPages v1 is built into [PocketBase CE](https://github.com/pockethost/pocketbase):
+> `brew install pockethost/tap/pocketbase`, then `pocketbase pages create myapp`. This npm package gets no new
+> releases. Apps on 0.x keep running where they run today. Moving an app:
+> [pocketpages.dev/docs/moving-from-0x](https://pocketpages.dev/docs/moving-from-0x).
+
 The Authentication plugin (`pocketpages-plugin-auth`) provides a complete authentication system for PocketPages applications, supporting multiple authentication methods including password, OTP, OAuth2, and anonymous authentication.
 
 ## Installation

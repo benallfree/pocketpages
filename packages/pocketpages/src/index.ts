@@ -11,6 +11,9 @@ const isInHandler = typeof onBootstrap === 'undefined'
 if (!isInHandler) {
   onBootstrap((e) => {
     e.next()
+    console.log(
+      'PocketPages 0.x is retiring. PocketPages v1 is built into PocketBase CE: https://pocketpages.dev/docs/moving-from-0x'
+    )
     require(`pocketpages`).AfterBootstrapHandler(e)
   })
 

@@ -1,5 +1,10 @@
 # JS SDK Plugin
 
+> **PocketPages 0.x is retiring.** PocketPages v1 is built into [PocketBase CE](https://github.com/pockethost/pocketbase):
+> `brew install pockethost/tap/pocketbase`, then `pocketbase pages create myapp`. This npm package gets no new
+> releases. Apps on 0.x keep running where they run today. Moving an app:
+> [pocketpages.dev/docs/moving-from-0x](https://pocketpages.dev/docs/moving-from-0x).
+
 The JS SDK plugin (`pocketpages-plugin-js-sdk`) provides a JSVM-compatible version of the PocketBase JavaScript SDK, making it easy to interact with your PocketBase collections and authentication system.
 
 ## Installation

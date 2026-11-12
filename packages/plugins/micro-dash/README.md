@@ -1,5 +1,10 @@
 # Micro Dash Plugin
 
+> **PocketPages 0.x is retiring.** PocketPages v1 is built into [PocketBase CE](https://github.com/pockethost/pocketbase):
+> `brew install pockethost/tap/pocketbase`, then `pocketbase pages create myapp`. This npm package gets no new
+> releases. Apps on 0.x keep running where they run today. Moving an app:
+> [pocketpages.dev/docs/moving-from-0x](https://pocketpages.dev/docs/moving-from-0x).
+
 The Micro Dash plugin (`pocketpages-plugin-micro-dash`) provides a set of lightweight utility functions for data manipulation, based on the `@s-libs/micro-dash` library.
 
 ## Installation

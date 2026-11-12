@@ -1,6 +1,6 @@
 {
   "name": "pocketpages-plugin-auth",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit -p ."
   },
   "dependencies": {
-    "pocketpages-plugin-js-sdk": "workspace:>=0.3.0"
+    "pocketpages-plugin-js-sdk": "workspace:>=0.3.1"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
